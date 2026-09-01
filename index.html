@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Siatkówka">
@@ -46,6 +46,12 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
         }
+        
+        /* Obsługa wycięcia na iPhone (Notch / Dynamic Island) */
+        .ios-safe-header {
+            padding-top: max(12px, env(safe-area-inset-top, 12px));
+        }
+
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -96,34 +102,34 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-16">
 
-    <!-- Top Sticky Header -->
-    <header class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-40">
-        <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5">
-                <div class="relative w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-rose-500 shadow-lg shadow-emerald-950/40 shrink-0">
+    <!-- Top Sticky Header z bezpiecznym marginesem pod iPhone -->
+    <header class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all">
+        <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-11 h-11 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-rose-500 shadow-lg shadow-emerald-950/40 shrink-0">
                     <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[14px]" loading="eager">
                     <span class="absolute -bottom-1 -right-1 text-xs bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
                 </div>
-                <div>
+                <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white">Siatkówka Piątek</h1>
-                        <span id="syncStatusBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1">
+                        <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white truncate">Siatkówka Piątek</h1>
+                        <span id="syncStatusBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1 shrink-0">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
                         </span>
-                        <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 items-center gap-0.5">
+                        <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 items-center gap-0.5 shrink-0">
                             👑 Organizator
                         </span>
                     </div>
-                    <p class="text-[11px] text-emerald-400 font-medium">⏰ 18:30 - 20:45 • 📍 ul. Myśliborska 25</p>
+                    <p class="text-[11px] text-emerald-400 font-medium truncate">⏰ 18:30 - 20:45 • 📍 ul. Myśliborska 25</p>
                 </div>
             </div>
 
-            <!-- Month Select & Share Action -->
-            <div class="flex items-center gap-1.5">
-                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-500 cursor-pointer">
+            <!-- Month Select & Share Action (Wygodne pod kciuk) -->
+            <div class="flex items-center gap-2 shrink-0">
+                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-3 py-2 border-2 border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
                     <!-- Populated dynamically -->
                 </select>
-                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95">
+                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95">
                     <span>📣</span>
                     <span class="hidden sm:inline">Mess</span>
                 </button>
