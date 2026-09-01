@@ -96,15 +96,6 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-16">
 
-    <!-- Top Dynamic Smart Banner -->
-    <aside id="smartDayBanner" aria-label="Przypomnienie o meczu" class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border-b border-emerald-800/50 px-3 py-2 text-xs flex items-center justify-between gap-2 text-emerald-300 font-medium transition-all duration-300">
-        <div onclick="handleSmartBannerClick()" class="flex items-center gap-2 truncate cursor-pointer hover:underline flex-1" role="button" tabindex="0">
-            <span id="bannerIcon" class="text-base shrink-0" aria-hidden="true">📅</span>
-            <span id="bannerText" class="truncate">Wczytywanie przypomnienia...</span>
-        </div>
-        <button type="button" onclick="dismissBanner()" aria-label="Zamknij baner" class="text-slate-400 hover:text-slate-200 text-xs px-1.5 py-0.5 rounded shrink-0 transition-colors">✕</button>
-    </aside>
-
     <!-- Top Sticky Header -->
     <header class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-40">
         <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
@@ -1197,7 +1188,6 @@
         let currentTemplateType = 'match';
         let hasInitiallySelectedMonth = false;
         let countdownTimerInterval = null;
-        let smartBannerTargetTab = 'matches';
         let toastTimeout = null;
         let currentModalSets = [];
         let teamsViewMode = 'list';
@@ -1254,59 +1244,6 @@
             }
         }
 
-        // ================= SMART DAY BANNER =================
-        function initSmartDayBanner() {
-            const today = new Date();
-            const dayOfWeek = today.getDay();
-            const currentHour = today.getHours();
-            const currentMin = today.getMinutes();
-            const banner = document.getElementById('smartDayBanner');
-            const icon = document.getElementById('bannerIcon');
-            const text = document.getElementById('bannerText');
-
-            if (!banner || !icon || !text) return;
-
-            if (dayOfWeek === 1) {
-                icon.innerText = "🔔";
-                text.innerText = "Jest poniedziałek! Ruszyły zapisy na piątkową gierkę – dopisz się!";
-                banner.className = "bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border-b border-emerald-800/50 px-3 py-2 text-xs flex items-center justify-between gap-2 text-emerald-300 font-medium";
-                smartBannerTargetTab = 'matches';
-            } else if (dayOfWeek === 5) {
-                if (currentHour > 20 || (currentHour === 20 && currentMin >= 45)) {
-                    icon.innerText = "🏆";
-                    text.innerText = "Mecz zakończony! Zagłosuj na MVP spotkania i sprawdź wynik ⭐";
-                    banner.className = "bg-gradient-to-r from-amber-950 via-slate-900 to-amber-900 border-b border-amber-800/50 px-3 py-2 text-xs flex items-center justify-between gap-2 text-amber-300 font-bold animate-pulse";
-                    smartBannerTargetTab = 'mvp';
-                } else {
-                    icon.innerText = "🏐";
-                    text.innerText = "DZISIAJ GRAMY! Zbiórka o 18:20 w szatni (start punkt 18:30)!";
-                    banner.className = "bg-gradient-to-r from-amber-950 via-slate-900 to-emerald-950 border-b border-amber-800/50 px-3 py-2 text-xs flex items-center justify-between gap-2 text-amber-300 font-bold animate-pulse";
-                    smartBannerTargetTab = 'matches';
-                }
-            } else if (dayOfWeek === 6 || dayOfWeek === 0) {
-                icon.innerText = "🏆";
-                text.innerText = "Trwa głosowanie na MVP piątkowego meczu! Kliknij, aby oddać głos ⭐";
-                banner.className = "bg-gradient-to-r from-amber-950 via-slate-900 to-amber-900/60 border-b border-amber-800/50 px-3 py-2 text-xs flex items-center justify-between gap-2 text-amber-300 font-semibold";
-                smartBannerTargetTab = 'mvp';
-            } else if (dayOfWeek === 4) {
-                icon.innerText = "⏳";
-                text.innerText = "Mecz już jutro o 18:30! Sprawdź czy jesteś w składzie głównym.";
-                smartBannerTargetTab = 'matches';
-            } else {
-                icon.innerText = "📅";
-                text.innerText = "Zapisy na piątkową siatkówkę otwarte! Gramy w każdy piątek o 18:30.";
-                smartBannerTargetTab = 'matches';
-            }
-        }
-
-        function handleSmartBannerClick() {
-            if (smartBannerTargetTab) switchTab(smartBannerTargetTab);
-        }
-
-        function dismissBanner() {
-            document.getElementById('smartDayBanner')?.classList.add('hidden');
-        }
-
         function getGlobalUpcomingMatchDate() {
             const todayStr = new Date().toISOString().slice(0, 10);
             let earliestDate = null;
@@ -1349,7 +1286,6 @@
 
         // ================= INITIALIZATION & REALTIME SYNC =================
         function initApp() {
-            initSmartDayBanner();
             updateAdminUI();
 
             try {
@@ -2753,7 +2689,6 @@
             let votesCast = 0;
             let hasIronMonth = false;
 
-            // Sprawdzanie frekwencji per miesiąc (Żelazne Płuca)
             Object.keys(AppState.months || {}).forEach(mName => {
                 const matches = AppState.months[mName]?.matches || [];
                 let activeMatches = 0;
@@ -2767,14 +2702,12 @@
                             playerAttended++;
                             attendedMatches++;
 
-                            // Sprawdzanie głosowania (Aktywny Sędzia)
                             const votes = m.votes || {};
                             if (Object.keys(votes).length > 0) {
                                 matchesWithVoting++;
                                 if (votes[playerName]) votesCast++;
                             }
 
-                            // Wyniki meczowe
                             if (m.score && m.teams) {
                                 const dark = m.teams.dark || [];
                                 const light = m.teams.light || [];
@@ -2793,7 +2726,6 @@
                                 }
                             }
 
-                            // MVP
                             const votesMap = m.votes || {};
                             const tally = {};
                             Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
