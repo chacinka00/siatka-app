@@ -98,6 +98,16 @@
             right: 0;
             border-top: 1px dashed rgba(56, 189, 248, 0.4);
         }
+
+        /* Ułatwienia dostępności dla użytkowników z wrażliwością na ruch */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-16">
@@ -113,8 +123,8 @@
                 <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white truncate">Siatkówka Piątek</h1>
-                        <span id="syncStatusBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1 shrink-0">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
+                        <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                         </span>
                         <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 items-center gap-0.5 shrink-0">
                             👑 Organizator
@@ -913,10 +923,10 @@
     </main>
 
     <!-- Sleek "☰ Więcej" Mobile Bottom Sheet Modal -->
-    <div id="moreMenuModal" onclick="if(event.target === this) closeMoreMenuModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-3 hidden transition-opacity">
+    <div id="moreMenuModal" role="dialog" aria-modal="true" aria-labelledby="moreMenuTitle" onclick="if(event.target === this) closeMoreMenuModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-3 hidden transition-opacity">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-3 shadow-2xl animate-fade-in">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-                <h3 class="font-extrabold text-white text-sm flex items-center gap-2">
+                <h3 id="moreMenuTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
                     <span>🏐</span> Dodatkowe Opcje
                 </h3>
                 <button type="button" onclick="closeMoreMenuModal()" aria-label="Zamknij menu" class="text-slate-400 hover:text-white font-bold text-base px-1.5">✕</button>
@@ -960,10 +970,10 @@
     </div>
 
     <!-- Share / Messenger Modal -->
-    <div id="shareModal" onclick="if(event.target === this) closeShareModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle" onclick="if(event.target === this) closeShareModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
             <div class="flex items-center justify-between">
-                <h3 class="font-black text-white text-base flex items-center gap-2">
+                <h3 id="shareModalTitle" class="font-black text-white text-base flex items-center gap-2">
                     <span>📣</span> Przypomnienie na Messengera
                 </h3>
                 <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
@@ -998,12 +1008,12 @@
     </div>
 
     <!-- Scoreboard Builder Modal -->
-    <div id="scoreModal" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+    <div id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📊</span>
-                    <h3 class="font-black text-white text-base">Wprowadź wynik meczu</h3>
+                    <h3 id="scoreModalTitle" class="font-black text-white text-base">Wprowadź wynik meczu</h3>
                 </div>
                 <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
             </div>
@@ -1057,7 +1067,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" role="alert" aria-live="polite" class="fixed bottom-5 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
+    <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
         Powiadomienie
     </div>
 
@@ -1077,6 +1087,7 @@
         
         const POLISH_MONTHS = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
         const ADMIN_PIN = "201018";
+        const APP_ICON = "logo.jpg.jpg";
 
         const INITIAL_STATE = {
             all_players: [
@@ -1193,13 +1204,14 @@
         let showPastMatches = false;
         let currentTemplateType = 'match';
         let hasInitiallySelectedMonth = false;
+        let hasLoadedRemoteState = false;
         let countdownTimerInterval = null;
         let toastTimeout = null;
         let currentModalSets = [];
         let teamsViewMode = 'list';
         let currentBillingFilter = 'all';
 
-        // ================= UTILITIES =================
+        // ================= UTILITIES & DATA SANITIZATION =================
         function escapeHtml(str) {
             if (str == null) return '';
             return String(str)
@@ -1214,8 +1226,51 @@
             return encodeURIComponent(String(str || ''));
         }
 
+        function toInlineArgument(value) {
+            return escapeHtml(JSON.stringify(String(value ?? '')));
+        }
+
+        function normalizePlayerName(value) {
+            return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, 80);
+        }
+
+        function getLocalDateKey(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function isValidDateKey(value) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+            const [year, month, day] = value.split('-').map(Number);
+            const parsed = new Date(year, month - 1, day);
+            return parsed.getFullYear() === year && parsed.getMonth() === month - 1 && parsed.getDate() === day;
+        }
+
         function getSortedMonths() {
-            return Object.keys(AppState.months || {}).sort((a, b) => POLISH_MONTHS.indexOf(a) - POLISH_MONTHS.indexOf(b));
+            return Object.keys(AppState.months || {}).sort((a, b) => {
+                const indexA = POLISH_MONTHS.indexOf(a);
+                const indexB = POLISH_MONTHS.indexOf(b);
+                if (indexA === -1 && indexB === -1) return a.localeCompare(b, 'pl');
+                if (indexA === -1) return 1;
+                if (indexB === -1) return -1;
+                return indexA - indexB;
+            });
+        }
+
+        function setSyncStatus(mode) {
+            const badge = document.getElementById('syncStatusBadge');
+            if (!badge) return;
+            const variants = {
+                live: ['LIVE', 'bg-emerald-950 text-emerald-400 border-emerald-800', 'bg-emerald-400'],
+                connecting: ['ŁĄCZENIE', 'bg-sky-950 text-sky-400 border-sky-800', 'bg-sky-400 animate-pulse'],
+                local: ['LOKALNIE', 'bg-amber-950 text-amber-300 border-amber-800', 'bg-amber-400'],
+                error: ['BŁĄD SYNC', 'bg-rose-950 text-rose-300 border-rose-800', 'bg-rose-400']
+            };
+            const [label, colors, dotClass] = variants[mode] || variants.local;
+            badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span> ${label}`;
+            badge.className = `text-[9px] font-bold px-1.5 py-0.5 rounded-full border flex items-center gap-1 shrink-0 ${colors}`;
         }
 
         function showToast(msg) {
@@ -1251,7 +1306,7 @@
         }
 
         function getGlobalUpcomingMatchDate() {
-            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayStr = getLocalDateKey();
             let earliestDate = null;
             Object.keys(AppState.months || {}).forEach(mName => {
                 const matches = AppState.months[mName]?.matches || [];
@@ -1294,39 +1349,58 @@
         function initApp() {
             updateAdminUI();
 
+            loadLocalState();
+            autoSelectUpcomingMatchOnLoad();
+            renderCurrentView();
+            setSyncStatus('connecting');
+
             try {
+                if (!window.firebase?.database) throw new Error('Firebase SDK unavailable');
                 if (!firebase.apps.length) {
                     firebase.initializeApp(FIREBASE_CONFIG);
                 }
                 db = firebase.database();
-                isOnlineSync = true;
-                
+
                 try {
                     if (firebase.analytics) firebase.analytics();
                 } catch(err) {
                     console.info("Analytics info:", err);
                 }
 
+                db.ref('.info/connected').on('value', snapshot => {
+                    isOnlineSync = snapshot.val() === true;
+                    setSyncStatus(isOnlineSync ? 'live' : 'local');
+                });
+
                 db.ref('siatka_master_state').on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
                         AppState = val;
                         ensureValidState();
-                        autoSelectUpcomingMatchOnLoad();
+                        if (!hasLoadedRemoteState) {
+                            hasInitiallySelectedMonth = false;
+                            autoSelectUpcomingMatchOnLoad();
+                            hasLoadedRemoteState = true;
+                        }
                         renderCurrentView();
                     } else {
                         AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
                         ensureValidState();
+                        hasInitiallySelectedMonth = false;
                         autoSelectUpcomingMatchOnLoad();
+                        hasLoadedRemoteState = true;
                         syncState();
                         renderCurrentView();
                     }
+                }, error => {
+                    console.warn("Firebase read error, fallback to local:", error);
+                    isOnlineSync = false;
+                    setSyncStatus('error');
                 });
             } catch(e) {
                 console.warn("Firebase offline or local fallback:", e);
-                loadLocalState();
-                autoSelectUpcomingMatchOnLoad();
-                renderCurrentView();
+                isOnlineSync = false;
+                setSyncStatus('local');
             }
 
             startCountdownTicker();
@@ -1350,6 +1424,7 @@
             if (!AppState.all_players || !Array.isArray(AppState.all_players) || AppState.all_players.length === 0) {
                 AppState.all_players = JSON.parse(JSON.stringify(INITIAL_STATE.all_players || []));
             }
+            AppState.all_players = [...new Set(AppState.all_players.map(normalizePlayerName).filter(Boolean))];
 
             if (!AppState.base_games || typeof AppState.base_games !== 'object' || Object.keys(AppState.base_games).length === 0) {
                 AppState.base_games = JSON.parse(JSON.stringify(INITIAL_STATE.base_games || {}));
@@ -1398,16 +1473,26 @@
             if (!AppState.months[AppState.currentMonth]) {
                 AppState.currentMonth = sortedMonths[0] || 'Sierpień';
             }
-            if (AppState.currentMatchIndex >= (AppState.months[AppState.currentMonth]?.matches?.length || 0)) {
-                AppState.currentMatchIndex = Math.max(0, (AppState.months[AppState.currentMonth]?.matches?.length || 1) - 1);
+            const matchCount = AppState.months[AppState.currentMonth]?.matches?.length || 0;
+            if (AppState.currentMatchIndex >= matchCount) {
+                AppState.currentMatchIndex = Math.max(0, matchCount - 1);
             }
         }
 
         function syncState() {
             ensureValidState();
-            localStorage.setItem('siatka_master_app_state', JSON.stringify(AppState));
-            if (isOnlineSync && db) {
-                db.ref('siatka_master_state').set(AppState);
+            try {
+                localStorage.setItem('siatka_master_app_state', JSON.stringify(AppState));
+            } catch(e) {
+                console.warn('LocalStorage error:', e);
+            }
+            if (db) {
+                db.ref('siatka_master_state').set(AppState).catch(error => {
+                    console.warn('Firebase write fallback:', error);
+                    isOnlineSync = false;
+                    setSyncStatus('error');
+                    showToast('Zapisano lokalnie — synchronizacja chwilowo niedostępna.');
+                });
             }
         }
 
@@ -1563,12 +1648,11 @@
 
             grid.innerHTML = AppState.all_players.map(p => {
                 const currentRating = AppState.player_skills[p] || 3;
-                const safeName = safeJsArg(p);
                 return `
                     <div class="bg-slate-950/80 border border-slate-800/80 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
                         <span class="font-semibold text-slate-200 truncate pr-2">${escapeHtml(p)}</span>
                         <div class="flex items-center gap-1 shrink-0">
-                            <select onchange="updatePlayerSkill(decodeURIComponent('${safeName}'), this.value)" class="bg-slate-900 border border-slate-700 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
+                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-900 border border-slate-700 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
                                 <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 - Początkujący</option>
                                 <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐⭐ 2 - Solidny</option>
                                 <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐⭐⭐ 3 - Średni</option>
@@ -1641,7 +1725,7 @@
             AppState.currentMonth = mName;
             
             const matches = AppState.months[mName].matches || [];
-            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayStr = getLocalDateKey();
             const upIdx = matches.findIndex(m => m.date >= todayStr && !m.isCancelled);
             
             AppState.currentMatchIndex = (upIdx !== -1) ? upIdx : Math.max(0, matches.length - 1);
@@ -1661,7 +1745,7 @@
             const monthData = AppState.months[AppState.currentMonth];
             if (!monthData) return;
 
-            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayStr = getLocalDateKey();
             const globalUpcomingDate = getGlobalUpcomingMatchDate();
             const datesContainer = document.getElementById('matchDatesContainer');
             const allMatches = monthData.matches || [];
@@ -1812,7 +1896,6 @@
             for (let i = 0; i < 12; i++) {
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
-                    const safeName = safeJsArg(p);
                     squadHtml += `
                         <div class="flex items-center justify-between bg-slate-950 border border-slate-800/80 pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 truncate">
@@ -1820,7 +1903,7 @@
                                 <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
                                 <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(decodeURIComponent('${safeName}'))" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
                     `;
                 } else {
@@ -1842,18 +1925,15 @@
             if (reservePlayers.length > 0) {
                 reserveCard.classList.remove('hidden');
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
-                reserveListEl.innerHTML = reservePlayers.map((p, idx) => {
-                    const safeName = safeJsArg(p);
-                    return `
-                        <div class="flex items-center justify-between bg-slate-950/60 border border-amber-900/30 pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                            <div class="flex items-center gap-2 truncate">
-                                <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
-                                <span class="font-medium text-slate-300 truncate">${escapeHtml(p)}</span>
-                            </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(decodeURIComponent('${safeName}'))" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
+                reserveListEl.innerHTML = reservePlayers.map((p, idx) => `
+                    <div class="flex items-center justify-between bg-slate-950/60 border border-amber-900/30 pl-3 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
+                            <span class="font-medium text-slate-300 truncate">${escapeHtml(p)}</span>
                         </div>
-                    `;
-                }).join('');
+                        <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
+                    </div>
+                `).join('');
             } else {
                 reserveCard.classList.add('hidden');
             }
@@ -1873,11 +1953,20 @@
                 if (!dateStr || !dateStr.trim()) return;
                 const clean = dateStr.trim();
                 
-                if (!/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
-                    return alert("Błędny format daty! Użyj formatu RRRR-MM-DD (np. 2026-09-04).");
+                if (!isValidDateKey(clean)) {
+                    return alert("Błędny format daty lub nieprawidłowy dzień! Użyj formatu RRRR-MM-DD (np. 2026-09-04).");
                 }
 
                 const monthData = AppState.months[AppState.currentMonth];
+                if (!monthData) return;
+
+                const duplicateExists = Object.values(AppState.months).some(month =>
+                    (month?.matches || []).some(match => match.date === clean)
+                );
+                if (duplicateExists) {
+                    return alert("Mecz z tą datą już istnieje w kalendarzu.");
+                }
+
                 monthData.matches.push({
                     date: clean,
                     cost: 250,
@@ -1926,8 +2015,8 @@
 
         function addCustomNewPlayerPrompt() {
             const name = prompt("Podaj imię i nazwisko nowego gracza:");
-            if (!name || !name.trim()) return;
-            const clean = name.trim();
+            const clean = normalizePlayerName(name);
+            if (!clean) return;
 
             if (!AppState.all_players.includes(clean)) {
                 AppState.all_players.push(clean);
@@ -2074,6 +2163,7 @@
             const hasP2 = mainSquad.includes(p2);
             let remaining = [];
 
+            // PARSZEWSKI BROTHERS RULE: Rozdzielenie braci
             if (hasP1 && hasP2) {
                 const p1Obj = ratedPlayers.find(x => x.name === p1);
                 const p2Obj = ratedPlayers.find(x => x.name === p2);
@@ -2229,7 +2319,7 @@
             const current = teamKey === 'dark' ? (currentMatch.teams.darkName || "Drużyna Ciemna") : (currentMatch.teams.lightName || "Drużyna Jasna");
             const val = prompt(`Wpisz własną nazwę dla drużyny:`, current);
             if (val === null) return;
-            const clean = val.trim();
+            const clean = val.trim().slice(0, 60);
             if (!clean) return;
 
             if (teamKey === 'dark') currentMatch.teams.darkName = clean;
@@ -2396,7 +2486,7 @@
                 });
             });
 
-            const todayStr = new Date().toISOString().slice(0, 10);
+            const todayStr = getLocalDateKey();
             const historyMatches = allMatches.filter(m => (m.date < todayStr || m.score) && !m.isCancelled);
             historyMatches.sort((a, b) => b.date.localeCompare(a.date));
 
@@ -2527,7 +2617,7 @@
         }
 
         function copySinglePlayerBlik(playerName, dueAmount) {
-            const phone = "517077482";
+            const phone = (AppState.settings?.blikPhone || "517077482").replace(/\s+/g, '');
             const title = `Siatka ${playerName} ${AppState.currentMonth}`;
             copyToClipboard(phone, `Skopiowano nr BLIK! Kwota: ${dueAmount.toFixed(2)} zł • Tytuł: ${title}`);
         }
@@ -2569,7 +2659,6 @@
                 const paid = info.paid;
                 const saldo = paid - due;
                 const isPaid = (due > 0 && saldo >= -0.05);
-                const safeName = safeJsArg(p);
 
                 return `
                     <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -2590,7 +2679,7 @@
 
                         <div class="flex items-center gap-2 self-end sm:self-center flex-wrap">
                             ${!isPaid && due > 0 ? `
-                                <button type="button" onclick="copySinglePlayerBlik(decodeURIComponent('${safeName}'), ${due})" class="px-2.5 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-sm active:scale-95">
+                                <button type="button" onclick="copySinglePlayerBlik(${toInlineArgument(p)}, ${due})" class="px-2.5 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-sm active:scale-95">
                                     <span>📋</span> Kopiuj BLIK
                                 </button>
                             ` : ''}
@@ -2599,12 +2688,12 @@
                             <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl px-2 py-1">
                                 <span class="text-[11px] text-slate-400 mr-1.5">Wpłata:</span>
                                 <input type="number" step="0.01" value="${paid || 0}" 
-                                       onchange="updatePlayerPaidAmount(decodeURIComponent('${safeName}'), this.value)" 
+                                       onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
                                        aria-label="Wpisz kwotę wpłaty"
                                        class="w-16 bg-transparent text-xs font-bold text-emerald-400 text-right focus:outline-none">
                                 <span class="text-[11px] text-slate-400 ml-1">zł</span>
                             </div>
-                            <button type="button" onclick="setFullPayment(decodeURIComponent('${safeName}'), ${due.toFixed(2)})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] rounded-xl border border-slate-700 transition" title="Wpisz całą należność">
+                            <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] rounded-xl border border-slate-700 transition" title="Wpisz całą należność">
                                 + Całość
                             </button>
                             ` : `
@@ -2639,7 +2728,8 @@
         }
 
         function copyBlikNumber() {
-            copyToClipboard("517077482", "Skopiowano numer BLIK: 517 077 482");
+            const blik = AppState.settings?.blikPhone || "517 077 482";
+            copyToClipboard(blik.replace(/\s+/g, ''), `Skopiowano numer BLIK: ${blik}`);
         }
 
         // ================= TAB 6: ROZBUDOWANY SYSTEM ODZNAK I STATYSTYK =================
@@ -2911,18 +3001,15 @@
         function renderSettings() {
             const container = document.getElementById('playerDirectoryTags');
             if (container) {
-                container.innerHTML = AppState.all_players.map(p => {
-                    const safeName = safeJsArg(p);
-                    return `
-                        <span class="inline-flex items-center gap-1 bg-slate-950 border border-slate-800 pl-2 pr-1 py-1 rounded-xl text-xs text-slate-300 mb-1">
-                            <span class="truncate max-w-[140px]">${escapeHtml(p)}</span>
-                            ${isAdmin ? `
-                                <button type="button" onclick="editPlayerInDirectory(decodeURIComponent('${safeName}'))" class="text-indigo-400 hover:text-indigo-300 font-bold p-1 ml-1" title="Edytuj">✏️</button>
-                                <button type="button" onclick="removePlayerFromDirectory(decodeURIComponent('${safeName}'))" class="text-rose-500 hover:text-rose-400 font-bold p-1" title="Usuń z bazy">✕</button>
-                            ` : ''}
-                        </span>
-                    `;
-                }).join(' ');
+                container.innerHTML = AppState.all_players.map(p => `
+                    <span class="inline-flex items-center gap-1 bg-slate-950 border border-slate-800 pl-2 pr-1 py-1 rounded-xl text-xs text-slate-300 mb-1">
+                        <span class="truncate max-w-[140px]">${escapeHtml(p)}</span>
+                        ${isAdmin ? `
+                            <button type="button" onclick="editPlayerInDirectory(${toInlineArgument(p)})" class="text-indigo-400 hover:text-indigo-300 font-bold p-1 ml-1" title="Edytuj">✏️</button>
+                            <button type="button" onclick="removePlayerFromDirectory(${toInlineArgument(p)})" class="text-rose-500 hover:text-rose-400 font-bold p-1" title="Usuń z bazy">✕</button>
+                        ` : ''}
+                    </span>
+                `).join(' ');
             }
             if (isAdmin) renderPlayerSkillsGrid();
         }
@@ -2930,9 +3017,11 @@
         function addNewPlayerToDirectory() {
             requireAdminAuth(() => {
                 const input = document.getElementById('newPlayerNameInput');
-                const name = (input ? input.value : '').trim();
+                const name = normalizePlayerName(input ? input.value : '');
                 if (!name) return;
-                if (AppState.all_players.includes(name)) return alert("Taki gracz już istnieje!");
+                if (AppState.all_players.some(p => p.localeCompare(name, 'pl', { sensitivity: 'base' }) === 0)) {
+                    return alert("Taki gracz już istnieje w bazie!");
+                }
                 
                 AppState.all_players.push(name);
                 if (!AppState.player_skills) AppState.player_skills = {};
@@ -2961,10 +3050,10 @@
             requireAdminAuth(() => {
                 const newNameRaw = prompt(`Edytuj nazwę gracza: ${oldName}`, oldName);
                 if (newNameRaw === null) return;
-                const newName = newNameRaw.trim();
+                const newName = normalizePlayerName(newNameRaw);
                 if (!newName || newName === oldName) return;
 
-                if (AppState.all_players.includes(newName)) {
+                if (AppState.all_players.some(p => p !== oldName && p.localeCompare(newName, 'pl', { sensitivity: 'base' }) === 0)) {
                     alert("Gracz o tej nazwie już istnieje!");
                     return;
                 }
@@ -2987,8 +3076,7 @@
                     if (monthObj.matches) {
                         monthObj.matches.forEach(match => {
                             if (match.attendees) {
-                                const aIdx = match.attendees.indexOf(oldName);
-                                if (aIdx !== -1) match.attendees[aIdx] = newName;
+                                match.attendees = match.attendees.map(p => p === oldName ? newName : p);
                             }
                             if (match.votes) {
                                 if (match.votes[oldName]) {
@@ -3003,12 +3091,10 @@
                             }
                             if (match.teams) {
                                 if (match.teams.dark) {
-                                    const tdIdx = match.teams.dark.indexOf(oldName);
-                                    if (tdIdx !== -1) match.teams.dark[tdIdx] = newName;
+                                    match.teams.dark = match.teams.dark.map(p => p === oldName ? newName : p);
                                 }
                                 if (match.teams.light) {
-                                    const tlIdx = match.teams.light.indexOf(oldName);
-                                    if (tlIdx !== -1) match.teams.light[tlIdx] = newName;
+                                    match.teams.light = match.teams.light.map(p => p === oldName ? newName : p);
                                 }
                             }
                         });
@@ -3029,7 +3115,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState, null, 2));
             const a = document.createElement('a');
             a.href = dataStr;
-            a.download = `siatka_backup_${new Date().toISOString().slice(0,10)}.json`;
+            a.download = `siatka_backup_${getLocalDateKey()}.json`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -3043,8 +3129,11 @@
                 reader.onload = e => {
                     try {
                         const parsed = JSON.parse(e.target.result);
-                        if (parsed && typeof parsed.months === 'object') {
+                        if (parsed && typeof parsed === 'object' && typeof parsed.months === 'object') {
                             AppState = parsed;
+                            ensureValidState();
+                            hasInitiallySelectedMonth = false;
+                            autoSelectUpcomingMatchOnLoad();
                             syncState();
                             renderCurrentView();
                             showToast("Zaimportowano bazę!");
@@ -3053,6 +3142,8 @@
                         }
                     } catch(err) { 
                         alert("Błąd przetwarzania pliku JSON."); 
+                    } finally {
+                        event.target.value = '';
                     }
                 };
                 reader.readAsText(file);
@@ -3066,6 +3157,8 @@
                 AppState.settings = { hallCost: 250, blikPhone: "517 077 482" };
                 AppState.currentMonth = 'Sierpień';
                 AppState.currentMatchIndex = 0;
+                hasInitiallySelectedMonth = false;
+                autoSelectUpcomingMatchOnLoad();
                 syncState();
                 renderCurrentView();
                 showToast("Przywrócono stan początkowy!");
@@ -3250,6 +3343,10 @@
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
 
+            if (currentModalSets.some(set => set.scoreA === set.scoreB)) {
+                return alert("Set nie może zakończyć się remisem. Popraw wynik przed zapisaniem.");
+            }
+
             const formatted = buildFormattedScoreString();
             currentMatch.score = formatted;
             syncState();
@@ -3295,6 +3392,7 @@
             const freeSlots = Math.max(0, 12 - count);
             const cost = (currentMatch && currentMatch.isCancelled) ? 0 : 250;
             const costPerPerson = count > 0 ? (cost / count).toFixed(2) : "20.83";
+            const blikPhone = String(AppState.settings?.blikPhone || "517 077 482");
             const url = window.location.href;
 
             if (type === 'monday') {
@@ -3311,7 +3409,7 @@
                 return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
                        `Ekipa, faktura za halę za ${AppState.currentMonth} podsumowana!\n\n` +
                        `👉 Sprawdź swoją kwotę na stronie:\n${url}\n\n` +
-                       `💸 Przelew BLIK na numer: 517 077 482 (w tytule imię i nazwisko)`;
+                       `💸 Przelew BLIK na numer: ${blikPhone} (w tytule imię i nazwisko)`;
             }
 
             return `🏐 SIATKÓWKA DZISIAJ (${dateStr}) 🏐\n\n` +
@@ -3319,7 +3417,7 @@
                    `📍 Skład: ${count}/12 (Wolne miejsca: ${freeSlots})\n` +
                    `💰 Koszt: ~${costPerPerson} zł / os.\n\n` +
                    `📲 Zapisy / Losowarka Składów / Wyniki:\n${url}\n\n` +
-                   `💸 BLIK: 517 077 482`;
+                   `💸 BLIK: ${blikPhone}`;
         }
 
         function openShareModal() {
@@ -3382,7 +3480,7 @@
             try {
                 new Notification(title, {
                     body: body,
-                    icon: "logo.jpg.jpg"
+                    icon: APP_ICON
                 });
             } catch(e) {
                 console.warn("Notification error:", e);
