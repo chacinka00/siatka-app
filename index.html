@@ -99,7 +99,6 @@
             border-top: 1px dashed rgba(56, 189, 248, 0.4);
         }
 
-        /* Ułatwienia dostępności dla użytkowników z wrażliwością na ruch */
         @media (prefers-reduced-motion: reduce) {
             *, ::before, ::after {
                 scroll-behavior: auto !important;
@@ -134,7 +133,7 @@
                 </div>
             </div>
 
-            <!-- Month Select & Share Action (Wygodne pod kciuk) -->
+            <!-- Month Select & Share Action -->
             <div class="flex items-center gap-2 shrink-0">
                 <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-3 py-2 border-2 border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
                     <!-- Populated dynamically -->
@@ -248,16 +247,16 @@
                     </button>
                 </div>
 
-                <!-- Dynamic Match MVP Reminder Card -->
+                <!-- Dynamic Match MVP Reminder Card (Secret Ballot Protected) -->
                 <div id="mvpMatchReminderCard" class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/50 border border-amber-500/50 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 hidden">
                     <div class="flex items-center gap-2.5 min-w-0">
                         <span class="text-2xl animate-bounce shrink-0">🏆</span>
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5 flex-wrap">
-                                <h4 class="font-extrabold text-xs text-amber-300 truncate">Wybierz MVP tego meczu!</h4>
-                                <span id="mvpVotesBriefBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800">0 głosów</span>
+                                <h4 id="mvpReminderTitle" class="font-extrabold text-xs text-amber-300 truncate">Głosowanie na MVP</h4>
+                                <span id="mvpVotesBriefBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800">0/0</span>
                             </div>
-                            <p id="mvpStatusMiniText" class="text-[10px] text-slate-300 mt-0.5 truncate">Głosowanie trwa • Kliknij i wskaż najlepszego gracza</p>
+                            <p id="mvpStatusMiniText" class="text-[10px] text-slate-300 mt-0.5 truncate">🔒 Głosowanie tajne w toku • Wskaż najlepszego gracza</p>
                         </div>
                     </div>
                     <button type="button" onclick="switchTab('mvp')" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shrink-0 shadow-md shadow-amber-500/25">
@@ -356,7 +355,7 @@
                     <span class="text-2xl block mb-1">🏆</span>
                     <div>
                         <h4 class="font-bold text-xs text-white group-hover:text-amber-300 transition">Głosuj na MVP</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Wybierz gracza meczu</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Tajne głosowanie</p>
                     </div>
                 </button>
                 <button type="button" onclick="switchTab('archive')" class="col-span-2 sm:col-span-1 bg-gradient-to-br from-slate-900 to-teal-950/40 border border-teal-900/40 rounded-2xl p-3 text-left shadow-md hover:border-teal-500/50 transition group flex sm:flex-col items-center sm:items-start justify-between">
@@ -476,7 +475,7 @@
         </section>
 
 
-        <!-- ================= TAB 3: GŁOSOWANIE MVP MECZU ================= -->
+        <!-- ================= TAB 3: TAJNE GŁOSOWANIE MVP MECZU ================= -->
         <section id="tab-mvp" class="space-y-4 hidden">
             
             <div class="flex items-center justify-between px-1">
@@ -500,11 +499,11 @@
                     </span>
                 </div>
 
-                <!-- MVP Winner Highlight Card -->
+                <!-- MVP Winner Highlight Card (Secret during voting, Celebratory when finished) -->
                 <div id="mvpWinnerContainer" class="bg-slate-950/80 border border-amber-800/60 rounded-2xl p-4 text-center space-y-1 relative overflow-hidden">
-                    <p class="text-[11px] uppercase tracking-widest text-amber-400 font-bold">Lider Głosowania</p>
+                    <p id="mvpWinnerHeaderLabel" class="text-[11px] uppercase tracking-widest text-amber-400 font-bold">Lider Głosowania</p>
                     <h3 id="mvpWinnerName" class="text-2xl font-black text-white">Brak głosów</h3>
-                    <p id="mvpWinnerVotes" class="text-xs text-slate-400">Oddaj pierwszy głos poniżej!</p>
+                    <p id="mvpWinnerVotes" class="text-xs text-slate-400">Oddaj swój głos poniżej!</p>
                 </div>
 
                 <!-- Voting Form -->
@@ -533,18 +532,34 @@
                     </button>
                 </div>
 
-                <!-- Live Results Table for This Match -->
+                <!-- Admin Force Finish/Reveal Bar -->
+                <div id="mvpAdminControlBar" class="hidden flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-amber-900/60 text-xs">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-base">👑</span>
+                        <span id="mvpAdminStatusLabel" class="text-[11px] font-bold text-amber-300 truncate">Zarządzanie głosowaniem</span>
+                    </div>
+                    <button type="button" id="mvpToggleFinalizeBtn" onclick="toggleMvpFinalizeWithAuth()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95">
+                        Zakończ i odkryj wyniki
+                    </button>
+                </div>
+
+                <!-- Results & Breakdown Section -->
                 <div class="space-y-2 pt-1">
-                    <h4 class="font-bold text-xs text-slate-300 uppercase tracking-wider">Wyniki głosowania:</h4>
+                    <h4 id="mvpResultsSectionTitle" class="font-bold text-xs text-slate-300 uppercase tracking-wider">Wyniki głosowania:</h4>
                     <div id="mvpResultsList" class="space-y-1.5">
                         <!-- Rendered dynamically -->
                     </div>
                 </div>
 
-                <!-- Who already voted -->
-                <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
-                    <p class="font-bold text-slate-300">Zagłosowali:</p>
-                    <p id="whoVotedList" class="text-slate-400 mt-0.5 italic">Nikt jeszcze nie zagłosował.</p>
+                <!-- Who already voted / Full breakdown -->
+                <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span id="whoVotedTitle" class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Status obecnych:</span>
+                        <span id="whoVotedProgressRatio" class="font-mono text-emerald-400 font-bold text-[10px]">0 / 0</span>
+                    </div>
+                    <div id="whoVotedList" class="space-y-1">
+                        <!-- Rendered dynamically -->
+                    </div>
                 </div>
             </div>
 
@@ -949,7 +964,7 @@
                         <span class="text-xl">🏆</span>
                         <div>
                             <strong class="block text-white group-hover:text-amber-300 transition font-bold">Głosowanie na MVP</strong>
-                            <span class="text-[10px] text-slate-400">Wybierz najlepszego gracza</span>
+                            <span class="text-[10px] text-slate-400">Tajne głosowanie i wyniki</span>
                         </div>
                     </div>
                     <span class="text-slate-500 font-mono">→</span>
@@ -1120,10 +1135,10 @@
             months: {
                 "Lipiec": {
                     matches: [
-                        { date: "2026-07-03", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kacper Szafraniec", "Albert Kubiak", "Iza Urbańska", "Kamil Kaczmarek", "Julka (od Alberta Kubiaka)"] },
-                        { date: "2026-07-17", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Albert Kubiak", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)"] },
-                        { date: "2026-07-24", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Antek Kwaczek", "Kuba (od Kuby Parszewskiego)", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)"] },
-                        { date: "2026-07-31", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Filip Morawski", "Kuba Parszewski", "Kondziu Parszewski", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", "Artur Żbikowski", "Kuba Żurawski"] }
+                        { date: "2026-07-03", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kacper Szafraniec", "Albert Kubiak", "Iza Urbańska", "Kamil Kaczmarek", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
+                        { date: "2026-07-17", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Albert Kubiak", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
+                        { date: "2026-07-24", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Antek Kwaczek", "Kuba (od Kuby Parszewskiego)", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)"], votes: {}, mvpClosed: true },
+                        { date: "2026-07-31", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Filip Morawski", "Kuba Parszewski", "Kondziu Parszewski", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", "Artur Żbikowski", "Kuba Żurawski"], votes: {}, mvpClosed: true }
                     ],
                     rozliczenia: {
                         "Michał Chaciński": { paid: 83.33 }, "Zuzanna Rostkowska": { paid: 83.33 }, "Mikołaj Morawski": { paid: 62.5 },
@@ -1140,47 +1155,47 @@
                 },
                 "Sierpień": {
                     matches: [
-                        { date: "2026-08-07", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Antek Kwaczek", "Rafał (od Maćka Lewandowskiego)", "Czapa", "Kamil (od Konrada Pazio)"] },
-                        { date: "2026-08-14", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kondziu Parszewski", "Kuba (od Kuby Parszewskiego)", "Artur Żbikowski", "Kamil (od Konrada Pazio)"] },
-                        { date: "2026-08-21", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Kondziu Parszewski", "Bartek (od Kuby Parszewskiego)", "Kuba (od Kuby Parszewskiego)"] },
-                        { date: "2026-08-28", cost: 250.0, isCancelled: false, attendees: ["Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kamil (od Konrada Pazio)"] }
+                        { date: "2026-08-07", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Antek Kwaczek", "Rafał (od Maćka Lewandowskiego)", "Czapa", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
+                        { date: "2026-08-14", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kondziu Parszewski", "Kuba (od Kuby Parszewskiego)", "Artur Żbikowski", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
+                        { date: "2026-08-21", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Kondziu Parszewski", "Bartek (od Kuby Parszewskiego)", "Kuba (od Kuby Parszewskiego)"], votes: {}, mvpClosed: true },
+                        { date: "2026-08-28", cost: 250.0, isCancelled: false, attendees: ["Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: false }
                     ],
                     rozliczenia: { "Mikołaj Morawski": { paid: 54.0 } }
                 },
                 "Wrzesień": {
                     matches: [
-                        { date: "2026-09-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-09-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-09-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-09-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
+                        { date: "2026-09-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-09-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-09-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-09-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
                     ],
                     rozliczenia: {}
                 },
                 "Październik": {
                     matches: [
-                        { date: "2026-10-02", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-10-09", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-10-16", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-10-23", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-10-30", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
+                        { date: "2026-10-02", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-10-09", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-10-16", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-10-23", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-10-30", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
                     ],
                     rozliczenia: {}
                 },
                 "Listopad": {
                     matches: [
-                        { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-11-13", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-11-20", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-11-27", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
+                        { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-11-13", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-11-20", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-11-27", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
                     ],
                     rozliczenia: {}
                 },
                 "Grudzień": {
                     matches: [
-                        { date: "2026-12-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-12-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-12-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
-                        { date: "2026-12-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
+                        { date: "2026-12-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-12-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-12-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
+                        { date: "2026-12-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
                     ],
                     rozliczenia: {}
                 }
@@ -1222,10 +1237,6 @@
                 .replace(/'/g, '&#39;');
         }
 
-        function safeJsArg(str) {
-            return encodeURIComponent(String(str || ''));
-        }
-
         function toInlineArgument(value) {
             return escapeHtml(JSON.stringify(String(value ?? '')));
         }
@@ -1257,6 +1268,15 @@
                 if (indexB === -1) return -1;
                 return indexA - indexB;
             });
+        }
+
+        function isMvpVotingFinished(match) {
+            if (!match || match.isCancelled) return false;
+            const attendees = (match.attendees || []).slice(0, 12);
+            if (attendees.length === 0) return false;
+            if (match.mvpClosed === true) return true;
+            const votesCount = Object.keys(match.votes || {}).length;
+            return votesCount >= attendees.length && attendees.length > 0;
         }
 
         function setSyncStatus(mode) {
@@ -1555,8 +1575,9 @@
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 animate-pulse tracking-wider";
                 valueEl.onclick = null;
             } else {
+                const isFinished = isMvpVotingFinished(currentMatch);
                 labelEl.innerText = "Mecz zakończony:";
-                valueEl.innerText = "🏁 ZAGŁOSUJ NA MVP!";
+                valueEl.innerText = isFinished ? "🏆 ZOBACZ WYNIKI MVP" : "🔒 TAJNE GŁOSOWANIE MVP";
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-sky-400 tracking-wider cursor-pointer";
                 valueEl.onclick = () => switchTab('mvp');
             }
@@ -1597,6 +1618,7 @@
                 if (skillsPanel) skillsPanel.classList.add('hidden');
             }
             renderMatchesTab();
+            renderMvpTab();
         }
 
         function loginAsAdmin() {
@@ -1841,6 +1863,7 @@
                 }
             }
 
+            // Secret Ballot MVP Hero card
             const mvpReminderCard = document.getElementById('mvpMatchReminderCard');
             const mvpVotesBadge = document.getElementById('mvpVotesBriefBadge');
             const mvpStatusMiniText = document.getElementById('mvpStatusMiniText');
@@ -1854,21 +1877,24 @@
                 if (isMatchConcluded && mainPlayers.length > 0) {
                     mvpReminderCard.classList.remove('hidden');
                     const votesCount = Object.keys(currentMatch.votes || {}).length;
-                    if (mvpVotesBadge) mvpVotesBadge.innerText = `Głosy: ${votesCount}/${mainPlayers.length}`;
-                    
-                    const votes = currentMatch.votes || {};
-                    const tally = {};
-                    Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                    let topNom = "", maxV = 0;
-                    Object.entries(tally).forEach(([nom, count]) => {
-                        if (count > maxV) { maxV = count; topNom = nom; }
-                    });
+                    const isFinished = isMvpVotingFinished(currentMatch);
 
-                    if (mvpStatusMiniText) {
-                        if (topNom && maxV > 0) {
-                            mvpStatusMiniText.innerText = `Lider: 👑 ${topNom} (${maxV} gł.) • Kliknij, aby zagłosować`;
-                        } else {
-                            mvpStatusMiniText.innerText = `Głosowanie otwarte • Oddaj głos na gracza meczu`;
+                    if (mvpVotesBadge) mvpVotesBadge.innerText = `Głosy: ${votesCount}/${mainPlayers.length}`;
+
+                    if (isFinished) {
+                        const votes = currentMatch.votes || {};
+                        const tally = {};
+                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                        let topNom = "", maxV = 0;
+                        Object.entries(tally).forEach(([nom, count]) => {
+                            if (count > maxV) { maxV = count; topNom = nom; }
+                        });
+                        if (mvpStatusMiniText) {
+                            mvpStatusMiniText.innerText = topNom ? `Wyniki odkryte! 👑 MVP: ${topNom} (${maxV} gł.)` : `Głosowanie zakończone`;
+                        }
+                    } else {
+                        if (mvpStatusMiniText) {
+                            mvpStatusMiniText.innerText = `🔒 Głosowanie tajne w toku (${votesCount}/${mainPlayers.length}) • Wskaż gracza meczu`;
                         }
                     }
                 } else {
@@ -1974,7 +2000,8 @@
                     attendees: [],
                     votes: {},
                     score: "",
-                    teams: null
+                    teams: null,
+                    mvpClosed: false
                 });
                 monthData.matches.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
                 AppState.currentMatchIndex = monthData.matches.findIndex(m => m.date === clean);
@@ -2074,6 +2101,7 @@
 
                 currentMatch.attendees = [];
                 currentMatch.votes = {};
+                currentMatch.mvpClosed = false;
                 currentMatch.teams = null;
                 syncState();
                 renderCurrentView();
@@ -2330,19 +2358,26 @@
             showToast(`Zmieniono nazwę drużyny na: ${clean}`);
         }
 
-        // ================= TAB 3: MVP VOTING + CONFETTI =================
+        // ================= TAB 3: SECRET MVP VOTING & CELEBRATION =================
         function renderMvpTab() {
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             
             const dateBadge = document.getElementById('mvpMatchDateBadge');
             const votesBadge = document.getElementById('mvpVotesCountBadge');
+            const winnerHeaderLabel = document.getElementById('mvpWinnerHeaderLabel');
             const winnerName = document.getElementById('mvpWinnerName');
             const winnerVotes = document.getElementById('mvpWinnerVotes');
             const voterSelect = document.getElementById('voterSelect');
             const nomineeSelect = document.getElementById('nomineeSelect');
             const resultsList = document.getElementById('mvpResultsList');
+            const resultsSectionTitle = document.getElementById('mvpResultsSectionTitle');
+            const whoVotedTitle = document.getElementById('whoVotedTitle');
+            const whoVotedProgressRatio = document.getElementById('whoVotedProgressRatio');
             const whoVotedList = document.getElementById('whoVotedList');
+            const adminBar = document.getElementById('mvpAdminControlBar');
+            const toggleFinalizeBtn = document.getElementById('mvpToggleFinalizeBtn');
+            const adminStatusLabel = document.getElementById('mvpAdminStatusLabel');
 
             if (!currentMatch) {
                 if (dateBadge) dateBadge.innerText = "Brak meczu";
@@ -2350,48 +2385,70 @@
                 if (winnerName) winnerName.innerText = "Brak wybranego meczu";
                 if (winnerVotes) winnerVotes.innerText = "";
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Dodaj mecz, aby móc głosować.</div>`;
+                if (adminBar) adminBar.classList.add('hidden');
                 return;
             }
 
             if (dateBadge) dateBadge.innerText = `Mecz: ${currentMatch.date}`;
             const attendees = (currentMatch.attendees || []).slice(0, 12);
             const votes = currentMatch.votes || {};
+            const totalVotesCast = Object.keys(votes).length;
+            const isFinished = isMvpVotingFinished(currentMatch);
+
+            if (votesBadge) votesBadge.innerText = `Głosy: ${totalVotesCast} / ${attendees.length}`;
+
+            // Admin Bar Controls
+            if (isAdmin && attendees.length > 0) {
+                if (adminBar) adminBar.classList.remove('hidden');
+                if (toggleFinalizeBtn) {
+                    toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : `👑 Zakończ i odkryj (${totalVotesCast}/${attendees.length})`;
+                    toggleFinalizeBtn.className = isFinished 
+                        ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95"
+                        : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
+                }
+                if (adminStatusLabel) {
+                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE dla wszystkich" : `Głosowanie tajne w toku (${totalVotesCast}/${attendees.length})`;
+                }
+            } else {
+                if (adminBar) adminBar.classList.add('hidden');
+            }
 
             if (attendees.length === 0) {
-                if (votesBadge) votesBadge.innerText = "0/0";
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "Status";
                 if (winnerName) winnerName.innerText = "Brak zapisanych graczy";
                 if (winnerVotes) winnerVotes.innerText = "Zapisz graczy w składzie głównym, aby odblokować głosowanie.";
                 if (voterSelect) voterSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (nomineeSelect) nomineeSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Brak osób w składzie głównym.</div>`;
-                if (whoVotedList) whoVotedList.innerText = "Nikt.";
+                if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic">Brak graczy.</p>`;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0/0";
                 return;
             }
 
             const savedMyName = localStorage.getItem('siatka_my_player_name') || '';
 
+            // 1. Voter Select (Does NOT reveal candidate to other people on dropdown)
             if (voterSelect) {
                 voterSelect.innerHTML = `<option value="">-- Wybierz siebie ze składu --</option>` + attendees.map(p => {
-                    const votedFor = votes[p] ? ` [Głosował: ${votes[p]}]` : "";
+                    const hasVoted = Boolean(votes[p]);
                     const isMyName = (p === savedMyName);
-                    return `<option value="${escapeHtml(p)}" ${isMyName ? 'selected' : ''}>${escapeHtml(p)}${escapeHtml(votedFor)}</option>`;
+                    return `<option value="${escapeHtml(p)}" ${isMyName ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
                 }).join('');
             }
 
+            // 2. Nominee Select
             if (nomineeSelect) {
                 nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + attendees.map(p => {
                     return `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
                 }).join('');
             }
 
+            // Tally counts
             const tally = {};
             attendees.forEach(p => tally[p] = 0);
             Object.values(votes).forEach(candidate => {
                 if (tally[candidate] !== undefined) tally[candidate]++;
             });
-
-            const totalVotesCast = Object.keys(votes).length;
-            if (votesBadge) votesBadge.innerText = `Głosy: ${totalVotesCast} / ${attendees.length}`;
 
             let maxVotes = 0;
             let leaders = [];
@@ -2404,44 +2461,112 @@
                 }
             });
 
-            if (winnerName && winnerVotes) {
-                if (maxVotes === 0) {
-                    winnerName.innerText = "Czekamy na głosy!";
-                    winnerVotes.innerText = "Głosowanie trwa – wybierz siebie i swojego faworyta.";
-                } else if (leaders.length === 1) {
-                    winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
-                    winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
-                } else {
-                    winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
-                    winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
+            // 3. Render Hero & Results based on Secret vs Finished State
+            if (isFinished) {
+                // ======= FINISHED: FULL CELEBRATION & PUBLIC RESULTS =======
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
+                if (winnerName && winnerVotes) {
+                    if (maxVotes === 0) {
+                        winnerName.innerText = "Brak głosów";
+                        winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
+                    } else if (leaders.length === 1) {
+                        winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
+                        winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+                    } else {
+                        winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
+                        winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
+                    }
                 }
-            }
 
-            const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-            if (resultsList) {
-                resultsList.innerHTML = sortedResults.map(([name, count]) => {
-                    const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
-                    const isLeader = maxVotes > 0 && count === maxVotes;
-                    return `
-                        <div class="bg-slate-950 border ${isLeader ? 'border-amber-500/60 bg-amber-950/20' : 'border-slate-800'} rounded-xl p-2.5 space-y-1.5">
-                            <div class="flex items-center justify-between text-xs">
-                                <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
-                                    <span>${isLeader ? '🌟' : '🏐'}</span>
-                                    <span class="truncate">${escapeHtml(name)}</span>
+                if (resultsSectionTitle) resultsSectionTitle.innerText = "Oficjalne wyniki głosowania:";
+                const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+                if (resultsList) {
+                    resultsList.innerHTML = sortedResults.map(([name, count]) => {
+                        const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
+                        const isLeader = maxVotes > 0 && count === maxVotes;
+                        return `
+                            <div class="bg-slate-950 border ${isLeader ? 'border-amber-500/60 bg-amber-950/20' : 'border-slate-800'} rounded-xl p-2.5 space-y-1.5">
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
+                                        <span>${isLeader ? '🌟' : '🏐'}</span>
+                                        <span class="truncate">${escapeHtml(name)}</span>
+                                    </div>
+                                    <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} ${count === 1 ? 'głos' : 'głosy'} (${percent}%)</span>
                                 </div>
-                                <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} głosów (${percent}%)</span>
+                                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                                </div>
                             </div>
-                            <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                                <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        `;
+                    }).join('');
+                }
+
+                // Breakdown: Kto na kogo głosował
+                if (whoVotedTitle) whoVotedTitle.innerText = "Kto na kogo głosował:";
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `Zakończone (${totalVotesCast}/${attendees.length})`;
+                if (whoVotedList) {
+                    whoVotedList.innerHTML = attendees.map(p => {
+                        const votedNominee = votes[p];
+                        return `
+                            <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
+                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                                <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'} shrink-0">
+                                    ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
+                                </span>
                             </div>
+                        `;
+                    }).join('');
+                }
+
+            } else {
+                // ======= ONGOING: SECRET BALLOT (NO LEAKS) =======
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "🔒 TAJNE GŁOSOWANIE W TOKU";
+                if (winnerName) {
+                    winnerName.innerText = totalVotesCast === 0 ? "Czekamy na pierwsze głosy" : `Oddano ${totalVotesCast} z ${attendees.length} głosów`;
+                }
+                if (winnerVotes) {
+                    const percentVoted = Math.round((totalVotesCast / attendees.length) * 100);
+                    winnerVotes.innerText = `Wyniki cząstkowe i wybór MVP są ukryte do momentu, aż wszyscy oddadzą głos (${percentVoted}%).`;
+                }
+
+                if (resultsSectionTitle) resultsSectionTitle.innerText = "Postęp głosowania:";
+                const percentDone = Math.round((totalVotesCast / attendees.length) * 100);
+                if (resultsList) {
+                    resultsList.innerHTML = `
+                        <div class="bg-slate-950 border border-amber-900/40 rounded-2xl p-4 space-y-3">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-bold text-slate-300 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                    <span>Trwa zbieranie głosów</span>
+                                </span>
+                                <span class="font-mono font-bold text-amber-400">${totalVotesCast} / ${attendees.length} (${percentDone}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                                <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-sky-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percentDone}%"></div>
+                            </div>
+                            <p class="text-[10px] text-slate-400 text-center leading-relaxed">
+                                🕵️ Wyniki oraz to, kto na kogo głosował, zostaną ujawnione automatycznie, gdy zagłosują wszyscy obecni.
+                            </p>
                         </div>
                     `;
-                }).join('');
-            }
+                }
 
-            const votersList = Object.keys(votes);
-            if (whoVotedList) {
-                whoVotedList.innerText = votersList.length > 0 ? votersList.join(', ') : 'Nikt jeszcze nie zagłosował.';
+                // Who voted status (Secret: only shows IF they voted, NOT WHO they voted for)
+                if (whoVotedTitle) whoVotedTitle.innerText = "Status głosowania obecnych:";
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${totalVotesCast} / ${attendees.length}`;
+                if (whoVotedList) {
+                    whoVotedList.innerHTML = attendees.map(p => {
+                        const hasVoted = Boolean(votes[p]);
+                        return `
+                            <div class="bg-slate-950/60 border ${hasVoted ? 'border-emerald-900/40 bg-emerald-950/10' : 'border-slate-800/60'} px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
+                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                                <span class="font-bold text-[10px] ${hasVoted ? 'text-emerald-400' : 'text-slate-500'} shrink-0 flex items-center gap-1">
+                                    ${hasVoted ? '<span>✅</span> Oddał głos' : '<span>⏳</span> Czeka na głos'}
+                                </span>
+                            </div>
+                        `;
+                    }).join('');
+                }
             }
         }
 
@@ -2459,18 +2584,65 @@
             if (!currentMatch.votes) currentMatch.votes = {};
             currentMatch.votes[voter] = nominee;
 
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 80,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#f59e0b', '#10b981', '#fbbf24', '#ffffff']
-                });
+            const attendees = (currentMatch.attendees || []).slice(0, 12);
+            const totalVotes = Object.keys(currentMatch.votes).length;
+            const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
+
+            if (isNowCompleted) {
+                currentMatch.mvpClosed = true;
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 120,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                    });
+                }
+            } else {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 40,
+                        spread: 50,
+                        origin: { y: 0.7 },
+                        colors: ['#10b981', '#ffffff']
+                    });
+                }
             }
 
             syncState();
             renderMvpTab();
-            showToast(`Dzięki ${voter}! Twój głos na ${nominee} został zapisany! 🌟`);
+            renderMatchesTab();
+
+            if (isNowCompleted) {
+                showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
+            } else {
+                showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
+            }
+        }
+
+        function toggleMvpFinalizeWithAuth() {
+            requireAdminAuth(() => {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                if (!currentMatch) return;
+
+                const currentClosed = isMvpVotingFinished(currentMatch);
+                currentMatch.mvpClosed = !currentClosed;
+
+                if (!currentClosed && typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 120,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                    });
+                }
+
+                syncState();
+                renderMvpTab();
+                renderMatchesTab();
+                showToast(currentMatch.mvpClosed ? "Odkryto wyniki MVP dla wszystkich! 👑" : "Głosowanie zostało otwarte ponownie. 🔓");
+            });
         }
 
         // ================= TAB 4: ARCHIVE & RECORDS =================
@@ -2501,6 +2673,7 @@
                 const teams = m.teams || null;
                 const darkName = teams?.darkName || "Drużyna Ciemna";
                 const lightName = teams?.lightName || "Drużyna Jasna";
+                const isFinished = isMvpVotingFinished(m);
 
                 const votes = m.votes || {};
                 const tally = {};
@@ -2529,7 +2702,9 @@
                             </div>
                             <div class="text-right">
                                 <span class="text-[10px] text-slate-400 font-semibold">MVP meczu:</span>
-                                <p class="text-xs font-extrabold text-white mt-0.5">${topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : 'Brak głosowania'}</p>
+                                <p class="text-xs font-extrabold text-white mt-0.5">
+                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak głosowania')}
+                                </p>
                             </div>
                         </div>
 
@@ -2822,18 +2997,20 @@
                                 }
                             }
 
-                            const votesMap = m.votes || {};
-                            const tally = {};
-                            Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                            let maxV = 0, topNom = "";
-                            Object.entries(tally).forEach(([nom, count]) => {
-                                if (count > maxV) { maxV = count; topNom = nom; }
-                            });
-                            if (topNom === playerName && maxV > 0) {
-                                mvpWins++;
-                                const totalVotes = Object.keys(votesMap).length;
-                                if (totalVotes >= 4 && (maxV / totalVotes) >= 0.5) {
-                                    hasUnanimousMvp = true;
+                            if (isMvpVotingFinished(m)) {
+                                const votesMap = m.votes || {};
+                                const tally = {};
+                                Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                                let maxV = 0, topNom = "";
+                                Object.entries(tally).forEach(([nom, count]) => {
+                                    if (count > maxV) { maxV = count; topNom = nom; }
+                                });
+                                if (topNom === playerName && maxV > 0) {
+                                    mvpWins++;
+                                    const totalVotes = Object.keys(votesMap).length;
+                                    if (totalVotes >= 4 && (maxV / totalVotes) >= 0.5) {
+                                        hasUnanimousMvp = true;
+                                    }
                                 }
                             }
                         }
@@ -2882,14 +3059,16 @@
             const mvpTally = {};
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach(m => {
-                    const votes = m.votes || {};
-                    const tally = {};
-                    Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                    let maxV = 0, topNom = "";
-                    Object.entries(tally).forEach(([nom, count]) => {
-                        if (count > maxV) { maxV = count; topNom = nom; }
-                    });
-                    if (topNom && maxV > 0) mvpTally[topNom] = (mvpTally[topNom] || 0) + 1;
+                    if (isMvpVotingFinished(m)) {
+                        const votes = m.votes || {};
+                        const tally = {};
+                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                        let maxV = 0, topNom = "";
+                        Object.entries(tally).forEach(([nom, count]) => {
+                            if (count > maxV) { maxV = count; topNom = nom; }
+                        });
+                        if (topNom && maxV > 0) mvpTally[topNom] = (mvpTally[topNom] || 0) + 1;
+                    }
                 });
             });
 
@@ -3403,8 +3582,8 @@
             } else if (type === 'mvp') {
                 return `🏆 GŁOSOWANIE NA MVP MECZU (${dateStr}) 🏆\n\n` +
                        `Dzięki za piątkową walkę na parkiecie! 🔥🏐\n\n` +
-                       `Kto Twoim zdaniem zagrał najlepszy mecz? Oddaj swój głos tutaj:\n${url}\n\n` +
-                       `Głosować mogą wszyscy obecni w składzie głównym! 🌟`;
+                       `Głosowanie jest tajne 🔒 Kto Twoim zdaniem zasłużył na MVP? Oddaj głos:\n${url}\n\n` +
+                       `Wyniki i oficjalne podsumowanie pojawią się, gdy wszyscy zagłosują! 🌟`;
             } else if (type === 'billing') {
                 return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
                        `Ekipa, faktura za halę za ${AppState.currentMonth} podsumowana!\n\n` +
