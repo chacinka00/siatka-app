@@ -703,21 +703,21 @@
                             <span class="text-[10px] text-slate-400 block truncate">Seria 3 wygranych (W-W-W)</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">⚔️</span>
                         <div class="min-w-0">
                             <strong class="block text-amber-400 text-[11px] truncate">Tie-break Master</strong>
                             <span class="text-[10px] text-slate-400 block truncate">Wygrana 3:2 lub przewagi</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">🔀</span>
                         <div class="min-w-0">
                             <strong class="block text-indigo-300 text-[11px] truncate">Kameleon</strong>
                             <span class="text-[10px] text-slate-400 block truncate">Wygrana u Ciemnych i Jasnych</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">🦾</span>
                         <div class="min-w-0">
                             <strong class="block text-emerald-400 text-[11px] truncate">Żelazne Płuca</strong>
@@ -2224,20 +2224,34 @@
                 }
             });
 
+            // LOSOWE PRZETASOWANIE KOLEJNOŚCI W DRUŻYNACH (FISHER-YATES SHUFFLE)
+            // Dzięki temu gracze są wyświetlani losowo i nikt nie domyśli się gwiazdek/ocen!
+            const shuffleArray = (arr) => {
+                const result = [...arr];
+                for (let i = result.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [result[i], result[j]] = [result[j], result[i]];
+                }
+                return result;
+            };
+
+            const shuffledTeamA = shuffleArray(teamA);
+            const shuffledTeamB = shuffleArray(teamB);
+
             const flip = Math.random() > 0.5;
             const existingDarkName = currentMatch.teams?.darkName || "Drużyna Ciemna";
             const existingLightName = currentMatch.teams?.lightName || "Drużyna Jasna";
 
             currentMatch.teams = {
-                dark: flip ? teamA : teamB,
-                light: flip ? teamB : teamA,
+                dark: flip ? shuffledTeamA : shuffledTeamB,
+                light: flip ? shuffledTeamB : shuffledTeamA,
                 darkName: existingDarkName,
                 lightName: existingLightName
             };
 
             syncState();
             renderTeamsTab();
-            showToast("Wylosowano zbalansowane składy (bracia rozdzieleni)! 🎲");
+            showToast("Wylosowano zbalansowane składy (kolejność w pełni losowa)! 🎲");
         }
 
         function clearCurrentMatchTeams() {
