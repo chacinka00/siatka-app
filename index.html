@@ -247,7 +247,7 @@
                     </button>
                 </div>
 
-                <!-- Dynamic Match MVP Reminder Card (Secret Ballot Protected) -->
+                <!-- Dynamic Match MVP Reminder Card -->
                 <div id="mvpMatchReminderCard" class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/50 border border-amber-500/50 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 hidden">
                     <div class="flex items-center gap-2.5 min-w-0">
                         <span class="text-2xl animate-bounce shrink-0">🏆</span>
@@ -256,7 +256,7 @@
                                 <h4 id="mvpReminderTitle" class="font-extrabold text-xs text-amber-300 truncate">Głosowanie na MVP</h4>
                                 <span id="mvpVotesBriefBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800">0/0</span>
                             </div>
-                            <p id="mvpStatusMiniText" class="text-[10px] text-slate-300 mt-0.5 truncate">🔒 Głosowanie tajne w toku • Wskaż najlepszego gracza</p>
+                            <p id="mvpStatusMiniText" class="text-[10px] text-slate-300 mt-0.5 truncate">Głosowanie w toku • Wskaż najlepszego gracza</p>
                         </div>
                     </div>
                     <button type="button" onclick="switchTab('mvp')" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shrink-0 shadow-md shadow-amber-500/25">
@@ -347,15 +347,15 @@
                 <button type="button" onclick="switchTab('teams')" class="bg-gradient-to-br from-slate-900 to-indigo-950/40 border border-indigo-900/40 rounded-2xl p-3 text-left shadow-md hover:border-indigo-500/50 transition group flex flex-col justify-between">
                     <span class="text-2xl block mb-1">🔀</span>
                     <div>
-                        <h4 class="font-bold text-xs text-white group-hover:text-indigo-300 transition">Losuj Składy</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Balans sił 6v6</p>
+                        <h4 class="font-bold text-xs text-white group-hover:text-indigo-300 transition">Składy & Balans</h4>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Ręczny wybór i losowanie 6v6</p>
                     </div>
                 </button>
                 <button type="button" onclick="switchTab('mvp')" class="bg-gradient-to-br from-slate-900 to-amber-950/40 border border-amber-900/40 rounded-2xl p-3 text-left shadow-md hover:border-amber-500/50 transition group flex flex-col justify-between">
                     <span class="text-2xl block mb-1">🏆</span>
                     <div>
                         <h4 class="font-bold text-xs text-white group-hover:text-amber-300 transition">Głosuj na MVP</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Tajne głosowanie</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Wybierz gracza meczu</p>
                     </div>
                 </button>
                 <button type="button" onclick="switchTab('archive')" class="col-span-2 sm:col-span-1 bg-gradient-to-br from-slate-900 to-teal-950/40 border border-teal-900/40 rounded-2xl p-3 text-left shadow-md hover:border-teal-500/50 transition group flex sm:flex-col items-center sm:items-start justify-between">
@@ -376,28 +376,28 @@
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
                         <span class="text-[11px] font-extrabold text-indigo-400 uppercase tracking-wider bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-0.5 rounded-full">
-                            Balansowanie Drużyn
+                            Składy & Balansowanie
                         </span>
                         <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
                             <span>🔀</span> Podział na 2 Zespoły
                         </h2>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-4 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
                             <span>🎲</span> Losuj równe składy
                         </button>
-                        <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj wylosowany podział na drużyny">
+                        <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
                             🧹 Resetuj
                         </button>
                     </div>
                 </div>
 
-                <!-- Przełącznik Widoku (Lista vs Boisko Graficzne) -->
+                <!-- Przełącznik Widoku (Lista & Ręczny Wybór vs Boisko Graficzne) -->
                 <div class="flex items-center justify-between bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 text-xs">
                     <span id="balanceIndicator" class="font-bold text-emerald-400 text-[11px] ml-2">Status: Gotowy</span>
                     <div class="flex gap-1">
                         <button type="button" id="viewModeListBtn" onclick="setTeamsViewMode('list')" class="px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]">
-                            📋 Lista
+                            📋 Wybór & Lista
                         </button>
                         <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]">
                             🏐 Boisko 6v6
@@ -405,36 +405,63 @@
                     </div>
                 </div>
 
-                <!-- WIDOK 1: LISTY DRUŻYN -->
+                <!-- Pula nieprzypisanych graczy z listy obecności (Szybki wybór pod kciuk) -->
+                <div id="unassignedPlayersCard" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
+                            <span>👥</span> Gracze do przydziału (<span id="unassignedCount" class="text-indigo-400 font-mono font-bold">0</span>)
+                        </h3>
+                        <span class="text-[10px] text-slate-400">Dotknij ⬛ lub ⬜, aby przypisać</span>
+                    </div>
+                    <div id="unassignedPlayersList" class="flex flex-wrap gap-2">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- WIDOK 1: LISTY DRUŻYN Z MOŻLIWOŚCIĄ RĘCZNEGO PRZYPISYWANIA I PRZENOSZENIA -->
                 <div id="teamsListView" class="grid sm:grid-cols-2 gap-4 pt-1">
                     
                     <!-- Team Dark -->
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
-                        <div class="flex items-center justify-between border-b border-slate-800 pb-2 gap-2">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <span class="w-3 h-3 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
-                                <span id="teamDarkNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Ciemna</span>
-                                <button type="button" onclick="editTeamNamePrompt('dark')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2 gap-2">
+                                <div class="flex items-center gap-2 flex-1 min-w-0">
+                                    <span class="w-3 h-3 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
+                                    <span id="teamDarkNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Ciemna</span>
+                                    <button type="button" onclick="editTeamNamePrompt('dark')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                                </div>
+                                <span id="teamDarkCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
                             </div>
-                            <span id="teamDarkCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
+                            <div id="teamDarkList" class="space-y-1.5 min-h-[120px]">
+                                <!-- Populated dynamically -->
+                            </div>
                         </div>
-                        <div id="teamDarkList" class="space-y-1.5 min-h-[120px]">
-                            <div class="p-6 text-center text-xs text-slate-600">Kliknij "🎲 Losuj równe składy".</div>
+
+                        <!-- Dropdown Szybkiego Dodawania do Ciemnych -->
+                        <div id="teamDarkAddContainer" class="pt-2 border-t border-slate-800/60">
+                            <!-- Populated dynamically -->
                         </div>
                     </div>
 
                     <!-- Team Light -->
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
-                        <div class="flex items-center justify-between border-b border-slate-800 pb-2 gap-2">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <span class="w-3 h-3 rounded-full bg-white border border-slate-300 shrink-0"></span>
-                                <span id="teamLightNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Jasna</span>
-                                <button type="button" onclick="editTeamNamePrompt('light')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2 gap-2">
+                                <div class="flex items-center gap-2 flex-1 min-w-0">
+                                    <span class="w-3 h-3 rounded-full bg-white border border-slate-300 shrink-0"></span>
+                                    <span id="teamLightNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Jasna</span>
+                                    <button type="button" onclick="editTeamNamePrompt('light')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                                </div>
+                                <span id="teamLightCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
                             </div>
-                            <span id="teamLightCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
+                            <div id="teamLightList" class="space-y-1.5 min-h-[120px]">
+                                <!-- Populated dynamically -->
+                            </div>
                         </div>
-                        <div id="teamLightList" class="space-y-1.5 min-h-[120px]">
-                            <div class="p-6 text-center text-xs text-slate-600">Kliknij "🎲 Losuj równe składy".</div>
+
+                        <!-- Dropdown Szybkiego Dodawania do Jasnych -->
+                        <div id="teamLightAddContainer" class="pt-2 border-t border-slate-800/60">
+                            <!-- Populated dynamically -->
                         </div>
                     </div>
 
@@ -475,7 +502,7 @@
         </section>
 
 
-        <!-- ================= TAB 3: TAJNE GŁOSOWANIE MVP MECZU ================= -->
+        <!-- ================= TAB 3: GŁOSOWANIE MVP MECZU ================= -->
         <section id="tab-mvp" class="space-y-4 hidden">
             
             <div class="flex items-center justify-between px-1">
@@ -499,7 +526,7 @@
                     </span>
                 </div>
 
-                <!-- MVP Winner Highlight Card (Secret during voting, Celebratory when finished) -->
+                <!-- MVP Winner Highlight Card -->
                 <div id="mvpWinnerContainer" class="bg-slate-950/80 border border-amber-800/60 rounded-2xl p-4 text-center space-y-1 relative overflow-hidden">
                     <p id="mvpWinnerHeaderLabel" class="text-[11px] uppercase tracking-widest text-amber-400 font-bold">Lider Głosowania</p>
                     <h3 id="mvpWinnerName" class="text-2xl font-black text-white">Brak głosów</h3>
@@ -532,34 +559,18 @@
                     </button>
                 </div>
 
-                <!-- Admin Force Finish/Reveal Bar -->
-                <div id="mvpAdminControlBar" class="hidden flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-amber-900/60 text-xs">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <span class="text-base">👑</span>
-                        <span id="mvpAdminStatusLabel" class="text-[11px] font-bold text-amber-300 truncate">Zarządzanie głosowaniem</span>
-                    </div>
-                    <button type="button" id="mvpToggleFinalizeBtn" onclick="toggleMvpFinalizeWithAuth()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95">
-                        Zakończ i odkryj wyniki
-                    </button>
-                </div>
-
-                <!-- Results & Breakdown Section -->
+                <!-- Live Results Table for This Match -->
                 <div class="space-y-2 pt-1">
-                    <h4 id="mvpResultsSectionTitle" class="font-bold text-xs text-slate-300 uppercase tracking-wider">Wyniki głosowania:</h4>
+                    <h4 class="font-bold text-xs text-slate-300 uppercase tracking-wider">Wyniki głosowania:</h4>
                     <div id="mvpResultsList" class="space-y-1.5">
                         <!-- Rendered dynamically -->
                     </div>
                 </div>
 
-                <!-- Who already voted / Full breakdown -->
-                <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                        <span id="whoVotedTitle" class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Status obecnych:</span>
-                        <span id="whoVotedProgressRatio" class="font-mono text-emerald-400 font-bold text-[10px]">0 / 0</span>
-                    </div>
-                    <div id="whoVotedList" class="space-y-1">
-                        <!-- Rendered dynamically -->
-                    </div>
+                <!-- Who already voted -->
+                <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                    <p class="font-bold text-slate-300">Zagłosowali:</p>
+                    <p id="whoVotedList" class="text-slate-400 mt-0.5 italic">Nikt jeszcze nie zagłosował.</p>
                 </div>
             </div>
 
@@ -703,21 +714,21 @@
                             <span class="text-[10px] text-slate-400 block truncate">Seria 3 wygranych (W-W-W)</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">⚔️</span>
                         <div class="min-w-0">
                             <strong class="block text-amber-400 text-[11px] truncate">Tie-break Master</strong>
                             <span class="text-[10px] text-slate-400 block truncate">Wygrana 3:2 lub przewagi</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">🔀</span>
                         <div class="min-w-0">
                             <strong class="block text-indigo-300 text-[11px] truncate">Kameleon</strong>
                             <span class="text-[10px] text-slate-400 block truncate">Wygrana u Ciemnych i Jasnych</span>
                         </div>
                     </div>
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-2.5 flex items-center gap-2">
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
                         <span class="text-xl shrink-0">🦾</span>
                         <div class="min-w-0">
                             <strong class="block text-emerald-400 text-[11px] truncate">Żelazne Płuca</strong>
@@ -964,7 +975,7 @@
                         <span class="text-xl">🏆</span>
                         <div>
                             <strong class="block text-white group-hover:text-amber-300 transition font-bold">Głosowanie na MVP</strong>
-                            <span class="text-[10px] text-slate-400">Tajne głosowanie i wyniki</span>
+                            <span class="text-[10px] text-slate-400">Wybierz najlepszego gracza</span>
                         </div>
                     </div>
                     <span class="text-slate-500 font-mono">→</span>
@@ -1135,10 +1146,10 @@
             months: {
                 "Lipiec": {
                     matches: [
-                        { date: "2026-07-03", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kacper Szafraniec", "Albert Kubiak", "Iza Urbańska", "Kamil Kaczmarek", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-17", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Albert Kubiak", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-24", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Antek Kwaczek", "Kuba (od Kuby Parszewskiego)", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-31", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Filip Morawski", "Kuba Parszewski", "Kondziu Parszewski", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", "Artur Żbikowski", "Kuba Żurawski"], votes: {}, mvpClosed: true }
+                        { date: "2026-07-03", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kacper Szafraniec", "Albert Kubiak", "Iza Urbańska", "Kamil Kaczmarek", "Julka (od Alberta Kubiaka)"] },
+                        { date: "2026-07-17", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Albert Kubiak", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)"] },
+                        { date: "2026-07-24", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Antek Kwaczek", "Kuba (od Kuby Parszewskiego)", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)"] },
+                        { date: "2026-07-31", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Filip Morawski", "Kuba Parszewski", "Kondziu Parszewski", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", "Artur Żbikowski", "Kuba Żurawski"] }
                     ],
                     rozliczenia: {
                         "Michał Chaciński": { paid: 83.33 }, "Zuzanna Rostkowska": { paid: 83.33 }, "Mikołaj Morawski": { paid: 62.5 },
@@ -1155,47 +1166,47 @@
                 },
                 "Sierpień": {
                     matches: [
-                        { date: "2026-08-07", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Antek Kwaczek", "Rafał (od Maćka Lewandowskiego)", "Czapa", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-14", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kondziu Parszewski", "Kuba (od Kuby Parszewskiego)", "Artur Żbikowski", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-21", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Kondziu Parszewski", "Bartek (od Kuby Parszewskiego)", "Kuba (od Kuby Parszewskiego)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-28", cost: 250.0, isCancelled: false, attendees: ["Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: false }
+                        { date: "2026-08-07", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Antek Kwaczek", "Rafał (od Maćka Lewandowskiego)", "Czapa", "Kamil (od Konrada Pazio)"] },
+                        { date: "2026-08-14", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kondziu Parszewski", "Kuba (od Kuby Parszewskiego)", "Artur Żbikowski", "Kamil (od Konrada Pazio)"] },
+                        { date: "2026-08-21", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Kondziu Parszewski", "Bartek (od Kuby Parszewskiego)", "Kuba (od Kuby Parszewskiego)"] },
+                        { date: "2026-08-28", cost: 250.0, isCancelled: false, attendees: ["Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kamil (od Konrada Pazio)"] }
                     ],
                     rozliczenia: { "Mikołaj Morawski": { paid: 54.0 } }
                 },
                 "Wrzesień": {
                     matches: [
-                        { date: "2026-09-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
+                        { date: "2026-09-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-09-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-09-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-09-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
                     ],
                     rozliczenia: {}
                 },
                 "Październik": {
                     matches: [
-                        { date: "2026-10-02", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-09", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-16", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-23", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-30", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
+                        { date: "2026-10-02", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-10-09", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-10-16", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-10-23", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-10-30", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
                     ],
                     rozliczenia: {}
                 },
                 "Listopad": {
                     matches: [
-                        { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-13", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-20", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-27", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
+                        { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-11-13", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-11-20", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-11-27", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
                     ],
                     rozliczenia: {}
                 },
                 "Grudzień": {
                     matches: [
-                        { date: "2026-12-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
+                        { date: "2026-12-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-12-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-12-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null },
+                        { date: "2026-12-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null }
                     ],
                     rozliczenia: {}
                 }
@@ -1268,15 +1279,6 @@
                 if (indexB === -1) return -1;
                 return indexA - indexB;
             });
-        }
-
-        function isMvpVotingFinished(match) {
-            if (!match || match.isCancelled) return false;
-            const attendees = (match.attendees || []).slice(0, 12);
-            if (attendees.length === 0) return false;
-            if (match.mvpClosed === true) return true;
-            const votesCount = Object.keys(match.votes || {}).length;
-            return votesCount >= attendees.length && attendees.length > 0;
         }
 
         function setSyncStatus(mode) {
@@ -1575,9 +1577,8 @@
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 animate-pulse tracking-wider";
                 valueEl.onclick = null;
             } else {
-                const isFinished = isMvpVotingFinished(currentMatch);
                 labelEl.innerText = "Mecz zakończony:";
-                valueEl.innerText = isFinished ? "🏆 ZOBACZ WYNIKI MVP" : "🔒 TAJNE GŁOSOWANIE MVP";
+                valueEl.innerText = "🏁 ZAGŁOSUJ NA MVP!";
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-sky-400 tracking-wider cursor-pointer";
                 valueEl.onclick = () => switchTab('mvp');
             }
@@ -1863,7 +1864,6 @@
                 }
             }
 
-            // Secret Ballot MVP Hero card
             const mvpReminderCard = document.getElementById('mvpMatchReminderCard');
             const mvpVotesBadge = document.getElementById('mvpVotesBriefBadge');
             const mvpStatusMiniText = document.getElementById('mvpStatusMiniText');
@@ -1877,24 +1877,21 @@
                 if (isMatchConcluded && mainPlayers.length > 0) {
                     mvpReminderCard.classList.remove('hidden');
                     const votesCount = Object.keys(currentMatch.votes || {}).length;
-                    const isFinished = isMvpVotingFinished(currentMatch);
-
                     if (mvpVotesBadge) mvpVotesBadge.innerText = `Głosy: ${votesCount}/${mainPlayers.length}`;
+                    
+                    const votes = currentMatch.votes || {};
+                    const tally = {};
+                    Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                    let topNom = "", maxV = 0;
+                    Object.entries(tally).forEach(([nom, count]) => {
+                        if (count > maxV) { maxV = count; topNom = nom; }
+                    });
 
-                    if (isFinished) {
-                        const votes = currentMatch.votes || {};
-                        const tally = {};
-                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                        let topNom = "", maxV = 0;
-                        Object.entries(tally).forEach(([nom, count]) => {
-                            if (count > maxV) { maxV = count; topNom = nom; }
-                        });
-                        if (mvpStatusMiniText) {
-                            mvpStatusMiniText.innerText = topNom ? `Wyniki odkryte! 👑 MVP: ${topNom} (${maxV} gł.)` : `Głosowanie zakończone`;
-                        }
-                    } else {
-                        if (mvpStatusMiniText) {
-                            mvpStatusMiniText.innerText = `🔒 Głosowanie tajne w toku (${votesCount}/${mainPlayers.length}) • Wskaż gracza meczu`;
+                    if (mvpStatusMiniText) {
+                        if (topNom && maxV > 0) {
+                            mvpStatusMiniText.innerText = `Lider: 👑 ${topNom} (${maxV} gł.) • Kliknij, aby zagłosować`;
+                        } else {
+                            mvpStatusMiniText.innerText = `Głosowanie otwarte • Oddaj głos na gracza meczu`;
                         }
                     }
                 } else {
@@ -2000,8 +1997,7 @@
                     attendees: [],
                     votes: {},
                     score: "",
-                    teams: null,
-                    mvpClosed: false
+                    teams: null
                 });
                 monthData.matches.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
                 AppState.currentMatchIndex = monthData.matches.findIndex(m => m.date === clean);
@@ -2080,7 +2076,17 @@
             if (currentMatch.votes && currentMatch.votes[name]) {
                 delete currentMatch.votes[name];
             }
-            currentMatch.teams = null;
+            
+            // Clean player from teams without losing entire team setup
+            if (currentMatch.teams) {
+                if (Array.isArray(currentMatch.teams.dark)) {
+                    currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
+                }
+                if (Array.isArray(currentMatch.teams.light)) {
+                    currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
+                }
+            }
+
             syncState();
             renderCurrentView();
 
@@ -2101,7 +2107,6 @@
 
                 currentMatch.attendees = [];
                 currentMatch.votes = {};
-                currentMatch.mvpClosed = false;
                 currentMatch.teams = null;
                 syncState();
                 renderCurrentView();
@@ -2137,19 +2142,21 @@
             });
         }
 
-        // ================= TAB 2: TEAM BALANCER & BOISKO 6v6 =================
+        // ================= TAB 2: TEAM BALANCER, MANUAL SELECTION & BOISKO 6v6 =================
         function setTeamsViewMode(mode) {
             teamsViewMode = mode;
             const listBtn = document.getElementById('viewModeListBtn');
             const courtBtn = document.getElementById('viewModeCourtBtn');
             const listView = document.getElementById('teamsListView');
             const courtView = document.getElementById('teamsCourtView');
+            const unassignedCard = document.getElementById('unassignedPlayersCard');
 
             if (mode === 'list') {
                 listBtn.className = "px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]";
                 courtBtn.className = "px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]";
                 listView.classList.remove('hidden');
                 courtView.classList.add('hidden');
+                if (unassignedCard) unassignedCard.classList.remove('hidden');
             } else {
                 courtBtn.className = "px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]";
                 listBtn.className = "px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]";
@@ -2157,6 +2164,78 @@
                 listView.classList.add('hidden');
             }
             renderTeamsTab();
+        }
+
+        function ensureMatchTeamsObject(currentMatch) {
+            if (!currentMatch.teams || typeof currentMatch.teams !== 'object') {
+                currentMatch.teams = {
+                    dark: [],
+                    light: [],
+                    darkName: "Drużyna Ciemna",
+                    lightName: "Drużyna Jasna"
+                };
+            } else {
+                if (!Array.isArray(currentMatch.teams.dark)) currentMatch.teams.dark = [];
+                if (!Array.isArray(currentMatch.teams.light)) currentMatch.teams.light = [];
+                if (!currentMatch.teams.darkName) currentMatch.teams.darkName = "Drużyna Ciemna";
+                if (!currentMatch.teams.lightName) currentMatch.teams.lightName = "Drużyna Jasna";
+            }
+            return currentMatch.teams;
+        }
+
+        function assignPlayerToTeam(playerName, targetTeamKey) {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+
+            const mainSquad = (currentMatch.attendees || []).slice(0, 12);
+            if (!mainSquad.includes(playerName)) {
+                return alert("Gracz musi znajdować się w składzie głównym tego meczu!");
+            }
+
+            const teams = ensureMatchTeamsObject(currentMatch);
+            const targetList = targetTeamKey === 'dark' ? teams.dark : teams.light;
+            const otherList = targetTeamKey === 'dark' ? teams.light : teams.dark;
+            const teamTitle = targetTeamKey === 'dark' ? (teams.darkName || "Drużyna Ciemna") : (teams.lightName || "Drużyna Jasna");
+
+            if (targetList.includes(playerName)) return;
+
+            if (targetList.length >= 6) {
+                return alert(`"${teamTitle}" ma już komplet graczy (maks 6)!`);
+            }
+
+            // Remove from other team if was already placed there
+            const otherIdx = otherList.indexOf(playerName);
+            if (otherIdx !== -1) otherList.splice(otherIdx, 1);
+
+            targetList.push(playerName);
+            syncState();
+            renderTeamsTab();
+            showToast(`Przypisano ${playerName} ➔ ${teamTitle} ✅`);
+        }
+
+        function movePlayerToOtherTeam(playerName, currentTeamKey) {
+            const targetKey = currentTeamKey === 'dark' ? 'light' : 'dark';
+            assignPlayerToTeam(playerName, targetKey);
+        }
+
+        function unassignPlayerFromTeams(playerName) {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch || !currentMatch.teams) return;
+
+            const dark = currentMatch.teams.dark || [];
+            const light = currentMatch.teams.light || [];
+
+            const dIdx = dark.indexOf(playerName);
+            if (dIdx !== -1) dark.splice(dIdx, 1);
+
+            const lIdx = light.indexOf(playerName);
+            if (lIdx !== -1) light.splice(lIdx, 1);
+
+            syncState();
+            renderTeamsTab();
+            showToast(`Przeniesiono ${playerName} do graczy nieprzypisanych.`);
         }
 
         function generateRandomTeams() {
@@ -2224,8 +2303,7 @@
                 }
             });
 
-            // LOSOWE PRZETASOWANIE KOLEJNOŚCI W DRUŻYNACH (FISHER-YATES SHUFFLE)
-            // Dzięki temu gracze są wyświetlani losowo i nikt nie domyśli się gwiazdek/ocen!
+            // Losowe przetasowanie kolejności w drużynach (Fisher-Yates)
             const shuffleArray = (arr) => {
                 const result = [...arr];
                 for (let i = result.length - 1; i > 0; i--) {
@@ -2251,21 +2329,21 @@
 
             syncState();
             renderTeamsTab();
-            showToast("Wylosowano zbalansowane składy (kolejność w pełni losowa)! 🎲");
+            showToast("Wylosowano zbalansowane składy (bracia rozdzieleni)! 🎲");
         }
 
         function clearCurrentMatchTeams() {
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch || !currentMatch.teams) {
-                return showToast("Brak wylosowanych składów do zresetowania.");
+                return showToast("Składy są już puste.");
             }
 
-            if (!confirm("Czy na pewno zresetować wylosowany podział na drużyny?")) return;
+            if (!confirm("Czy na pewno zresetować podział na drużyny? Wszyscy gracze wrócą do puli nieprzypisanych.")) return;
             currentMatch.teams = null;
             syncState();
             renderTeamsTab();
-            showToast("Zresetowano podział na drużyny.");
+            showToast("Zresetowano podział na drużyny. Wszyscy gracze są w puli wyboru.");
         }
 
         function renderTeamsTab() {
@@ -2278,6 +2356,11 @@
             const darkNameDisplay = document.getElementById('teamDarkNameDisplay');
             const lightNameDisplay = document.getElementById('teamLightNameDisplay');
             const balanceInd = document.getElementById('balanceIndicator');
+            const unassignedCard = document.getElementById('unassignedPlayersCard');
+            const unassignedListEl = document.getElementById('unassignedPlayersList');
+            const unassignedCountEl = document.getElementById('unassignedCount');
+            const darkAddContainer = document.getElementById('teamDarkAddContainer');
+            const lightAddContainer = document.getElementById('teamLightAddContainer');
 
             const courtDarkGrid = document.getElementById('courtDarkPlayersGrid');
             const courtLightGrid = document.getElementById('courtLightPlayersGrid');
@@ -2286,67 +2369,193 @@
 
             if (!darkListEl || !lightListEl) return;
 
-            const darkName = currentMatch?.teams?.darkName || "Drużyna Ciemna";
-            const lightName = currentMatch?.teams?.lightName || "Drużyna Jasna";
+            if (!currentMatch) {
+                if (darkCountEl) darkCountEl.innerText = "0/6";
+                if (lightCountEl) lightCountEl.innerText = "0/6";
+                darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Dodaj mecz, aby móc zarządzać składami.</div>`;
+                lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Dodaj mecz, aby móc zarządzać składami.</div>`;
+                if (unassignedCard) unassignedCard.classList.add('hidden');
+                return;
+            }
+
+            const mainSquad = (currentMatch.attendees || []).slice(0, 12);
+            const teams = currentMatch.teams || { dark: [], light: [], darkName: "Drużyna Ciemna", lightName: "Drużyna Jasna" };
+
+            // Sanitize: only players currently in mainSquad should remain in teams
+            const dark = (teams.dark || []).filter(p => mainSquad.includes(p));
+            const light = (teams.light || []).filter(p => mainSquad.includes(p));
+            const darkName = teams.darkName || "Drużyna Ciemna";
+            const lightName = teams.lightName || "Drużyna Jasna";
 
             if (darkNameDisplay) darkNameDisplay.innerText = darkName;
             if (lightNameDisplay) lightNameDisplay.innerText = lightName;
             if (courtDarkTitle) courtDarkTitle.innerText = `⬛ ${darkName}`;
             if (courtLightTitle) courtLightTitle.innerText = `⬜ ${lightName}`;
 
-            if (!currentMatch || !currentMatch.teams || (!currentMatch.teams.dark?.length && !currentMatch.teams.light?.length)) {
-                if (darkCountEl) darkCountEl.innerText = "0/6";
-                if (lightCountEl) lightCountEl.innerText = "0/6";
-                darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Kliknij "🎲 Losuj równe składy".</div>`;
-                lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Kliknij "🎲 Losuj równe składy".</div>`;
-                if (courtDarkGrid) courtDarkGrid.innerHTML = `<div class="col-span-3 text-xs text-slate-500 py-6">Brak wylosowanych składów.</div>`;
-                if (courtLightGrid) courtLightGrid.innerHTML = `<div class="col-span-3 text-xs text-slate-500 py-6">Brak wylosowanych składów.</div>`;
-                if (balanceInd) balanceInd.innerText = "Status: Gotowy";
-                return;
-            }
-
-            const dark = currentMatch.teams.dark || [];
-            const light = currentMatch.teams.light || [];
-
             if (darkCountEl) darkCountEl.innerText = `${dark.length}/6`;
             if (lightCountEl) lightCountEl.innerText = `${light.length}/6`;
 
-            darkListEl.innerHTML = dark.map((p, i) => `
-                <div class="bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl text-xs flex items-center justify-between">
-                    <div class="flex items-center gap-2 truncate">
-                        <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
-                        <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
-                    </div>
-                </div>
-            `).join('');
+            // Identify unassigned players from the main squad
+            const unassigned = mainSquad.filter(p => !dark.includes(p) && !light.includes(p));
 
-            lightListEl.innerHTML = light.map((p, i) => `
-                <div class="bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl text-xs flex items-center justify-between">
-                    <div class="flex items-center gap-2 truncate">
-                        <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
-                        <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
-                    </div>
-                </div>
-            `).join('');
+            // 1. Render Unassigned Pool
+            if (unassignedCard && unassignedListEl) {
+                if (unassigned.length > 0 && teamsViewMode === 'list') {
+                    unassignedCard.classList.remove('hidden');
+                    if (unassignedCountEl) unassignedCountEl.innerText = unassigned.length;
+                    unassignedListEl.innerHTML = unassigned.map(p => `
+                        <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
+                                    ⬛ Ciemni
+                                </button>
+                                <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'light')" title="Przypisz do Drużyny Jasnej" class="px-2 py-1 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-800/80 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
+                                    ⬜ Jaśni
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    unassignedCard.classList.add('hidden');
+                }
+            }
 
+            // 2. Render Team Dark List
+            if (dark.length === 0) {
+                darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
+            } else {
+                darkListEl.innerHTML = dark.map((p, i) => `
+                    <div class="bg-slate-900 border border-slate-800/90 px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
+                            <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                        </div>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                ⇄ Jasna
+                            </button>
+                            <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Quick Add Select for Dark Team
+            if (darkAddContainer) {
+                if (dark.length < 6 && unassigned.length > 0) {
+                    darkAddContainer.innerHTML = `
+                        <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'dark'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
+                            <option value="">+ Przypisz gracza do Ciemnych...</option>
+                            ${unassigned.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
+                        </select>
+                    `;
+                } else {
+                    darkAddContainer.innerHTML = '';
+                }
+            }
+
+            // 3. Render Team Light List
+            if (light.length === 0) {
+                lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
+            } else {
+                lightListEl.innerHTML = light.map((p, i) => `
+                    <div class="bg-slate-900 border border-slate-800/90 px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
+                            <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                        </div>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                ⇄ Ciemna
+                            </button>
+                            <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Quick Add Select for Light Team
+            if (lightAddContainer) {
+                if (light.length < 6 && unassigned.length > 0) {
+                    lightAddContainer.innerHTML = `
+                        <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'light'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
+                            <option value="">+ Przypisz gracza do Jasnych...</option>
+                            ${unassigned.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
+                        </select>
+                    `;
+                } else {
+                    lightAddContainer.innerHTML = '';
+                }
+            }
+
+            // 4. Render Volleyball Court Grid 6v6
             if (courtDarkGrid) {
-                courtDarkGrid.innerHTML = dark.map(p => `
-                    <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
-                        <span class="text-base">🏐</span>
-                        <span class="font-bold text-[11px] text-white truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
-                    </div>
-                `).join('');
-            }
-            if (courtLightGrid) {
-                courtLightGrid.innerHTML = light.map(p => `
-                    <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
-                        <span class="text-base">🏐</span>
-                        <span class="font-bold text-[11px] text-amber-200 truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
-                    </div>
-                `).join('');
+                let darkCourtHtml = "";
+                for (let i = 0; i < 6; i++) {
+                    if (i < dark.length) {
+                        const p = dark[i];
+                        darkCourtHtml += `
+                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
+                                <span class="text-base">🏐</span>
+                                <span class="font-bold text-[11px] text-white truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
+                            </div>
+                        `;
+                    } else {
+                        darkCourtHtml += `
+                            <div class="bg-slate-950/40 border border-dashed border-slate-800 p-2 rounded-2xl flex flex-col items-center justify-center text-slate-600">
+                                <span class="text-xs">➕</span>
+                                <span class="text-[10px] italic">Wolne</span>
+                            </div>
+                        `;
+                    }
+                }
+                courtDarkGrid.innerHTML = darkCourtHtml;
             }
 
-            if (balanceInd) balanceInd.innerText = "Status: Składy zbalansowane ✅";
+            if (courtLightGrid) {
+                let lightCourtHtml = "";
+                for (let i = 0; i < 6; i++) {
+                    if (i < light.length) {
+                        const p = light[i];
+                        lightCourtHtml += `
+                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
+                                <span class="text-base">🏐</span>
+                                <span class="font-bold text-[11px] text-amber-200 truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
+                            </div>
+                        `;
+                    } else {
+                        lightCourtHtml += `
+                            <div class="bg-slate-950/40 border border-dashed border-slate-800 p-2 rounded-2xl flex flex-col items-center justify-center text-slate-600">
+                                <span class="text-xs">➕</span>
+                                <span class="text-[10px] italic">Wolne</span>
+                            </div>
+                        `;
+                    }
+                }
+                courtLightGrid.innerHTML = lightCourtHtml;
+            }
+
+            // 5. Update Balance indicator
+            if (balanceInd) {
+                const totalAssigned = dark.length + light.length;
+                if (totalAssigned === 0) {
+                    balanceInd.innerText = "Status: Wybierz składy ręcznie lub wylosuj 🎲";
+                    balanceInd.className = "font-bold text-slate-400 text-[11px] ml-2";
+                } else if (dark.length === 6 && light.length === 6) {
+                    balanceInd.innerText = "Status: Składy gotowe (6v6) ✅";
+                    balanceInd.className = "font-bold text-emerald-400 text-[11px] ml-2";
+                } else {
+                    balanceInd.innerText = `Status: Przypisano ${totalAssigned}/${mainSquad.length} graczy (${dark.length} vs ${light.length})`;
+                    balanceInd.className = "font-bold text-amber-400 text-[11px] ml-2";
+                }
+            }
         }
 
         function editTeamNamePrompt(teamKey) {
@@ -2372,26 +2581,19 @@
             showToast(`Zmieniono nazwę drużyny na: ${clean}`);
         }
 
-        // ================= TAB 3: SECRET MVP VOTING & CELEBRATION =================
+        // ================= TAB 3: MVP VOTING + CONFETTI =================
         function renderMvpTab() {
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             
             const dateBadge = document.getElementById('mvpMatchDateBadge');
             const votesBadge = document.getElementById('mvpVotesCountBadge');
-            const winnerHeaderLabel = document.getElementById('mvpWinnerHeaderLabel');
             const winnerName = document.getElementById('mvpWinnerName');
             const winnerVotes = document.getElementById('mvpWinnerVotes');
             const voterSelect = document.getElementById('voterSelect');
             const nomineeSelect = document.getElementById('nomineeSelect');
             const resultsList = document.getElementById('mvpResultsList');
-            const resultsSectionTitle = document.getElementById('mvpResultsSectionTitle');
-            const whoVotedTitle = document.getElementById('whoVotedTitle');
-            const whoVotedProgressRatio = document.getElementById('whoVotedProgressRatio');
             const whoVotedList = document.getElementById('whoVotedList');
-            const adminBar = document.getElementById('mvpAdminControlBar');
-            const toggleFinalizeBtn = document.getElementById('mvpToggleFinalizeBtn');
-            const adminStatusLabel = document.getElementById('mvpAdminStatusLabel');
 
             if (!currentMatch) {
                 if (dateBadge) dateBadge.innerText = "Brak meczu";
@@ -2399,70 +2601,48 @@
                 if (winnerName) winnerName.innerText = "Brak wybranego meczu";
                 if (winnerVotes) winnerVotes.innerText = "";
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Dodaj mecz, aby móc głosować.</div>`;
-                if (adminBar) adminBar.classList.add('hidden');
                 return;
             }
 
             if (dateBadge) dateBadge.innerText = `Mecz: ${currentMatch.date}`;
             const attendees = (currentMatch.attendees || []).slice(0, 12);
             const votes = currentMatch.votes || {};
-            const totalVotesCast = Object.keys(votes).length;
-            const isFinished = isMvpVotingFinished(currentMatch);
-
-            if (votesBadge) votesBadge.innerText = `Głosy: ${totalVotesCast} / ${attendees.length}`;
-
-            // Admin Bar Controls
-            if (isAdmin && attendees.length > 0) {
-                if (adminBar) adminBar.classList.remove('hidden');
-                if (toggleFinalizeBtn) {
-                    toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : `👑 Zakończ i odkryj (${totalVotesCast}/${attendees.length})`;
-                    toggleFinalizeBtn.className = isFinished 
-                        ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95"
-                        : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
-                }
-                if (adminStatusLabel) {
-                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE dla wszystkich" : `Głosowanie tajne w toku (${totalVotesCast}/${attendees.length})`;
-                }
-            } else {
-                if (adminBar) adminBar.classList.add('hidden');
-            }
 
             if (attendees.length === 0) {
-                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "Status";
+                if (votesBadge) votesBadge.innerText = "0/0";
                 if (winnerName) winnerName.innerText = "Brak zapisanych graczy";
                 if (winnerVotes) winnerVotes.innerText = "Zapisz graczy w składzie głównym, aby odblokować głosowanie.";
                 if (voterSelect) voterSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (nomineeSelect) nomineeSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Brak osób w składzie głównym.</div>`;
-                if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic">Brak graczy.</p>`;
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0/0";
+                if (whoVotedList) whoVotedList.innerText = "Nikt.";
                 return;
             }
 
             const savedMyName = localStorage.getItem('siatka_my_player_name') || '';
 
-            // 1. Voter Select (Does NOT reveal candidate to other people on dropdown)
             if (voterSelect) {
                 voterSelect.innerHTML = `<option value="">-- Wybierz siebie ze składu --</option>` + attendees.map(p => {
-                    const hasVoted = Boolean(votes[p]);
+                    const votedFor = votes[p] ? ` [Głosował: ${votes[p]}]` : "";
                     const isMyName = (p === savedMyName);
-                    return `<option value="${escapeHtml(p)}" ${isMyName ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
+                    return `<option value="${escapeHtml(p)}" ${isMyName ? 'selected' : ''}>${escapeHtml(p)}${escapeHtml(votedFor)}</option>`;
                 }).join('');
             }
 
-            // 2. Nominee Select
             if (nomineeSelect) {
                 nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + attendees.map(p => {
                     return `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
                 }).join('');
             }
 
-            // Tally counts
             const tally = {};
             attendees.forEach(p => tally[p] = 0);
             Object.values(votes).forEach(candidate => {
                 if (tally[candidate] !== undefined) tally[candidate]++;
             });
+
+            const totalVotesCast = Object.keys(votes).length;
+            if (votesBadge) votesBadge.innerText = `Głosy: ${totalVotesCast} / ${attendees.length}`;
 
             let maxVotes = 0;
             let leaders = [];
@@ -2475,112 +2655,44 @@
                 }
             });
 
-            // 3. Render Hero & Results based on Secret vs Finished State
-            if (isFinished) {
-                // ======= FINISHED: FULL CELEBRATION & PUBLIC RESULTS =======
-                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
-                if (winnerName && winnerVotes) {
-                    if (maxVotes === 0) {
-                        winnerName.innerText = "Brak głosów";
-                        winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
-                    } else if (leaders.length === 1) {
-                        winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
-                        winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
-                    } else {
-                        winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
-                        winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
-                    }
+            if (winnerName && winnerVotes) {
+                if (maxVotes === 0) {
+                    winnerName.innerText = "Czekamy na głosy!";
+                    winnerVotes.innerText = "Głosowanie trwa – wybierz siebie i swojego faworyta.";
+                } else if (leaders.length === 1) {
+                    winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
+                    winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+                } else {
+                    winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
+                    winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
                 }
+            }
 
-                if (resultsSectionTitle) resultsSectionTitle.innerText = "Oficjalne wyniki głosowania:";
-                const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-                if (resultsList) {
-                    resultsList.innerHTML = sortedResults.map(([name, count]) => {
-                        const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
-                        const isLeader = maxVotes > 0 && count === maxVotes;
-                        return `
-                            <div class="bg-slate-950 border ${isLeader ? 'border-amber-500/60 bg-amber-950/20' : 'border-slate-800'} rounded-xl p-2.5 space-y-1.5">
-                                <div class="flex items-center justify-between text-xs">
-                                    <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
-                                        <span>${isLeader ? '🌟' : '🏐'}</span>
-                                        <span class="truncate">${escapeHtml(name)}</span>
-                                    </div>
-                                    <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} ${count === 1 ? 'głos' : 'głosy'} (${percent}%)</span>
-                                </div>
-                                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-
-                // Breakdown: Kto na kogo głosował
-                if (whoVotedTitle) whoVotedTitle.innerText = "Kto na kogo głosował:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `Zakończone (${totalVotesCast}/${attendees.length})`;
-                if (whoVotedList) {
-                    whoVotedList.innerHTML = attendees.map(p => {
-                        const votedNominee = votes[p];
-                        return `
-                            <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
-                                <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'} shrink-0">
-                                    ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
-                                </span>
-                            </div>
-                        `;
-                    }).join('');
-                }
-
-            } else {
-                // ======= ONGOING: SECRET BALLOT (NO LEAKS) =======
-                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "🔒 TAJNE GŁOSOWANIE W TOKU";
-                if (winnerName) {
-                    winnerName.innerText = totalVotesCast === 0 ? "Czekamy na pierwsze głosy" : `Oddano ${totalVotesCast} z ${attendees.length} głosów`;
-                }
-                if (winnerVotes) {
-                    const percentVoted = Math.round((totalVotesCast / attendees.length) * 100);
-                    winnerVotes.innerText = `Wyniki cząstkowe i wybór MVP są ukryte do momentu, aż wszyscy oddadzą głos (${percentVoted}%).`;
-                }
-
-                if (resultsSectionTitle) resultsSectionTitle.innerText = "Postęp głosowania:";
-                const percentDone = Math.round((totalVotesCast / attendees.length) * 100);
-                if (resultsList) {
-                    resultsList.innerHTML = `
-                        <div class="bg-slate-950 border border-amber-900/40 rounded-2xl p-4 space-y-3">
+            const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+            if (resultsList) {
+                resultsList.innerHTML = sortedResults.map(([name, count]) => {
+                    const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
+                    const isLeader = maxVotes > 0 && count === maxVotes;
+                    return `
+                        <div class="bg-slate-950 border ${isLeader ? 'border-amber-500/60 bg-amber-950/20' : 'border-slate-800'} rounded-xl p-2.5 space-y-1.5">
                             <div class="flex items-center justify-between text-xs">
-                                <span class="font-bold text-slate-300 flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                                    <span>Trwa zbieranie głosów</span>
-                                </span>
-                                <span class="font-mono font-bold text-amber-400">${totalVotesCast} / ${attendees.length} (${percentDone}%)</span>
+                                <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
+                                    <span>${isLeader ? '🌟' : '🏐'}</span>
+                                    <span class="truncate">${escapeHtml(name)}</span>
+                                </div>
+                                <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} głosów (${percent}%)</span>
                             </div>
-                            <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                                <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-sky-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percentDone}%"></div>
+                            <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
                             </div>
-                            <p class="text-[10px] text-slate-400 text-center leading-relaxed">
-                                🕵️ Wyniki oraz to, kto na kogo głosował, zostaną ujawnione automatycznie, gdy zagłosują wszyscy obecni.
-                            </p>
                         </div>
                     `;
-                }
+                }).join('');
+            }
 
-                // Who voted status (Secret: only shows IF they voted, NOT WHO they voted for)
-                if (whoVotedTitle) whoVotedTitle.innerText = "Status głosowania obecnych:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${totalVotesCast} / ${attendees.length}`;
-                if (whoVotedList) {
-                    whoVotedList.innerHTML = attendees.map(p => {
-                        const hasVoted = Boolean(votes[p]);
-                        return `
-                            <div class="bg-slate-950/60 border ${hasVoted ? 'border-emerald-900/40 bg-emerald-950/10' : 'border-slate-800/60'} px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
-                                <span class="font-bold text-[10px] ${hasVoted ? 'text-emerald-400' : 'text-slate-500'} shrink-0 flex items-center gap-1">
-                                    ${hasVoted ? '<span>✅</span> Oddał głos' : '<span>⏳</span> Czeka na głos'}
-                                </span>
-                            </div>
-                        `;
-                    }).join('');
-                }
+            const votersList = Object.keys(votes);
+            if (whoVotedList) {
+                whoVotedList.innerText = votersList.length > 0 ? votersList.join(', ') : 'Nikt jeszcze nie zagłosował.';
             }
         }
 
@@ -2598,65 +2710,18 @@
             if (!currentMatch.votes) currentMatch.votes = {};
             currentMatch.votes[voter] = nominee;
 
-            const attendees = (currentMatch.attendees || []).slice(0, 12);
-            const totalVotes = Object.keys(currentMatch.votes).length;
-            const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
-
-            if (isNowCompleted) {
-                currentMatch.mvpClosed = true;
-                if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 120,
-                        spread: 80,
-                        origin: { y: 0.6 },
-                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                    });
-                }
-            } else {
-                if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 40,
-                        spread: 50,
-                        origin: { y: 0.7 },
-                        colors: ['#10b981', '#ffffff']
-                    });
-                }
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#f59e0b', '#10b981', '#fbbf24', '#ffffff']
+                });
             }
 
             syncState();
             renderMvpTab();
-            renderMatchesTab();
-
-            if (isNowCompleted) {
-                showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
-            } else {
-                showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
-            }
-        }
-
-        function toggleMvpFinalizeWithAuth() {
-            requireAdminAuth(() => {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
-
-                const currentClosed = isMvpVotingFinished(currentMatch);
-                currentMatch.mvpClosed = !currentClosed;
-
-                if (!currentClosed && typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 120,
-                        spread: 80,
-                        origin: { y: 0.6 },
-                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                    });
-                }
-
-                syncState();
-                renderMvpTab();
-                renderMatchesTab();
-                showToast(currentMatch.mvpClosed ? "Odkryto wyniki MVP dla wszystkich! 👑" : "Głosowanie zostało otwarte ponownie. 🔓");
-            });
+            showToast(`Dzięki ${voter}! Twój głos na ${nominee} został zapisany! 🌟`);
         }
 
         // ================= TAB 4: ARCHIVE & RECORDS =================
@@ -2687,7 +2752,6 @@
                 const teams = m.teams || null;
                 const darkName = teams?.darkName || "Drużyna Ciemna";
                 const lightName = teams?.lightName || "Drużyna Jasna";
-                const isFinished = isMvpVotingFinished(m);
 
                 const votes = m.votes || {};
                 const tally = {};
@@ -2716,9 +2780,7 @@
                             </div>
                             <div class="text-right">
                                 <span class="text-[10px] text-slate-400 font-semibold">MVP meczu:</span>
-                                <p class="text-xs font-extrabold text-white mt-0.5">
-                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak głosowania')}
-                                </p>
+                                <p class="text-xs font-extrabold text-white mt-0.5">${topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : 'Brak głosowania'}</p>
                             </div>
                         </div>
 
@@ -3011,20 +3073,18 @@
                                 }
                             }
 
-                            if (isMvpVotingFinished(m)) {
-                                const votesMap = m.votes || {};
-                                const tally = {};
-                                Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                                let maxV = 0, topNom = "";
-                                Object.entries(tally).forEach(([nom, count]) => {
-                                    if (count > maxV) { maxV = count; topNom = nom; }
-                                });
-                                if (topNom === playerName && maxV > 0) {
-                                    mvpWins++;
-                                    const totalVotes = Object.keys(votesMap).length;
-                                    if (totalVotes >= 4 && (maxV / totalVotes) >= 0.5) {
-                                        hasUnanimousMvp = true;
-                                    }
+                            const votesMap = m.votes || {};
+                            const tally = {};
+                            Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                            let maxV = 0, topNom = "";
+                            Object.entries(tally).forEach(([nom, count]) => {
+                                if (count > maxV) { maxV = count; topNom = nom; }
+                            });
+                            if (topNom === playerName && maxV > 0) {
+                                mvpWins++;
+                                const totalVotes = Object.keys(votesMap).length;
+                                if (totalVotes >= 4 && (maxV / totalVotes) >= 0.5) {
+                                    hasUnanimousMvp = true;
                                 }
                             }
                         }
@@ -3073,16 +3133,14 @@
             const mvpTally = {};
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach(m => {
-                    if (isMvpVotingFinished(m)) {
-                        const votes = m.votes || {};
-                        const tally = {};
-                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                        let maxV = 0, topNom = "";
-                        Object.entries(tally).forEach(([nom, count]) => {
-                            if (count > maxV) { maxV = count; topNom = nom; }
-                        });
-                        if (topNom && maxV > 0) mvpTally[topNom] = (mvpTally[topNom] || 0) + 1;
-                    }
+                    const votes = m.votes || {};
+                    const tally = {};
+                    Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                    let maxV = 0, topNom = "";
+                    Object.entries(tally).forEach(([nom, count]) => {
+                        if (count > maxV) { maxV = count; topNom = nom; }
+                    });
+                    if (topNom && maxV > 0) mvpTally[topNom] = (mvpTally[topNom] || 0) + 1;
                 });
             });
 
@@ -3596,8 +3654,8 @@
             } else if (type === 'mvp') {
                 return `🏆 GŁOSOWANIE NA MVP MECZU (${dateStr}) 🏆\n\n` +
                        `Dzięki za piątkową walkę na parkiecie! 🔥🏐\n\n` +
-                       `Głosowanie jest tajne 🔒 Kto Twoim zdaniem zasłużył na MVP? Oddaj głos:\n${url}\n\n` +
-                       `Wyniki i oficjalne podsumowanie pojawią się, gdy wszyscy zagłosują! 🌟`;
+                       `Kto Twoim zdaniem zagrał najlepszy mecz? Oddaj swój głos tutaj:\n${url}\n\n` +
+                       `Głosować mogą wszyscy obecni w składzie głównym! 🌟`;
             } else if (type === 'billing') {
                 return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
                        `Ekipa, faktura za halę za ${AppState.currentMonth} podsumowana!\n\n` +
