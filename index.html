@@ -2033,7 +2033,6 @@
                         <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
@@ -2064,7 +2063,6 @@
                         <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
@@ -2536,10 +2534,7 @@
                         const isMe = (p === loggedPlayer);
                         return `
                             <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/70' : 'border-slate-800'} px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                                <div class="flex items-center gap-2 min-w-0 flex-1">
-                                    ${getPlayerAvatarHtml(p, 'xs')}
-                                    <span class="font-semibold ${isMe ? 'text-emerald-300' : 'text-slate-200'} truncate">${escapeHtml(p)}</span>
-                                </div>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300' : 'text-slate-200'} truncate">${escapeHtml(p)}</span>
                                 <div class="flex items-center gap-1 shrink-0">
                                     <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
                                         ⬛ Ciemni
@@ -2567,7 +2562,6 @@
                             <div class="flex items-center gap-1.5 min-w-0 flex-1">
                                 <span class="w-2 h-2 rounded-full bg-slate-600 border border-slate-400 shrink-0" title="Drużyna Ciemna"></span>
                                 <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
@@ -2608,7 +2602,6 @@
                             <div class="flex items-center gap-1.5 min-w-0 flex-1">
                                 <span class="w-2 h-2 rounded-full bg-amber-400 border border-amber-300 shadow-sm shadow-amber-400/50 shrink-0" title="Drużyna Jasna"></span>
                                 <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
@@ -3831,11 +3824,11 @@
 
             const partnerEl = document.getElementById('playerCardPartner');
             if (partnerEl) {
-                partnerEl.innerText = bestPartner ? `${bestPartner.name} (${bestPartner.winRate}% W)` : "Brak danych";
+                partnerEl.innerText = bestPartner ? `${bestPartner.name} (${bestPartner.winPct}% W - ${bestPartner.wins}/${bestPartner.together})` : "Brak danych";
             }
             const rivalEl = document.getElementById('playerCardRival');
             if (rivalEl) {
-                rivalEl.innerText = topRival ? `${topRival.name} (${topRival.count} gier)` : "Brak danych";
+                rivalEl.innerText = topRival ? `${topRival.name} (${topRival.against} meczów)` : "Brak danych";
             }
 
             const badgeCountEl = document.getElementById('playerCardBadgeCount');
@@ -3850,16 +3843,21 @@
                         </div>
                     `;
                 } else {
-                    badgesListEl.innerHTML = badges.map(b => `
-                        <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5 flex items-start gap-2.5 shadow-sm">
-                            <span class="text-xl shrink-0 mt-0.5">${b.icon}</span>
-                            <div class="min-w-0 flex-1">
-                                <strong class="block text-white text-xs font-bold">${escapeHtml(b.title.split(':')[0] || b.title)}</strong>
-                                <p class="text-[11px] text-slate-400 leading-tight mt-0.5">${escapeHtml(b.title.split(':')[1] || b.title)}</p>
+                    badgesListEl.innerHTML = badges.map(b => {
+                        const colonIdx = b.title.indexOf(':');
+                        const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : b.title;
+                        const badgeDesc = colonIdx !== -1 ? b.title.slice(colonIdx + 1).trim() : '';
+                        return `
+                            <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5 flex items-start gap-2.5 shadow-sm">
+                                <span class="text-xl shrink-0 mt-0.5">${b.icon}</span>
+                                <div class="min-w-0 flex-1">
+                                    <strong class="block text-white text-xs font-bold">${escapeHtml(badgeName)}</strong>
+                                    <p class="text-[11px] text-slate-400 leading-tight mt-0.5">${escapeHtml(badgeDesc)}</p>
+                                </div>
+                                <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.5 rounded-md shrink-0">Zdobyta ✓</span>
                             </div>
-                            <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.5 rounded-md shrink-0">Zdobyta ✓</span>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 }
             }
 
