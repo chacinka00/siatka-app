@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#070a12">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Siatkówka">
@@ -34,6 +34,14 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    colors: {
+                        slate: {
+                            950: '#070a12',
+                            900: '#0c1220',
+                            850: '#11192c',
+                            800: '#1a243a'
+                        }
+                    },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     }
@@ -45,31 +53,35 @@
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
+            background-color: #070a12;
         }
         
-        /* Obsługa wycięcia na iPhone (Notch / Dynamic Island) */
         .ios-safe-header {
-            padding-top: max(12px, env(safe-area-inset-top, 12px));
+            padding-top: max(14px, env(safe-area-inset-top, 14px));
         }
 
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .ios-safe-bottom {
+            padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+        }
+
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
+        ::-webkit-scrollbar-track { background: #070a12; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.97) translateY(6px); }
+            from { opacity: 0; transform: scale(0.98) translateY(6px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .animate-fade-in {
-            animation: fadeInScale 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInScale 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Stylizowane Boisko Siatkarskie */
         .volleyball-court {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(180deg, #0d1627 0%, #070c18 100%);
             border: 2px solid #38bdf8;
             position: relative;
         }
@@ -78,9 +90,9 @@
             top: 50%;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 3px;
             background: #f8fafc;
-            box-shadow: 0 0 10px rgba(255,255,255,0.6);
+            box-shadow: 0 0 12px rgba(255,255,255,0.7);
             transform: translateY(-50%);
             z-index: 10;
         }
@@ -89,14 +101,14 @@
             top: 30%;
             left: 0;
             right: 0;
-            border-top: 1px dashed rgba(56, 189, 248, 0.4);
+            border-top: 1px dashed rgba(56, 189, 248, 0.35);
         }
         .court-attack-line-bottom {
             position: absolute;
             bottom: 30%;
             left: 0;
             right: 0;
-            border-top: 1px dashed rgba(56, 189, 248, 0.4);
+            border-top: 1px dashed rgba(56, 189, 248, 0.35);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -109,15 +121,15 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-16">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-28">
 
-    <!-- Top Sticky Header z bezpiecznym marginesem pod iPhone -->
-    <header class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all">
-        <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+    <!-- Top Sticky Header z bezpiecznym marginesem pod Dynamic Island / iPhone -->
+    <header class="bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all shadow-sm">
+        <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
             <div class="flex items-center gap-2.5 min-w-0">
-                <div class="relative w-11 h-11 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-rose-500 shadow-lg shadow-emerald-950/40 shrink-0">
+                <div class="relative w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
                     <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[14px]" loading="eager">
-                    <span class="absolute -bottom-1 -right-1 text-xs bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
+                    <span class="absolute -bottom-1 -right-1 text-[10px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
                 </div>
                 <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -129,50 +141,31 @@
                             👑 Organizator
                         </span>
                     </div>
-                    <p class="text-[11px] text-emerald-400 font-medium truncate">⏰ 18:30 - 20:45 • 📍 ul. Myśliborska 25</p>
+                    <p id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate">⏰ 18:30 - 20:45 • 📍 ul. Myśliborska 25</p>
                 </div>
             </div>
 
             <!-- Month Select & Share Action -->
             <div class="flex items-center gap-2 shrink-0">
-                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-3 py-2 border-2 border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
+                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
                     <!-- Populated dynamically -->
                 </select>
-                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="hidden bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95">
+                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex">
                     <span>📣</span>
-                    <span class="hidden sm:inline">Mess</span>
+                    <span class="hidden sm:inline text-[11px]">Mess</span>
                 </button>
             </div>
         </div>
-
-        <!-- 5-Pillar Mobile Navigation Bar -->
-        <nav aria-label="Nawigacja główna" class="max-w-2xl mx-auto px-2 flex border-t border-slate-800/60">
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 py-2.5 text-xs font-bold border-b-2 border-emerald-400 text-emerald-400 text-center transition">
-                📅 Zapisy
-            </button>
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-center transition">
-                🔀 Składy
-            </button>
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-center transition">
-                💰 Składki
-            </button>
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-center transition">
-                👑 Ranking
-            </button>
-            <button type="button" onclick="openMoreMenuModal()" id="tab-btn-more" class="tab-btn flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 text-center transition flex items-center justify-center gap-1">
-                <span>☰</span> Więcej
-            </button>
-        </nav>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-2xl mx-auto p-4 flex-1 w-full space-y-4">
+    <!-- Main Content Container -->
+    <main class="max-w-2xl mx-auto px-3.5 py-3 flex-1 w-full space-y-4">
 
-        <!-- ================= TAB 1: ZAPISY & MECZE ================= -->
-        <section id="tab-matches" class="space-y-4">
+        <!-- ================= TAB 1: ZAPISY, MECZ & ZINTEGROWANE MVP ================= -->
+        <section id="tab-matches" class="space-y-4 animate-fade-in">
             
-            <!-- Dates Carousel -->
-            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 shadow-md space-y-2">
+            <!-- Dates Carousel (Piątki) -->
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 shadow-md space-y-2">
                 <div class="flex items-center justify-between px-1">
                     <div class="flex items-center gap-2">
                         <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Wybierz piątek:</span>
@@ -180,7 +173,7 @@
                             Pokaż archiwalne
                         </button>
                     </div>
-                    <button type="button" onclick="addNewMatchPrompt()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1">
+                    <button type="button" id="addNewMatchBtnHeader" onclick="addNewMatchPrompt()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1">
                         + Dodaj termin
                     </button>
                 </div>
@@ -190,10 +183,10 @@
             </div>
 
             <!-- Active Match Hero Card -->
-            <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4 relative overflow-hidden">
+            <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800/90 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4 relative overflow-hidden">
                 
                 <!-- Live Countdown Clock Box -->
-                <div id="matchCountdownBox" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-inner">
+                <div id="matchCountdownBox" class="bg-slate-950/90 border border-slate-800/80 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-inner">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                         <span id="countdownLabel" class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Do meczu:</span>
@@ -239,59 +232,20 @@
                         <span class="text-base shrink-0">📊</span>
                         <div class="truncate">
                             <span class="font-bold text-slate-200">Wynik spotkania:</span>
-                            <span id="scoreText" class="text-emerald-400 font-black ml-1">Jeszcze nie rozegrano</span>
+                            <span id="scoreText" class="text-amber-400 font-black ml-1">Jeszcze nie rozegrano</span>
                         </div>
                     </div>
-                    <button type="button" onclick="editMatchScorePrompt()" title="Wpisz wynik meczu" class="text-xs text-slate-400 hover:text-emerald-400 font-bold px-2 py-1 rounded-lg transition bg-slate-900 border border-slate-800 shrink-0">
+                    <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz wynik meczu" class="text-xs text-slate-400 hover:text-emerald-400 font-bold px-2 py-1 rounded-lg transition bg-slate-900 border border-slate-800 shrink-0">
                         ✏️ Wynik
                     </button>
                 </div>
 
-                <!-- Dynamic Match MVP Reminder Card (Secret Ballot Protected) -->
-                <div id="mvpMatchReminderCard" class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/50 border border-amber-500/50 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 hidden">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <span class="text-2xl animate-bounce shrink-0">🏆</span>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <h4 id="mvpReminderTitle" class="font-extrabold text-xs text-amber-300 truncate">Głosowanie na MVP</h4>
-                                <span id="mvpVotesBriefBadge" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800">0/0</span>
-                            </div>
-                            <p id="mvpStatusMiniText" class="text-[10px] text-slate-300 mt-0.5 truncate">🔒 Głosowanie tajne w toku • Wskaż najlepszego gracza</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="switchTab('mvp')" class="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shrink-0 shadow-md shadow-amber-500/25">
-                        Głosuj ⭐
-                    </button>
+                <!-- Fast Join / Action Container for Logged-In User & Guests -->
+                <div id="fastJoinSection" class="pt-3 border-t border-slate-800/80 space-y-2.5">
+                    <!-- Rendered dynamically depending on whether logged in -->
                 </div>
 
-                <!-- Fast Join Form -->
-                <div class="pt-3 border-t border-slate-800/80 space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <label for="matchPlayerSelect" class="block text-xs font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>1. Wybierz siebie ze składu:</span>
-                            <span id="rememberBadge" class="hidden text-[9px] text-emerald-400 font-bold bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-800">⚡ Zapamiętany</span>
-                        </label>
-                        <button type="button" onclick="addCustomNewPlayerPrompt()" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline">
-                            + Nowy gracz
-                        </button>
-                    </div>
-                    
-                    <div class="relative">
-                        <select id="matchPlayerSelect" aria-label="Wybierz zawodnika z listy" class="w-full bg-slate-950 border-2 border-slate-700 focus:border-emerald-400 rounded-2xl px-4 py-3.5 text-sm font-bold text-white focus:outline-none transition cursor-pointer appearance-none">
-                            <option value="">-- Dotknij tutaj, aby wybrać swoje imię --</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-emerald-400 font-bold">
-                            ▼
-                        </div>
-                    </div>
-
-                    <button type="button" onclick="addPlayerToCurrentMatch()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
-                        <span class="text-base">🏐</span>
-                        <span>ZAPISZ MNIE NA MECZ</span>
-                    </button>
-                </div>
-
-                <!-- Match Admin Bar (Protected by PIN) -->
+                <!-- Match Admin Bar (Only for Michał / Admin) -->
                 <div id="matchAdminBarContainer" class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/40 text-xs hidden">
                     <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1 transition">
                         🚫 Odwołaj mecz
@@ -311,7 +265,7 @@
             <div class="space-y-4">
                 
                 <!-- Main Squad (12) -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md space-y-2.5">
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-4 shadow-md space-y-2.5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -326,7 +280,7 @@
                 </div>
 
                 <!-- Reserves Squad -->
-                <div id="reserveCardContainer" class="bg-slate-900 border border-amber-900/40 rounded-2xl p-4 shadow-md space-y-2.5 hidden">
+                <div id="reserveCardContainer" class="bg-slate-900/90 border border-amber-900/40 rounded-2xl p-4 shadow-md space-y-2.5 hidden">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
@@ -342,37 +296,91 @@
 
             </div>
 
-            <!-- Quick Action Cards -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                <button type="button" onclick="switchTab('teams')" class="bg-gradient-to-br from-slate-900 to-indigo-950/40 border border-indigo-900/40 rounded-2xl p-3 text-left shadow-md hover:border-indigo-500/50 transition group flex flex-col justify-between">
-                    <span class="text-2xl block mb-1">🔀</span>
-                    <div>
-                        <h4 class="font-bold text-xs text-white group-hover:text-indigo-300 transition">Składy & Balans</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Ręczny wybór i losowanie 6v6</p>
+            <!-- ================= ZINTEGROWANE GŁOSOWANIE MVP MECZU NA EKRANIE GŁÓWNYM ================= -->
+            <div id="integratedMvpCard" class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/50 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🏆</span>
+                        <div>
+                            <h3 class="font-black text-sm sm:text-base text-white">MVP Spotkania</h3>
+                            <p id="mvpMatchDateBadge" class="text-[11px] text-amber-400 font-semibold">Mecz: -</p>
+                        </div>
                     </div>
-                </button>
-                <button type="button" onclick="switchTab('mvp')" class="bg-gradient-to-br from-slate-900 to-amber-950/40 border border-amber-900/40 rounded-2xl p-3 text-left shadow-md hover:border-amber-500/50 transition group flex flex-col justify-between">
-                    <span class="text-2xl block mb-1">🏆</span>
-                    <div>
-                        <h4 class="font-bold text-xs text-white group-hover:text-amber-300 transition">Głosuj na MVP</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Tajne głosowanie</p>
+                    <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60">
+                        Głosy: 0/0
+                    </span>
+                </div>
+
+                <!-- MVP Winner Highlight Card (Secret during voting, Celebratory when finished) -->
+                <div id="mvpWinnerContainer" class="bg-slate-950/90 border border-amber-800/60 rounded-2xl p-3.5 text-center space-y-1 relative overflow-hidden">
+                    <p id="mvpWinnerHeaderLabel" class="text-[10px] uppercase tracking-widest text-amber-400 font-bold">🔒 TAJNE GŁOSOWANIE W TOKU</p>
+                    <h3 id="mvpWinnerName" class="text-lg sm:text-xl font-black text-white">Czekamy na pierwsze głosy</h3>
+                    <p id="mvpWinnerVotes" class="text-xs text-slate-400">Wyniki zostaną ujawnione, gdy wszyscy zagłosują!</p>
+                </div>
+
+                <!-- Voting Form (Dla obecnych) -->
+                <div id="votingFormCard" class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-3">
+                    <h4 class="font-bold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>🗳️</span> Oddaj swój głos (Tylko obecni)
+                    </h4>
+                    
+                    <div class="space-y-2">
+                        <div id="voterSelectContainer">
+                            <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
+                            <select id="voterSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu:</label>
+                            <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
                     </div>
-                </button>
-                <button type="button" onclick="switchTab('archive')" class="col-span-2 sm:col-span-1 bg-gradient-to-br from-slate-900 to-teal-950/40 border border-teal-900/40 rounded-2xl p-3 text-left shadow-md hover:border-teal-500/50 transition group flex sm:flex-col items-center sm:items-start justify-between">
-                    <span class="text-2xl block sm:mb-1">📜</span>
-                    <div>
-                        <h4 class="font-bold text-xs text-white group-hover:text-teal-300 transition">Archiwum Sezonu</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Wyniki i historia gier</p>
+
+                    <button type="button" onclick="submitMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
+                        Zatwierdź głos na MVP 🌟
+                    </button>
+                </div>
+
+                <!-- Admin Force Finish/Reveal Bar -->
+                <div id="mvpAdminControlBar" class="hidden flex items-center justify-between bg-slate-950 p-2.5 rounded-2xl border border-amber-900/60 text-xs">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span class="text-sm">👑</span>
+                        <span id="mvpAdminStatusLabel" class="text-[11px] font-bold text-amber-300 truncate">Zarządzanie</span>
                     </div>
-                </button>
+                    <button type="button" id="mvpToggleFinalizeBtn" onclick="toggleMvpFinalizeWithAuth()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95">
+                        Zakończ i odkryj wyniki
+                    </button>
+                </div>
+
+                <!-- Results & Progress Section -->
+                <div class="space-y-2 pt-1">
+                    <h4 id="mvpResultsSectionTitle" class="font-bold text-xs text-slate-300 uppercase tracking-wider">Postęp głosowania:</h4>
+                    <div id="mvpResultsList" class="space-y-1.5">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Who already voted / Full breakdown -->
+                <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span id="whoVotedTitle" class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Status obecnych:</span>
+                        <span id="whoVotedProgressRatio" class="font-mono text-emerald-400 font-bold text-[10px]">0 / 0</span>
+                    </div>
+                    <div id="whoVotedList" class="space-y-1 max-h-48 overflow-y-auto pr-1">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
             </div>
 
         </section>
 
 
-        <!-- ================= TAB 2: TEAM BALANCER & BOISKO 6v6 ================= -->
-        <section id="tab-teams" class="space-y-4 hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
+        <!-- ================= TAB 2: SKŁADY, BALANS & BOISKO 6v6 ================= -->
+        <section id="tab-teams" class="space-y-4 hidden animate-fade-in">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
                         <span class="text-[11px] font-extrabold text-indigo-400 uppercase tracking-wider bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-0.5 rounded-full">
@@ -383,7 +391,7 @@
                         </h2>
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-4 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
+                        <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3.5 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
                             <span>🎲</span> Losuj równe składy
                         </button>
                         <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
@@ -502,125 +510,8 @@
         </section>
 
 
-        <!-- ================= TAB 3: TAJNE GŁOSOWANIE MVP MECZU ================= -->
-        <section id="tab-mvp" class="space-y-4 hidden">
-            
-            <div class="flex items-center justify-between px-1">
-                <button type="button" onclick="switchTab('matches')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
-                    ← Wróć do Zapisów
-                </button>
-            </div>
-
-            <div class="bg-gradient-to-br from-slate-900 via-amber-950/30 to-slate-950 border border-amber-800/50 rounded-3xl p-5 shadow-xl space-y-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <span id="mvpMatchDateBadge" class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full">
-                            Mecz: 2026-08-28
-                        </span>
-                        <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
-                            <span>🏆</span> MVP Spotkania
-                        </h2>
-                    </div>
-                    <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-900/60">
-                        Głosy: 0/0
-                    </span>
-                </div>
-
-                <!-- MVP Winner Highlight Card (Secret during voting, Celebratory when finished) -->
-                <div id="mvpWinnerContainer" class="bg-slate-950/80 border border-amber-800/60 rounded-2xl p-4 text-center space-y-1 relative overflow-hidden">
-                    <p id="mvpWinnerHeaderLabel" class="text-[11px] uppercase tracking-widest text-amber-400 font-bold">Lider Głosowania</p>
-                    <h3 id="mvpWinnerName" class="text-2xl font-black text-white">Brak głosów</h3>
-                    <p id="mvpWinnerVotes" class="text-xs text-slate-400">Oddaj swój głos poniżej!</p>
-                </div>
-
-                <!-- Voting Form -->
-                <div id="votingFormCard" class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
-                    <h4 class="font-bold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>🗳️</span> Oddaj swój głos (Tylko obecni)
-                    </h4>
-                    
-                    <div class="space-y-2">
-                        <div>
-                            <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
-                            <select id="voterSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                <!-- Populated dynamically -->
-                            </select>
-                        </div>
-                        <div>
-                            <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu:</label>
-                            <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                <!-- Populated dynamically -->
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="button" onclick="submitMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
-                        Zatwierdź głos na MVP 🌟
-                    </button>
-                </div>
-
-                <!-- Admin Force Finish/Reveal Bar -->
-                <div id="mvpAdminControlBar" class="hidden flex items-center justify-between bg-slate-950 p-3 rounded-2xl border border-amber-900/60 text-xs">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <span class="text-base">👑</span>
-                        <span id="mvpAdminStatusLabel" class="text-[11px] font-bold text-amber-300 truncate">Zarządzanie głosowaniem</span>
-                    </div>
-                    <button type="button" id="mvpToggleFinalizeBtn" onclick="toggleMvpFinalizeWithAuth()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95">
-                        Zakończ i odkryj wyniki
-                    </button>
-                </div>
-
-                <!-- Results & Breakdown Section -->
-                <div class="space-y-2 pt-1">
-                    <h4 id="mvpResultsSectionTitle" class="font-bold text-xs text-slate-300 uppercase tracking-wider">Wyniki głosowania:</h4>
-                    <div id="mvpResultsList" class="space-y-1.5">
-                        <!-- Rendered dynamically -->
-                    </div>
-                </div>
-
-                <!-- Who already voted / Full breakdown -->
-                <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                        <span id="whoVotedTitle" class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Status obecnych:</span>
-                        <span id="whoVotedProgressRatio" class="font-mono text-emerald-400 font-bold text-[10px]">0 / 0</span>
-                    </div>
-                    <div id="whoVotedList" class="space-y-1">
-                        <!-- Rendered dynamically -->
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- ================= TAB 4: ARCHIWUM SPOTKAŃ & WYNIKI ================= -->
-        <section id="tab-archive" class="space-y-4 hidden">
-            <div class="flex items-center justify-between px-1">
-                <button type="button" onclick="switchTab('matches')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
-                    ← Wróć do Zapisów
-                </button>
-            </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-2xl">📜</span>
-                        <div>
-                            <h2 class="text-base sm:text-lg font-black text-white">ARCHIWUM SEZONU</h2>
-                            <p class="text-[11px] text-slate-400">Rozegrane mecze, oficjalne wyniki i składy drużyn</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="archiveMatchesList" class="space-y-3">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= TAB 5: ROZLICZENIE MIESIĘCZNE ================= -->
-        <section id="tab-billing" class="space-y-4 hidden">
+        <!-- ================= TAB 3: ROZLICZENIE MIESIĘCZNE & BLIK ================= -->
+        <section id="tab-billing" class="space-y-4 hidden animate-fade-in">
             
             <!-- BLIK Info Box -->
             <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-emerald-950/40 border border-emerald-800/60 rounded-3xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-xl">
@@ -636,13 +527,18 @@
                         W tytule przelewu podaj: <span class="text-white font-semibold">Siatka [Twoje Imię] [Miesiąc]</span>
                     </p>
                 </div>
-                <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
-                    <span>📋</span> Kopiuj numer BLIK
-                </button>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-3.5 py-2.5 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
+                        <span>📋</span> Kopiuj BLIK
+                    </button>
+                    <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-2.5 rounded-2xl text-xs transition active:scale-95 border border-slate-700 flex items-center gap-1.5">
+                        <span>📢</span> Lista do opłacenia
+                    </button>
+                </div>
             </div>
 
             <!-- Month Financial Stats Summary -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 shadow-xl grid grid-cols-3 gap-2 text-center">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl grid grid-cols-3 gap-2 text-center">
                 <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
                     <p class="text-[10px] text-slate-400 font-semibold">Koszt hal</p>
                     <p id="monthTotalCost" class="text-base sm:text-lg font-black text-white mt-0.5">0.00 zł</p>
@@ -658,14 +554,14 @@
             </div>
 
             <!-- Billing Cards with Search & Filters -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-lg space-y-3">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 sm:p-4 shadow-lg space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>
                         <h3 class="font-bold text-xs sm:text-sm text-white">Zestawienie składek graczy</h3>
                         <p class="text-[10px] text-slate-400">Dotknij „📋 Kopiuj BLIK”, aby skopiować numer do przelewu.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-28 sm:w-32 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1 rounded-lg text-white focus:outline-none focus:border-emerald-500">
+                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-full sm:w-36 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl text-white focus:outline-none focus:border-emerald-500">
                     </div>
                 </div>
 
@@ -689,11 +585,11 @@
         </section>
 
 
-        <!-- ================= TAB 6: HALL OF FAME, BADGES & RECORDS ================= -->
-        <section id="tab-halloffame" class="space-y-4 hidden">
+        <!-- ================= TAB 4: HALL OF FAME, BADGES & RECORDS ================= -->
+        <section id="tab-halloffame" class="space-y-4 hidden animate-fade-in">
             
             <!-- Rozbudowana Legenda Odznak (Mobile-Friendly Grid) -->
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl space-y-3">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
                     <h4 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
                         <span>🏅</span> Księga Osiągnięć & Trofeów
@@ -776,7 +672,7 @@
             </div>
 
             <!-- Hall of Fame Table -->
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🏆</span>
                     <div>
@@ -845,167 +741,147 @@
                 </div>
             </div>
 
+            <!-- Archiwum Rozegranych Spotkań w Sezonie -->
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">📜</span>
+                        <h3 class="font-bold text-xs uppercase tracking-wider text-white">Archiwum Wszystkich Meczów</h3>
+                    </div>
+                    <span class="text-[10px] text-slate-400">Wyniki i składy</span>
+                </div>
+                <div id="archiveMatchesList" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
         </section>
 
 
-        <!-- ================= TAB 7: USTAWIENIA & ORGANIZATOR ================= -->
-        <section id="tab-settings" class="space-y-4 hidden">
-            
-            <div class="flex items-center justify-between px-1">
-                <button type="button" onclick="switchTab('matches')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
-                    ← Wróć do Zapisów
-                </button>
+        <!-- ================= TAB 5: MÓJ PROFIL & STREFA GRACZA / ORGANIZATORA ================= -->
+        <section id="tab-profile" class="space-y-4 hidden animate-fade-in">
+            <div id="profileMainContainer">
+                <!-- Rendered dynamically by renderProfileTab() -->
             </div>
-
-            <!-- Admin Authorization Box -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-xs uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
-                        <span>👑</span> Tryb Organizatora (PIN)
-                    </h3>
-                    <span id="adminStatusText" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
-                        Zwykły gracz
-                    </span>
-                </div>
-                <p class="text-xs text-slate-400">Wpisz PIN Organizatora, aby móc oznaczać wpłaty, zarządzać tajnymi ocenami graczy do losowania i edytować bazę.</p>
-                
-                <form id="adminLoginForm" onsubmit="event.preventDefault(); loginAsAdmin();" class="flex gap-2">
-                    <input id="adminPinInput" type="password" placeholder="Wpisz PIN..." aria-label="Wpisz PIN Organizatora" class="w-36 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500">
-                    <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-1.5 rounded-xl text-xs transition active:scale-95">
-                        Odblokuj
-                    </button>
-                </form>
-                <div id="adminLogoutSection" class="hidden flex items-center justify-between pt-1">
-                    <span class="text-xs text-emerald-400 font-bold">✅ Zalogowano jako Organizator</span>
-                    <button type="button" onclick="logoutAdmin()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold transition">
-                        Wyloguj
-                    </button>
-                </div>
-            </div>
-
-            <!-- Push Notifications Settings Card -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md space-y-3">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg">🔔</span>
-                        <h4 class="font-extrabold text-xs text-white uppercase tracking-wider">Powiadomienia Web Push</h4>
-                    </div>
-                    <span id="pushStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
-                        Nieaktywne
-                    </span>
-                </div>
-                <p class="text-xs text-slate-400">Włącz powiadomienia w przeglądarce, aby otrzymywać przypomnienia o piątkowej zbiórce i zapisach.</p>
-                <div class="flex gap-2 pt-1">
-                    <button type="button" onclick="requestPushNotificationPermission()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl text-xs transition">
-                        Włącz powiadomienia 📲
-                    </button>
-                    <button type="button" onclick="testPushNotification()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-xl text-xs transition border border-slate-700">
-                        Przetestuj
-                    </button>
-                </div>
-            </div>
-
-            <!-- HIDDEN SKILL RATINGS (ONLY VISIBLE WHEN LOGGED AS ORGANIZER) -->
-            <div id="hiddenSkillRatingsPanel" class="bg-gradient-to-br from-slate-900 via-indigo-950/30 to-slate-950 border border-indigo-800/40 rounded-2xl p-4 shadow-md space-y-3 hidden">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg">🤫</span>
-                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-indigo-300">
-                            Dyskretne Poziomy Graczy (Tylko Ty to widzisz)
-                        </h3>
-                    </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800">
-                        Ukryte przed graczami
-                    </span>
-                </div>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Ustaw umiejętności w skali 1-5. Gracze <strong>nigdzie na swoich telefonach nie widzą tych ocen</strong>. Algorytm używa ich wyłącznie w tle do sprawiedliwego dzielenia składów 6v6.
-                </p>
-
-                <div id="playerSkillsGrid" class="space-y-1.5 max-h-60 overflow-y-auto pr-1">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Player Directory -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md space-y-3">
-                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                    <span>👥</span> Baza stałych graczy
-                </h3>
-                <div class="flex gap-2">
-                    <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." aria-label="Imię i nazwisko nowego gracza" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
-                    <button type="button" onclick="addNewPlayerToDirectory()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition active:scale-95">
-                        Dodaj
-                    </button>
-                </div>
-                <div id="playerDirectoryTags" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto pt-1">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- General Settings & Backup -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md space-y-3">
-                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300">⚙️ Kopia zapasowa & Reset</h3>
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <button type="button" onclick="exportDataJSON()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition">
-                        📥 Pobierz kopię (JSON)
-                    </button>
-                    <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition cursor-pointer">
-                        📤 Wgraj kopię
-                        <input type="file" onchange="importDataJSON(event)" accept=".json" class="hidden">
-                    </label>
-                    <button type="button" onclick="resetToInitialDataWithAuth()" class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-900/50 px-3 py-1.5 rounded-xl font-semibold transition">
-                        🔄 Przywróć stan początkowy
-                    </button>
-                </div>
-            </div>
-
         </section>
 
     </main>
 
-    <!-- Sleek "☰ Więcej" Mobile Bottom Sheet Modal -->
-    <div id="moreMenuModal" role="dialog" aria-modal="true" aria-labelledby="moreMenuTitle" onclick="if(event.target === this) closeMoreMenuModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-3 hidden transition-opacity">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-3 shadow-2xl animate-fade-in">
-            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-                <h3 id="moreMenuTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
-                    <span>🏐</span> Dodatkowe Opcje
-                </h3>
-                <button type="button" onclick="closeMoreMenuModal()" aria-label="Zamknij menu" class="text-slate-400 hover:text-white font-bold text-base px-1.5">✕</button>
+    <!-- ================= FLOATING BOTTOM NAVIGATION BAR ================= -->
+    <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
+        <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
+            
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
+                <span class="text-lg leading-none">📅</span>
+                <span class="text-[10px] tracking-tight">Mecz</span>
+            </button>
+
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="text-lg leading-none">🔀</span>
+                <span class="text-[10px] tracking-tight">Składy</span>
+            </button>
+
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="text-lg leading-none">💰</span>
+                <span class="text-[10px] tracking-tight">Składki</span>
+            </button>
+
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="text-lg leading-none">👑</span>
+                <span class="text-[10px] tracking-tight">Ranking</span>
+            </button>
+
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="text-lg leading-none">👤</span>
+                <span id="navProfileLabel" class="text-[10px] tracking-tight">Profil</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Welcome Gate / First-Time Login Modal -->
+    <div id="welcomeGateModal" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative">
+            
+            <div class="text-center space-y-2">
+                <div class="relative w-16 h-16 mx-auto rounded-3xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-xl shadow-emerald-950/50 flex items-center justify-center">
+                    <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[22px]" onerror="this.src=''; this.parentElement.innerHTML='<span class=\'text-3xl\'>🏐</span>';">
+                </div>
+                <div>
+                    <h2 id="welcomeModalTitle" class="text-xl font-black text-white tracking-tight">Siatkówka Piątek 🏐</h2>
+                    <p class="text-xs text-slate-400 mt-1">Wybierz swój profil zawodnika, aby wejść do gry i zapamiętać sesję na telefonie:</p>
+                </div>
             </div>
 
-            <div class="space-y-1.5 pt-1 text-xs">
-                <button type="button" onclick="selectMoreMenuTab('archive')" class="w-full bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 p-3 rounded-2xl flex items-center justify-between text-left transition group">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xl">📜</span>
-                        <div>
-                            <strong class="block text-white group-hover:text-emerald-400 transition font-bold">Archiwum Sezonu</strong>
-                            <span class="text-[10px] text-slate-400">Rozegrane mecze, wyniki i składy</span>
-                        </div>
-                    </div>
-                    <span class="text-slate-500 font-mono">→</span>
-                </button>
+            <form onsubmit="event.preventDefault(); handleWelcomeLogin();" class="space-y-3.5 pt-1">
+                <div>
+                    <label for="welcomePlayerSelect" class="block text-xs font-bold text-slate-300 mb-1">1. Kim jesteś? (Wybierz siebie):</label>
+                    <select id="welcomePlayerSelect" onchange="checkWelcomePlayerHasPin(this.value)" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                        <option value="">-- Wybierz swoje imię i nazwisko --</option>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
 
-                <button type="button" onclick="selectMoreMenuTab('mvp')" class="w-full bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 p-3 rounded-2xl flex items-center justify-between text-left transition group">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xl">🏆</span>
-                        <div>
-                            <strong class="block text-white group-hover:text-amber-300 transition font-bold">Głosowanie na MVP</strong>
-                            <span class="text-[10px] text-slate-400">Tajne głosowanie i wyniki</span>
-                        </div>
-                    </div>
-                    <span class="text-slate-500 font-mono">→</span>
-                </button>
+                <div class="space-y-1">
+                    <label for="welcomePinInput" id="welcomePinInputLabel" class="block text-xs font-bold text-slate-300">2. Twój 4-cyfrowy PIN:</label>
+                    <input id="welcomePinInput" type="password" maxlength="6" inputmode="numeric" placeholder="••••" required class="w-full bg-slate-950 border border-slate-700 text-center font-mono text-xl tracking-widest font-black text-emerald-400 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500">
+                    <p id="welcomePinHelpText" class="text-[10px] text-slate-400">Podaj swój PIN lub ustal nowy, jeśli wchodzisz po raz pierwszy.</p>
+                </div>
 
-                <button type="button" onclick="selectMoreMenuTab('settings')" class="w-full bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 p-3 rounded-2xl flex items-center justify-between text-left transition group">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xl">⚙️</span>
-                        <div>
-                            <strong class="block text-white group-hover:text-indigo-300 transition font-bold">Panel Organizatora</strong>
-                            <span class="text-[10px] text-slate-400">Oceny • Baza graczy • Zarządzanie</span>
-                        </div>
-                    </div>
-                    <span class="text-slate-500 font-mono">→</span>
+                <div class="space-y-2 pt-1">
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                        <span>Wejdź do aplikacji</span>
+                        <span>🚀</span>
+                    </button>
+
+                    <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
+                        Przeglądaj jako gość (tylko podgląd) 👀
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Guest / Friend Signup Modal -->
+    <div id="guestSignupModal" role="dialog" aria-modal="true" aria-labelledby="guestModalTitle" onclick="if(event.target === this) closeGuestSignupModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                <h3 id="guestModalTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
+                    <span>👥</span> Dopisz Znajomego / Gościa
+                </h3>
+                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
+            </div>
+
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Twój znajomy nie musi zakładać konta ani podawać PIN-u. Wybierz go z bazy lub wpisz jego imię:
+            </p>
+
+            <div class="space-y-3">
+                <div>
+                    <label for="guestSelectFromDir" class="block text-[11px] text-slate-400 font-semibold mb-1">Wybierz z listy graczy:</label>
+                    <select id="guestSelectFromDir" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-center gap-2">
+                    <span class="h-px bg-slate-800 flex-1"></span>
+                    <span class="text-[10px] text-slate-500 font-bold uppercase">LUB NOWY GOŚĆ</span>
+                    <span class="h-px bg-slate-800 flex-1"></span>
+                </div>
+
+                <div>
+                    <label for="guestCustomNameInput" class="block text-[11px] text-slate-400 font-semibold mb-1">Wpisz nowe imię / opis:</label>
+                    <input id="guestCustomNameInput" type="text" placeholder="np. Marek (kumpel Kamila)" class="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="submitGuestSignup()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
+                    Dopisz do meczu 🏐
+                </button>
+                <button type="button" onclick="closeGuestSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-3 rounded-2xl text-xs transition">
+                    Anuluj
                 </button>
             </div>
         </div>
@@ -1109,7 +985,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
+    <div id="toast" role="status" aria-live="polite" class="fixed bottom-20 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
         Powiadomienie
     </div>
 
@@ -1128,8 +1004,104 @@
         };
         
         const POLISH_MONTHS = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-        const ADMIN_PIN = "201018";
+        const ORGANIZER_NAME = "Michał Chaciński";
         const APP_ICON = "logo.jpg.jpg";
+
+        // ================= SECURE PIN CRYPTOGRAPHY & HELPERS =================
+        const PIN_SALT = "siatka_pin_salt_v1_";
+        const ADMIN_PIN_HASH = "756f6167f0e830b6ed92808096f04ceb547f022a63f63bdba0f6c8ceab37f45c";
+
+        function sha256(ascii) {
+            const H_INIT = [
+                0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+                0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+            ];
+            const K = [
+                0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+                0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+                0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+                0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+                0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+                0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+                0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+                0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+            ];
+
+            function rotr(n, x) { return (x >>> n) | (x << (32 - n)); }
+
+            const h = H_INIT.slice();
+            const words = [];
+            const asciiBitLength = ascii.length * 8;
+            ascii += '\x80';
+            while ((ascii.length % 64) !== 56) ascii += '\x00';
+            for (let i = 0; i < ascii.length; i++) {
+                const j = ascii.charCodeAt(i);
+                words[i >> 2] |= j << ((3 - (i % 4)) * 8);
+            }
+            words.push((asciiBitLength / 0x100000000) | 0);
+            words.push(asciiBitLength | 0);
+
+            for (let j = 0; j < words.length; j += 16) {
+                const w = words.slice(j, j + 16);
+                for (let i = 16; i < 64; i++) {
+                    const s0 = rotr(7, w[i - 15]) ^ rotr(18, w[i - 15]) ^ (w[i - 15] >>> 3);
+                    const s1 = rotr(17, w[i - 2]) ^ rotr(19, w[i - 2]) ^ (w[i - 2] >>> 10);
+                    w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+                }
+                let a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], h_val = h[7];
+                for (let i = 0; i < 64; i++) {
+                    const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);
+                    const ch = (e & f) ^ ((~e) & g);
+                    const temp1 = (h_val + S1 + ch + K[i] + w[i]) | 0;
+                    const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);
+                    const maj = (a & b) ^ (a & c) ^ (b & c);
+                    const temp2 = (S0 + maj) | 0;
+                    h_val = g;
+                    g = f;
+                    f = e;
+                    e = (d + temp1) | 0;
+                    d = c;
+                    c = b;
+                    b = a;
+                    a = (temp1 + temp2) | 0;
+                }
+                h[0] = (h[0] + a) | 0;
+                h[1] = (h[1] + b) | 0;
+                h[2] = (h[2] + c) | 0;
+                h[3] = (h[3] + d) | 0;
+                h[4] = (h[4] + e) | 0;
+                h[5] = (h[5] + f) | 0;
+                h[6] = (h[6] + g) | 0;
+                h[7] = (h[7] + h_val) | 0;
+            }
+            let res = '';
+            for (let i = 0; i < 8; i++) {
+                let hex = (h[i] >>> 0).toString(16);
+                while (hex.length < 8) hex = '0' + hex;
+                res += hex;
+            }
+            return res;
+        }
+
+        function hashPin(pin) {
+            if (!pin) return "";
+            return sha256(PIN_SALT + String(pin).trim());
+        }
+
+        function verifyPin(inputPin, storedPinOrHash) {
+            if (!inputPin || !storedPinOrHash) return false;
+            const cleanInput = String(inputPin).trim();
+            const stored = String(storedPinOrHash).trim();
+            if (/^[0-9a-f]{64}$/i.test(stored)) {
+                return hashPin(cleanInput) === stored.toLowerCase();
+            }
+            return cleanInput === stored;
+        }
+
+        function verifyAdminPin(inputPin) {
+            if (!inputPin) return false;
+            return hashPin(inputPin) === ADMIN_PIN_HASH;
+        }
 
         const INITIAL_STATE = {
             all_players: [
@@ -1141,6 +1113,9 @@
                 "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", 
                 "Artur Żbikowski", "Patryk Wendorff", "Karolina", "Czapa", "Piotr T", "Kuba Żurawski", "Kamil (od Konrada Pazio)"
             ],
+            player_pins: {
+                "Michał Chaciński": ADMIN_PIN_HASH
+            },
             base_games: {
                 "Michał Chaciński": 8, "Zuzanna Rostkowska": 8, "Mikołaj Morawski": 8, "Filip Morawski": 8, "Kuba Parszewski": 6,
                 "Szymon Fronczak": 7, "Konrad Pazio": 7, "Piotrek Bany": 0, "Kacper Szafraniec": 6, "Albert Kubiak": 4,
@@ -1232,6 +1207,7 @@
         // ================= GLOBAL APPLICATION STATE =================
         let AppState = {
             all_players: [],
+            player_pins: {},
             months: {},
             base_games: {},
             settings: { hallCost: 250, blikPhone: "517 077 482" },
@@ -1242,7 +1218,9 @@
 
         let db = null;
         let isOnlineSync = false;
-        let isAdmin = localStorage.getItem('siatka_is_admin') === 'true';
+        let loggedPlayer = localStorage.getItem('siatka_active_player') || '';
+        let isAdmin = (loggedPlayer === ORGANIZER_NAME) || (localStorage.getItem('siatka_is_admin') === 'true');
+        
         let showPastMatches = false;
         let currentTemplateType = 'match';
         let hasInitiallySelectedMonth = false;
@@ -1394,7 +1372,7 @@
 
         // ================= INITIALIZATION & REALTIME SYNC =================
         function initApp() {
-            updateAdminUI();
+            checkUserAuthSession();
 
             loadLocalState();
             autoSelectUpcomingMatchOnLoad();
@@ -1424,6 +1402,7 @@
                     if (val) {
                         AppState = val;
                         ensureValidState();
+                        checkUserAuthSession();
                         if (!hasLoadedRemoteState) {
                             hasInitiallySelectedMonth = false;
                             autoSelectUpcomingMatchOnLoad();
@@ -1433,6 +1412,7 @@
                     } else {
                         AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
                         ensureValidState();
+                        checkUserAuthSession();
                         hasInitiallySelectedMonth = false;
                         autoSelectUpcomingMatchOnLoad();
                         hasLoadedRemoteState = true;
@@ -1451,6 +1431,15 @@
             }
 
             startCountdownTicker();
+        }
+
+        function checkUserAuthSession() {
+            loggedPlayer = localStorage.getItem('siatka_active_player') || '';
+            isAdmin = (loggedPlayer === ORGANIZER_NAME) || (localStorage.getItem('siatka_is_admin') === 'true');
+            updateAdminUI();
+            if (typeof checkWelcomeGate === 'function') {
+                checkWelcomeGate();
+            }
         }
 
         function loadLocalState() {
@@ -1472,6 +1461,20 @@
                 AppState.all_players = JSON.parse(JSON.stringify(INITIAL_STATE.all_players || []));
             }
             AppState.all_players = [...new Set(AppState.all_players.map(normalizePlayerName).filter(Boolean))];
+
+            if (!AppState.player_pins || typeof AppState.player_pins !== 'object') {
+                AppState.player_pins = JSON.parse(JSON.stringify(INITIAL_STATE.player_pins || {}));
+            }
+            if (!AppState.player_pins[ORGANIZER_NAME] || !/^[0-9a-f]{64}$/i.test(AppState.player_pins[ORGANIZER_NAME])) {
+                AppState.player_pins[ORGANIZER_NAME] = ADMIN_PIN_HASH;
+            }
+            // Automatyczna bezpieczna migracja starych kodów tekstowych na hashe SHA-256
+            Object.keys(AppState.player_pins).forEach(player => {
+                const val = String(AppState.player_pins[player] || '').trim();
+                if (val && !/^[0-9a-f]{64}$/i.test(val)) {
+                    AppState.player_pins[player] = hashPin(val);
+                }
+            });
 
             if (!AppState.base_games || typeof AppState.base_games !== 'object' || Object.keys(AppState.base_games).length === 0) {
                 AppState.base_games = JSON.parse(JSON.stringify(INITIAL_STATE.base_games || {}));
@@ -1546,10 +1549,11 @@
         function renderCurrentView() {
             renderMatchesTab();
             renderTeamsTab();
-            renderMvpTab();
+            renderIntegratedMvpCard();
             renderArchiveTab();
             renderBilling();
             renderHallOfFame();
+            renderProfileTab();
             updateCountdownDisplay();
             updatePushStatusUI();
         }
@@ -1592,7 +1596,7 @@
                 const minutes = Math.floor((diffMs % (1000 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-                labelEl.innerText = "Do pierwszego gwizdka:";
+                labelEl.innerText = "Do meczu:";
                 valueEl.innerText = `${days > 0 ? days + 'd ' : ''}${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-emerald-400 tracking-wider";
                 valueEl.onclick = null;
@@ -1604,71 +1608,44 @@
             } else {
                 const isFinished = isMvpVotingFinished(currentMatch);
                 labelEl.innerText = "Mecz zakończony:";
-                valueEl.innerText = isFinished ? "🏆 ZOBACZ WYNIKI MVP" : "🔒 TAJNE GŁOSOWANIE MVP";
-                valueEl.className = "text-xs sm:text-sm font-black font-mono text-sky-400 tracking-wider cursor-pointer";
-                valueEl.onclick = () => switchTab('mvp');
+                valueEl.innerText = isFinished ? "🏆 WYNIKI MVP ODKRYTE" : "🔒 TAJNE GŁOSOWANIE MVP";
+                valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 tracking-wider cursor-pointer";
+                valueEl.onclick = () => {
+                    document.getElementById('integratedMvpCard')?.scrollIntoView({ behavior: 'smooth' });
+                };
             }
         }
 
-        // ================= ADMIN AUTHENTICATION =================
+        // ================= ADMIN AUTHENTICATION & UI =================
         function updateAdminUI() {
             const badge = document.getElementById('adminModeBadge');
-            const statusText = document.getElementById('adminStatusText');
-            const loginForm = document.getElementById('adminLoginForm');
-            const logoutSection = document.getElementById('adminLogoutSection');
-            const skillsPanel = document.getElementById('hiddenSkillRatingsPanel');
-            const headerShareBtn = document.getElementById('headerShareBtn');
             const matchAdminBar = document.getElementById('matchAdminBarContainer');
+            const userGreeting = document.getElementById('headerUserGreeting');
+            const navProfileLabel = document.getElementById('navProfileLabel');
+
+            if (loggedPlayer) {
+                if (navProfileLabel) navProfileLabel.innerText = loggedPlayer.split(' ')[0];
+                if (userGreeting) {
+                    if (loggedPlayer === ORGANIZER_NAME || isAdmin) {
+                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👑 (Organizator)`;
+                    } else {
+                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👋 • 18:30`;
+                    }
+                }
+            } else {
+                if (navProfileLabel) navProfileLabel.innerText = "Profil";
+                if (userGreeting) {
+                    userGreeting.innerHTML = `👀 Tryb gościa • <button type="button" onclick="openWelcomeGateModal()" class="underline text-amber-300 hover:text-amber-200 font-bold ml-1 cursor-pointer">Zaloguj się</button>`;
+                }
+            }
 
             if (isAdmin) {
                 if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
-                if (headerShareBtn) { headerShareBtn.classList.remove('hidden'); headerShareBtn.classList.add('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.remove('hidden');
-                if (statusText) {
-                    statusText.innerText = "Zalogowano jako Organizator ✅";
-                    statusText.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800";
-                }
-                if (loginForm) loginForm.classList.add('hidden');
-                if (logoutSection) logoutSection.classList.remove('hidden');
-                if (skillsPanel) skillsPanel.classList.remove('hidden');
-                renderPlayerSkillsGrid();
             } else {
                 if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
-                if (headerShareBtn) { headerShareBtn.classList.add('hidden'); headerShareBtn.classList.remove('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.add('hidden');
-                if (statusText) {
-                    statusText.innerText = "Zwykły gracz";
-                    statusText.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400";
-                }
-                if (loginForm) loginForm.classList.remove('hidden');
-                if (logoutSection) logoutSection.classList.add('hidden');
-                if (skillsPanel) skillsPanel.classList.add('hidden');
             }
-            renderMatchesTab();
-            renderMvpTab();
-        }
-
-        function loginAsAdmin() {
-            const input = document.getElementById('adminPinInput');
-            const pin = (input ? input.value : '').trim();
-            if (pin === ADMIN_PIN) {
-                isAdmin = true;
-                localStorage.setItem('siatka_is_admin', 'true');
-                if (input) input.value = '';
-                updateAdminUI();
-                renderBilling();
-                showToast("Odblokowano uprawnienia Organizatora! 👑");
-            } else {
-                alert("Nieprawidłowy PIN!");
-            }
-        }
-
-        function logoutAdmin() {
-            isAdmin = false;
-            localStorage.removeItem('siatka_is_admin');
-            updateAdminUI();
-            renderBilling();
-            showToast("Wylogowano z trybu Organizatora.");
         }
 
         function requireAdminAuth(actionCallback) {
@@ -1676,70 +1653,24 @@
                 actionCallback();
                 return;
             }
-            const pin = prompt("Podaj PIN Organizatora:");
-            if (pin === ADMIN_PIN) {
+            const pin = prompt("Wymagane uprawnienia Organizatora. Podaj Master PIN:");
+            if (verifyAdminPin(pin)) {
                 isAdmin = true;
                 localStorage.setItem('siatka_is_admin', 'true');
                 updateAdminUI();
                 actionCallback();
-                showToast("Zalogowano jako Organizator! 👑");
+                showToast("Zalogowano w trybie Organizatora! 👑");
             } else if (pin !== null) {
                 alert("Nieprawidłowy PIN!");
             }
         }
 
-        // ================= DISCREET SKILL RATINGS (ADMIN ONLY) =================
-        function renderPlayerSkillsGrid() {
-            const grid = document.getElementById('playerSkillsGrid');
-            if (!grid) return;
-
-            if (!AppState.player_skills) AppState.player_skills = {};
-
-            grid.innerHTML = AppState.all_players.map(p => {
-                const currentRating = AppState.player_skills[p] || 3;
-                return `
-                    <div class="bg-slate-950/80 border border-slate-800/80 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
-                        <span class="font-semibold text-slate-200 truncate pr-2">${escapeHtml(p)}</span>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-900 border border-slate-700 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
-                                <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 - Początkujący</option>
-                                <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐⭐ 2 - Solidny</option>
-                                <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐⭐⭐ 3 - Średni</option>
-                                <option value="4" ${currentRating == 4 ? 'selected' : ''}>⭐⭐⭐⭐ 4 - Dobry / Lider</option>
-                                <option value="5" ${currentRating == 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐ 5 - PRO</option>
-                            </select>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updatePlayerSkill(playerName, ratingStr) {
-            if (!AppState.player_skills) AppState.player_skills = {};
-            AppState.player_skills[playerName] = parseInt(ratingStr, 10) || 3;
-            syncState();
-            showToast(`Zaktualizowano ocenę dla: ${playerName}`);
-        }
-
         // ================= NAVIGATION & TAB SWITCHING =================
-        function openMoreMenuModal() {
-            document.getElementById('moreMenuModal')?.classList.remove('hidden');
-        }
-
-        function closeMoreMenuModal() {
-            document.getElementById('moreMenuModal')?.classList.add('hidden');
-        }
-
-        function selectMoreMenuTab(tabName) {
-            closeMoreMenuModal();
-            switchTab(tabName);
-        }
-
         function switchTab(tabName) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('border-emerald-400', 'text-emerald-400');
-                btn.classList.add('border-transparent', 'text-slate-400');
+                btn.classList.remove('text-emerald-400');
+                btn.classList.add('text-slate-400');
             });
 
             const targetSection = document.getElementById(`tab-${tabName}`);
@@ -1747,17 +1678,25 @@
             
             const activeBtn = document.getElementById(`tab-btn-${tabName}`);
             if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-400');
-                activeBtn.classList.add('border-emerald-400', 'text-emerald-400');
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('text-emerald-400');
             }
 
-            if (tabName === 'matches') renderMatchesTab();
-            else if (tabName === 'teams') renderTeamsTab();
-            else if (tabName === 'mvp') renderMvpTab();
-            else if (tabName === 'archive') renderArchiveTab();
-            else if (tabName === 'billing') renderBilling();
-            else if (tabName === 'halloffame') renderHallOfFame();
-            else if (tabName === 'settings') renderSettings();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabName === 'matches') {
+                renderMatchesTab();
+                renderIntegratedMvpCard();
+            } else if (tabName === 'teams') {
+                renderTeamsTab();
+            } else if (tabName === 'billing') {
+                renderBilling();
+            } else if (tabName === 'halloffame') {
+                renderHallOfFame();
+                renderArchiveTab();
+            } else if (tabName === 'profile') {
+                renderProfileTab();
+            }
         }
 
         function renderMonthSelector() {
@@ -1833,30 +1772,7 @@
             const statusBadge = document.getElementById('matchStatusBadge');
             const upcomingBadge = document.getElementById('upcomingBadge');
             const scoreTextEl = document.getElementById('scoreText');
-            const playerSelect = document.getElementById('matchPlayerSelect');
-            const rememberBadge = document.getElementById('rememberBadge');
-
-            const savedMyName = localStorage.getItem('siatka_my_player_name') || '';
-
-            if (playerSelect) {
-                const attendeesList = currentMatch ? (currentMatch.attendees || []) : [];
-                const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
-                
-                playerSelect.innerHTML = `<option value="">-- Dotknij tutaj, aby wybrać swoje imię (${sortedPlayers.length}) --</option>` + 
-                    sortedPlayers.map(p => {
-                        const isAlreadySigned = attendeesList.includes(p);
-                        const isMySaved = (p === savedMyName);
-                        return `<option value="${escapeHtml(p)}" ${isAlreadySigned ? 'disabled class="text-slate-600 bg-slate-900"' : 'class="text-white bg-slate-950 font-semibold"'} ${isMySaved && !isAlreadySigned ? 'selected' : ''}>${escapeHtml(p)}${isAlreadySigned ? ' (już zapisany/a)' : (isMySaved ? ' ⭐ (Ty)' : '')}</option>`;
-                    }).join('');
-
-                if (rememberBadge) {
-                    if (savedMyName && !attendeesList.includes(savedMyName)) {
-                        rememberBadge.classList.remove('hidden');
-                    } else {
-                        rememberBadge.classList.add('hidden');
-                    }
-                }
-            }
+            const fastJoinSection = document.getElementById('fastJoinSection');
 
             if (!currentMatch) {
                 document.getElementById('matchDateBadge').innerText = "Brak meczu";
@@ -1866,6 +1782,7 @@
                 document.getElementById('reserveCardContainer').classList.add('hidden');
                 if (upcomingBadge) upcomingBadge.classList.add('hidden');
                 if (scoreTextEl) scoreTextEl.innerText = "-";
+                if (fastJoinSection) fastJoinSection.innerHTML = '';
                 return;
             }
 
@@ -1890,45 +1807,6 @@
                 }
             }
 
-            // Secret Ballot MVP Hero card
-            const mvpReminderCard = document.getElementById('mvpMatchReminderCard');
-            const mvpVotesBadge = document.getElementById('mvpVotesBriefBadge');
-            const mvpStatusMiniText = document.getElementById('mvpStatusMiniText');
-            const isMatchConcluded = !isCancelled && (
-                currentMatch.date < todayStr || 
-                (currentMatch.date === todayStr && (new Date().getHours() > 20 || (new Date().getHours() === 20 && new Date().getMinutes() >= 45))) ||
-                (currentMatch.score && currentMatch.score.length > 0)
-            );
-
-            if (mvpReminderCard) {
-                if (isMatchConcluded && mainPlayers.length > 0) {
-                    mvpReminderCard.classList.remove('hidden');
-                    const votesCount = Object.keys(currentMatch.votes || {}).length;
-                    const isFinished = isMvpVotingFinished(currentMatch);
-
-                    if (mvpVotesBadge) mvpVotesBadge.innerText = `Głosy: ${votesCount}/${mainPlayers.length}`;
-
-                    if (isFinished) {
-                        const votes = currentMatch.votes || {};
-                        const tally = {};
-                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                        let topNom = "", maxV = 0;
-                        Object.entries(tally).forEach(([nom, count]) => {
-                            if (count > maxV) { maxV = count; topNom = nom; }
-                        });
-                        if (mvpStatusMiniText) {
-                            mvpStatusMiniText.innerText = topNom ? `Wyniki odkryte! 👑 MVP: ${topNom} (${maxV} gł.)` : `Głosowanie zakończone`;
-                        }
-                    } else {
-                        if (mvpStatusMiniText) {
-                            mvpStatusMiniText.innerText = `🔒 Głosowanie tajne w toku (${votesCount}/${mainPlayers.length}) • Wskaż gracza meczu`;
-                        }
-                    }
-                } else {
-                    mvpReminderCard.classList.add('hidden');
-                }
-            }
-
             if (currentMatch.date === globalUpcomingDate && !isCancelled) {
                 if (upcomingBadge) upcomingBadge.classList.remove('hidden');
             } else {
@@ -1943,17 +1821,93 @@
                 cancelBtn.innerText = "🚫 Odwołaj mecz (0 zł)";
             }
 
+            // Render Fast Join UI for Logged-In User or Guest
+            if (fastJoinSection) {
+                if (loggedPlayer) {
+                    const isUserSigned = attendees.includes(loggedPlayer);
+                    const isInMain = mainPlayers.includes(loggedPlayer);
+                    const isReserve = isUserSigned && !isInMain;
+
+                    fastJoinSection.innerHTML = `
+                        <div class="space-y-2">
+                            ${isUserSigned ? `
+                                <div class="bg-slate-950 border border-emerald-800/80 rounded-2xl p-3 flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xl">✅</span>
+                                        <div>
+                                            <p class="text-xs font-extrabold text-white">Jesteś zapisany(a) na ten mecz!</p>
+                                            <p class="text-[11px] ${isInMain ? 'text-emerald-400' : 'text-amber-400'} font-semibold">
+                                                ${isInMain ? '🟢 Skład Główny (12)' : '⏳ Lista Rezerwowa'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition">
+                                        Wypisz mnie ✕
+                                    </button>
+                                </div>
+                            ` : `
+                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                                    <span class="text-base">🏐</span>
+                                    <span>ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
+                                </button>
+                            `}
+
+                            <button type="button" onclick="openGuestSignupModal()" class="w-full bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold px-4 py-2.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
+                                <span>👥</span>
+                                <span>+ Dopisz znajomego / gościa do składu</span>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    // Not logged in -> Quick selector + link to profile login
+                    const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+                    fastJoinSection.innerHTML = `
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label for="matchPlayerSelect" class="block text-xs font-extrabold text-slate-300 uppercase tracking-wider">
+                                    Wybierz gracza z listy:
+                                </label>
+                                <button type="button" onclick="switchTab('profile')" class="text-xs text-emerald-400 font-bold hover:underline">
+                                    🔑 Zaloguj się PIN-em
+                                </button>
+                            </div>
+                            
+                            <div class="relative">
+                                <select id="matchPlayerSelect" aria-label="Wybierz zawodnika z listy" class="w-full bg-slate-950 border-2 border-slate-700 focus:border-emerald-400 rounded-2xl px-4 py-3 text-xs sm:text-sm font-bold text-white focus:outline-none transition cursor-pointer appearance-none">
+                                    <option value="">-- Wybierz swoje imię --</option>
+                                    ${sortedPlayers.map(p => {
+                                        const isAlreadySigned = attendees.includes(p);
+                                        return `<option value="${escapeHtml(p)}" ${isAlreadySigned ? 'disabled class="text-slate-600 bg-slate-900"' : 'class="text-white bg-slate-950 font-semibold"'}>${escapeHtml(p)}${isAlreadySigned ? ' (zapisany/a)' : ''}</option>`;
+                                    }).join('')}
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-emerald-400 font-bold">▼</div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 pt-1">
+                                <button type="button" onclick="addPlayerToCurrentMatchFromSelect()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-md shadow-emerald-500/20">
+                                    Zapisz wybranego 🏐
+                                </button>
+                                <button type="button" onclick="openGuestSignupModal()" class="bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold py-3 rounded-2xl text-xs transition">
+                                    + Nowy gość 👥
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
             // Main Squad list
             const mainListEl = document.getElementById('mainSquadList');
             let squadHtml = "";
             for (let i = 0; i < 12; i++) {
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
+                    const isMe = (p === loggedPlayer);
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950 border border-slate-800/80 pl-3 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 truncate">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
-                                <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                                 <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
@@ -1978,15 +1932,18 @@
             if (reservePlayers.length > 0) {
                 reserveCard.classList.remove('hidden');
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
-                reserveListEl.innerHTML = reservePlayers.map((p, idx) => `
-                    <div class="flex items-center justify-between bg-slate-950/60 border border-amber-900/30 pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
-                            <span class="font-medium text-slate-300 truncate">${escapeHtml(p)}</span>
+                reserveListEl.innerHTML = reservePlayers.map((p, idx) => {
+                    const isMe = (p === loggedPlayer);
+                    return `
+                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
+                            <div class="flex items-center gap-2 truncate">
+                                <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
+                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} truncate">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                            </div>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
-                        <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             } else {
                 reserveCard.classList.add('hidden');
             }
@@ -1996,7 +1953,7 @@
             AppState.currentMatchIndex = idx;
             renderMatchesTab();
             renderTeamsTab();
-            renderMvpTab();
+            renderIntegratedMvpCard();
             updateCountdownDisplay();
         }
 
@@ -2038,11 +1995,8 @@
             });
         }
 
-        function addPlayerToCurrentMatch() {
-            const select = document.getElementById('matchPlayerSelect');
-            const name = select ? select.value.trim() : "";
-            if (!name) return alert("Wybierz swoje imię z listy rozwijanej!");
-
+        function addSpecificPlayerToMatch(name) {
+            if (!name) return;
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
@@ -2053,8 +2007,6 @@
                 return;
             }
 
-            localStorage.setItem('siatka_my_player_name', name);
-
             currentMatch.attendees.push(name);
             if (!AppState.all_players.includes(name)) {
                 AppState.all_players.push(name);
@@ -2064,33 +2016,55 @@
 
             syncState();
             renderCurrentView();
-            showToast(`Zapisano: ${name} ✅ (Zapamiętano na tym telefonie)`);
+            showToast(`Zapisano: ${name} ✅`);
         }
 
-        function addCustomNewPlayerPrompt() {
-            const name = prompt("Podaj imię i nazwisko nowego gracza:");
-            const clean = normalizePlayerName(name);
-            if (!clean) return;
+        function addPlayerToCurrentMatchFromSelect() {
+            const select = document.getElementById('matchPlayerSelect');
+            const name = select ? select.value.trim() : "";
+            if (!name) return alert("Wybierz swoje imię z listy rozwijanej!");
+            addSpecificPlayerToMatch(name);
+        }
 
-            if (!AppState.all_players.includes(clean)) {
-                AppState.all_players.push(clean);
-                if (!AppState.player_skills) AppState.player_skills = {};
-                AppState.player_skills[clean] = 3;
+        function openGuestSignupModal() {
+            const select = document.getElementById('guestSelectFromDir');
+            const input = document.getElementById('guestCustomNameInput');
+            if (input) input.value = '';
+
+            if (select) {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                const attendees = currentMatch ? (currentMatch.attendees || []) : [];
+                const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+
+                select.innerHTML = `<option value="">-- Wybierz gracza z bazy --</option>` +
+                    sortedPlayers.map(p => {
+                        const isAlready = attendees.includes(p);
+                        return `<option value="${escapeHtml(p)}" ${isAlready ? 'disabled' : ''}>${escapeHtml(p)}${isAlready ? ' (już na liście)' : ''}</option>`;
+                    }).join('');
             }
 
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (currentMatch) {
-                if (!currentMatch.attendees) currentMatch.attendees = [];
-                if (!currentMatch.attendees.includes(clean)) {
-                    currentMatch.attendees.push(clean);
-                }
+            document.getElementById('guestSignupModal')?.classList.remove('hidden');
+        }
+
+        function closeGuestSignupModal() {
+            document.getElementById('guestSignupModal')?.classList.add('hidden');
+        }
+
+        function submitGuestSignup() {
+            const select = document.getElementById('guestSelectFromDir');
+            const input = document.getElementById('guestCustomNameInput');
+            
+            let name = input ? input.value.trim() : '';
+            if (!name && select && select.value) {
+                name = select.value.trim();
             }
 
-            localStorage.setItem('siatka_my_player_name', clean);
-            syncState();
-            renderCurrentView();
-            showToast(`Dodano i zapisano: ${clean} ✅`);
+            name = normalizePlayerName(name);
+            if (!name) return alert("Wybierz gracza z listy lub wpisz imię gościa!");
+
+            addSpecificPlayerToMatch(name);
+            closeGuestSignupModal();
         }
 
         function removePlayerFromCurrentMatch(name) {
@@ -2108,7 +2082,6 @@
                 delete currentMatch.votes[name];
             }
             
-            // Clean player from teams without losing entire team setup
             if (currentMatch.teams) {
                 if (Array.isArray(currentMatch.teams.dark)) {
                     currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
@@ -2236,7 +2209,6 @@
                 return alert(`"${teamTitle}" ma już komplet graczy (maks 6)!`);
             }
 
-            // Remove from other team if was already placed there
             const otherIdx = otherList.indexOf(playerName);
             if (otherIdx !== -1) otherList.splice(otherIdx, 1);
 
@@ -2335,7 +2307,7 @@
                 }
             });
 
-            // Losowe przetasowanie kolejności w drużynach (Fisher-Yates)
+            // Losowe przetasowanie kolejności w drużynach (Fisher-Yates) ukrywające ranking gwiazdek
             const shuffleArray = (arr) => {
                 const result = [...arr];
                 for (let i = result.length - 1; i > 0; i--) {
@@ -2361,7 +2333,7 @@
 
             syncState();
             renderTeamsTab();
-            showToast("Wylosowano zbalansowane składy (kolejność w pełni losowa)! 🎲");
+            showToast("Wylosowano zbalansowane składy (losowa kolejność)! 🎲");
         }
 
         function clearCurrentMatchTeams() {
@@ -2413,7 +2385,6 @@
             const mainSquad = (currentMatch.attendees || []).slice(0, 12);
             const teams = currentMatch.teams || { dark: [], light: [], darkName: "Drużyna Ciemna", lightName: "Drużyna Jasna" };
 
-            // Sanitize: only players currently in mainSquad should remain in teams
             const dark = (teams.dark || []).filter(p => mainSquad.includes(p));
             const light = (teams.light || []).filter(p => mainSquad.includes(p));
             const darkName = teams.darkName || "Drużyna Ciemna";
@@ -2427,7 +2398,6 @@
             if (darkCountEl) darkCountEl.innerText = `${dark.length}/6`;
             if (lightCountEl) lightCountEl.innerText = `${light.length}/6`;
 
-            // Identify unassigned players from the main squad
             const unassigned = mainSquad.filter(p => !dark.includes(p) && !light.includes(p));
 
             // 1. Render Unassigned Pool
@@ -2435,19 +2405,22 @@
                 if (unassigned.length > 0 && teamsViewMode === 'list') {
                     unassignedCard.classList.remove('hidden');
                     if (unassignedCountEl) unassignedCountEl.innerText = unassigned.length;
-                    unassignedListEl.innerHTML = unassigned.map(p => `
-                        <div class="bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
-                            <div class="flex items-center gap-1 shrink-0">
-                                <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
-                                    ⬛ Ciemni
-                                </button>
-                                <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'light')" title="Przypisz do Drużyny Jasnej" class="px-2 py-1 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-800/80 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
-                                    ⬜ Jaśni
-                                </button>
+                    unassignedListEl.innerHTML = unassigned.map(p => {
+                        const isMe = (p === loggedPlayer);
+                        return `
+                            <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/70' : 'border-slate-800'} px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                                <span class="font-semibold ${isMe ? 'text-emerald-300' : 'text-slate-200'} truncate">${escapeHtml(p)}</span>
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
+                                        ⬛ Ciemni
+                                    </button>
+                                    <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'light')" title="Przypisz do Drużyny Jasnej" class="px-2 py-1 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-800/80 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
+                                        ⬜ Jaśni
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 } else {
                     unassignedCard.classList.add('hidden');
                 }
@@ -2457,23 +2430,26 @@
             if (dark.length === 0) {
                 darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
             } else {
-                darkListEl.innerHTML = dark.map((p, i) => `
-                    <div class="bg-slate-900 border border-slate-800/90 px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
-                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
-                            <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                darkListEl.innerHTML = dark.map((p, i) => {
+                    const isMe = (p === loggedPlayer);
+                    return `
+                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-2 truncate">
+                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                                <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                            </div>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ⇄ Jasna
+                                </button>
+                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ✕
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
-                                ⇄ Jasna
-                            </button>
-                            <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
-                                ✕
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             // Quick Add Select for Dark Team
@@ -2494,23 +2470,26 @@
             if (light.length === 0) {
                 lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
             } else {
-                lightListEl.innerHTML = light.map((p, i) => `
-                    <div class="bg-slate-900 border border-slate-800/90 px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
-                            <span class="font-semibold text-slate-200 truncate">${escapeHtml(p)}</span>
-                            <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                lightListEl.innerHTML = light.map((p, i) => {
+                    const isMe = (p === loggedPlayer);
+                    return `
+                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-2 truncate">
+                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                                <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
+                            </div>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ⇄ Ciemna
+                                </button>
+                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ✕
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
-                                ⇄ Ciemna
-                            </button>
-                            <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
-                                ✕
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             // Quick Add Select for Light Team
@@ -2613,8 +2592,8 @@
             showToast(`Zmieniono nazwę drużyny na: ${clean}`);
         }
 
-        // ================= TAB 3: SECRET MVP VOTING & CELEBRATION =================
-        function renderMvpTab() {
+        // ================= ZINTEGROWANA KARTA MVP (BEZPOŚREDNIO NA STRONIE GŁÓWNEJ) =================
+        function renderIntegratedMvpCard() {
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             
@@ -2624,6 +2603,7 @@
             const winnerName = document.getElementById('mvpWinnerName');
             const winnerVotes = document.getElementById('mvpWinnerVotes');
             const voterSelect = document.getElementById('voterSelect');
+            const voterSelectContainer = document.getElementById('voterSelectContainer');
             const nomineeSelect = document.getElementById('nomineeSelect');
             const resultsList = document.getElementById('mvpResultsList');
             const resultsSectionTitle = document.getElementById('mvpResultsSectionTitle');
@@ -2662,7 +2642,7 @@
                         : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
                 }
                 if (adminStatusLabel) {
-                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE dla wszystkich" : `Głosowanie tajne w toku (${totalVotesCast}/${attendees.length})`;
+                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE" : `Głosowanie tajne (${totalVotesCast}/${attendees.length})`;
                 }
             } else {
                 if (adminBar) adminBar.classList.add('hidden');
@@ -2671,24 +2651,43 @@
             if (attendees.length === 0) {
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "Status";
                 if (winnerName) winnerName.innerText = "Brak zapisanych graczy";
-                if (winnerVotes) winnerVotes.innerText = "Zapisz graczy w składzie głównym, aby odblokować głosowanie.";
+                if (winnerVotes) winnerVotes.innerText = "Zapisz graczy w składzie głównym powyżej, aby odblokować głosowanie.";
                 if (voterSelect) voterSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (nomineeSelect) nomineeSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Brak osób w składzie głównym.</div>`;
-                if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic">Brak graczy.</p>`;
+                if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic text-xs">Brak graczy.</p>`;
                 if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0/0";
                 return;
             }
 
-            const savedMyName = localStorage.getItem('siatka_my_player_name') || '';
-
-            // 1. Voter Select (Does NOT reveal candidate to other people on dropdown)
-            if (voterSelect) {
-                voterSelect.innerHTML = `<option value="">-- Wybierz siebie ze składu --</option>` + attendees.map(p => {
-                    const hasVoted = Boolean(votes[p]);
-                    const isMyName = (p === savedMyName);
-                    return `<option value="${escapeHtml(p)}" ${isMyName ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
-                }).join('');
+            // 1. Voter Select: If logged in and in attendees, auto-lock to loggedPlayer
+            if (loggedPlayer && attendees.includes(loggedPlayer)) {
+                if (voterSelectContainer) {
+                    const hasVoted = Boolean(votes[loggedPlayer]);
+                    voterSelectContainer.innerHTML = `
+                        <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                            <span class="text-slate-400">Głosujesz jako: <strong class="text-white">${escapeHtml(loggedPlayer)}</strong></span>
+                            <span class="text-[10px] font-bold ${hasVoted ? 'text-emerald-400' : 'text-amber-400'}">
+                                ${hasVoted ? '✅ Głos oddany' : '⏳ Czekasz na głos'}
+                            </span>
+                        </div>
+                        <input type="hidden" id="voterSelect" value="${escapeHtml(loggedPlayer)}">
+                    `;
+                }
+            } else if (voterSelect) {
+                if (voterSelectContainer && !voterSelectContainer.querySelector('select')) {
+                    voterSelectContainer.innerHTML = `
+                        <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
+                        <select id="voterSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer"></select>
+                    `;
+                }
+                const activeVoterSelect = document.getElementById('voterSelect');
+                if (activeVoterSelect) {
+                    activeVoterSelect.innerHTML = `<option value="">-- Wybierz siebie ze składu --</option>` + attendees.map(p => {
+                        const hasVoted = Boolean(votes[p]);
+                        return `<option value="${escapeHtml(p)}">${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
+                    }).join('');
+                }
             }
 
             // 2. Nominee Select
@@ -2718,7 +2717,6 @@
 
             // 3. Render Hero & Results based on Secret vs Finished State
             if (isFinished) {
-                // ======= FINISHED: FULL CELEBRATION & PUBLIC RESULTS =======
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
                 if (winnerName && winnerVotes) {
                     if (maxVotes === 0) {
@@ -2774,7 +2772,6 @@
                 }
 
             } else {
-                // ======= ONGOING: SECRET BALLOT (NO LEAKS) =======
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "🔒 TAJNE GŁOSOWANIE W TOKU";
                 if (winnerName) {
                     winnerName.innerText = totalVotesCast === 0 ? "Czekamy na pierwsze głosy" : `Oddano ${totalVotesCast} z ${attendees.length} głosów`;
@@ -2788,7 +2785,7 @@
                 const percentDone = Math.round((totalVotesCast / attendees.length) * 100);
                 if (resultsList) {
                     resultsList.innerHTML = `
-                        <div class="bg-slate-950 border border-amber-900/40 rounded-2xl p-4 space-y-3">
+                        <div class="bg-slate-950 border border-amber-900/40 rounded-2xl p-3.5 space-y-2.5">
                             <div class="flex items-center justify-between text-xs">
                                 <span class="font-bold text-slate-300 flex items-center gap-1.5">
                                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
@@ -2800,13 +2797,12 @@
                                 <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-sky-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percentDone}%"></div>
                             </div>
                             <p class="text-[10px] text-slate-400 text-center leading-relaxed">
-                                🕵️ Wyniki oraz to, kto na kogo głosował, zostaną ujawnione automatycznie, gdy zagłosują wszyscy obecni.
+                                🕵️ Wyniki oraz to, kto na kogo głosował, zostaną ujawnione automatycznie po zebraniu wszystkich głosów.
                             </p>
                         </div>
                     `;
                 }
 
-                // Who voted status (Secret: only shows IF they voted, NOT WHO they voted for)
                 if (whoVotedTitle) whoVotedTitle.innerText = "Status głosowania obecnych:";
                 if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${totalVotesCast} / ${attendees.length}`;
                 if (whoVotedList) {
@@ -2826,10 +2822,11 @@
         }
 
         function submitMvpVote() {
-            const voter = document.getElementById('voterSelect')?.value;
+            let voter = document.getElementById('voterSelect')?.value;
+            if (!voter && loggedPlayer) voter = loggedPlayer;
             const nominee = document.getElementById('nomineeSelect')?.value;
 
-            if (!voter) return alert("Wybierz siebie z listy obecnych graczy!");
+            if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
 
             const monthData = AppState.months[AppState.currentMonth];
@@ -2865,8 +2862,9 @@
             }
 
             syncState();
-            renderMvpTab();
+            renderIntegratedMvpCard();
             renderMatchesTab();
+            renderProfileTab();
 
             if (isNowCompleted) {
                 showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
@@ -2894,7 +2892,7 @@
                 }
 
                 syncState();
-                renderMvpTab();
+                renderIntegratedMvpCard();
                 renderMatchesTab();
                 showToast(currentMatch.mvpClosed ? "Odkryto wyniki MVP dla wszystkich! 👑" : "Głosowanie zostało otwarte ponownie. 🔓");
             });
@@ -2918,7 +2916,7 @@
             historyMatches.sort((a, b) => b.date.localeCompare(a.date));
 
             if (!historyMatches.length) {
-                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-500">Brak archiwalnych spotkań. Wyniki pojawią się tutaj po rozegraniu piątkowych meczów!</div>`;
+                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-500">Brak archiwalnych spotkań. Wyniki pojawią się tutaj po rozegraniu piątkowych meczów!</div>`;
                 return;
             }
 
@@ -2939,7 +2937,7 @@
                 });
 
                 return `
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2.5 shadow-md">
                         <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-black font-mono text-emerald-400 bg-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-800/80">
@@ -2950,7 +2948,7 @@
                             <span class="text-[10px] font-bold text-slate-400 font-mono">Frekwencja: ${attendees.length}/12</span>
                         </div>
 
-                        <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl flex items-center justify-between gap-2 flex-wrap">
+                        <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-2 flex-wrap text-xs">
                             <div>
                                 <span class="text-[10px] text-slate-400 font-semibold">Wynik meczu:</span>
                                 <p class="text-xs font-black text-amber-300 font-mono mt-0.5">${escapeHtml(score)}</p>
@@ -2958,32 +2956,32 @@
                             <div class="text-right">
                                 <span class="text-[10px] text-slate-400 font-semibold">MVP meczu:</span>
                                 <p class="text-xs font-extrabold text-white mt-0.5">
-                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak głosowania')}
+                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak')}
                                 </p>
                             </div>
                         </div>
 
                         ${teams && (teams.dark?.length || teams.light?.length) ? `
                             <div class="grid grid-cols-2 gap-2 text-[11px] pt-1">
-                                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                                    <span class="font-bold text-slate-300 flex items-center gap-1 mb-1 truncate">
+                                <div class="bg-slate-900/50 p-2 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-slate-300 flex items-center gap-1 mb-1 truncate text-[10px]">
                                         <span class="w-2 h-2 rounded-full bg-slate-600 shrink-0"></span> ${escapeHtml(darkName)}
                                     </span>
-                                    <ul class="text-slate-400 space-y-0.5">
+                                    <ul class="text-slate-400 space-y-0.5 text-[10px]">
                                         ${(teams.dark || []).map(p => `<li class="truncate">• ${escapeHtml(p)}</li>`).join('')}
                                     </ul>
                                 </div>
-                                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                                    <span class="font-bold text-slate-300 flex items-center gap-1 mb-1 truncate">
+                                <div class="bg-slate-900/50 p-2 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-slate-300 flex items-center gap-1 mb-1 truncate text-[10px]">
                                         <span class="w-2 h-2 rounded-full bg-white shrink-0"></span> ${escapeHtml(lightName)}
                                     </span>
-                                    <ul class="text-slate-400 space-y-0.5">
+                                    <ul class="text-slate-400 space-y-0.5 text-[10px]">
                                         ${(teams.light || []).map(p => `<li class="truncate">• ${escapeHtml(p)}</li>`).join('')}
                                     </ul>
                                 </div>
                             </div>
                         ` : `
-                            <div class="text-[11px] text-slate-500 italic">
+                            <div class="text-[10px] text-slate-500 italic">
                                 Skład: ${attendees.map(escapeHtml).join(', ')}
                             </div>
                         `}
@@ -3089,12 +3087,13 @@
                 const paid = info.paid;
                 const saldo = paid - due;
                 const isPaid = (due > 0 && saldo >= -0.05);
+                const isMe = (p === loggedPlayer);
 
                 return `
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/10' : 'border-slate-800/80'} rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="space-y-0.5">
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-xs text-white">${escapeHtml(p)}</span>
+                                <span class="font-bold text-xs ${isMe ? 'text-emerald-300 font-black' : 'text-white'}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                                 <span class="text-[10px] text-slate-400 font-mono">(${info.games} gier)</span>
                                 ${isPaid ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">✅ Opłacone</span>` : (paid > 0 ? `<span class="bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Częściowo</span>` : '')}
                             </div>
@@ -3144,6 +3143,7 @@
             monthData.rozliczenia[pName] = { paid: val };
             syncState();
             renderBilling();
+            renderProfileTab();
             showToast(`Zapisano wpłatę ${val.toFixed(2)} zł dla: ${pName}`);
         }
 
@@ -3154,6 +3154,7 @@
             monthData.rozliczenia[pName] = { paid: val };
             syncState();
             renderBilling();
+            renderProfileTab();
             showToast(`Opłacono całość (${val.toFixed(2)} zł) dla: ${pName} ✅`);
         }
 
@@ -3162,8 +3163,174 @@
             copyToClipboard(blik.replace(/\s+/g, ''), `Skopiowano numer BLIK: ${blik}`);
         }
 
+        function copyDebtorsListMessage() {
+            const billingData = calculateMonthlyBilling(AppState.currentMonth);
+            const debtors = [];
+
+            AppState.all_players.forEach(p => {
+                const info = billingData.playersMap[p] || { costDue: 0, paid: 0 };
+                const outstanding = Math.max(0, info.costDue - info.paid);
+                if (outstanding > 0.05) {
+                    debtors.push({ name: p, due: outstanding });
+                }
+            });
+
+            if (debtors.length === 0) {
+                showToast("Wszystkie składki na ten miesiąc są w 100% opłacone! 🎉");
+                return;
+            }
+
+            debtors.sort((a, b) => b.due - a.due || a.name.localeCompare(b.name, 'pl'));
+
+            const blikPhone = String(AppState.settings?.blikPhone || "517 077 482");
+            const msg = `📢 ROZLICZENIE SIATKÓWKI - ${AppState.currentMonth.toUpperCase()} 🏐\n\n` +
+                        `Siema ekipa! Przypominajka o składkach za halę. Do opłacenia pozostało:\n` +
+                        debtors.map(d => `• ${d.name} - ${d.due.toFixed(2)} zł`).join('\n') +
+                        `\n\n💸 BLIK na numer: ${blikPhone} (w tytule: Imię Nazwisko Siatka)\n` +
+                        `Dzięki za szybkie przelewy! 🔥`;
+
+            copyToClipboard(msg, "Skopiowano listę do opłacenia! Gotowa do wklejenia na Messengera 📋");
+        }
+
+        function calculatePlayerChemistry(playerName) {
+            if (!playerName) return { bestPartner: null, topRival: null };
+
+            const teammateStats = {}; // name -> { together: 0, wins: 0 }
+            const opponentStats = {}; // name -> { against: 0, winsAgainst: 0 }
+
+            Object.keys(AppState.months || {}).forEach(mName => {
+                (AppState.months[mName]?.matches || []).forEach(m => {
+                    if (m.isCancelled || !m.score || !m.teams) return;
+                    const dark = m.teams.dark || [];
+                    const light = m.teams.light || [];
+                    if (!dark.includes(playerName) && !light.includes(playerName)) return;
+
+                    const isDark = dark.includes(playerName);
+                    const myTeam = isDark ? dark : light;
+                    const oppTeam = isDark ? light : dark;
+
+                    const matchRes = m.score.match(/\s(\d+)\s*:\s*(\d+)\s/);
+                    let isWon = false;
+                    if (matchRes) {
+                        const sA = parseInt(matchRes[1], 10);
+                        const sB = parseInt(matchRes[2], 10);
+                        isWon = isDark ? (sA > sB) : (sB > sA);
+                    }
+
+                    // Teammates
+                    myTeam.forEach(t => {
+                        if (t === playerName) return;
+                        if (!teammateStats[t]) teammateStats[t] = { together: 0, wins: 0 };
+                        teammateStats[t].together++;
+                        if (isWon) teammateStats[t].wins++;
+                    });
+
+                    // Opponents
+                    oppTeam.forEach(o => {
+                        if (o === playerName) return;
+                        if (!opponentStats[o]) opponentStats[o] = { against: 0, winsAgainst: 0 };
+                        opponentStats[o].against++;
+                        if (isWon) opponentStats[o].winsAgainst++;
+                    });
+                });
+            });
+
+            // Find best partner
+            let bestPartner = null;
+            let bestPartnerScore = -1;
+            Object.entries(teammateStats).forEach(([name, st]) => {
+                if (st.together >= 1) {
+                    const winPct = Math.round((st.wins / st.together) * 100);
+                    const score = (st.wins * 10) + winPct;
+                    if (score > bestPartnerScore) {
+                        bestPartnerScore = score;
+                        bestPartner = { name, together: st.together, wins: st.wins, winPct };
+                    }
+                }
+            });
+
+            // Find top rival
+            let topRival = null;
+            let maxAgainst = -1;
+            Object.entries(opponentStats).forEach(([name, st]) => {
+                if (st.against > maxAgainst) {
+                    maxAgainst = st.against;
+                    const winPct = Math.round((st.winsAgainst / st.against) * 100);
+                    topRival = { name, against: st.against, winsAgainst: st.winsAgainst, winPct };
+                }
+            });
+
+            return { bestPartner, topRival };
+        }
+
+        function calculatePlayerMatchHistory(playerName) {
+            if (!playerName) return [];
+            const history = [];
+
+            Object.keys(AppState.months || {}).forEach(mName => {
+                (AppState.months[mName]?.matches || []).forEach((m) => {
+                    const attendees = (m.attendees || []).slice(0, 12);
+                    if (!attendees.includes(playerName)) return;
+
+                    const teams = m.teams || null;
+                    const dark = teams?.dark || [];
+                    const light = teams?.light || [];
+                    let teamName = "Skład";
+                    let isDark = false;
+                    let isLight = false;
+
+                    if (dark.includes(playerName)) {
+                        teamName = teams?.darkName || "Drużyna Ciemna";
+                        isDark = true;
+                    } else if (light.includes(playerName)) {
+                        teamName = teams?.lightName || "Drużyna Jasna";
+                        isLight = true;
+                    }
+
+                    let outcome = "pending";
+                    const scoreStr = m.score || "";
+                    if (scoreStr && (isDark || isLight)) {
+                        const matchRes = scoreStr.match(/\s(\d+)\s*:\s*(\d+)\s/);
+                        if (matchRes) {
+                            const sA = parseInt(matchRes[1], 10);
+                            const sB = parseInt(matchRes[2], 10);
+                            if (isDark) outcome = (sA > sB) ? "win" : ((sB > sA) ? "loss" : "draw");
+                            if (isLight) outcome = (sB > sA) ? "win" : ((sA > sB) ? "loss" : "draw");
+                        }
+                    }
+
+                    let isMvpWinner = false;
+                    if (isMvpVotingFinished(m)) {
+                        const votes = m.votes || {};
+                        const tally = {};
+                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
+                        let maxV = 0, topNom = "";
+                        Object.entries(tally).forEach(([nom, count]) => {
+                            if (count > maxV) { maxV = count; topNom = nom; }
+                        });
+                        if (topNom === playerName && maxV > 0) isMvpWinner = true;
+                    }
+
+                    history.push({
+                        date: m.date,
+                        monthName: mName,
+                        score: scoreStr || "W toku",
+                        teamName,
+                        isDark,
+                        isLight,
+                        outcome,
+                        isMvpWinner
+                    });
+                });
+            });
+
+            history.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            return history;
+        }
+
         // ================= TAB 6: ROZBUDOWANY SYSTEM ODZNAK I STATYSTYK =================
         function calculatePlayerForm(playerName) {
+            if (!playerName) return [];
             const allMatches = [];
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach(m => {
@@ -3204,8 +3371,11 @@
 
         function calculatePlayerBadges(playerName) {
             const badges = [];
-            const baseGames = AppState.base_games[playerName] || 0;
+            if (!playerName) return { badges, totalGames: 0, mvpWins: 0, attendedMatches: 0 };
+
+            const baseGames = (AppState.base_games && AppState.base_games[playerName]) || 0;
             let attendedMatches = 0;
+            let totalAvailableSeasonMatches = 0;
             let mvpWins = 0;
             let hasUnanimousMvp = false;
             let wonAsDark = false;
@@ -3223,6 +3393,7 @@
                 matches.forEach(m => {
                     if (!m.isCancelled) {
                         activeMatches++;
+                        totalAvailableSeasonMatches++;
                         const mainSquad = (m.attendees || []).slice(0, 12);
                         if (mainSquad.includes(playerName)) {
                             playerAttended++;
@@ -3301,7 +3472,9 @@
                 badges.push({ icon: "🎖️", title: "Aktywny Sędzia: Głosuje w min. 70% swoich gier" });
             }
 
-            return { badges, totalGames, mvpWins };
+            const attendancePercent = totalAvailableSeasonMatches > 0 ? Math.round((attendedMatches / totalAvailableSeasonMatches) * 100) : 0;
+
+            return { badges, totalGames, mvpWins, attendedMatches, attendancePercent };
         }
 
         function getPlayerBadgesHtml(playerName) {
@@ -3401,6 +3574,8 @@
                 else if (idx === 1) rank = '🥈 2';
                 else if (idx === 2) rank = '🥉 3';
 
+                const isMe = (s.name === loggedPlayer);
+
                 const formHtml = s.form.length ? `
                     <div class="flex items-center justify-center gap-0.5">
                         ${s.form.map(o => `
@@ -3410,11 +3585,11 @@
                 ` : `<span class="text-slate-600 text-[10px]">-</span>`;
 
                 return `
-                    <tr class="hover:bg-slate-800/40 transition">
+                    <tr class="hover:bg-slate-800/40 transition ${isMe ? 'bg-emerald-950/20' : ''}">
                         <td class="py-2.5 px-2.5 text-center font-bold font-mono text-slate-400">${rank}</td>
                         <td class="py-2.5 px-3 font-semibold text-white">
                             <div class="flex items-center gap-1.5 flex-wrap">
-                                <span>${escapeHtml(s.name)}</span>
+                                <span class="${isMe ? 'text-emerald-300 font-bold' : ''}">${escapeHtml(s.name)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                                 <span class="flex items-center gap-0.5">${getPlayerBadgesHtml(s.name)}</span>
                             </div>
                         </td>
@@ -3431,21 +3606,703 @@
             renderSeasonRecords();
         }
 
-        // ================= TAB 7: SETTINGS & DIRECTORY =================
-        function renderSettings() {
-            const container = document.getElementById('playerDirectoryTags');
-            if (container) {
-                container.innerHTML = AppState.all_players.map(p => `
-                    <span class="inline-flex items-center gap-1 bg-slate-950 border border-slate-800 pl-2 pr-1 py-1 rounded-xl text-xs text-slate-300 mb-1">
-                        <span class="truncate max-w-[140px]">${escapeHtml(p)}</span>
-                        ${isAdmin ? `
-                            <button type="button" onclick="editPlayerInDirectory(${toInlineArgument(p)})" class="text-indigo-400 hover:text-indigo-300 font-bold p-1 ml-1" title="Edytuj">✏️</button>
-                            <button type="button" onclick="removePlayerFromDirectory(${toInlineArgument(p)})" class="text-rose-500 hover:text-rose-400 font-bold p-1" title="Usuń z bazy">✕</button>
-                        ` : ''}
-                    </span>
-                `).join(' ');
+        // ================= TAB 5: MÓJ PROFIL & PANEL ORGANIZATORA =================
+        function renderProfileTab() {
+            const container = document.getElementById('profileMainContainer');
+            if (!container) return;
+
+            if (!loggedPlayer) {
+                // Widok logowania / rejestracji PIN-em
+                const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4 max-w-md mx-auto">
+                        <div class="text-center space-y-1.5 pb-2 border-b border-slate-800">
+                            <div class="w-14 h-14 mx-auto rounded-3xl bg-gradient-to-tr from-emerald-500 to-sky-500 p-0.5 shadow-lg flex items-center justify-center">
+                                <span class="text-2xl">👤</span>
+                            </div>
+                            <h2 class="text-lg font-black text-white">Strefa Gracza & Mój Profil</h2>
+                            <p class="text-xs text-slate-400">Zaloguj się swoim 4-cyfrowym kodem PIN, aby odblokować prywatną kartę zawodnika, zapis 1-klikiem i statystyki.</p>
+                        </div>
+
+                        <form onsubmit="event.preventDefault(); handlePlayerLogin();" class="space-y-3">
+                            <div>
+                                <label for="loginPlayerSelect" class="block text-xs font-bold text-slate-300 mb-1">1. Wybierz swoje imię i nazwisko:</label>
+                                <select id="loginPlayerSelect" onchange="checkPlayerHasPin(this.value)" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                                    <option value="">-- Wybierz siebie z listy --</option>
+                                    ${sortedPlayers.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
+                                </select>
+                            </div>
+
+                            <div id="pinInputGroup" class="space-y-1">
+                                <label for="loginPinInput" id="pinInputLabel" class="block text-xs font-bold text-slate-300">2. Wpisz swój 4-cyfrowy PIN:</label>
+                                <input id="loginPinInput" type="password" maxlength="6" inputmode="numeric" placeholder="••••" required class="w-full bg-slate-950 border border-slate-700 text-center font-mono text-lg tracking-widest font-black text-emerald-400 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500">
+                                <p id="pinHelpText" class="text-[10px] text-slate-400">Wpisz swój PIN lub ustal nowy, jeśli logujesz się po raz pierwszy.</p>
+                            </div>
+
+                            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
+                                Otwórz mój profil 🚀
+                            </button>
+                        </form>
+                    </div>
+                `;
+                return;
             }
-            if (isAdmin) renderPlayerSkillsGrid();
+
+            // Zalogowany użytkownik:
+            const { badges, totalGames, mvpWins, attendedMatches, attendancePercent } = calculatePlayerBadges(loggedPlayer);
+            const formOutcomes = calculatePlayerForm(loggedPlayer);
+            const { bestPartner, topRival } = calculatePlayerChemistry(loggedPlayer);
+            const playerHistory = calculatePlayerMatchHistory(loggedPlayer);
+            const isOrganizer = (loggedPlayer === ORGANIZER_NAME) || isAdmin;
+
+            // My Billing
+            const billingData = calculateMonthlyBilling(AppState.currentMonth);
+            const myBillingInfo = billingData.playersMap[loggedPlayer] || { costDue: 0, paid: 0, games: 0 };
+            const myDue = myBillingInfo.costDue;
+            const myPaid = myBillingInfo.paid;
+            const mySaldo = myPaid - myDue;
+            const isMyPaid = (myDue > 0 && mySaldo >= -0.05);
+
+            // My Current Match Status
+            const currentMatch = AppState.months[AppState.currentMonth]?.matches[AppState.currentMatchIndex];
+            const attendees = currentMatch ? (currentMatch.attendees || []) : [];
+            const isSigned = attendees.includes(loggedPlayer);
+            const isInMain = (attendees.slice(0, 12)).includes(loggedPlayer);
+
+            container.innerHTML = `
+                <!-- 1. Karta Główna Gracza (Player Hub) -->
+                <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4 relative overflow-hidden">
+                    
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr ${isOrganizer ? 'from-amber-500 to-rose-500' : 'from-emerald-500 to-sky-500'} p-0.5 shadow-lg flex items-center justify-center shrink-0">
+                                <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center font-black text-sm text-white">
+                                    ${loggedPlayer.split(' ').map(n=>n[0]).join('').slice(0,2)}
+                                </div>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <h2 class="text-base sm:text-lg font-black text-white truncate">${escapeHtml(loggedPlayer)}</h2>
+                                    <button type="button" onclick="changeMyPlayerNamePrompt()" title="Zmień swoje imię i nazwisko" class="text-slate-400 hover:text-indigo-300 text-xs transition">✏️</button>
+                                    <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full ${isOrganizer ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'}">
+                                        ${isOrganizer ? '👑 Organizator' : '🏐 Zawodnik'}
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Twój profil jest aktywny i zapamiętany na tym telefonie</p>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="logoutPlayerAccount()" title="Wyloguj z profilu" class="text-xs text-rose-400 hover:text-rose-300 font-bold bg-slate-950 border border-slate-800 px-2.5 py-1.5 rounded-xl transition shrink-0">
+                            Wyloguj 🚪
+                        </button>
+                    </div>
+
+                    <!-- Statystyki Gracza w Kapsułach -->
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
+                            <span class="text-[10px] text-slate-400 font-semibold block">Mecze</span>
+                            <span class="text-base sm:text-lg font-black text-emerald-400 font-mono">${totalGames}</span>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
+                            <span class="text-[10px] text-slate-400 font-semibold block">MVP</span>
+                            <span class="text-base sm:text-lg font-black text-amber-300 font-mono">${mvpWins} 👑</span>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
+                            <span class="text-[10px] text-slate-400 font-semibold block">Frekwencja</span>
+                            <span class="text-base sm:text-lg font-black text-sky-400 font-mono">${attendancePercent}%</span>
+                        </div>
+                    </div>
+
+                    <!-- Forma z ostatnich 5 spotkań -->
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs">
+                        <span class="text-[11px] font-bold text-slate-300">Ostatnia forma (W/L):</span>
+                        <div class="flex items-center gap-1">
+                            ${formOutcomes.length ? formOutcomes.map(o => `
+                                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black ${o === 'W' ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'}">${o}</span>
+                            `).join('') : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                        </div>
+                    </div>
+
+                    <!-- 1B: Chemia Zespołowa & Duety -->
+                    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2 text-xs">
+                        <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🤝</span> Chemia Zespołowa & Duety
+                        </span>
+                        <div class="grid sm:grid-cols-2 gap-2 pt-0.5">
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2">
+                                <div class="min-w-0">
+                                    <span class="text-[10px] text-slate-400 block font-semibold">🌟 Najlepszy partner:</span>
+                                    <strong class="text-white text-xs block truncate">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
+                                </div>
+                                ${bestPartner ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 shrink-0 font-mono">${bestPartner.winPct}% W (${bestPartner.wins}/${bestPartner.together})</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
+                            </div>
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2">
+                                <div class="min-w-0">
+                                    <span class="text-[10px] text-slate-400 block font-semibold">⚔️ Główny rywal:</span>
+                                    <strong class="text-white text-xs block truncate">${topRival ? escapeHtml(topRival.name) : 'Brak danych'}</strong>
+                                </div>
+                                ${topRival ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-950 text-amber-300 border border-amber-800 shrink-0 font-mono">${topRival.against} meczów</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gablota Odznak Gracza -->
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Moje Odznaki (${badges.length}):</span>
+                            <button type="button" onclick="switchTab('halloffame')" class="text-[10px] text-amber-400 hover:underline">Zobacz wszystkie odznaki ➔</button>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${badges.length ? badges.map(b => `
+                                <span class="bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-xl text-xs flex items-center gap-1 text-slate-200">
+                                    <span>${b.icon}</span>
+                                    <span class="text-[11px] font-semibold">${escapeHtml(b.title.split(':')[0])}</span>
+                                </span>
+                            `).join('') : `
+                                <span class="text-xs text-slate-500 italic">Graj w piątki, aby zdobywać trofea i odznaki!</span>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- 1D: Osobista Kronika Spotkań -->
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>📜</span> Moja Kronika Spotkań (${playerHistory.length}):
+                            </span>
+                            <span class="text-[10px] text-slate-400 font-mono">Występy na parkiecie</span>
+                        </div>
+                        <div class="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                            ${playerHistory.length ? playerHistory.map(h => {
+                                let outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">⏳ W toku</span>`;
+                                if (h.outcome === 'win') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800">🏆 Wygrana</span>`;
+                                else if (h.outcome === 'loss') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-rose-950 text-rose-400 border border-rose-800">❌ Porażka</span>`;
+
+                                return `
+                                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2 text-xs">
+                                        <div class="min-w-0">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="font-bold font-mono text-white">${escapeHtml(h.date)}</span>
+                                                <span class="text-[10px] text-slate-400">(${escapeHtml(h.monthName)})</span>
+                                                ${h.isMvpWinner ? `<span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">👑 MVP</span>` : ''}
+                                            </div>
+                                            <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1 truncate">
+                                                <span>${h.isDark ? '⬛' : '⬜'} ${escapeHtml(h.teamName)}</span>
+                                                <span class="text-slate-600">•</span>
+                                                <span class="font-mono text-slate-300">${escapeHtml(h.score)}</span>
+                                            </p>
+                                        </div>
+                                        <div class="shrink-0">
+                                            ${outcomeBadge}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('') : `
+                                <div class="p-3.5 text-center text-xs text-slate-500 italic bg-slate-950/60 rounded-xl border border-slate-800/60">
+                                    Brak rozegranych meczów w tym sezonie. Zapisz się na ten piątek! 🏐
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- Moje Finanse & Szybki BLIK -->
+                    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-200">Moje składki (${escapeHtml(AppState.currentMonth)}):</span>
+                            ${isMyPaid ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">✅ Opłacone</span>` : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800">Do zapłaty: ${Math.max(0, myDue - myPaid).toFixed(2)} zł</span>`}
+                        </div>
+                        <div class="flex items-center justify-between text-xs pt-1">
+                            <span class="text-slate-400">Należność: <strong class="text-white">${myDue.toFixed(2)} zł</strong></span>
+                            <span class="text-slate-400">Wpłacono: <strong class="text-emerald-400">${myPaid.toFixed(2)} zł</strong></span>
+                        </div>
+                        ${!isMyPaid && myDue > 0 ? `
+                            <button type="button" onclick="copySinglePlayerBlik(${toInlineArgument(loggedPlayer)}, ${myDue})" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-md flex items-center justify-center gap-1.5">
+                                <span>📋</span> Kopiuj BLIK na moją kwotę (${myDue.toFixed(2)} zł)
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <!-- Ustawienia Konta -->
+                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs flex-wrap gap-2">
+                        <button type="button" onclick="changeMyPlayerNamePrompt()" class="text-slate-400 hover:text-indigo-300 font-semibold flex items-center gap-1 transition">
+                            ✏️ Zmień swoje imię
+                        </button>
+                        <button type="button" onclick="changeMyPinPrompt()" class="text-slate-400 hover:text-emerald-300 font-semibold flex items-center gap-1 transition">
+                            🔑 Zmień swój kod PIN
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- 2. STREFA ORGANIZATORA (WIDOCZNA TYLKO DLA MICHAŁA CHACIŃSKIEGO) -->
+                ${isOrganizer ? `
+                    <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/60 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-amber-800/60 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">👑</span>
+                                <div>
+                                    <h3 class="font-black text-sm sm:text-base text-white">Strefa Organizatora</h3>
+                                    <p class="text-[10px] text-amber-300">Tylko Ty masz dostęp do tych funkcji</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2B: Szybki Generator Dłużników na Messengera -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                                    <span>💸</span> Przypomnienie o Składkach (Messenger)
+                                </h4>
+                            </div>
+                            <p class="text-[10px] text-slate-400">Generuje gotową wiadomość z listą osób, które jeszcze nie opłaciły hali za dany miesiąc, wraz z kwotami i numerem BLIK:</p>
+                            <button type="button" onclick="copyDebtorsListMessage()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                                <span>📢</span> Kopiuj listę do opłacenia na Messengera
+                            </button>
+                        </div>
+
+                        <!-- Dyskretne Oceny Graczy (1-5 ⭐) -->
+                        <div class="bg-slate-950 border border-indigo-900/40 rounded-2xl p-3.5 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider flex items-center gap-1">
+                                    <span>🤫</span> Ukryte Oceny Graczy (Balans 6v6)
+                                </h4>
+                                <span class="text-[9px] text-slate-400">Niewidoczne dla innych</span>
+                            </div>
+                            <div id="playerSkillsGrid" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Reset PIN-ów Zapominalskim -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1">
+                                    <span>🔑</span> Reset PIN-u Gracza
+                                </h4>
+                            </div>
+                            <p class="text-[10px] text-slate-400">Jeśli ktoś zapomniał PIN-u, możesz go zresetować, aby mógł ustalić nowy:</p>
+                            <div class="flex gap-2">
+                                <select id="resetPinPlayerSelect" class="flex-1 bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-2.5 py-1.5">
+                                    <option value="">-- Wybierz gracza --</option>
+                                    ${AppState.all_players.filter(p => p !== ORGANIZER_NAME).map(p => `
+                                        <option value="${escapeHtml(p)}">${escapeHtml(p)}${AppState.player_pins[p] ? ' (ma PIN)' : ' (brak PIN)'}</option>
+                                    `).join('')}
+                                </select>
+                                <button type="button" onclick="resetSelectedPlayerPin()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                                    Resetuj
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Baza Graczy -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+                            <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1">
+                                <span>👥</span> Baza Graczy (+ Dodaj nowego)
+                            </h4>
+                            <div class="flex gap-2">
+                                <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <button type="button" onclick="addNewPlayerToDirectory()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition active:scale-95">
+                                    Dodaj
+                                </button>
+                            </div>
+                            <div id="playerDirectoryTags" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Kopia Zapasowa & Reset -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+                            <h4 class="font-extrabold text-xs text-white uppercase tracking-wider">⚙️ Kopia Zapasowa (JSON)</h4>
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <button type="button" onclick="exportDataJSON()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition">
+                                    📥 Pobierz kopię
+                                </button>
+                                <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition cursor-pointer">
+                                    📤 Wgraj kopię
+                                    <input type="file" onchange="importDataJSON(event)" accept=".json" class="hidden">
+                                </label>
+                                <button type="button" onclick="resetToInitialDataWithAuth()" class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-900/50 px-3 py-1.5 rounded-xl font-semibold transition">
+                                    🔄 Reset bazy
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                ` : ''}
+            `;
+
+            if (isOrganizer) {
+                renderPlayerSkillsGrid();
+                renderPlayerDirectoryTags();
+            }
+        }
+
+        // ================= WELCOME GATE & LOGIN LOGIC =================
+        function openWelcomeGateModal() {
+            const modal = document.getElementById('welcomeGateModal');
+            const select = document.getElementById('welcomePlayerSelect');
+            const pinInput = document.getElementById('welcomePinInput');
+            const label = document.getElementById('welcomePinInputLabel');
+            const help = document.getElementById('welcomePinHelpText');
+
+            if (!modal || !select) return;
+
+            const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+            select.innerHTML = `
+                <option value="">-- Wybierz swoje imię i nazwisko --</option>
+                ${sortedPlayers.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
+            `;
+
+            if (pinInput) pinInput.value = '';
+            if (label) label.innerText = '2. Twój 4-cyfrowy PIN:';
+            if (help) help.innerText = 'Podaj swój PIN lub ustal nowy, jeśli wchodzisz po raz pierwszy.';
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeWelcomeGateModal() {
+            const modal = document.getElementById('welcomeGateModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function checkWelcomePlayerHasPin(playerName) {
+            const label = document.getElementById('welcomePinInputLabel');
+            const help = document.getElementById('welcomePinHelpText');
+            if (!playerName || !label || !help) return;
+
+            if (AppState.player_pins && AppState.player_pins[playerName]) {
+                label.innerText = `2. Wpisz swój 4-cyfrowy PIN dla: ${playerName}`;
+                help.innerText = "Podaj swój ustalony kod PIN.";
+            } else {
+                label.innerText = `2. Ustal swój nowy 4-cyfrowy PIN dla: ${playerName}`;
+                help.innerText = "Zapamiętaj ten PIN – będziesz go używać do logowania.";
+            }
+        }
+
+        function handleWelcomeLogin() {
+            const select = document.getElementById('welcomePlayerSelect');
+            const pinInput = document.getElementById('welcomePinInput');
+
+            const name = select ? select.value.trim() : '';
+            const pin = pinInput ? pinInput.value.trim() : '';
+
+            if (!name) return alert("Wybierz swoje nazwisko z listy!");
+            if (!pin || pin.length < 4) return alert("Wpisz 4-cyfrowy kod PIN!");
+
+            if (!AppState.player_pins) AppState.player_pins = {};
+
+            const existingPin = AppState.player_pins[name];
+
+            if (!existingPin) {
+                AppState.player_pins[name] = hashPin(pin);
+                syncState();
+                loggedPlayer = name;
+                localStorage.setItem('siatka_active_player', name);
+                
+                if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                    isAdmin = true;
+                    localStorage.setItem('siatka_is_admin', 'true');
+                }
+                
+                sessionStorage.removeItem('siatka_guest_mode');
+                checkUserAuthSession();
+                closeWelcomeGateModal();
+                renderCurrentView();
+                showToast(`Witaj w ekipie, ${name}! Twój profil został utworzony! 🎉`);
+            } else {
+                if (verifyPin(pin, existingPin) || verifyAdminPin(pin)) {
+                    if (!/^[0-9a-f]{64}$/i.test(existingPin)) {
+                        AppState.player_pins[name] = hashPin(pin);
+                        syncState();
+                    }
+                    loggedPlayer = name;
+                    localStorage.setItem('siatka_active_player', name);
+                    
+                    if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                        isAdmin = true;
+                        localStorage.setItem('siatka_is_admin', 'true');
+                    }
+                    
+                    sessionStorage.removeItem('siatka_guest_mode');
+                    checkUserAuthSession();
+                    closeWelcomeGateModal();
+                    renderCurrentView();
+                    showToast(`Witaj ponownie, ${name}! 👋`);
+                } else {
+                    alert("Nieprawidłowy kod PIN! Jeśli go zapomniałeś, skontaktuj się z Michałem.");
+                }
+            }
+        }
+
+        function continueAsGuest() {
+            sessionStorage.setItem('siatka_guest_mode', 'true');
+            closeWelcomeGateModal();
+            renderCurrentView();
+            showToast("Przeglądasz aplikację w trybie gościa 👀");
+        }
+
+        function checkWelcomeGate() {
+            const isGuest = sessionStorage.getItem('siatka_guest_mode') === 'true';
+            if (!loggedPlayer && !isGuest) {
+                openWelcomeGateModal();
+            } else {
+                closeWelcomeGateModal();
+            }
+        }
+
+        function checkPlayerHasPin(playerName) {
+            const label = document.getElementById('pinInputLabel');
+            const help = document.getElementById('pinHelpText');
+            if (!playerName || !label || !help) return;
+
+            if (AppState.player_pins && AppState.player_pins[playerName]) {
+                label.innerText = `2. Wpisz swój 4-cyfrowy PIN dla: ${playerName}`;
+                help.innerText = "Podaj swój ustalony kod PIN.";
+            } else {
+                label.innerText = `2. Ustal swój nowy 4-cyfrowy PIN dla: ${playerName}`;
+                help.innerText = "Będziesz go używać przy logowaniu na innych urządzeniach.";
+            }
+        }
+
+        function handlePlayerLogin() {
+            const select = document.getElementById('loginPlayerSelect');
+            const pinInput = document.getElementById('loginPinInput');
+
+            const name = select ? select.value.trim() : '';
+            const pin = pinInput ? pinInput.value.trim() : '';
+
+            if (!name) return alert("Wybierz swoje imię z listy!");
+            if (!pin || pin.length < 4) return alert("Wpisz 4-cyfrowy kod PIN!");
+
+            if (!AppState.player_pins) AppState.player_pins = {};
+
+            const existingPin = AppState.player_pins[name];
+
+            if (!existingPin) {
+                // First time setting PIN
+                AppState.player_pins[name] = hashPin(pin);
+                syncState();
+                loggedPlayer = name;
+                localStorage.setItem('siatka_active_player', name);
+                
+                if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                    isAdmin = true;
+                    localStorage.setItem('siatka_is_admin', 'true');
+                }
+                
+                sessionStorage.removeItem('siatka_guest_mode');
+                checkUserAuthSession();
+                closeWelcomeGateModal();
+                renderCurrentView();
+                showToast(`Witaj ${name}! Twój PIN został pomyślnie zapisany! 🎉`);
+            } else {
+                // Verification
+                if (verifyPin(pin, existingPin) || verifyAdminPin(pin)) {
+                    if (!/^[0-9a-f]{64}$/i.test(existingPin)) {
+                        AppState.player_pins[name] = hashPin(pin);
+                        syncState();
+                    }
+                    loggedPlayer = name;
+                    localStorage.setItem('siatka_active_player', name);
+                    
+                    if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                        isAdmin = true;
+                        localStorage.setItem('siatka_is_admin', 'true');
+                    }
+                    
+                    sessionStorage.removeItem('siatka_guest_mode');
+                    checkUserAuthSession();
+                    closeWelcomeGateModal();
+                    renderCurrentView();
+                    showToast(`Witaj ponownie, ${name}! 👋`);
+                } else {
+                    alert("Nieprawidłowy kod PIN! Skontaktuj się z Michałem, aby go zresetować.");
+                }
+            }
+        }
+
+        function logoutPlayerAccount() {
+            if (!confirm("Czy na pewno chcesz się wylogować ze swojego profilu na tym telefonie?")) return;
+            loggedPlayer = '';
+            isAdmin = false;
+            localStorage.removeItem('siatka_active_player');
+            localStorage.removeItem('siatka_is_admin');
+            sessionStorage.removeItem('siatka_guest_mode');
+            checkUserAuthSession();
+            renderCurrentView();
+            openWelcomeGateModal();
+            showToast("Wylogowano z profilu.");
+        }
+
+        function changeMyPlayerNamePrompt() {
+            if (!loggedPlayer) return;
+            const oldName = loggedPlayer;
+            const newNameRaw = prompt(`Zmień swoje imię i nazwisko (aktualnie: ${oldName}):`, oldName);
+            if (newNameRaw === null) return;
+            const newName = normalizePlayerName(newNameRaw);
+            if (!newName || newName === oldName) return;
+
+            if (AppState.all_players.some(p => p !== oldName && p.localeCompare(newName, 'pl', { sensitivity: 'base' }) === 0)) {
+                alert("Gracz o tej nazwie już istnieje w bazie! Wybierz inną nazwę lub dodaj inicjał.");
+                return;
+            }
+
+            if (!confirm(`Czy na pewno zmienić swoje imię z "${oldName}" na "${newName}"? Twoje statystyki, mecze i składki zostaną automatycznie zaktualizowane u wszystkich graczy.`)) return;
+
+            renamePlayerGlobally(oldName, newName);
+            showToast(`Zmieniono Twoje imię na: ${newName}! Zaktualizowano u wszystkich graczy 🎉`);
+        }
+
+        function renamePlayerGlobally(oldName, newName) {
+            oldName = normalizePlayerName(oldName);
+            newName = normalizePlayerName(newName);
+            if (!oldName || !newName || oldName === newName) return false;
+
+            const pIdx = AppState.all_players.indexOf(oldName);
+            if (pIdx !== -1) {
+                AppState.all_players[pIdx] = newName;
+            } else if (!AppState.all_players.includes(newName)) {
+                AppState.all_players.push(newName);
+            }
+
+            if (AppState.base_games && AppState.base_games[oldName] !== undefined) {
+                AppState.base_games[newName] = AppState.base_games[oldName];
+                delete AppState.base_games[oldName];
+            }
+
+            if (AppState.player_skills && AppState.player_skills[oldName] !== undefined) {
+                AppState.player_skills[newName] = AppState.player_skills[oldName];
+                delete AppState.player_skills[oldName];
+            }
+
+            if (AppState.player_pins && AppState.player_pins[oldName] !== undefined) {
+                AppState.player_pins[newName] = AppState.player_pins[oldName];
+                delete AppState.player_pins[oldName];
+            }
+
+            if (loggedPlayer === oldName) {
+                loggedPlayer = newName;
+                localStorage.setItem('siatka_active_player', newName);
+                if (oldName === ORGANIZER_NAME || newName === ORGANIZER_NAME) {
+                    isAdmin = true;
+                    localStorage.setItem('siatka_is_admin', 'true');
+                }
+            }
+
+            Object.keys(AppState.months || {}).forEach(m => {
+                const monthObj = AppState.months[m];
+                if (monthObj.matches) {
+                    monthObj.matches.forEach(match => {
+                        if (match.attendees) {
+                            match.attendees = match.attendees.map(p => p === oldName ? newName : p);
+                        }
+                        if (match.votes) {
+                            if (match.votes[oldName]) {
+                                match.votes[newName] = match.votes[oldName];
+                                delete match.votes[oldName];
+                            }
+                            Object.keys(match.votes).forEach(voter => {
+                                if (match.votes[voter] === oldName) {
+                                    match.votes[voter] = newName;
+                                }
+                            });
+                        }
+                        if (match.teams) {
+                            if (match.teams.dark) {
+                                match.teams.dark = match.teams.dark.map(p => p === oldName ? newName : p);
+                            }
+                            if (match.teams.light) {
+                                match.teams.light = match.teams.light.map(p => p === oldName ? newName : p);
+                            }
+                        }
+                    });
+                }
+                if (monthObj.rozliczenia && monthObj.rozliczenia[oldName]) {
+                    monthObj.rozliczenia[newName] = monthObj.rozliczenia[oldName];
+                    delete monthObj.rozliczenia[oldName];
+                }
+            });
+
+            syncState();
+            checkUserAuthSession();
+            renderCurrentView();
+            return true;
+        }
+
+        function changeMyPinPrompt() {
+            if (!loggedPlayer) return;
+            const newPin = prompt(`Wpisz nowy 4-cyfrowy PIN dla konta ${loggedPlayer}:`);
+            if (!newPin) return;
+            const clean = newPin.trim();
+            if (clean.length < 4) return alert("PIN musi mieć co najmniej 4 cyfry!");
+
+            if (!AppState.player_pins) AppState.player_pins = {};
+            AppState.player_pins[loggedPlayer] = hashPin(clean);
+            syncState();
+            showToast("Twój kod PIN został zmieniony! 🔑");
+        }
+
+        function resetSelectedPlayerPin() {
+            requireAdminAuth(() => {
+                const select = document.getElementById('resetPinPlayerSelect');
+                const targetName = select ? select.value : '';
+                if (!targetName) return alert("Wybierz gracza do zresetowania PIN-u!");
+
+                if (!confirm(`Zresetować PIN dla gracza: ${targetName}? Przy następnym wejściu gracz ustali nowy PIN.`)) return;
+
+                if (AppState.player_pins) {
+                    delete AppState.player_pins[targetName];
+                }
+                syncState();
+                renderProfileTab();
+                showToast(`Zresetowano PIN dla: ${targetName} ✅`);
+            });
+        }
+
+        // ================= DISCREET SKILL RATINGS (ADMIN ONLY) =================
+        function renderPlayerSkillsGrid() {
+            const grid = document.getElementById('playerSkillsGrid');
+            if (!grid) return;
+
+            if (!AppState.player_skills) AppState.player_skills = {};
+
+            grid.innerHTML = AppState.all_players.map(p => {
+                const currentRating = AppState.player_skills[p] || 3;
+                return `
+                    <div class="bg-slate-950/80 border border-slate-800/80 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
+                        <span class="font-semibold text-slate-200 truncate pr-2">${escapeHtml(p)}</span>
+                        <div class="flex items-center gap-1 shrink-0">
+                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-900 border border-slate-700 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
+                                <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 - Początkujący</option>
+                                <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐⭐ 2 - Solidny</option>
+                                <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐⭐⭐ 3 - Średni</option>
+                                <option value="4" ${currentRating == 4 ? 'selected' : ''}>⭐⭐⭐⭐ 4 - Dobry / Lider</option>
+                                <option value="5" ${currentRating == 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐ 5 - PRO</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updatePlayerSkill(playerName, ratingStr) {
+            if (!AppState.player_skills) AppState.player_skills = {};
+            AppState.player_skills[playerName] = parseInt(ratingStr, 10) || 3;
+            syncState();
+            showToast(`Zaktualizowano ocenę dla: ${playerName}`);
+        }
+
+        // ================= DIRECTORY MANAGEMENT =================
+        function renderPlayerDirectoryTags() {
+            const container = document.getElementById('playerDirectoryTags');
+            if (!container) return;
+            container.innerHTML = AppState.all_players.map(p => `
+                <span class="inline-flex items-center gap-1 bg-slate-900 border border-slate-800 pl-2 pr-1 py-1 rounded-xl text-xs text-slate-300 mb-1">
+                    <span class="truncate max-w-[130px]">${escapeHtml(p)}</span>
+                    <button type="button" onclick="editPlayerInDirectory(${toInlineArgument(p)})" class="text-indigo-400 hover:text-indigo-300 font-bold p-0.5 ml-1" title="Edytuj">✏️</button>
+                    <button type="button" onclick="removePlayerFromDirectory(${toInlineArgument(p)})" class="text-rose-500 hover:text-rose-400 font-bold p-0.5" title="Usuń">✕</button>
+                </span>
+            `).join(' ');
         }
 
         function addNewPlayerToDirectory() {
@@ -3462,7 +4319,7 @@
                 AppState.player_skills[name] = 3;
                 if (input) input.value = '';
                 syncState();
-                renderSettings();
+                renderProfileTab();
                 showToast(`Dodano: ${name}`);
             });
         }
@@ -3474,8 +4331,11 @@
                 if (AppState.player_skills && AppState.player_skills[name]) {
                     delete AppState.player_skills[name];
                 }
+                if (AppState.player_pins && AppState.player_pins[name]) {
+                    delete AppState.player_pins[name];
+                }
                 syncState();
-                renderSettings();
+                renderProfileTab();
                 showToast(`Usunięto: ${name}`);
             });
         }
@@ -3492,55 +4352,7 @@
                     return;
                 }
 
-                const pIdx = AppState.all_players.indexOf(oldName);
-                if (pIdx !== -1) AppState.all_players[pIdx] = newName;
-
-                if (AppState.base_games && AppState.base_games[oldName] !== undefined) {
-                    AppState.base_games[newName] = AppState.base_games[oldName];
-                    delete AppState.base_games[oldName];
-                }
-
-                if (AppState.player_skills && AppState.player_skills[oldName] !== undefined) {
-                    AppState.player_skills[newName] = AppState.player_skills[oldName];
-                    delete AppState.player_skills[oldName];
-                }
-
-                Object.keys(AppState.months || {}).forEach(m => {
-                    const monthObj = AppState.months[m];
-                    if (monthObj.matches) {
-                        monthObj.matches.forEach(match => {
-                            if (match.attendees) {
-                                match.attendees = match.attendees.map(p => p === oldName ? newName : p);
-                            }
-                            if (match.votes) {
-                                if (match.votes[oldName]) {
-                                    match.votes[newName] = match.votes[oldName];
-                                    delete match.votes[oldName];
-                                }
-                                Object.keys(match.votes).forEach(voter => {
-                                    if (match.votes[voter] === oldName) {
-                                        match.votes[voter] = newName;
-                                    }
-                                });
-                            }
-                            if (match.teams) {
-                                if (match.teams.dark) {
-                                    match.teams.dark = match.teams.dark.map(p => p === oldName ? newName : p);
-                                }
-                                if (match.teams.light) {
-                                    match.teams.light = match.teams.light.map(p => p === oldName ? newName : p);
-                                }
-                            }
-                        });
-                    }
-                    if (monthObj.rozliczenia && monthObj.rozliczenia[oldName]) {
-                        monthObj.rozliczenia[newName] = monthObj.rozliczenia[oldName];
-                        delete monthObj.rozliczenia[oldName];
-                    }
-                });
-
-                syncState();
-                renderCurrentView();
+                renamePlayerGlobally(oldName, newName);
                 showToast(`Zmieniono: ${oldName} ➔ ${newName}`);
             });
         }
