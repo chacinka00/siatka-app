@@ -2,7 +2,7 @@
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
     <meta name="theme-color" content="#070a12">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -50,6 +50,10 @@
         }
     </script>
     <style>
+        html, body {
+            overscroll-behavior-y: contain;
+        }
+
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
@@ -58,10 +62,50 @@
         
         .ios-safe-header {
             padding-top: max(14px, env(safe-area-inset-top, 14px));
+            padding-left: max(16px, env(safe-area-inset-left, 16px));
+            padding-right: max(16px, env(safe-area-inset-right, 16px));
         }
 
         .ios-safe-bottom {
             padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+            padding-left: max(12px, env(safe-area-inset-left, 12px));
+            padding-right: max(12px, env(safe-area-inset-right, 12px));
+        }
+
+        /* Eliminacja 300ms opóźnienia dotyku (tap delay) i zoomu dwuklikiem */
+        button, a, input, select, textarea, [role="button"], .cursor-pointer, .tab-btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Płynne przewijanie z zachowaniem granic i brakiem rubber-bandingu */
+        .overflow-y-auto, .overflow-x-auto {
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Blokada wymuszonego zoomu w Safari (iOS) przy focusie na polach */
+        @media screen and (max-width: 768px) {
+            input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Natychmiastowy dotykowy feedback (Zero Latency Feel) */
+        button:active:not(:disabled),
+        .tab-btn:active,
+        [role="button"]:active:not(:disabled) {
+            transform: scale(0.97);
+            opacity: 0.9;
+            transition: transform 0.05s ease, opacity 0.05s ease;
+        }
+
+        /* Dynamiczne jednostki viewportu dla okien modalnych */
+        .max-h-modal {
+            max-height: 90vh;
+            max-height: 90dvh;
         }
 
         ::-webkit-scrollbar { width: 3px; height: 3px; }
@@ -774,27 +818,27 @@
     <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
         <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
             
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">📅</span>
                 <span class="text-[10px] tracking-tight">Mecz</span>
             </button>
 
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">🔀</span>
                 <span class="text-[10px] tracking-tight">Składy</span>
             </button>
 
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">💰</span>
                 <span class="text-[10px] tracking-tight">Składki</span>
             </button>
 
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">👑</span>
                 <span class="text-[10px] tracking-tight">Ranking</span>
             </button>
 
-            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">👤</span>
                 <span id="navProfileLabel" class="text-[10px] tracking-tight">Profil</span>
             </button>
@@ -852,7 +896,7 @@
                 <h3 id="guestModalTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
                     <span>👥</span> Dopisz Znajomego / Gościa
                 </h3>
-                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
+                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400 leading-relaxed">
@@ -897,7 +941,7 @@
                 <h3 id="shareModalTitle" class="font-black text-white text-base flex items-center gap-2">
                     <span>📣</span> Przypomnienie na Messengera
                 </h3>
-                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
             </div>
             
             <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px]">
@@ -930,13 +974,13 @@
 
     <!-- Scoreboard Builder Modal -->
     <div id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📊</span>
                     <h3 id="scoreModalTitle" class="font-black text-white text-base">Wprowadź wynik meczu</h3>
                 </div>
-                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400">
@@ -995,7 +1039,7 @@
                     <span class="text-xl">📷</span>
                     <h3 id="avatarPickerTitle" class="font-black text-white text-base">Zmień awatar / zdjęcie</h3>
                 </div>
-                <button type="button" onclick="closeAvatarPickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+                <button type="button" onclick="closeAvatarPickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
             </div>
 
             <!-- Current Avatar Preview -->
@@ -1038,7 +1082,7 @@
 
     <!-- Player Card Modal (Ranking & Roster touch inspection) -->
     <div id="playerCardModal" role="dialog" aria-modal="true" aria-labelledby="playerCardName" onclick="if(event.target === this) closePlayerCardModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in relative">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in relative">
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-3 min-w-0">
                     <div id="playerCardAvatarContainer" class="shrink-0">
@@ -1054,7 +1098,7 @@
                         <p id="playerCardSubtext" class="text-xs text-slate-400 mt-0.5">Karta zawodnika w sezonie 2026</p>
                     </div>
                 </div>
-                <button type="button" onclick="closePlayerCardModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg p-1">✕</button>
+                <button type="button" onclick="closePlayerCardModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -mt-1">✕</button>
             </div>
 
             <!-- Quick Stats 3-box -->
@@ -1501,7 +1545,7 @@
 
             loadLocalState();
             autoSelectUpcomingMatchOnLoad();
-            renderCurrentView();
+            renderCurrentView(true);
             setSyncStatus('connecting');
 
             try {
@@ -1532,8 +1576,10 @@
                             hasInitiallySelectedMonth = false;
                             autoSelectUpcomingMatchOnLoad();
                             hasLoadedRemoteState = true;
+                            renderCurrentView(true);
+                        } else {
+                            renderCurrentView();
                         }
-                        renderCurrentView();
                     } else {
                         AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
                         ensureValidState();
@@ -1542,7 +1588,7 @@
                         autoSelectUpcomingMatchOnLoad();
                         hasLoadedRemoteState = true;
                         syncState();
-                        renderCurrentView();
+                        renderCurrentView(true);
                     }
                 }, error => {
                     console.warn("Firebase read error, fallback to local:", error);
@@ -1675,14 +1721,33 @@
             }
         }
 
-        function renderCurrentView() {
-            renderMatchesTab();
-            renderTeamsTab();
-            renderIntegratedMvpCard();
-            renderArchiveTab();
-            renderBilling();
-            renderHallOfFame();
-            renderProfileTab();
+        let currentActiveTab = 'matches';
+        let isMatchActionPending = false;
+
+        function renderCurrentView(forceAll = false) {
+            if (forceAll) {
+                renderMatchesTab();
+                renderTeamsTab();
+                renderIntegratedMvpCard();
+                renderArchiveTab();
+                renderBilling();
+                renderHallOfFame();
+                renderProfileTab();
+            } else {
+                if (currentActiveTab === 'matches') {
+                    renderMatchesTab();
+                    renderIntegratedMvpCard();
+                } else if (currentActiveTab === 'teams') {
+                    renderTeamsTab();
+                } else if (currentActiveTab === 'billing') {
+                    renderBilling();
+                } else if (currentActiveTab === 'halloffame') {
+                    renderHallOfFame();
+                    renderArchiveTab();
+                } else if (currentActiveTab === 'profile') {
+                    renderProfileTab();
+                }
+            }
             updateCountdownDisplay();
             updatePushStatusUI();
         }
@@ -1796,6 +1861,7 @@
 
         // ================= NAVIGATION & TAB SWITCHING =================
         function switchTab(tabName) {
+            currentActiveTab = tabName;
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('text-emerald-400');
@@ -2050,7 +2116,7 @@
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
                         </div>
                     `;
                 } else {
@@ -2082,7 +2148,7 @@
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
                         </div>
                     `;
                 }).join('');
@@ -2139,26 +2205,35 @@
 
         function addSpecificPlayerToMatch(name) {
             if (!name) return;
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (!currentMatch) return;
+            if (isMatchActionPending) return;
+            isMatchActionPending = true;
 
-            if (!currentMatch.attendees) currentMatch.attendees = [];
-            if (currentMatch.attendees.includes(name)) {
-                alert(`${name} jest już zapisany na ten mecz!`);
-                return;
+            try {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                if (!currentMatch) return;
+
+                if (!currentMatch.attendees) currentMatch.attendees = [];
+                if (currentMatch.attendees.includes(name)) {
+                    alert(`${name} jest już zapisany na ten mecz!`);
+                    return;
+                }
+
+                currentMatch.attendees.push(name);
+                if (!AppState.all_players.includes(name)) {
+                    AppState.all_players.push(name);
+                    if (!AppState.player_skills) AppState.player_skills = {};
+                    AppState.player_skills[name] = 3;
+                }
+
+                syncState();
+                renderCurrentView();
+                showToast(`Zapisano: ${name} ✅`);
+            } finally {
+                setTimeout(() => {
+                    isMatchActionPending = false;
+                }, 350);
             }
-
-            currentMatch.attendees.push(name);
-            if (!AppState.all_players.includes(name)) {
-                AppState.all_players.push(name);
-                if (!AppState.player_skills) AppState.player_skills = {};
-                AppState.player_skills[name] = 3;
-            }
-
-            syncState();
-            renderCurrentView();
-            showToast(`Zapisano: ${name} ✅`);
         }
 
         function addPlayerToCurrentMatchFromSelect() {
@@ -2210,36 +2285,45 @@
         }
 
         function removePlayerFromCurrentMatch(name) {
+            if (isMatchActionPending) return;
             if (!confirm(`Czy na pewno usunąć z listy gracza: ${name}?`)) return;
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (!currentMatch) return;
+            isMatchActionPending = true;
 
-            const oldAttendees = currentMatch.attendees || [];
-            const wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
-            const firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
+            try {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                if (!currentMatch) return;
 
-            currentMatch.attendees = oldAttendees.filter(p => p !== name);
-            if (currentMatch.votes && currentMatch.votes[name]) {
-                delete currentMatch.votes[name];
-            }
-            
-            if (currentMatch.teams) {
-                if (Array.isArray(currentMatch.teams.dark)) {
-                    currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
+                const oldAttendees = currentMatch.attendees || [];
+                const wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
+                const firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
+
+                currentMatch.attendees = oldAttendees.filter(p => p !== name);
+                if (currentMatch.votes && currentMatch.votes[name]) {
+                    delete currentMatch.votes[name];
                 }
-                if (Array.isArray(currentMatch.teams.light)) {
-                    currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
+                
+                if (currentMatch.teams) {
+                    if (Array.isArray(currentMatch.teams.dark)) {
+                        currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
+                    }
+                    if (Array.isArray(currentMatch.teams.light)) {
+                        currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
+                    }
                 }
-            }
 
-            syncState();
-            renderCurrentView();
+                syncState();
+                renderCurrentView();
 
-            if (wasInMainSquad && firstReserve && firstReserve !== name) {
-                showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
-            } else {
-                showToast(`Wypisano: ${name}`);
+                if (wasInMainSquad && firstReserve && firstReserve !== name) {
+                    showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
+                } else {
+                    showToast(`Wypisano: ${name}`);
+                }
+            } finally {
+                setTimeout(() => {
+                    isMatchActionPending = false;
+                }, 350);
             }
         }
 
@@ -2968,6 +3052,7 @@
         }
 
         function submitMvpVote() {
+            if (isMatchActionPending) return;
             let voter = document.getElementById('voterSelect')?.value;
             if (!voter && loggedPlayer) voter = loggedPlayer;
             const nominee = document.getElementById('nomineeSelect')?.value;
@@ -2975,47 +3060,54 @@
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
 
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (!currentMatch) return;
+            isMatchActionPending = true;
+            try {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                if (!currentMatch) return;
 
-            if (!currentMatch.votes) currentMatch.votes = {};
-            currentMatch.votes[voter] = nominee;
+                if (!currentMatch.votes) currentMatch.votes = {};
+                currentMatch.votes[voter] = nominee;
 
-            const attendees = (currentMatch.attendees || []).slice(0, 12);
-            const totalVotes = Object.keys(currentMatch.votes).length;
-            const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
+                const attendees = (currentMatch.attendees || []).slice(0, 12);
+                const totalVotes = Object.keys(currentMatch.votes).length;
+                const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
 
-            if (isNowCompleted) {
-                currentMatch.mvpClosed = true;
-                if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 120,
-                        spread: 80,
-                        origin: { y: 0.6 },
-                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                    });
+                if (isNowCompleted) {
+                    currentMatch.mvpClosed = true;
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 120,
+                            spread: 80,
+                            origin: { y: 0.6 },
+                            colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                        });
+                    }
+                } else {
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 40,
+                            spread: 50,
+                            origin: { y: 0.7 },
+                            colors: ['#10b981', '#ffffff']
+                        });
+                    }
                 }
-            } else {
-                if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 40,
-                        spread: 50,
-                        origin: { y: 0.7 },
-                        colors: ['#10b981', '#ffffff']
-                    });
+
+                syncState();
+                renderIntegratedMvpCard();
+                renderMatchesTab();
+                renderProfileTab();
+
+                if (isNowCompleted) {
+                    showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
+                } else {
+                    showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
                 }
-            }
-
-            syncState();
-            renderIntegratedMvpCard();
-            renderMatchesTab();
-            renderProfileTab();
-
-            if (isNowCompleted) {
-                showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
-            } else {
-                showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
+            } finally {
+                setTimeout(() => {
+                    isMatchActionPending = false;
+                }, 350);
             }
         }
 
