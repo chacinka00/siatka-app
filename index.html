@@ -274,19 +274,21 @@
                     </div>
                 </div>
 
-                <!-- Match Sets Result Pill -->
-                <div id="matchScoreDisplayCard" class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-3 text-xs shadow-sm">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-base shrink-0">📊</div>
-                        <div class="min-w-0">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block leading-tight">Wynik meczu:</span>
-                            <span id="scoreText" class="text-xs sm:text-sm text-amber-300 font-bold block truncate mt-0.5">Jeszcze nie wpisano</span>
+                <!-- Match Sets Result Card -->
+                <div id="matchScoreDisplayCard" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2 shadow-md">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-xs">📊</span>
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
                         </div>
+                        <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm">
+                            <span>✏️</span>
+                            <span id="editScoreBtnLabel">Wpisz wynik</span>
+                        </button>
                     </div>
-                    <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm">
-                        <span>✏️</span>
-                        <span id="editScoreBtnLabel">Wpisz wynik</span>
-                    </button>
+                    <div id="scoreText" class="min-w-0">
+                        <div class="text-xs text-slate-500 py-0.5">Jeszcze nie wpisano wyniku spotkania</div>
+                    </div>
                 </div>
 
                 <!-- Fast Join / Action Container for Logged-In User & Guests -->
@@ -1935,6 +1937,104 @@
             renderMatchesTab();
         }
 
+        function formatScoreHtml(scoreStr) {
+            if (!scoreStr) {
+                return `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
+            }
+
+            // Pattern: "Drużyna Ciemna 1 : 3 Drużyna Jasna (25:21, 23:25, 25:18, 25:20)"
+            const matchWithSets = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+(.*?)\s*\((.*?)\)$/);
+            if (matchWithSets) {
+                const teamA = matchWithSets[1].trim();
+                const scoreA = matchWithSets[2].trim();
+                const scoreB = matchWithSets[3].trim();
+                const teamB = matchWithSets[4].trim();
+                const setsDetails = matchWithSets[5].trim();
+
+                const numA = parseInt(scoreA, 10);
+                const numB = parseInt(scoreB, 10);
+                const aWon = numA > numB;
+                const bWon = numB > numA;
+
+                let setsPillsHtml = '';
+                if (setsDetails) {
+                    const pills = setsDetails.split(',').map((s, idx) => {
+                        const pts = s.trim().split(':');
+                        if (pts.length === 2) {
+                            const pA = parseInt(pts[0], 10);
+                            const pB = parseInt(pts[1], 10);
+                            const aSetWon = pA > pB;
+                            const bSetWon = pB > pA;
+                            return `<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] sm:text-[11px] font-mono shadow-sm">
+                                <span class="text-slate-500 mr-1 text-[9px] font-bold">S${idx + 1}</span>
+                                <span class="${aSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[0].trim())}</span>
+                                <span class="text-slate-600 mx-0.5">:</span>
+                                <span class="${bSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[1].trim())}</span>
+                            </span>`;
+                        }
+                        return `<span class="inline-block px-1.5 py-0.5 rounded bg-slate-900 text-[10px] font-mono text-slate-300">${escapeHtml(s.trim())}</span>`;
+                    }).join('');
+                    setsPillsHtml = `<div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">${pills}</div>`;
+                }
+
+                return `
+                    <div class="space-y-2 py-0.5">
+                        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+                            <div class="text-right min-w-0">
+                                <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
+                                    ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
+                                </span>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
+                                <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
+                                <span class="text-slate-500 mx-1">:</span>
+                                <span class="${bWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
+                            </div>
+                            <div class="text-left min-w-0">
+                                <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
+                                    ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
+                                </span>
+                            </div>
+                        </div>
+                        ${setsPillsHtml}
+                    </div>
+                `;
+            }
+
+            const matchSimple = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+(.*?)$/);
+            if (matchSimple) {
+                const teamA = matchSimple[1].trim();
+                const scoreA = matchSimple[2].trim();
+                const scoreB = matchSimple[3].trim();
+                const teamB = matchSimple[4].trim();
+                const numA = parseInt(scoreA, 10);
+                const numB = parseInt(scoreB, 10);
+                const aWon = numA > numB;
+                const bWon = numB > numA;
+                return `
+                    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3 py-0.5">
+                        <div class="text-right min-w-0">
+                            <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
+                                ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
+                            </span>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
+                            <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
+                            <span class="text-slate-500 mx-1">:</span>
+                            <span class="${bWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
+                        </div>
+                        <div class="text-left min-w-0">
+                            <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
+                                ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `<div class="text-xs font-bold text-amber-300 py-1 text-center break-words">${escapeHtml(scoreStr)}</div>`;
+        }
+
         // ================= TAB 1: MATCHES & ATTENDANCE =================
         function renderMatchesTab() {
             renderMonthSelector();
@@ -1958,18 +2058,28 @@
                     const m = item.match;
                     const idx = item.originalIndex;
                     const isSelected = idx === AppState.currentMatchIndex;
-                    const count = m.attendees ? m.attendees.length : 0;
-                    const isCancelled = m.isCancelled;
-                    const isNextMatch = (m.date === globalUpcomingDate) && !isCancelled;
+                    const attendeesCount = (m.attendees || []).length;
+                    const mainCount = Math.min(12, attendeesCount);
+                    const isFull = attendeesCount >= 12;
+                    const isPast = (m.date || '') < todayStr;
+                    const dayDisplay = (m.date || '').slice(5);
 
                     return `
-                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap ${
+                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition shrink-0 flex items-center gap-2 active:scale-95 shadow-sm ${
                             isSelected 
-                            ? (isCancelled ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20' : 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20')
-                            : (isCancelled ? 'bg-slate-950 text-rose-400 border border-rose-900/50' : 'bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800')
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20 ring-2 ring-emerald-400/40' 
+                                : isPast
+                                    ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
+                                    : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
                         }">
-                            <span>${isCancelled ? '🚫' : (isNextMatch ? '⏳' : '📅')} ${escapeHtml(m.date.slice(5))}</span>
-                            <span class="text-[10px] px-1 py-0.5 rounded-full ${isSelected ? 'bg-black/20 text-white' : 'bg-slate-800 text-slate-300'}">${isCancelled ? 'Odwołany' : `${count}/12`}</span>
+                            <span>${isPast ? '⏳' : '📅'} ${dayDisplay}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
+                                isSelected 
+                                    ? 'bg-slate-950/20 text-slate-950 font-black' 
+                                    : isFull 
+                                        ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
+                                        : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            }">${mainCount}/12</span>
                         </button>
                     `;
                 }).join('');
@@ -2012,10 +2122,10 @@
             if (scoreTextEl) {
                 const editLabel = document.getElementById('editScoreBtnLabel');
                 if (currentMatch.score) {
-                    scoreTextEl.innerHTML = `<span class="font-extrabold text-amber-300">${escapeHtml(currentMatch.score)}</span>`;
+                    scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
                     if (editLabel) editLabel.innerText = "Edytuj wynik";
                 } else {
-                    scoreTextEl.innerText = "Jeszcze nie wpisano";
+                    scoreTextEl.innerHTML = `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
                     if (editLabel) editLabel.innerText = "Wpisz wynik";
                 }
             }
@@ -3193,16 +3303,16 @@
                             <span class="text-[10px] font-bold text-slate-400 font-mono">Frekwencja: ${attendees.length}/12</span>
                         </div>
 
-                        <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-2 flex-wrap text-xs">
-                            <div>
-                                <span class="text-[10px] text-slate-400 font-semibold">Wynik meczu:</span>
-                                <p class="text-xs font-black text-amber-300 font-mono mt-0.5">${escapeHtml(score)}</p>
+                        <div class="bg-slate-900/80 border border-slate-800/80 p-3 rounded-2xl space-y-2">
+                            <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-1.5 text-xs">
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
+                                <div class="text-right">
+                                    <span class="text-[10px] text-slate-400 font-semibold">MVP meczu: </span>
+                                    <span class="text-xs font-extrabold text-white">${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak')}</span>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <span class="text-[10px] text-slate-400 font-semibold">MVP meczu:</span>
-                                <p class="text-xs font-extrabold text-white mt-0.5">
-                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak')}
-                                </p>
+                            <div class="min-w-0">
+                                ${m.score ? formatScoreHtml(m.score) : '<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Brak wpisanego wyniku</span></div>'}
                             </div>
                         </div>
 
@@ -3569,6 +3679,11 @@
                     let displayScore = scoreStr;
                     if (!displayScore) {
                         displayScore = isPast ? "Mecz rozegrany" : "Oczekuje na mecz";
+                    } else {
+                        const resMatch = scoreStr.match(/\s(\d+\s*:\s*\d+)\s/);
+                        if (resMatch) {
+                            displayScore = `Wynik: ${resMatch[1].trim()}`;
+                        }
                     }
 
                     history.push({
