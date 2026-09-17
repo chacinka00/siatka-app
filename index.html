@@ -168,36 +168,48 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-28">
 
     <!-- Top Sticky Header z bezpiecznym marginesem pod Dynamic Island / iPhone -->
-    <header class="bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all shadow-sm">
-        <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <div class="relative w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
-                    <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[14px]" loading="eager">
-                    <span class="absolute -bottom-1 -right-1 text-[10px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
-                </div>
-                <div class="min-w-0">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white truncate">Siatkówka Piątek</h1>
+    <header class="bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all shadow-sm">
+        <div class="max-w-2xl mx-auto px-3.5 py-2 space-y-1.5">
+            <!-- Row 1: Brand Logo, Title, Status & Actions -->
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
+                        <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[10px]" loading="eager">
+                        <span class="absolute -bottom-1 -right-1 text-[8px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">Siatkówka Piątek</h1>
                         <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
                             <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                         </span>
-                        <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 items-center gap-0.5 shrink-0">
-                            👑 Organizator
-                        </span>
                     </div>
-                    <p id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate">⏰ 18:45 (gra 19:00 - 21:00) • 📍 ul. Myśliborska 25</p>
+                </div>
+
+                <!-- Month Select & Share Action -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95 max-w-[125px] sm:max-w-none">
+                        <!-- Populated dynamically -->
+                    </select>
+                    <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex shrink-0">
+                        <span>📣</span>
+                        <span class="hidden sm:inline text-[11px]">Mess</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Month Select & Share Action -->
-            <div class="flex items-center gap-2 shrink-0">
-                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
-                    <!-- Populated dynamically -->
-                </select>
-                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex">
-                    <span>📣</span>
-                    <span class="hidden sm:inline text-[11px]">Mess</span>
-                </button>
+            <!-- Row 2: Greeting & Organizer Status / Venue Info -->
+            <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/50">
+                <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate flex items-center gap-1 min-w-0">
+                    ⏰ 18:45 (gra 19:00 - 21:00) • 📍 ul. Myśliborska 25
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <span id="adminModeBadge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-800/80 items-center gap-1 shrink-0 shadow-sm shadow-amber-950/50">
+                        👑 Organizator
+                    </span>
+                    <span id="headerMatchTimeInfo" class="text-[10px] text-slate-400 font-medium shrink-0">
+                        📍 Myśliborska 25
+                    </span>
+                </div>
             </div>
         </div>
     </header>
@@ -1816,15 +1828,12 @@
             const matchAdminBar = document.getElementById('matchAdminBarContainer');
             const userGreeting = document.getElementById('headerUserGreeting');
             const navProfileLabel = document.getElementById('navProfileLabel');
+            const matchTimeInfo = document.getElementById('headerMatchTimeInfo');
 
             if (loggedPlayer) {
                 if (navProfileLabel) navProfileLabel.innerText = loggedPlayer.split(' ')[0];
                 if (userGreeting) {
-                    if (loggedPlayer === ORGANIZER_NAME || isAdmin) {
-                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👑 (Organizator)`;
-                    } else {
-                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👋 • 18:45 (gra 19:00)`;
-                    }
+                    userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👋`;
                 }
             } else {
                 if (navProfileLabel) navProfileLabel.innerText = "Profil";
@@ -1835,9 +1844,14 @@
 
             if (isAdmin) {
                 if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
+                if (matchTimeInfo) matchTimeInfo.classList.add('hidden');
                 if (matchAdminBar) matchAdminBar.classList.remove('hidden');
             } else {
                 if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
+                if (matchTimeInfo) {
+                    matchTimeInfo.classList.remove('hidden');
+                    matchTimeInfo.innerText = loggedPlayer ? "⏰ 18:45 (gra 19:00)" : "📍 Myśliborska 25";
+                }
                 if (matchAdminBar) matchAdminBar.classList.add('hidden');
             }
         }
