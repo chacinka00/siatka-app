@@ -250,8 +250,8 @@
                     </span>
                 </div>
 
-                <div class="flex items-center justify-between gap-2">
-                    <div>
+                <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0 flex-1">
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
                                 2026-08-28
@@ -264,33 +264,28 @@
                             </span>
                         </div>
                         <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Piątkowy Mecz</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">18:45</span> • Gra: <span class="text-emerald-400 font-bold">19:00 - 21:00</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
+                        <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">18:45</span> • Gra: <span class="text-emerald-400 font-bold">19:00 - 21:00</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
                     </div>
 
-                    <!-- Cost & Slots metrics -->
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2 px-3 min-w-[75px] sm:min-w-[85px] flex flex-col justify-center">
-                            <p class="text-[10px] text-slate-400 font-semibold">Koszt/os</p>
-                            <p id="matchCostPerPerson" class="text-base sm:text-lg font-black text-emerald-400 mt-0.5">0.00 zł</p>
-                        </div>
-                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2 px-3 min-w-[75px] sm:min-w-[85px] flex flex-col justify-center">
-                            <p class="text-[10px] text-slate-400 font-semibold">Skład</p>
-                            <p id="matchPlayerCount" class="text-base sm:text-lg font-black text-sky-400 mt-0.5">0/12</p>
-                        </div>
+                    <!-- Slots metric badge (Tylko Skład) -->
+                    <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-2 px-3 sm:px-4 text-center shrink-0 shadow-inner min-w-[70px]">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skład</p>
+                        <p id="matchPlayerCount" class="text-lg sm:text-xl font-black text-sky-400 mt-0.5 font-mono">0/12</p>
                     </div>
                 </div>
 
                 <!-- Match Sets Result Pill -->
-                <div id="matchScoreDisplayCard" class="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-2.5 flex items-center justify-between gap-3 text-xs">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <span class="text-base shrink-0">📊</span>
-                        <div class="truncate">
-                            <span class="font-bold text-slate-200">Wynik spotkania:</span>
-                            <span id="scoreText" class="text-amber-400 font-black ml-1">Jeszcze nie rozegrano</span>
+                <div id="matchScoreDisplayCard" class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-3 text-xs shadow-sm">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-base shrink-0">📊</div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block leading-tight">Wynik meczu:</span>
+                            <span id="scoreText" class="text-xs sm:text-sm text-amber-300 font-bold block truncate mt-0.5">Jeszcze nie wpisano</span>
                         </div>
                     </div>
-                    <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz wynik meczu" class="text-xs text-slate-400 hover:text-emerald-400 font-bold px-2 py-1 rounded-lg transition bg-slate-900 border border-slate-800 shrink-0">
-                        ✏️ Wynik
+                    <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm">
+                        <span>✏️</span>
+                        <span id="editScoreBtnLabel">Wpisz wynik</span>
                     </button>
                 </div>
 
@@ -1797,7 +1792,7 @@
                 const diffMs = matchStartTime - now;
                 const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diffMs % (1000 * 60)) / (1000 * 60));
+                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
                 labelEl.innerText = "Do meczu:";
@@ -1989,7 +1984,8 @@
 
             if (!currentMatch) {
                 document.getElementById('matchDateBadge').innerText = "Brak meczu";
-                document.getElementById('matchCostPerPerson').innerText = "0.00 zł";
+                const costEl = document.getElementById('matchCostPerPerson');
+                if (costEl) costEl.innerText = "0.00 zł";
                 document.getElementById('matchPlayerCount').innerText = "0/12";
                 document.getElementById('mainSquadList').innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Dodaj piątek powyżej.</div>`;
                 document.getElementById('reserveCardContainer').classList.add('hidden');
@@ -2008,15 +2004,19 @@
             const costPerPerson = (isCancelled || mainPlayers.length === 0) ? "0.00" : (cost / mainPlayers.length).toFixed(2);
 
             document.getElementById('matchDateBadge').innerText = currentMatch.date;
-            document.getElementById('matchCostPerPerson').innerText = `${costPerPerson} zł`;
+            const costEl = document.getElementById('matchCostPerPerson');
+            if (costEl) costEl.innerText = `${costPerPerson} zł`;
             document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/12`;
             document.getElementById('mainSquadBadge').innerText = `${mainPlayers.length}/12`;
 
             if (scoreTextEl) {
+                const editLabel = document.getElementById('editScoreBtnLabel');
                 if (currentMatch.score) {
                     scoreTextEl.innerHTML = `<span class="font-extrabold text-amber-300">${escapeHtml(currentMatch.score)}</span>`;
+                    if (editLabel) editLabel.innerText = "Edytuj wynik";
                 } else {
                     scoreTextEl.innerText = "Jeszcze nie wpisano";
+                    if (editLabel) editLabel.innerText = "Wpisz wynik";
                 }
             }
 
