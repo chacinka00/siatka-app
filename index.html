@@ -596,9 +596,9 @@
                     <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
                         <div id="billingProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
                     </div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pt-0.5">
-                        <span class="text-slate-400">Zebrano: <strong id="monthTotalPaid" class="text-emerald-400 font-bold">0.00 zł</strong> / <span id="monthTotalCost" class="text-slate-300">0.00 zł</span></span>
-                        <span class="text-slate-400">Brakuje: <strong id="monthTotalOutstanding" class="text-rose-400 font-bold">0.00 zł</strong></span>
+                    <div class="flex items-center justify-between text-[11px] font-mono pt-0.5 gap-2 whitespace-nowrap">
+                        <span class="text-slate-400 truncate">Zebrano: <strong id="monthTotalPaid" class="text-emerald-400 font-bold whitespace-nowrap">0.00 zł</strong> / <span id="monthTotalCost" class="text-slate-300 whitespace-nowrap">0.00 zł</span></span>
+                        <span class="text-slate-400 shrink-0 whitespace-nowrap">Brak: <strong id="monthTotalOutstanding" class="text-rose-400 font-bold whitespace-nowrap">0.00 zł</strong></span>
                     </div>
                 </div>
 
@@ -3444,13 +3444,13 @@
             container.innerHTML = `
                 <div class="bg-gradient-to-br ${isPaid ? 'from-emerald-950/80 via-slate-900 to-emerald-950/30 border-emerald-500/50' : 'from-amber-950/50 via-slate-900 to-rose-950/30 border-amber-500/50'} border rounded-3xl p-4 shadow-xl space-y-3">
                     <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">${isPaid ? '🎉' : '💳'}</span>
-                            <span class="text-xs font-black text-white uppercase tracking-wider">Twoja składka • ${escapeHtml(AppState.currentMonth)}</span>
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-base shrink-0">${isPaid ? '🎉' : '💳'}</span>
+                            <span class="text-xs font-black text-white uppercase tracking-wider truncate">Twoja składka</span>
                         </div>
                         ${isPaid 
-                            ? `<span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-sm">✓ Uregulowane</span>`
-                            : `<span class="bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-black px-2.5 py-0.5 rounded-full font-mono">Do zapłaty: ${Math.abs(saldo).toFixed(2)} zł</span>`
+                            ? `<span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap shrink-0">✓ Uregulowane</span>`
+                            : `<span class="bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-black px-2.5 py-1 rounded-full font-mono whitespace-nowrap shrink-0">Do zapłaty: ${Math.abs(saldo).toFixed(2)}&nbsp;zł</span>`
                         }
                     </div>
 
@@ -3458,8 +3458,8 @@
                         <div class="text-xs space-y-1">
                             <p class="text-slate-200">
                                 ${isPaid 
-                                    ? `Super! Wszystko opłacone na ten miesiąc: <strong class="text-emerald-400 font-mono font-bold">${paid.toFixed(2)} zł</strong> (${pluralizeGames(myInfo.games)}). Dzięki! ✨`
-                                    : `Zagrano: <strong class="text-white">${pluralizeGames(myInfo.games)}</strong> • Należność: <strong class="text-amber-300 font-mono font-bold">${due.toFixed(2)} zł</strong>`
+                                    ? `Super! Wszystko opłacone na ten miesiąc: <strong class="text-emerald-400 font-mono font-bold whitespace-nowrap">${paid.toFixed(2)}&nbsp;zł</strong> (${pluralizeGames(myInfo.games)}). Dzięki! ✨`
+                                    : `Zagrano: <strong class="text-white">${pluralizeGames(myInfo.games)}</strong> • Należność: <strong class="text-amber-300 font-mono font-bold whitespace-nowrap">${due.toFixed(2)}&nbsp;zł</strong>`
                                 }
                             </p>
                             <div class="flex items-center gap-1.5 text-[11px] text-slate-400 flex-wrap">
@@ -3489,9 +3489,9 @@
             const costEl = document.getElementById('monthTotalCost');
             const paidEl = document.getElementById('monthTotalPaid');
             const outEl = document.getElementById('monthTotalOutstanding');
-            if (costEl) costEl.innerText = `${totalHallCost.toFixed(2)} zł`;
-            if (paidEl) paidEl.innerText = `${totalPaid.toFixed(2)} zł`;
-            if (outEl) outEl.innerText = `${totalOutstanding.toFixed(2)} zł`;
+            if (costEl) costEl.innerHTML = `${totalHallCost.toFixed(2)}&nbsp;zł`;
+            if (paidEl) paidEl.innerHTML = `${totalPaid.toFixed(2)}&nbsp;zł`;
+            if (outEl) outEl.innerHTML = `${totalOutstanding.toFixed(2)}&nbsp;zł`;
 
             // Update Progress Bar
             const percent = totalHallCost > 0 ? Math.min(100, Math.round((totalPaid / totalHallCost) * 100)) : 0;
@@ -3589,33 +3589,33 @@
                                         ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md">TY</span>` : ''}
                                         <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
                                     </div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5">
-                                        Należność: <strong class="text-slate-200 font-mono font-bold">${due.toFixed(2)} zł</strong>
+                                    <div class="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
+                                        Należność: <strong class="text-slate-200 font-mono font-bold whitespace-nowrap">${due.toFixed(2)}&nbsp;zł</strong>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Status Tag -->
-                            <div class="shrink-0 text-right">
+                            <div class="shrink-0 text-right whitespace-nowrap">
                                 ${isPaid 
-                                    ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800/80 text-[11px] font-black px-2.5 py-1 rounded-xl inline-flex items-center gap-1">
+                                    ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800/80 text-[11px] font-black px-2.5 py-1 rounded-xl inline-flex items-center gap-1 whitespace-nowrap">
                                         <span>✓</span> Opłacone
                                        </span>` 
                                     : (paid > 0 
-                                        ? `<div class="space-y-0.5 text-right">
-                                            <span class="bg-amber-950/80 text-amber-300 border border-amber-800/80 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1">
+                                        ? `<div class="space-y-0.5 text-right whitespace-nowrap">
+                                            <span class="bg-amber-950/80 text-amber-300 border border-amber-800/80 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1 whitespace-nowrap">
                                                 <span>⏳</span> Częściowo
                                             </span>
-                                            <div class="text-[10px] font-mono text-rose-400 font-bold">
-                                                Brak: ${Math.abs(saldo).toFixed(2)} zł
+                                            <div class="text-[10px] font-mono text-rose-400 font-bold whitespace-nowrap">
+                                                Brak: ${Math.abs(saldo).toFixed(2)}&nbsp;zł
                                             </div>
                                            </div>`
-                                        : `<div class="space-y-0.5 text-right">
-                                            <span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1">
+                                        : `<div class="space-y-0.5 text-right whitespace-nowrap">
+                                            <span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1 whitespace-nowrap">
                                                 <span>🔴</span> Brak wpłaty
                                             </span>
-                                            <div class="text-[10px] font-mono text-rose-400 font-bold">
-                                                ${due > 0 ? `Do zapłaty: ${due.toFixed(2)} zł` : ''}
+                                            <div class="text-[10px] font-mono text-rose-400 font-bold whitespace-nowrap">
+                                                ${due > 0 ? `Do zapłaty: ${due.toFixed(2)}&nbsp;zł` : ''}
                                             </div>
                                            </div>`
                                       )
@@ -3627,7 +3627,7 @@
                         <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-2">
                             ${isAdmin ? `
                                 <!-- Left: Paid amount input -->
-                                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0">
+                                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0 whitespace-nowrap">
                                     <span class="text-[11px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
                                     <input type="number" step="0.01" value="${paid || 0}" 
                                            onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
@@ -3639,19 +3639,19 @@
                                 <!-- Right: Action button (Całość or Zeruj) -->
                                 <div class="shrink-0">
                                     ${!isPaid && due > 0 ? `
-                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5">
+                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 whitespace-nowrap">
                                             <span>✅</span> Opłać całość
                                         </button>
                                     ` : `
-                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1" title="Wyzeruj wpłatę">
+                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1 whitespace-nowrap" title="Wyzeruj wpłatę">
                                             <span>↩️</span> Cofnij
                                         </button>
                                     `}
                                 </div>
                             ` : `
                                 <!-- Non-admin view -->
-                                <div class="text-xs text-slate-400">
-                                    Wpłacono: <strong class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-slate-200'} font-mono font-bold">${paid.toFixed(2)} zł</strong>
+                                <div class="text-xs text-slate-400 whitespace-nowrap">
+                                    Wpłacono: <strong class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-slate-200'} font-mono font-bold whitespace-nowrap">${paid.toFixed(2)}&nbsp;zł</strong>
                                 </div>
                                 <div class="shrink-0">
                                     ${!isPaid && due > 0 ? `
