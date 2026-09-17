@@ -562,73 +562,86 @@
 
 
         <!-- ================= TAB 3: ROZLICZENIE MIESIĘCZNE & BLIK ================= -->
-        <section id="tab-billing" class="space-y-4 hidden animate-fade-in">
+        <section id="tab-billing" class="space-y-3.5 hidden animate-fade-in">
             
-            <!-- BLIK Info Box -->
-            <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-emerald-950/40 border border-emerald-800/60 rounded-3xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-xl">
-                <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">📲</span>
-                        <h3 class="font-black text-sm text-white">Rozliczenie miesięczne hali</h3>
+            <!-- Modern Unified Financial Dashboard -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/50 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                
+                <!-- Top Row: Title & Quick BLIK Phone Copy -->
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-base shadow-inner">
+                            💸
+                        </div>
+                        <div>
+                            <h3 class="font-black text-sm text-white leading-tight">Rozliczenie hali</h3>
+                            <p class="text-[11px] text-slate-400" id="billingMonthSubtitle">Miesiąc: bieżący</p>
+                        </div>
                     </div>
-                    <p class="text-xs text-slate-300">
-                        Przelew BLIK na numer: <span class="text-emerald-400 font-mono font-black text-base ml-1">517 077 482</span>
-                    </p>
-                    <p class="text-[11px] text-slate-400">
-                        W tytule przelewu podaj: <span class="text-white font-semibold">Siatka [Twoje Imię] [Miesiąc]</span>
-                    </p>
-                </div>
-                <div class="flex items-center gap-2 flex-wrap">
-                    <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-3.5 py-2.5 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
-                        <span>📋</span> Kopiuj BLIK
+
+                    <!-- Compact BLIK Pill (Copies ONLY phone number) -->
+                    <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować sam numer telefonu" class="bg-slate-950 hover:bg-slate-850 active:scale-95 border border-emerald-500/40 hover:border-emerald-400 text-slate-200 px-3 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm group">
+                        <span class="text-emerald-400 text-[11px]">📲 BLIK:</span>
+                        <span class="font-mono font-black text-emerald-400 text-xs tracking-wider" id="blikPhoneDisplay">517 077 482</span>
+                        <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md group-hover:bg-emerald-500 group-hover:text-slate-950 transition">Kopiuj</span>
                     </button>
-                    <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-2.5 rounded-2xl text-xs transition active:scale-95 border border-slate-700 flex items-center gap-1.5">
-                        <span>📢</span> Lista do opłacenia
+                </div>
+
+                <!-- Financial Progress Bar -->
+                <div class="space-y-1.5 bg-slate-950/70 border border-slate-800/70 rounded-2xl p-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Postęp zbiórki</span>
+                        <span id="billingProgressPercent" class="font-mono font-black text-emerald-400 text-xs">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                        <div id="billingProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] font-mono pt-0.5">
+                        <span class="text-slate-400">Zebrano: <strong id="monthTotalPaid" class="text-emerald-400 font-bold">0.00 zł</strong> / <span id="monthTotalCost" class="text-slate-300">0.00 zł</span></span>
+                        <span class="text-slate-400">Brakuje: <strong id="monthTotalOutstanding" class="text-rose-400 font-bold">0.00 zł</strong></span>
+                    </div>
+                </div>
+
+                <!-- Bottom Helper & Admin Tools -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-0.5 text-[11px]">
+                    <span class="text-slate-400 flex items-center gap-1">
+                        <span>ℹ️</span> W tytule przelewu podaj: <strong class="text-slate-200">Siatka [Twoje Imię]</strong>
+                    </span>
+                    <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold px-3 py-1.5 rounded-xl border border-slate-700/80 transition active:scale-95 flex items-center gap-1.5">
+                        <span>📢</span> Kopiuj na Messengera
                     </button>
                 </div>
             </div>
 
-            <!-- Month Financial Stats Summary -->
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl grid grid-cols-3 gap-2 text-center">
-                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
-                    <p class="text-[10px] text-slate-400 font-semibold">Koszt hal</p>
-                    <p id="monthTotalCost" class="text-base sm:text-lg font-black text-white mt-0.5">0.00 zł</p>
-                </div>
-                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
-                    <p class="text-[10px] text-slate-400 font-semibold">Wpłaty</p>
-                    <p id="monthTotalPaid" class="text-base sm:text-lg font-black text-emerald-400 mt-0.5">0.00 zł</p>
-                </div>
-                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
-                    <p class="text-[10px] text-slate-400 font-semibold">Brakuje</p>
-                    <p id="monthTotalOutstanding" class="text-base sm:text-lg font-black text-rose-400 mt-0.5">0.00 zł</p>
-                </div>
-            </div>
+            <!-- Logged-in Player Personal Card (Rendered dynamically if user is logged in) -->
+            <div id="myBillingCardContainer"></div>
 
             <!-- Billing Cards with Search & Filters -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 sm:p-4 shadow-lg space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>
                         <h3 class="font-bold text-xs sm:text-sm text-white">Zestawienie składek graczy</h3>
-                        <p class="text-[10px] text-slate-400">Dotknij „📋 Kopiuj BLIK”, aby skopiować numer do przelewu.</p>
+                        <p class="text-[10px] text-slate-400">Lista obecnych i rozliczenia za ten miesiąc.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-full sm:w-36 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl text-white focus:outline-none focus:border-emerald-500">
+                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-full sm:w-40 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl text-white focus:outline-none focus:border-emerald-500">
                     </div>
                 </div>
 
-                <!-- Szybkie Filtry: Wszyscy / Tylko nieopłacone -->
+                <!-- Filters with Dynamic Counts: Wszyscy / Nieopłacone / Opłacone -->
                 <div class="flex gap-1.5 text-[11px] pt-1">
-                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition">
+                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm">
                         Wszyscy
                     </button>
-                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-800 transition">
+                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition">
                         🔴 Nieopłacone
                     </button>
-                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-800 transition">
+                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition">
                         🟢 Opłacone
                     </button>
                 </div>
 
+                <!-- Cards List -->
                 <div id="billingCardsList" class="space-y-2">
                     <!-- Rendered dynamically -->
                 </div>
@@ -3348,14 +3361,6 @@
         // ================= TAB 5: BILLING =================
         function setBillingFilter(filter) {
             currentBillingFilter = filter;
-            const btnAll = document.getElementById('billingFilterAll');
-            const btnUnpaid = document.getElementById('billingFilterUnpaid');
-            const btnPaid = document.getElementById('billingFilterPaid');
-
-            if (btnAll) btnAll.className = filter === 'all' ? "px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-800 transition";
-            if (btnUnpaid) btnUnpaid.className = filter === 'unpaid' ? "px-2.5 py-1 rounded-lg font-bold bg-rose-500 text-white transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-800 transition";
-            if (btnPaid) btnPaid.className = filter === 'paid' ? "px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-800 transition";
-
             renderBilling();
         }
 
@@ -3399,15 +3404,81 @@
             return { playersMap, totalHallCost, totalPaid, totalDue, matchesCount: activeMatchesCount };
         }
 
+        function copyBlikNumber() {
+            const blik = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
+            copyToClipboard(blik, `Skopiowano numer BLIK: ${blik} 📋`);
+        }
+
         function copySinglePlayerBlik(playerName, dueAmount) {
-            const phone = (AppState.settings?.blikPhone || "517077482").replace(/\s+/g, '');
-            const title = `Siatka ${playerName} ${AppState.currentMonth}`;
-            copyToClipboard(phone, `Skopiowano nr BLIK! Kwota: ${dueAmount.toFixed(2)} zł • Tytuł: ${title}`);
+            const phone = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
+            copyToClipboard(phone, `Skopiowano numer BLIK: ${phone} (należność: ${dueAmount.toFixed(2)} zł)`);
         }
 
         function copyTransferTitle(playerName) {
             const title = `Siatka ${playerName} ${AppState.currentMonth}`;
-            copyToClipboard(title, `Skopiowano tytuł przelewu: "${title}"`);
+            copyToClipboard(title, `Skopiowano tytuł przelewu: "${title}" 📋`);
+        }
+
+        function renderMyBillingHero(playersMap) {
+            const container = document.getElementById('myBillingCardContainer');
+            if (!container) return;
+
+            if (!loggedPlayer) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const myInfo = playersMap[loggedPlayer];
+            if (!myInfo || (myInfo.games === 0 && myInfo.paid === 0)) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const due = myInfo.costDue;
+            const paid = myInfo.paid;
+            const saldo = paid - due;
+            const isPaid = (due > 0 && saldo >= -0.05);
+            const phone = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
+            const title = `Siatka ${loggedPlayer} ${AppState.currentMonth}`;
+
+            container.innerHTML = `
+                <div class="bg-gradient-to-br ${isPaid ? 'from-emerald-950/80 via-slate-900 to-emerald-950/30 border-emerald-500/50' : 'from-amber-950/50 via-slate-900 to-rose-950/30 border-amber-500/50'} border rounded-3xl p-4 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">${isPaid ? '🎉' : '💳'}</span>
+                            <span class="text-xs font-black text-white uppercase tracking-wider">Twoja składka • ${escapeHtml(AppState.currentMonth)}</span>
+                        </div>
+                        ${isPaid 
+                            ? `<span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-sm">✓ Uregulowane</span>`
+                            : `<span class="bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-black px-2.5 py-0.5 rounded-full font-mono">Do zapłaty: ${Math.abs(saldo).toFixed(2)} zł</span>`
+                        }
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+                        <div class="text-xs space-y-1">
+                            <p class="text-slate-200">
+                                ${isPaid 
+                                    ? `Super! Wszystko opłacone na ten miesiąc: <strong class="text-emerald-400 font-mono font-bold">${paid.toFixed(2)} zł</strong> (${pluralizeGames(myInfo.games)}). Dzięki! ✨`
+                                    : `Zagrano: <strong class="text-white">${pluralizeGames(myInfo.games)}</strong> • Należność: <strong class="text-amber-300 font-mono font-bold">${due.toFixed(2)} zł</strong>`
+                                }
+                            </p>
+                            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 flex-wrap">
+                                <span>Tytuł przelewu:</span>
+                                <span class="text-slate-200 font-mono bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 font-semibold">${escapeHtml(title)}</span>
+                                <button type="button" onclick="copyTransferTitle(${toInlineArgument(loggedPlayer)})" class="text-emerald-400 hover:text-emerald-300 font-bold text-[10px] underline ml-0.5">
+                                    kopiuj tytuł
+                                </button>
+                            </div>
+                        </div>
+
+                        ${!isPaid ? `
+                            <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-4 py-2.5 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 shrink-0">
+                                <span>📲</span> Kopiuj nr BLIK (${phone})
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         }
 
         function renderBilling() {
@@ -3415,16 +3486,73 @@
             const { playersMap, totalHallCost, totalPaid, totalDue } = calculateMonthlyBilling(AppState.currentMonth);
             const totalOutstanding = Math.max(0, totalDue - totalPaid);
 
-            document.getElementById('monthTotalCost').innerText = `${totalHallCost.toFixed(2)} zł`;
-            document.getElementById('monthTotalPaid').innerText = `${totalPaid.toFixed(2)} zł`;
-            document.getElementById('monthTotalOutstanding').innerText = `${totalOutstanding.toFixed(2)} zł`;
+            const costEl = document.getElementById('monthTotalCost');
+            const paidEl = document.getElementById('monthTotalPaid');
+            const outEl = document.getElementById('monthTotalOutstanding');
+            if (costEl) costEl.innerText = `${totalHallCost.toFixed(2)} zł`;
+            if (paidEl) paidEl.innerText = `${totalPaid.toFixed(2)} zł`;
+            if (outEl) outEl.innerText = `${totalOutstanding.toFixed(2)} zł`;
+
+            // Update Progress Bar
+            const percent = totalHallCost > 0 ? Math.min(100, Math.round((totalPaid / totalHallCost) * 100)) : 0;
+            const barEl = document.getElementById('billingProgressBar');
+            const percentEl = document.getElementById('billingProgressPercent');
+            if (barEl) barEl.style.width = `${percent}%`;
+            if (percentEl) percentEl.innerText = `${percent}%`;
+
+            const subEl = document.getElementById('billingMonthSubtitle');
+            if (subEl) subEl.innerText = `Miesiąc: ${AppState.currentMonth}`;
+
+            const blikDisp = document.getElementById('blikPhoneDisplay');
+            if (blikDisp) blikDisp.innerText = AppState.settings?.blikPhone || "517 077 482";
+
+            // Render Personal Card for logged player
+            renderMyBillingHero(playersMap);
 
             const query = (document.getElementById('billingSearchInput')?.value || '').toLowerCase().trim();
             const listEl = document.getElementById('billingCardsList');
             if (!listEl) return;
 
             const playerNames = Object.keys(playersMap).sort((a, b) => a.localeCompare(b, 'pl'));
-            
+
+            // Calculate live counts
+            const allCount = playerNames.filter(p => (playersMap[p].games > 0 || playersMap[p].paid > 0)).length;
+            const unpaidCount = playerNames.filter(p => {
+                const info = playersMap[p];
+                const saldo = info.paid - info.costDue;
+                const isPaid = (info.costDue > 0 && saldo >= -0.05);
+                return !isPaid && (info.games > 0 || info.paid > 0);
+            }).length;
+            const paidCount = playerNames.filter(p => {
+                const info = playersMap[p];
+                const saldo = info.paid - info.costDue;
+                return (info.costDue > 0 && saldo >= -0.05);
+            }).length;
+
+            // Update Filter buttons UI with counts
+            const fAll = document.getElementById('billingFilterAll');
+            const fUnpaid = document.getElementById('billingFilterUnpaid');
+            const fPaid = document.getElementById('billingFilterPaid');
+
+            if (fAll) {
+                fAll.innerHTML = `Wszyscy <span class="text-[10px] opacity-80">(${allCount})</span>`;
+                fAll.className = currentBillingFilter === 'all' 
+                    ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm" 
+                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition";
+            }
+            if (fUnpaid) {
+                fUnpaid.innerHTML = `🔴 Do zapłaty <span class="text-[10px] opacity-80">(${unpaidCount})</span>`;
+                fUnpaid.className = currentBillingFilter === 'unpaid' 
+                    ? "px-3 py-1.5 rounded-xl font-bold bg-rose-500 text-white transition shadow-sm" 
+                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition";
+            }
+            if (fPaid) {
+                fPaid.innerHTML = `🟢 Opłacone <span class="text-[10px] opacity-80">(${paidCount})</span>`;
+                fPaid.className = currentBillingFilter === 'paid' 
+                    ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm" 
+                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition";
+            }
+
             const filtered = playerNames.filter(p => {
                 const info = playersMap[p];
                 const saldo = info.paid - info.costDue;
@@ -3450,45 +3578,88 @@
                 const isMe = (p === loggedPlayer);
 
                 return `
-                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/10' : 'border-slate-800/80'} rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="space-y-0.5">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-xs ${isMe ? 'text-emerald-300 font-black' : 'text-white'}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
-                                <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
-                                ${isPaid ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">✅ Opłacone</span>` : (paid > 0 ? `<span class="bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Częściowo</span>` : '')}
+                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/15 ring-1 ring-emerald-500/30' : 'border-slate-800/80'} rounded-2xl p-3 sm:p-3.5 space-y-2.5 transition shadow-sm">
+                        <!-- Row 1: Player Info & Status -->
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                ${getPlayerAvatarHtml(p, 'sm')}
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} truncate">${escapeHtml(p)}</span>
+                                        ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md">TY</span>` : ''}
+                                        <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-400 mt-0.5">
+                                        Należność: <strong class="text-slate-200 font-mono font-bold">${due.toFixed(2)} zł</strong>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2 text-xs">
-                                <span class="text-slate-400">Do zapłaty: <strong class="text-white">${due.toFixed(2)} zł</strong></span>
-                                <span class="text-slate-600">•</span>
-                                <span class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-rose-400'} font-bold font-mono">
-                                    ${saldo >= -0.05 ? 'Uregulowane' : `Brakuje: ${Math.abs(saldo).toFixed(2)} zł`}
-                                </span>
+
+                            <!-- Status Tag -->
+                            <div class="shrink-0 text-right">
+                                ${isPaid 
+                                    ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800/80 text-[11px] font-black px-2.5 py-1 rounded-xl inline-flex items-center gap-1">
+                                        <span>✓</span> Opłacone
+                                       </span>` 
+                                    : (paid > 0 
+                                        ? `<div class="space-y-0.5 text-right">
+                                            <span class="bg-amber-950/80 text-amber-300 border border-amber-800/80 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1">
+                                                <span>⏳</span> Częściowo
+                                            </span>
+                                            <div class="text-[10px] font-mono text-rose-400 font-bold">
+                                                Brak: ${Math.abs(saldo).toFixed(2)} zł
+                                            </div>
+                                           </div>`
+                                        : `<div class="space-y-0.5 text-right">
+                                            <span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1">
+                                                <span>🔴</span> Brak wpłaty
+                                            </span>
+                                            <div class="text-[10px] font-mono text-rose-400 font-bold">
+                                                ${due > 0 ? `Do zapłaty: ${due.toFixed(2)} zł` : ''}
+                                            </div>
+                                           </div>`
+                                      )
+                                }
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-2 self-end sm:self-center flex-wrap">
-                            ${!isPaid && due > 0 ? `
-                                <button type="button" onclick="copySinglePlayerBlik(${toInlineArgument(p)}, ${due})" class="px-2.5 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-sm active:scale-95">
-                                    <span>📋</span> Kopiuj BLIK
-                                </button>
-                            ` : ''}
-
+                        <!-- Row 2: Fixed Two-Sided Action Bar (Never wraps unexpectedly!) -->
+                        <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-2">
                             ${isAdmin ? `
-                            <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl px-2 py-1">
-                                <span class="text-[11px] text-slate-400 mr-1.5">Wpłata:</span>
-                                <input type="number" step="0.01" value="${paid || 0}" 
-                                       onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
-                                       aria-label="Wpisz kwotę wpłaty"
-                                       class="w-16 bg-transparent text-xs font-bold text-emerald-400 text-right focus:outline-none">
-                                <span class="text-[11px] text-slate-400 ml-1">zł</span>
-                            </div>
-                            <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] rounded-xl border border-slate-700 transition" title="Wpisz całą należność">
-                                + Całość
-                            </button>
+                                <!-- Left: Paid amount input -->
+                                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0">
+                                    <span class="text-[11px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
+                                    <input type="number" step="0.01" value="${paid || 0}" 
+                                           onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
+                                           aria-label="Wpisz kwotę wpłaty dla gracza ${escapeHtml(p)}"
+                                           class="w-16 bg-transparent text-xs font-black text-emerald-400 text-right focus:outline-none font-mono">
+                                    <span class="text-[11px] text-slate-400 ml-1">zł</span>
+                                </div>
+
+                                <!-- Right: Action button (Całość or Zeruj) -->
+                                <div class="shrink-0">
+                                    ${!isPaid && due > 0 ? `
+                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5">
+                                            <span>✅</span> Opłać całość
+                                        </button>
+                                    ` : `
+                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1" title="Wyzeruj wpłatę">
+                                            <span>↩️</span> Cofnij
+                                        </button>
+                                    `}
+                                </div>
                             ` : `
-                            <span class="text-xs font-bold ${saldo >= -0.05 ? 'text-emerald-400' : 'text-rose-400'} bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700">
-                                Wpłacono: ${paid.toFixed(2)} zł
-                            </span>
+                                <!-- Non-admin view -->
+                                <div class="text-xs text-slate-400">
+                                    Wpłacono: <strong class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-slate-200'} font-mono font-bold">${paid.toFixed(2)} zł</strong>
+                                </div>
+                                <div class="shrink-0">
+                                    ${!isPaid && due > 0 ? `
+                                        <button type="button" onclick="copyBlikNumber()" class="px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-xs rounded-xl transition flex items-center gap-1.5 active:scale-95">
+                                            <span>📲</span> Kopiuj BLIK
+                                        </button>
+                                    ` : ''}
+                                </div>
                             `}
                         </div>
                     </div>
@@ -3516,11 +3687,6 @@
             renderBilling();
             renderProfileTab();
             showToast(`Opłacono całość (${val.toFixed(2)} zł) dla: ${pName} ✅`);
-        }
-
-        function copyBlikNumber() {
-            const blik = AppState.settings?.blikPhone || "517 077 482";
-            copyToClipboard(blik.replace(/\s+/g, ''), `Skopiowano numer BLIK: ${blik}`);
         }
 
         function copyDebtorsListMessage() {
