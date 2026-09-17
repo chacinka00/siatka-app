@@ -1972,22 +1972,22 @@
                         <div class="space-y-2">
                             ${isUserSigned ? `
                                 <div class="bg-slate-950 border border-emerald-800/80 rounded-2xl p-3 flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xl">✅</span>
-                                        <div>
-                                            <p class="text-xs font-extrabold text-white">Jesteś zapisany(a) na ten mecz!</p>
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
+                                        <div class="min-w-0">
+                                            <p class="text-xs font-extrabold text-white truncate">Jesteś zapisany(a) na ten mecz!</p>
                                             <p class="text-[11px] ${isInMain ? 'text-emerald-400' : 'text-amber-400'} font-semibold">
                                                 ${isInMain ? '🟢 Skład Główny (12)' : '⏳ Lista Rezerwowa'}
                                             </p>
                                         </div>
                                     </div>
-                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition">
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition shrink-0">
                                         Wypisz mnie ✕
                                     </button>
                                 </div>
                             ` : `
-                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
-                                    <span class="text-base">🏐</span>
+                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2.5">
+                                    ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950')}
                                     <span>ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
                                 </button>
                             `}
@@ -2045,18 +2045,20 @@
                     const isMe = (p === loggedPlayer);
                     squadHtml += `
                         <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${getPlayerAvatarHtml(p, 'xs')}
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
                     `;
                 } else {
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-2 rounded-xl text-xs text-slate-600">
+                        <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-1.5 rounded-xl text-xs text-slate-600">
                             <div class="flex items-center gap-2">
-                                <span class="font-mono font-bold text-slate-700 w-4">${i + 1}.</span>
+                                <span class="font-mono font-bold text-slate-700 w-4 shrink-0">${i + 1}.</span>
+                                <div class="w-5 h-5 rounded-full border border-dashed border-slate-800 flex items-center justify-center text-[10px] text-slate-700 shrink-0 select-none">👤</div>
                                 <span class="font-medium text-slate-500 italic">+ Wolne miejsce</span>
                             </div>
                         </div>
@@ -2075,9 +2077,10 @@
                     const isMe = (p === loggedPlayer);
                     return `
                         <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
-                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${getPlayerAvatarHtml(p, 'xs')}
+                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
@@ -2862,10 +2865,10 @@
                         winnerName.innerText = "Brak głosów";
                         winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
                     } else if (leaders.length === 1) {
-                        winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
+                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
                         winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
                     } else {
-                        winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
+                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
                         winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
                     }
                 }
@@ -2881,6 +2884,7 @@
                                 <div class="flex items-center justify-between text-xs">
                                     <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
                                         <span>${isLeader ? '🌟' : '🏐'}</span>
+                                        ${getPlayerAvatarHtml(name, 'xs')}
                                         <span class="truncate">${escapeHtml(name)}</span>
                                     </div>
                                     <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} ${count === 1 ? 'głos' : 'głosy'} (${percent}%)</span>
@@ -2901,7 +2905,10 @@
                         const votedNominee = votes[p];
                         return `
                             <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                                <div class="flex items-center gap-2 truncate">
+                                    ${getPlayerAvatarHtml(p, 'xs')}
+                                    <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                                </div>
                                 <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'} shrink-0">
                                     ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
                                 </span>
