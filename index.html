@@ -2,7 +2,7 @@
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#070a12">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -50,10 +50,6 @@
         }
     </script>
     <style>
-        html, body {
-            overscroll-behavior-y: contain;
-        }
-
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
@@ -62,50 +58,10 @@
         
         .ios-safe-header {
             padding-top: max(14px, env(safe-area-inset-top, 14px));
-            padding-left: max(16px, env(safe-area-inset-left, 16px));
-            padding-right: max(16px, env(safe-area-inset-right, 16px));
         }
 
         .ios-safe-bottom {
             padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
-            padding-left: max(12px, env(safe-area-inset-left, 12px));
-            padding-right: max(12px, env(safe-area-inset-right, 12px));
-        }
-
-        /* Eliminacja 300ms opóźnienia dotyku (tap delay) i zoomu dwuklikiem */
-        button, a, input, select, textarea, [role="button"], .cursor-pointer, .tab-btn {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Płynne przewijanie z zachowaniem granic i brakiem rubber-bandingu */
-        .overflow-y-auto, .overflow-x-auto {
-            overscroll-behavior-y: contain;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* Blokada wymuszonego zoomu w Safari (iOS) przy focusie na polach */
-        @media screen and (max-width: 768px) {
-            input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
-            select,
-            textarea {
-                font-size: 16px !important;
-            }
-        }
-
-        /* Natychmiastowy dotykowy feedback (Zero Latency Feel) */
-        button:active:not(:disabled),
-        .tab-btn:active,
-        [role="button"]:active:not(:disabled) {
-            transform: scale(0.97);
-            opacity: 0.9;
-            transition: transform 0.05s ease, opacity 0.05s ease;
-        }
-
-        /* Dynamiczne jednostki viewportu dla okien modalnych */
-        .max-h-modal {
-            max-height: 90vh;
-            max-height: 90dvh;
         }
 
         ::-webkit-scrollbar { width: 3px; height: 3px; }
@@ -168,46 +124,36 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-28">
 
     <!-- Top Sticky Header z bezpiecznym marginesem pod Dynamic Island / iPhone -->
-    <header class="bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all shadow-sm">
-        <div class="max-w-2xl mx-auto px-3.5 py-2 space-y-1.5">
-            <!-- Row 1: Brand Logo, Title & Actions -->
-            <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2 min-w-0">
-                    <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
-                        <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[10px]" loading="eager">
-                        <span class="absolute -bottom-1 -right-1 text-[8px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
-                    </div>
-                    <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">Siatkówka Piątek</h1>
+    <header class="bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 ios-safe-header transition-all shadow-sm">
+        <div class="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
+                    <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[14px]" loading="eager">
+                    <span class="absolute -bottom-1 -right-1 text-[10px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
                 </div>
-
-                <!-- Month Select & Share Action -->
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95 max-w-[125px] sm:max-w-none">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex shrink-0">
-                        <span>📣</span>
-                        <span class="hidden sm:inline text-[11px]">Mess</span>
-                    </button>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white truncate">Siatkówka Piątek</h1>
+                        <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
+                        </span>
+                        <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 items-center gap-0.5 shrink-0">
+                            👑 Organizator
+                        </span>
+                    </div>
+                    <p id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate">⏰ 18:30 - 20:45 • 📍 ul. Myśliborska 25</p>
                 </div>
             </div>
 
-            <!-- Row 2: User Greeting, Role Badge & Sync Status -->
-            <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/50">
-                <div class="flex items-center gap-1.5 min-w-0">
-                    <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate flex items-center gap-1">
-                        ⏰ 18:45 (gra 19:00 - 21:00)
-                    </div>
-                    <span id="adminModeBadge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-800/80 items-center gap-1 shrink-0 shadow-sm shadow-amber-950/50">
-                        👑 Organizator
-                    </span>
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-[10px] text-slate-400 font-medium">📍 Myśliborska 25</span>
-                    <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
-                    </span>
-                </div>
+            <!-- Month Select & Share Action -->
+            <div class="flex items-center gap-2 shrink-0">
+                <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-black text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
+                    <!-- Populated dynamically -->
+                </select>
+                <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-2 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex">
+                    <span>📣</span>
+                    <span class="hidden sm:inline text-[11px]">Mess</span>
+                </button>
             </div>
         </div>
     </header>
@@ -250,8 +196,8 @@
                     </span>
                 </div>
 
-                <div class="flex items-center justify-between gap-3">
-                    <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
                                 2026-08-28
@@ -264,31 +210,34 @@
                             </span>
                         </div>
                         <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Piątkowy Mecz</h2>
-                        <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">18:45</span> • Gra: <span class="text-emerald-400 font-bold">19:00 - 21:00</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
+                        <p class="text-xs text-slate-400 mt-0.5">⏰ Godzina: <span class="text-emerald-400 font-bold">18:30 - 20:45</span> (szatnia 18:20)</p>
                     </div>
 
-                    <!-- Slots metric badge (Tylko Skład) -->
-                    <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-2 px-3 sm:px-4 text-center shrink-0 shadow-inner min-w-[70px]">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skład</p>
-                        <p id="matchPlayerCount" class="text-lg sm:text-xl font-black text-sky-400 mt-0.5 font-mono">0/12</p>
+                    <!-- Cost & Slots metrics -->
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2 px-3 min-w-[75px] sm:min-w-[85px] flex flex-col justify-center">
+                            <p class="text-[10px] text-slate-400 font-semibold">Koszt/os</p>
+                            <p id="matchCostPerPerson" class="text-base sm:text-lg font-black text-emerald-400 mt-0.5">0.00 zł</p>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2 px-3 min-w-[75px] sm:min-w-[85px] flex flex-col justify-center">
+                            <p class="text-[10px] text-slate-400 font-semibold">Skład</p>
+                            <p id="matchPlayerCount" class="text-base sm:text-lg font-black text-sky-400 mt-0.5">0/12</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Match Sets Result Card -->
-                <div id="matchScoreDisplayCard" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2 shadow-md">
-                    <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
-                        <div class="flex items-center gap-2">
-                            <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-xs">📊</span>
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
+                <!-- Match Sets Result Pill -->
+                <div id="matchScoreDisplayCard" class="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-2.5 flex items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-base shrink-0">📊</span>
+                        <div class="truncate">
+                            <span class="font-bold text-slate-200">Wynik spotkania:</span>
+                            <span id="scoreText" class="text-amber-400 font-black ml-1">Jeszcze nie rozegrano</span>
                         </div>
-                        <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm">
-                            <span>✏️</span>
-                            <span id="editScoreBtnLabel">Wpisz wynik</span>
-                        </button>
                     </div>
-                    <div id="scoreText" class="min-w-0">
-                        <div class="text-xs text-slate-500 py-0.5">Jeszcze nie wpisano wyniku spotkania</div>
-                    </div>
+                    <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz wynik meczu" class="text-xs text-slate-400 hover:text-emerald-400 font-bold px-2 py-1 rounded-lg transition bg-slate-900 border border-slate-800 shrink-0">
+                        ✏️ Wynik
+                    </button>
                 </div>
 
                 <!-- Fast Join / Action Container for Logged-In User & Guests -->
@@ -562,86 +511,70 @@
 
 
         <!-- ================= TAB 3: ROZLICZENIE MIESIĘCZNE & BLIK ================= -->
-        <section id="tab-billing" class="space-y-3.5 hidden animate-fade-in">
+        <section id="tab-billing" class="space-y-4 hidden animate-fade-in">
             
-            <!-- Modern Unified Financial Dashboard -->
-            <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/50 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
-                
-                <!-- Top Row: Title & Quick BLIK Phone Copy -->
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-base shadow-inner">
-                            💸
-                        </div>
-                        <div>
-                            <h3 class="font-black text-sm text-white leading-tight">Rozliczenie hali</h3>
-                            <p class="text-[11px] text-slate-400" id="billingMonthSubtitle">Miesiąc: bieżący</p>
-                        </div>
+            <!-- BLIK Info Box -->
+            <div class="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-emerald-950/40 border border-emerald-800/60 rounded-3xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">📲</span>
+                        <h3 class="font-black text-sm text-white">Rozliczenie miesięczne hali</h3>
                     </div>
-
-                    <!-- Compact BLIK Pill (Copies ONLY phone number) -->
-                    <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować sam numer telefonu" class="bg-slate-950 hover:bg-slate-850 active:scale-95 border border-emerald-500/40 hover:border-emerald-400 text-slate-200 px-3 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm group">
-                        <span class="text-emerald-400 text-[11px]">📲 BLIK:</span>
-                        <span class="font-mono font-black text-emerald-400 text-xs tracking-wider" id="blikPhoneDisplay">517 077 482</span>
-                        <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md group-hover:bg-emerald-500 group-hover:text-slate-950 transition">Kopiuj</span>
+                    <p class="text-xs text-slate-300">
+                        Przelew BLIK na numer: <span class="text-emerald-400 font-mono font-black text-base ml-1">517 077 482</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-3.5 py-2.5 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
+                        <span>📋</span> Kopiuj BLIK
                     </button>
-                </div>
-
-                <!-- Financial Progress Bar -->
-                <div class="space-y-1.5 bg-slate-950/70 border border-slate-800/70 rounded-2xl p-3">
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Postęp zbiórki</span>
-                        <span id="billingProgressPercent" class="font-mono font-black text-emerald-400 text-xs">0%</span>
-                    </div>
-                    <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                        <div id="billingProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
-                    </div>
-                    <div class="flex items-center justify-between text-[11px] font-mono pt-0.5 gap-2 whitespace-nowrap">
-                        <span class="text-slate-400 truncate">Zebrano: <strong id="monthTotalPaid" class="text-emerald-400 font-bold whitespace-nowrap">0.00 zł</strong> / <span id="monthTotalCost" class="text-slate-300 whitespace-nowrap">0.00 zł</span></span>
-                        <span class="text-slate-400 shrink-0 whitespace-nowrap">Brak: <strong id="monthTotalOutstanding" class="text-rose-400 font-bold whitespace-nowrap">0.00 zł</strong></span>
-                    </div>
-                </div>
-
-                <!-- Bottom Helper & Admin Tools -->
-                <div class="flex flex-wrap items-center justify-between gap-2 pt-0.5 text-[11px]">
-                    <span class="text-slate-400 flex items-center gap-1">
-                        <span>ℹ️</span> W tytule przelewu podaj: <strong class="text-slate-200">Siatka [Twoje Imię]</strong>
-                    </span>
-                    <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-bold px-3 py-1.5 rounded-xl border border-slate-700/80 transition active:scale-95 flex items-center gap-1.5">
-                        <span>📢</span> Kopiuj na Messengera
+                    <button type="button" id="billingDebtorsMessengerBtn" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="hidden bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-2.5 rounded-2xl text-xs transition active:scale-95 border border-slate-700 items-center gap-1.5">
+                        <span>📢</span> Lista do opłacenia
                     </button>
                 </div>
             </div>
 
-            <!-- Logged-in Player Personal Card (Rendered dynamically if user is logged in) -->
-            <div id="myBillingCardContainer"></div>
+            <!-- Month Financial Stats Summary -->
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl grid grid-cols-3 gap-2 text-center">
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
+                    <p class="text-[10px] text-slate-400 font-semibold">Koszt hal</p>
+                    <p id="monthTotalCost" class="text-base sm:text-lg font-black text-white mt-0.5">0.00 zł</p>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
+                    <p class="text-[10px] text-slate-400 font-semibold">Wpłaty</p>
+                    <p id="monthTotalPaid" class="text-base sm:text-lg font-black text-emerald-400 mt-0.5">0.00 zł</p>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5">
+                    <p class="text-[10px] text-slate-400 font-semibold">Brakuje</p>
+                    <p id="monthTotalOutstanding" class="text-base sm:text-lg font-black text-rose-400 mt-0.5">0.00 zł</p>
+                </div>
+            </div>
 
             <!-- Billing Cards with Search & Filters -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 sm:p-4 shadow-lg space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>
                         <h3 class="font-bold text-xs sm:text-sm text-white">Zestawienie składek graczy</h3>
-                        <p class="text-[10px] text-slate-400">Lista obecnych i rozliczenia za ten miesiąc.</p>
+                        <p class="text-[10px] text-slate-400">Dotknij „📋 Kopiuj BLIK”, aby skopiować numer do przelewu.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-full sm:w-40 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl text-white focus:outline-none focus:border-emerald-500">
+                        <input id="billingSearchInput" oninput="renderBilling()" type="text" placeholder="Szukaj gracza..." aria-label="Wyszukaj gracza w rozliczeniu" class="w-full sm:w-36 bg-slate-950 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl text-white focus:outline-none focus:border-emerald-500">
                     </div>
                 </div>
 
-                <!-- Filters with Dynamic Counts: Wszyscy / Nieopłacone / Opłacone -->
+                <!-- Szybkie Filtry: Wszyscy / Tylko nieopłacone -->
                 <div class="flex gap-1.5 text-[11px] pt-1">
-                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm">
+                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition">
                         Wszyscy
                     </button>
-                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition">
+                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-800 transition">
                         🔴 Nieopłacone
                     </button>
-                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition">
+                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-800 transition">
                         🟢 Opłacone
                     </button>
                 </div>
 
-                <!-- Cards List -->
                 <div id="billingCardsList" class="space-y-2">
                     <!-- Rendered dynamically -->
                 </div>
@@ -652,13 +585,96 @@
         <!-- ================= TAB 4: HALL OF FAME, BADGES & RECORDS ================= -->
         <section id="tab-halloffame" class="space-y-4 hidden animate-fade-in">
             
+            <!-- Rozbudowana Legenda Odznak (Mobile-Friendly Grid) -->
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                    <h4 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>🏅</span> Księga Osiągnięć & Trofeów
+                    </h4>
+                    <span class="text-[10px] text-slate-500 font-bold">10 odznak do zdobycia</span>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">👑</span>
+                        <div class="min-w-0">
+                            <strong class="block text-white text-[11px] truncate">MVP Star</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Min. 1x MVP meczu</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🌟</span>
+                        <div class="min-w-0">
+                            <strong class="block text-amber-300 text-[11px] truncate">Dominator MVP</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">2+ wygrane MVP</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🎯</span>
+                        <div class="min-w-0">
+                            <strong class="block text-sky-300 text-[11px] truncate">Głos Ludu</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">>50% głosów w meczu</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🔥</span>
+                        <div class="min-w-0">
+                            <strong class="block text-rose-400 text-[11px] truncate">W Cugu</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Seria 3 wygranych (W-W-W)</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">⚔️</span>
+                        <div class="min-w-0">
+                            <strong class="block text-amber-400 text-[11px] truncate">Tie-break Master</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Wygrana 3:2 lub przewagi</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🔀</span>
+                        <div class="min-w-0">
+                            <strong class="block text-indigo-300 text-[11px] truncate">Kameleon</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Wygrana u Ciemnych i Jasnych</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🦾</span>
+                        <div class="min-w-0">
+                            <strong class="block text-emerald-400 text-[11px] truncate">Żelazne Płuca</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">100% obecności w miesiącu</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">💎</span>
+                        <div class="min-w-0">
+                            <strong class="block text-cyan-300 text-[11px] truncate">Weteran 12+</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">12+ rozegranych gier</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🚀</span>
+                        <div class="min-w-0">
+                            <strong class="block text-teal-300 text-[11px] truncate">Świeża Krew</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Nowy gracz z min. 3 grami</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2">
+                        <span class="text-xl shrink-0">🎖️</span>
+                        <div class="min-w-0">
+                            <strong class="block text-amber-200 text-[11px] truncate">Aktywny Sędzia</strong>
+                            <span class="text-[10px] text-slate-400 block truncate">Głosuje w min. 70% gier</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hall of Fame Table -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🏆</span>
                     <div>
                         <h2 class="text-base sm:text-lg font-black text-white">SEZON 2026 - HALL OF FAME</h2>
-                        <p class="text-[11px] text-slate-400">Oficjalny ranking frekwencji • <span class="text-amber-400 font-semibold">Dotknij gracza, aby podejrzeć jego profil i odznaki 👆</span></p>
+                        <p class="text-[11px] text-slate-400">Oficjalny ranking frekwencji zawodników z bilansem ostatnich gier</p>
                     </div>
                 </div>
 
@@ -722,92 +738,6 @@
                 </div>
             </div>
 
-            <!-- Rozwijana Legenda Odznak (Mobile-Friendly Accordion) -->
-            <details id="badgesAccordion" class="group bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl transition-all">
-                <summary class="cursor-pointer flex items-center justify-between font-black text-xs text-amber-300 uppercase tracking-wider select-none list-none">
-                    <span class="flex items-center gap-1.5">
-                        <span>🏅</span> Księga Osiągnięć & Trofeów
-                    </span>
-                    <span class="flex items-center gap-2 text-[10px] text-slate-400 font-bold">
-                        <span>10 odznak do zdobycia</span>
-                        <span class="transform group-open:rotate-180 transition-transform duration-200 text-amber-400 text-xs">▼</span>
-                    </span>
-                </summary>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs pt-3 mt-3 border-t border-slate-800/80">
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">👑</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-white text-xs font-bold">MVP Star</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Min. 1x MVP meczu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🌟</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-300 text-xs font-bold">Dominator MVP</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">2+ wygrane MVP w sezonie</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🎯</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-sky-300 text-xs font-bold">Głos Ludu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">>50% głosów na MVP w meczu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🔥</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-rose-400 text-xs font-bold">W Zwycięskim Cugu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Seria min. 3 wygranych z rzędu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">⚔️</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-400 text-xs font-bold">Mistrz Tie-breaka</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Wygrana 3:2 lub z setem na przewagi</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🔀</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-indigo-300 text-xs font-bold">Kameleon Parkietu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Wygrana u Ciemnych i Jasnych</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🦾</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-emerald-400 text-xs font-bold">Żelazne Płuca</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">100% obecności w danym miesiącu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">💎</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-cyan-300 text-xs font-bold">Weteran Parkietu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">12+ rozegranych gier w sezonie</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🚀</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-teal-300 text-xs font-bold">Świeża Krew</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Nowy gracz z min. 3 grami</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🎖️</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-200 text-xs font-bold">Aktywny Sędzia</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Głosuje w min. 70% swoich gier</p>
-                        </div>
-                    </div>
-                </div>
-            </details>
-
             <!-- Archiwum Rozegranych Spotkań w Sezonie -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
@@ -838,27 +768,27 @@
     <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
         <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
             
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">📅</span>
                 <span class="text-[10px] tracking-tight">Mecz</span>
             </button>
 
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">🔀</span>
                 <span class="text-[10px] tracking-tight">Składy</span>
             </button>
 
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">💰</span>
                 <span class="text-[10px] tracking-tight">Składki</span>
             </button>
 
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">👑</span>
                 <span class="text-[10px] tracking-tight">Ranking</span>
             </button>
 
-            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
                 <span class="text-lg leading-none">👤</span>
                 <span id="navProfileLabel" class="text-[10px] tracking-tight">Profil</span>
             </button>
@@ -916,7 +846,7 @@
                 <h3 id="guestModalTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
                     <span>👥</span> Dopisz Znajomego / Gościa
                 </h3>
-                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
             </div>
 
             <p class="text-xs text-slate-400 leading-relaxed">
@@ -961,7 +891,7 @@
                 <h3 id="shareModalTitle" class="font-black text-white text-base flex items-center gap-2">
                     <span>📣</span> Przypomnienie na Messengera
                 </h3>
-                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
             </div>
             
             <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px]">
@@ -994,13 +924,13 @@
 
     <!-- Scoreboard Builder Modal -->
     <div id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📊</span>
                     <h3 id="scoreModalTitle" class="font-black text-white text-base">Wprowadź wynik meczu</h3>
                 </div>
-                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
             </div>
 
             <p class="text-xs text-slate-400">
@@ -1051,127 +981,6 @@
         </div>
     </div>
 
-    <!-- Avatar Picker Modal -->
-    <div id="avatarPickerModal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle" onclick="if(event.target === this) closeAvatarPickerModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">📷</span>
-                    <h3 id="avatarPickerTitle" class="font-black text-white text-base">Zmień awatar / zdjęcie</h3>
-                </div>
-                <button type="button" onclick="closeAvatarPickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
-            </div>
-
-            <!-- Current Avatar Preview -->
-            <div class="flex flex-col items-center justify-center py-2 gap-2">
-                <div id="avatarModalPreviewContainer" class="relative">
-                    <!-- Dynamic preview -->
-                </div>
-                <span class="text-[11px] text-slate-400">Widoczny dla wszystkich na boisku i w rankingu</span>
-            </div>
-
-            <!-- Upload Photo Button -->
-            <div class="space-y-1.5">
-                <label class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black text-xs rounded-2xl cursor-pointer transition shadow-lg shadow-emerald-500/20">
-                    <span class="text-base">📸</span>
-                    <span>Wgraj zdjęcie z telefonu / aparatu</span>
-                    <input id="avatarFileInput" type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
-                </label>
-                <p class="text-[10px] text-slate-500 text-center">Zdjęcie zostanie automatycznie przycięte i zoptymalizowane do koła.</p>
-            </div>
-
-            <!-- Presets Section -->
-            <div class="space-y-2 pt-2 border-t border-slate-800/80">
-                <span class="text-[11px] font-bold text-slate-400 block">Lub wybierz sportowy awatar:</span>
-                <div class="grid grid-cols-6 gap-2 text-center" id="avatarPresetsGrid">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Reset to Initials & Close -->
-            <div class="pt-2 border-t border-slate-800/80 flex flex-col gap-2">
-                <button type="button" onclick="resetPlayerAvatar()" class="text-xs text-slate-400 hover:text-rose-400 font-semibold py-1.5 transition text-center">
-                    🗑️ Przywróć domyślne inicjały
-                </button>
-                <button type="button" onclick="closeAvatarPickerModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-2xl text-xs transition">
-                    Gotowe / Zamknij
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Player Card Modal (Ranking & Roster touch inspection) -->
-    <div id="playerCardModal" role="dialog" aria-modal="true" aria-labelledby="playerCardName" onclick="if(event.target === this) closePlayerCardModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in relative">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div id="playerCardAvatarContainer" class="shrink-0">
-                        <!-- Rendered dynamically -->
-                    </div>
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            <h3 id="playerCardName" class="font-black text-white text-base truncate">Zawodnik</h3>
-                            <span id="playerCardRoleBadge" class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
-                                🏐 Zawodnik
-                            </span>
-                        </div>
-                        <p id="playerCardSubtext" class="text-xs text-slate-400 mt-0.5">Karta zawodnika w sezonie 2026</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closePlayerCardModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -mt-1">✕</button>
-            </div>
-
-            <!-- Quick Stats 3-box -->
-            <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Mecze</span>
-                    <strong id="playerCardGames" class="text-base font-black text-emerald-400 font-mono">0</strong>
-                </div>
-                <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block">MVP</span>
-                    <strong id="playerCardMvp" class="text-base font-black text-amber-300 font-mono">0 👑</strong>
-                </div>
-                <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Frekwencja</span>
-                    <strong id="playerCardAttendance" class="text-base font-black text-sky-400 font-mono">0%</strong>
-                </div>
-            </div>
-
-            <!-- Form & Chemistry -->
-            <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs">
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-bold text-slate-400">Ostatnia forma (W/L):</span>
-                    <div id="playerCardForm" class="flex items-center gap-1"></div>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
-                    <span class="text-[11px] font-bold text-slate-400">Najlepszy duet:</span>
-                    <span id="playerCardPartner" class="font-semibold text-slate-200">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
-                    <span class="text-[11px] font-bold text-slate-400">Główny rywal:</span>
-                    <span id="playerCardRival" class="font-semibold text-slate-200">-</span>
-                </div>
-            </div>
-
-            <!-- Badges Section -->
-            <div class="space-y-2">
-                <div class="flex items-center justify-between">
-                    <h4 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-1">
-                        <span>🏅</span> Zdobyte Odznaki (<span id="playerCardBadgeCount">0</span>)
-                    </h4>
-                    <span class="text-[10px] text-slate-500 font-semibold">Pełne opisy</span>
-                </div>
-                <div id="playerCardBadgesList" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-                    <!-- Badges cards injected here -->
-                </div>
-            </div>
-
-            <button type="button" onclick="closePlayerCardModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-2xl text-xs transition">
-                Zamknij
-            </button>
-        </div>
-    </div>
-
     <!-- Toast Notification -->
     <div id="toast" role="status" aria-live="polite" class="fixed bottom-20 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
         Powiadomienie
@@ -1192,104 +1001,9 @@
         };
         
         const POLISH_MONTHS = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+        const ADMIN_PIN = "201018";
         const ORGANIZER_NAME = "Michał Chaciński";
         const APP_ICON = "logo.jpg.jpg";
-
-        // ================= SECURE PIN CRYPTOGRAPHY & HELPERS =================
-        const PIN_SALT = "siatka_pin_salt_v1_";
-        const ADMIN_PIN_HASH = "756f6167f0e830b6ed92808096f04ceb547f022a63f63bdba0f6c8ceab37f45c";
-
-        function sha256(ascii) {
-            const H_INIT = [
-                0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-                0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-            ];
-            const K = [
-                0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-                0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-                0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-                0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-                0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-                0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-                0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-                0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-            ];
-
-            function rotr(n, x) { return (x >>> n) | (x << (32 - n)); }
-
-            const h = H_INIT.slice();
-            const words = [];
-            const asciiBitLength = ascii.length * 8;
-            ascii += '\x80';
-            while ((ascii.length % 64) !== 56) ascii += '\x00';
-            for (let i = 0; i < ascii.length; i++) {
-                const j = ascii.charCodeAt(i);
-                words[i >> 2] |= j << ((3 - (i % 4)) * 8);
-            }
-            words.push((asciiBitLength / 0x100000000) | 0);
-            words.push(asciiBitLength | 0);
-
-            for (let j = 0; j < words.length; j += 16) {
-                const w = words.slice(j, j + 16);
-                for (let i = 16; i < 64; i++) {
-                    const s0 = rotr(7, w[i - 15]) ^ rotr(18, w[i - 15]) ^ (w[i - 15] >>> 3);
-                    const s1 = rotr(17, w[i - 2]) ^ rotr(19, w[i - 2]) ^ (w[i - 2] >>> 10);
-                    w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
-                }
-                let a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], h_val = h[7];
-                for (let i = 0; i < 64; i++) {
-                    const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);
-                    const ch = (e & f) ^ ((~e) & g);
-                    const temp1 = (h_val + S1 + ch + K[i] + w[i]) | 0;
-                    const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);
-                    const maj = (a & b) ^ (a & c) ^ (b & c);
-                    const temp2 = (S0 + maj) | 0;
-                    h_val = g;
-                    g = f;
-                    f = e;
-                    e = (d + temp1) | 0;
-                    d = c;
-                    c = b;
-                    b = a;
-                    a = (temp1 + temp2) | 0;
-                }
-                h[0] = (h[0] + a) | 0;
-                h[1] = (h[1] + b) | 0;
-                h[2] = (h[2] + c) | 0;
-                h[3] = (h[3] + d) | 0;
-                h[4] = (h[4] + e) | 0;
-                h[5] = (h[5] + f) | 0;
-                h[6] = (h[6] + g) | 0;
-                h[7] = (h[7] + h_val) | 0;
-            }
-            let res = '';
-            for (let i = 0; i < 8; i++) {
-                let hex = (h[i] >>> 0).toString(16);
-                while (hex.length < 8) hex = '0' + hex;
-                res += hex;
-            }
-            return res;
-        }
-
-        function hashPin(pin) {
-            if (!pin) return "";
-            return sha256(PIN_SALT + String(pin).trim());
-        }
-
-        function verifyPin(inputPin, storedPinOrHash) {
-            if (!inputPin || !storedPinOrHash) return false;
-            const cleanInput = String(inputPin).trim();
-            const stored = String(storedPinOrHash).trim();
-            if (/^[0-9a-f]{64}$/i.test(stored)) {
-                return hashPin(cleanInput) === stored.toLowerCase();
-            }
-            return cleanInput === stored;
-        }
-
-        function verifyAdminPin(inputPin) {
-            if (!inputPin) return false;
-            return hashPin(inputPin) === ADMIN_PIN_HASH;
-        }
 
         const INITIAL_STATE = {
             all_players: [
@@ -1302,9 +1016,8 @@
                 "Artur Żbikowski", "Patryk Wendorff", "Karolina", "Czapa", "Piotr T", "Kuba Żurawski", "Kamil (od Konrada Pazio)"
             ],
             player_pins: {
-                "Michał Chaciński": ADMIN_PIN_HASH
+                "Michał Chaciński": "201018"
             },
-            player_avatars: {},
             base_games: {
                 "Michał Chaciński": 8, "Zuzanna Rostkowska": 8, "Mikołaj Morawski": 8, "Filip Morawski": 8, "Kuba Parszewski": 6,
                 "Szymon Fronczak": 7, "Konrad Pazio": 7, "Piotrek Bany": 0, "Kacper Szafraniec": 6, "Albert Kubiak": 4,
@@ -1565,7 +1278,7 @@
 
             loadLocalState();
             autoSelectUpcomingMatchOnLoad();
-            renderCurrentView(true);
+            renderCurrentView();
             setSyncStatus('connecting');
 
             try {
@@ -1596,10 +1309,8 @@
                             hasInitiallySelectedMonth = false;
                             autoSelectUpcomingMatchOnLoad();
                             hasLoadedRemoteState = true;
-                            renderCurrentView(true);
-                        } else {
-                            renderCurrentView();
                         }
+                        renderCurrentView();
                     } else {
                         AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
                         ensureValidState();
@@ -1608,7 +1319,7 @@
                         autoSelectUpcomingMatchOnLoad();
                         hasLoadedRemoteState = true;
                         syncState();
-                        renderCurrentView(true);
+                        renderCurrentView();
                     }
                 }, error => {
                     console.warn("Firebase read error, fallback to local:", error);
@@ -1656,16 +1367,9 @@
             if (!AppState.player_pins || typeof AppState.player_pins !== 'object') {
                 AppState.player_pins = JSON.parse(JSON.stringify(INITIAL_STATE.player_pins || {}));
             }
-            if (!AppState.player_pins[ORGANIZER_NAME] || !/^[0-9a-f]{64}$/i.test(AppState.player_pins[ORGANIZER_NAME])) {
-                AppState.player_pins[ORGANIZER_NAME] = ADMIN_PIN_HASH;
+            if (!AppState.player_pins[ORGANIZER_NAME]) {
+                AppState.player_pins[ORGANIZER_NAME] = ADMIN_PIN;
             }
-            // Automatyczna bezpieczna migracja starych kodów tekstowych na hashe SHA-256
-            Object.keys(AppState.player_pins).forEach(player => {
-                const val = String(AppState.player_pins[player] || '').trim();
-                if (val && !/^[0-9a-f]{64}$/i.test(val)) {
-                    AppState.player_pins[player] = hashPin(val);
-                }
-            });
 
             if (!AppState.base_games || typeof AppState.base_games !== 'object' || Object.keys(AppState.base_games).length === 0) {
                 AppState.base_games = JSON.parse(JSON.stringify(INITIAL_STATE.base_games || {}));
@@ -1710,10 +1414,6 @@
                 if (AppState.player_skills[p] === undefined) AppState.player_skills[p] = 3;
             });
 
-            if (!AppState.player_avatars || typeof AppState.player_avatars !== 'object') {
-                AppState.player_avatars = JSON.parse(JSON.stringify(INITIAL_STATE.player_avatars || {}));
-            }
-
             const sortedMonths = getSortedMonths();
             if (!AppState.months[AppState.currentMonth]) {
                 AppState.currentMonth = sortedMonths[0] || 'Sierpień';
@@ -1741,33 +1441,14 @@
             }
         }
 
-        let currentActiveTab = 'matches';
-        let isMatchActionPending = false;
-
-        function renderCurrentView(forceAll = false) {
-            if (forceAll) {
-                renderMatchesTab();
-                renderTeamsTab();
-                renderIntegratedMvpCard();
-                renderArchiveTab();
-                renderBilling();
-                renderHallOfFame();
-                renderProfileTab();
-            } else {
-                if (currentActiveTab === 'matches') {
-                    renderMatchesTab();
-                    renderIntegratedMvpCard();
-                } else if (currentActiveTab === 'teams') {
-                    renderTeamsTab();
-                } else if (currentActiveTab === 'billing') {
-                    renderBilling();
-                } else if (currentActiveTab === 'halloffame') {
-                    renderHallOfFame();
-                    renderArchiveTab();
-                } else if (currentActiveTab === 'profile') {
-                    renderProfileTab();
-                }
-            }
+        function renderCurrentView() {
+            renderMatchesTab();
+            renderTeamsTab();
+            renderIntegratedMvpCard();
+            renderArchiveTab();
+            renderBilling();
+            renderHallOfFame();
+            renderProfileTab();
             updateCountdownDisplay();
             updatePushStatusUI();
         }
@@ -1799,15 +1480,15 @@
             if (parts.length !== 3 || parts.some(isNaN)) return;
 
             const [year, month, day] = parts;
-            const matchStartTime = new Date(year, month - 1, day, 18, 45, 0);
-            const matchEndTime = new Date(year, month - 1, day, 21, 0, 0);
+            const matchStartTime = new Date(year, month - 1, day, 18, 30, 0);
+            const matchEndTime = new Date(year, month - 1, day, 20, 45, 0);
             const now = new Date();
 
             if (now < matchStartTime) {
                 const diffMs = matchStartTime - now;
                 const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const minutes = Math.floor((diffMs % (1000 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
                 labelEl.innerText = "Do meczu:";
@@ -1816,7 +1497,7 @@
                 valueEl.onclick = null;
             } else if (now >= matchStartTime && now <= matchEndTime) {
                 labelEl.innerText = "Status:";
-                valueEl.innerHTML = "🔥 ROZGRZEWKA / MECZ! (18:45 - 21:00)";
+                valueEl.innerHTML = "🔥 TRWA MECZ! (18:30 - 20:45)";
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 animate-pulse tracking-wider";
                 valueEl.onclick = null;
             } else {
@@ -1836,12 +1517,16 @@
             const matchAdminBar = document.getElementById('matchAdminBarContainer');
             const userGreeting = document.getElementById('headerUserGreeting');
             const navProfileLabel = document.getElementById('navProfileLabel');
+            const billingDebtorsBtn = document.getElementById('billingDebtorsMessengerBtn');
 
             if (loggedPlayer) {
-                const firstName = escapeHtml(loggedPlayer.trim().split(/\s+/)[0]);
-                if (navProfileLabel) navProfileLabel.innerText = firstName;
+                if (navProfileLabel) navProfileLabel.innerText = loggedPlayer.split(' ')[0];
                 if (userGreeting) {
-                    userGreeting.innerHTML = `Cześć <strong class="text-white">${firstName}</strong>! 👋`;
+                    if (loggedPlayer === ORGANIZER_NAME || isAdmin) {
+                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👑 (Organizator)`;
+                    } else {
+                        userGreeting.innerHTML = `Cześć <strong class="text-white">${escapeHtml(loggedPlayer.split(' ')[0])}</strong>! 👋 • 18:30`;
+                    }
                 }
             } else {
                 if (navProfileLabel) navProfileLabel.innerText = "Profil";
@@ -1853,9 +1538,11 @@
             if (isAdmin) {
                 if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.remove('hidden');
+                if (billingDebtorsBtn) { billingDebtorsBtn.classList.remove('hidden'); billingDebtorsBtn.classList.add('flex'); }
             } else {
                 if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.add('hidden');
+                if (billingDebtorsBtn) { billingDebtorsBtn.classList.add('hidden'); billingDebtorsBtn.classList.remove('flex'); }
             }
         }
 
@@ -1865,7 +1552,7 @@
                 return;
             }
             const pin = prompt("Wymagane uprawnienia Organizatora. Podaj Master PIN:");
-            if (verifyAdminPin(pin)) {
+            if (pin === ADMIN_PIN) {
                 isAdmin = true;
                 localStorage.setItem('siatka_is_admin', 'true');
                 updateAdminUI();
@@ -1878,7 +1565,6 @@
 
         // ================= NAVIGATION & TAB SWITCHING =================
         function switchTab(tabName) {
-            currentActiveTab = tabName;
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('text-emerald-400');
@@ -1911,17 +1597,6 @@
             }
         }
 
-        function openBadgesLegend() {
-            switchTab('halloffame');
-            const acc = document.getElementById('badgesAccordion');
-            if (acc) {
-                acc.open = true;
-                setTimeout(() => {
-                    acc.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 150);
-            }
-        }
-
         function renderMonthSelector() {
             const select = document.getElementById('monthSelect');
             if (!select) return;
@@ -1950,104 +1625,6 @@
             renderMatchesTab();
         }
 
-        function formatScoreHtml(scoreStr) {
-            if (!scoreStr) {
-                return `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
-            }
-
-            // Pattern: "Drużyna Ciemna 1 : 3 Drużyna Jasna (25:21, 23:25, 25:18, 25:20)"
-            const matchWithSets = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+(.*?)\s*\((.*?)\)$/);
-            if (matchWithSets) {
-                const teamA = matchWithSets[1].trim();
-                const scoreA = matchWithSets[2].trim();
-                const scoreB = matchWithSets[3].trim();
-                const teamB = matchWithSets[4].trim();
-                const setsDetails = matchWithSets[5].trim();
-
-                const numA = parseInt(scoreA, 10);
-                const numB = parseInt(scoreB, 10);
-                const aWon = numA > numB;
-                const bWon = numB > numA;
-
-                let setsPillsHtml = '';
-                if (setsDetails) {
-                    const pills = setsDetails.split(',').map((s, idx) => {
-                        const pts = s.trim().split(':');
-                        if (pts.length === 2) {
-                            const pA = parseInt(pts[0], 10);
-                            const pB = parseInt(pts[1], 10);
-                            const aSetWon = pA > pB;
-                            const bSetWon = pB > pA;
-                            return `<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] sm:text-[11px] font-mono shadow-sm">
-                                <span class="text-slate-500 mr-1 text-[9px] font-bold">S${idx + 1}</span>
-                                <span class="${aSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[0].trim())}</span>
-                                <span class="text-slate-600 mx-0.5">:</span>
-                                <span class="${bSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[1].trim())}</span>
-                            </span>`;
-                        }
-                        return `<span class="inline-block px-1.5 py-0.5 rounded bg-slate-900 text-[10px] font-mono text-slate-300">${escapeHtml(s.trim())}</span>`;
-                    }).join('');
-                    setsPillsHtml = `<div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">${pills}</div>`;
-                }
-
-                return `
-                    <div class="space-y-2 py-0.5">
-                        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
-                            <div class="text-right min-w-0">
-                                <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
-                                    ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
-                                </span>
-                            </div>
-                            <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
-                                <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
-                                <span class="text-slate-500 mx-1">:</span>
-                                <span class="${bWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
-                            </div>
-                            <div class="text-left min-w-0">
-                                <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
-                                    ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
-                                </span>
-                            </div>
-                        </div>
-                        ${setsPillsHtml}
-                    </div>
-                `;
-            }
-
-            const matchSimple = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+(.*?)$/);
-            if (matchSimple) {
-                const teamA = matchSimple[1].trim();
-                const scoreA = matchSimple[2].trim();
-                const scoreB = matchSimple[3].trim();
-                const teamB = matchSimple[4].trim();
-                const numA = parseInt(scoreA, 10);
-                const numB = parseInt(scoreB, 10);
-                const aWon = numA > numB;
-                const bWon = numB > numA;
-                return `
-                    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3 py-0.5">
-                        <div class="text-right min-w-0">
-                            <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
-                                ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
-                            </span>
-                        </div>
-                        <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
-                            <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
-                            <span class="text-slate-500 mx-1">:</span>
-                            <span class="${bWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
-                        </div>
-                        <div class="text-left min-w-0">
-                            <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
-                                ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            }
-
-            return `<div class="text-xs font-bold text-amber-300 py-1 text-center break-words">${escapeHtml(scoreStr)}</div>`;
-        }
-
         // ================= TAB 1: MATCHES & ATTENDANCE =================
         function renderMatchesTab() {
             renderMonthSelector();
@@ -2071,28 +1648,18 @@
                     const m = item.match;
                     const idx = item.originalIndex;
                     const isSelected = idx === AppState.currentMatchIndex;
-                    const attendeesCount = (m.attendees || []).length;
-                    const mainCount = Math.min(12, attendeesCount);
-                    const isFull = attendeesCount >= 12;
-                    const isPast = (m.date || '') < todayStr;
-                    const dayDisplay = (m.date || '').slice(5);
+                    const count = m.attendees ? m.attendees.length : 0;
+                    const isCancelled = m.isCancelled;
+                    const isNextMatch = (m.date === globalUpcomingDate) && !isCancelled;
 
                     return `
-                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition shrink-0 flex items-center gap-2 active:scale-95 shadow-sm ${
+                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap ${
                             isSelected 
-                                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20 ring-2 ring-emerald-400/40' 
-                                : isPast
-                                    ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
-                                    : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
+                            ? (isCancelled ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20' : 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20')
+                            : (isCancelled ? 'bg-slate-950 text-rose-400 border border-rose-900/50' : 'bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800')
                         }">
-                            <span>${isPast ? '⏳' : '📅'} ${dayDisplay}</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
-                                isSelected 
-                                    ? 'bg-slate-950/20 text-slate-950 font-black' 
-                                    : isFull 
-                                        ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
-                                        : 'bg-slate-900 text-slate-400 border border-slate-800'
-                            }">${mainCount}/12</span>
+                            <span>${isCancelled ? '🚫' : (isNextMatch ? '⏳' : '📅')} ${escapeHtml(m.date.slice(5))}</span>
+                            <span class="text-[10px] px-1 py-0.5 rounded-full ${isSelected ? 'bg-black/20 text-white' : 'bg-slate-800 text-slate-300'}">${isCancelled ? 'Odwołany' : `${count}/12`}</span>
                         </button>
                     `;
                 }).join('');
@@ -2107,8 +1674,7 @@
 
             if (!currentMatch) {
                 document.getElementById('matchDateBadge').innerText = "Brak meczu";
-                const costEl = document.getElementById('matchCostPerPerson');
-                if (costEl) costEl.innerText = "0.00 zł";
+                document.getElementById('matchCostPerPerson').innerText = "0.00 zł";
                 document.getElementById('matchPlayerCount').innerText = "0/12";
                 document.getElementById('mainSquadList').innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Dodaj piątek powyżej.</div>`;
                 document.getElementById('reserveCardContainer').classList.add('hidden');
@@ -2127,19 +1693,15 @@
             const costPerPerson = (isCancelled || mainPlayers.length === 0) ? "0.00" : (cost / mainPlayers.length).toFixed(2);
 
             document.getElementById('matchDateBadge').innerText = currentMatch.date;
-            const costEl = document.getElementById('matchCostPerPerson');
-            if (costEl) costEl.innerText = `${costPerPerson} zł`;
+            document.getElementById('matchCostPerPerson').innerText = `${costPerPerson} zł`;
             document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/12`;
             document.getElementById('mainSquadBadge').innerText = `${mainPlayers.length}/12`;
 
             if (scoreTextEl) {
-                const editLabel = document.getElementById('editScoreBtnLabel');
                 if (currentMatch.score) {
-                    scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
-                    if (editLabel) editLabel.innerText = "Edytuj wynik";
+                    scoreTextEl.innerHTML = `<span class="font-extrabold text-amber-300">${escapeHtml(currentMatch.score)}</span>`;
                 } else {
-                    scoreTextEl.innerHTML = `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
-                    if (editLabel) editLabel.innerText = "Wpisz wynik";
+                    scoreTextEl.innerText = "Jeszcze nie wpisano";
                 }
             }
 
@@ -2168,22 +1730,22 @@
                         <div class="space-y-2">
                             ${isUserSigned ? `
                                 <div class="bg-slate-950 border border-emerald-800/80 rounded-2xl p-3 flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2.5 min-w-0">
-                                        ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
-                                        <div class="min-w-0">
-                                            <p class="text-xs font-extrabold text-white truncate">Jesteś zapisany(a) na ten mecz!</p>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xl">✅</span>
+                                        <div>
+                                            <p class="text-xs font-extrabold text-white">Jesteś zapisany(a) na ten mecz!</p>
                                             <p class="text-[11px] ${isInMain ? 'text-emerald-400' : 'text-amber-400'} font-semibold">
                                                 ${isInMain ? '🟢 Skład Główny (12)' : '⏳ Lista Rezerwowa'}
                                             </p>
                                         </div>
                                     </div>
-                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition shrink-0">
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition">
                                         Wypisz mnie ✕
                                     </button>
                                 </div>
                             ` : `
-                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2.5">
-                                    ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950')}
+                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                                    <span class="text-base">🏐</span>
                                     <span>ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
                                 </button>
                             `}
@@ -2241,20 +1803,19 @@
                     const isMe = (p === loggedPlayer);
                     squadHtml += `
                         <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                            <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
+                            <div class="flex items-center gap-2 truncate">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
                     `;
                 } else {
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-1.5 rounded-xl text-xs text-slate-600">
+                        <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-2 rounded-xl text-xs text-slate-600">
                             <div class="flex items-center gap-2">
-                                <span class="font-mono font-bold text-slate-700 w-4 shrink-0">${i + 1}.</span>
-                                <div class="w-5 h-5 rounded-full border border-dashed border-slate-800 flex items-center justify-center text-[10px] text-slate-700 shrink-0 select-none">👤</div>
+                                <span class="font-mono font-bold text-slate-700 w-4">${i + 1}.</span>
                                 <span class="font-medium text-slate-500 italic">+ Wolne miejsce</span>
                             </div>
                         </div>
@@ -2273,12 +1834,11 @@
                     const isMe = (p === loggedPlayer);
                     return `
                         <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
-                            <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
+                            <div class="flex items-center gap-2 truncate">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
-                                ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} truncate">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold p-2 transition text-sm shrink-0">✕</button>
                         </div>
                     `;
                 }).join('');
@@ -2335,35 +1895,26 @@
 
         function addSpecificPlayerToMatch(name) {
             if (!name) return;
-            if (isMatchActionPending) return;
-            isMatchActionPending = true;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
 
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
-
-                if (!currentMatch.attendees) currentMatch.attendees = [];
-                if (currentMatch.attendees.includes(name)) {
-                    alert(`${name} jest już zapisany na ten mecz!`);
-                    return;
-                }
-
-                currentMatch.attendees.push(name);
-                if (!AppState.all_players.includes(name)) {
-                    AppState.all_players.push(name);
-                    if (!AppState.player_skills) AppState.player_skills = {};
-                    AppState.player_skills[name] = 3;
-                }
-
-                syncState();
-                renderCurrentView();
-                showToast(`Zapisano: ${name} ✅`);
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
+            if (!currentMatch.attendees) currentMatch.attendees = [];
+            if (currentMatch.attendees.includes(name)) {
+                alert(`${name} jest już zapisany na ten mecz!`);
+                return;
             }
+
+            currentMatch.attendees.push(name);
+            if (!AppState.all_players.includes(name)) {
+                AppState.all_players.push(name);
+                if (!AppState.player_skills) AppState.player_skills = {};
+                AppState.player_skills[name] = 3;
+            }
+
+            syncState();
+            renderCurrentView();
+            showToast(`Zapisano: ${name} ✅`);
         }
 
         function addPlayerToCurrentMatchFromSelect() {
@@ -2415,45 +1966,36 @@
         }
 
         function removePlayerFromCurrentMatch(name) {
-            if (isMatchActionPending) return;
             if (!confirm(`Czy na pewno usunąć z listy gracza: ${name}?`)) return;
-            isMatchActionPending = true;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
 
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
+            const oldAttendees = currentMatch.attendees || [];
+            const wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
+            const firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
 
-                const oldAttendees = currentMatch.attendees || [];
-                const wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
-                const firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
-
-                currentMatch.attendees = oldAttendees.filter(p => p !== name);
-                if (currentMatch.votes && currentMatch.votes[name]) {
-                    delete currentMatch.votes[name];
+            currentMatch.attendees = oldAttendees.filter(p => p !== name);
+            if (currentMatch.votes && currentMatch.votes[name]) {
+                delete currentMatch.votes[name];
+            }
+            
+            if (currentMatch.teams) {
+                if (Array.isArray(currentMatch.teams.dark)) {
+                    currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
                 }
-                
-                if (currentMatch.teams) {
-                    if (Array.isArray(currentMatch.teams.dark)) {
-                        currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
-                    }
-                    if (Array.isArray(currentMatch.teams.light)) {
-                        currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
-                    }
+                if (Array.isArray(currentMatch.teams.light)) {
+                    currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
                 }
+            }
 
-                syncState();
-                renderCurrentView();
+            syncState();
+            renderCurrentView();
 
-                if (wasInMainSquad && firstReserve && firstReserve !== name) {
-                    showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
-                } else {
-                    showToast(`Wypisano: ${name}`);
-                }
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
+            if (wasInMainSquad && firstReserve && firstReserve !== name) {
+                showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
+            } else {
+                showToast(`Wypisano: ${name}`);
             }
         }
 
@@ -2789,15 +2331,15 @@
                 darkListEl.innerHTML = dark.map((p, i) => {
                     const isMe = (p === loggedPlayer);
                     return `
-                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-2.5 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                            <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                                <span class="w-2 h-2 rounded-full bg-slate-600 border border-slate-400 shrink-0" title="Drużyna Ciemna"></span>
-                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-2 truncate">
+                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                                <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
-                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej (${escapeHtml(lightName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
-                                    <span>⇄</span><span>Przenieś</span>
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ⇄ Jasna
                                 </button>
                                 <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
                                     ✕
@@ -2829,15 +2371,15 @@
                 lightListEl.innerHTML = light.map((p, i) => {
                     const isMe = (p === loggedPlayer);
                     return `
-                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-2.5 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
-                            <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                                <span class="w-2 h-2 rounded-full bg-amber-400 border border-amber-300 shadow-sm shadow-amber-400/50 shrink-0" title="Drużyna Jasna"></span>
-                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                        <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/60 bg-emerald-950/10' : 'border-slate-800/90'} px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-2 truncate">
+                                <span class="font-mono text-slate-500 font-bold w-4 shrink-0">${i+1}.</span>
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                                <span class="shrink-0 flex items-center gap-0.5">${getPlayerBadgesHtml(p)}</span>
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
-                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej (${escapeHtml(darkName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
-                                    <span>⇄</span><span>Przenieś</span>
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                    ⇄ Ciemna
                                 </button>
                                 <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
                                     ✕
@@ -2869,8 +2411,8 @@
                     if (i < dark.length) {
                         const p = dark[i];
                         darkCourtHtml += `
-                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1">
-                                ${getPlayerAvatarHtml(p, 'md')}
+                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
+                                <span class="text-base">🏐</span>
                                 <span class="font-bold text-[11px] text-white truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
                             </div>
                         `;
@@ -2892,8 +2434,8 @@
                     if (i < light.length) {
                         const p = light[i];
                         lightCourtHtml += `
-                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1">
-                                ${getPlayerAvatarHtml(p, 'md')}
+                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center">
+                                <span class="text-base">🏐</span>
                                 <span class="font-bold text-[11px] text-amber-200 truncate max-w-[80px]">${escapeHtml(p.split(' ')[0])}</span>
                             </div>
                         `;
@@ -3079,10 +2621,10 @@
                         winnerName.innerText = "Brak głosów";
                         winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
                     } else if (leaders.length === 1) {
-                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
+                        winnerName.innerHTML = `👑 ${escapeHtml(leaders[0])}`;
                         winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
                     } else {
-                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
+                        winnerName.innerHTML = `👑 Remis: ${leaders.map(escapeHtml).join(' & ')}`;
                         winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
                     }
                 }
@@ -3098,7 +2640,6 @@
                                 <div class="flex items-center justify-between text-xs">
                                     <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} truncate pr-2">
                                         <span>${isLeader ? '🌟' : '🏐'}</span>
-                                        ${getPlayerAvatarHtml(name, 'xs')}
                                         <span class="truncate">${escapeHtml(name)}</span>
                                     </div>
                                     <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${count} ${count === 1 ? 'głos' : 'głosy'} (${percent}%)</span>
@@ -3119,10 +2660,7 @@
                         const votedNominee = votes[p];
                         return `
                             <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                                <div class="flex items-center gap-2 truncate">
-                                    ${getPlayerAvatarHtml(p, 'xs')}
-                                    <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
-                                </div>
+                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
                                 <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'} shrink-0">
                                     ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
                                 </span>
@@ -3182,7 +2720,6 @@
         }
 
         function submitMvpVote() {
-            if (isMatchActionPending) return;
             let voter = document.getElementById('voterSelect')?.value;
             if (!voter && loggedPlayer) voter = loggedPlayer;
             const nominee = document.getElementById('nomineeSelect')?.value;
@@ -3190,54 +2727,47 @@
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
 
-            isMatchActionPending = true;
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
 
-                if (!currentMatch.votes) currentMatch.votes = {};
-                currentMatch.votes[voter] = nominee;
+            if (!currentMatch.votes) currentMatch.votes = {};
+            currentMatch.votes[voter] = nominee;
 
-                const attendees = (currentMatch.attendees || []).slice(0, 12);
-                const totalVotes = Object.keys(currentMatch.votes).length;
-                const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
+            const attendees = (currentMatch.attendees || []).slice(0, 12);
+            const totalVotes = Object.keys(currentMatch.votes).length;
+            const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
 
-                if (isNowCompleted) {
-                    currentMatch.mvpClosed = true;
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 120,
-                            spread: 80,
-                            origin: { y: 0.6 },
-                            colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                        });
-                    }
-                } else {
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 40,
-                            spread: 50,
-                            origin: { y: 0.7 },
-                            colors: ['#10b981', '#ffffff']
-                        });
-                    }
+            if (isNowCompleted) {
+                currentMatch.mvpClosed = true;
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 120,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                    });
                 }
-
-                syncState();
-                renderIntegratedMvpCard();
-                renderMatchesTab();
-                renderProfileTab();
-
-                if (isNowCompleted) {
-                    showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
-                } else {
-                    showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
+            } else {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 40,
+                        spread: 50,
+                        origin: { y: 0.7 },
+                        colors: ['#10b981', '#ffffff']
+                    });
                 }
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
+            }
+
+            syncState();
+            renderIntegratedMvpCard();
+            renderMatchesTab();
+            renderProfileTab();
+
+            if (isNowCompleted) {
+                showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
+            } else {
+                showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
             }
         }
 
@@ -3316,16 +2846,16 @@
                             <span class="text-[10px] font-bold text-slate-400 font-mono">Frekwencja: ${attendees.length}/12</span>
                         </div>
 
-                        <div class="bg-slate-900/80 border border-slate-800/80 p-3 rounded-2xl space-y-2">
-                            <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-1.5 text-xs">
-                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
-                                <div class="text-right">
-                                    <span class="text-[10px] text-slate-400 font-semibold">MVP meczu: </span>
-                                    <span class="text-xs font-extrabold text-white">${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak')}</span>
-                                </div>
+                        <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-2 flex-wrap text-xs">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-semibold">Wynik meczu:</span>
+                                <p class="text-xs font-black text-amber-300 font-mono mt-0.5">${escapeHtml(score)}</p>
                             </div>
-                            <div class="min-w-0">
-                                ${m.score ? formatScoreHtml(m.score) : '<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Brak wpisanego wyniku</span></div>'}
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 font-semibold">MVP meczu:</span>
+                                <p class="text-xs font-extrabold text-white mt-0.5">
+                                    ${isFinished && topNom ? `👑 ${escapeHtml(topNom)} (${maxV} gł.)` : (Object.keys(votes).length > 0 ? '🔒 Głosowanie tajne' : 'Brak')}
+                                </p>
                             </div>
                         </div>
 
@@ -3361,6 +2891,14 @@
         // ================= TAB 5: BILLING =================
         function setBillingFilter(filter) {
             currentBillingFilter = filter;
+            const btnAll = document.getElementById('billingFilterAll');
+            const btnUnpaid = document.getElementById('billingFilterUnpaid');
+            const btnPaid = document.getElementById('billingFilterPaid');
+
+            if (btnAll) btnAll.className = filter === 'all' ? "px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-800 transition";
+            if (btnUnpaid) btnUnpaid.className = filter === 'unpaid' ? "px-2.5 py-1 rounded-lg font-bold bg-rose-500 text-white transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-800 transition";
+            if (btnPaid) btnPaid.className = filter === 'paid' ? "px-2.5 py-1 rounded-lg font-bold bg-emerald-500 text-slate-950 transition" : "px-2.5 py-1 rounded-lg font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-800 transition";
+
             renderBilling();
         }
 
@@ -3404,81 +2942,10 @@
             return { playersMap, totalHallCost, totalPaid, totalDue, matchesCount: activeMatchesCount };
         }
 
-        function copyBlikNumber() {
-            const blik = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
-            copyToClipboard(blik, `Skopiowano numer BLIK: ${blik} 📋`);
-        }
-
         function copySinglePlayerBlik(playerName, dueAmount) {
-            const phone = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
-            copyToClipboard(phone, `Skopiowano numer BLIK: ${phone} (należność: ${dueAmount.toFixed(2)} zł)`);
-        }
-
-        function copyTransferTitle(playerName) {
+            const phone = (AppState.settings?.blikPhone || "517077482").replace(/\s+/g, '');
             const title = `Siatka ${playerName} ${AppState.currentMonth}`;
-            copyToClipboard(title, `Skopiowano tytuł przelewu: "${title}" 📋`);
-        }
-
-        function renderMyBillingHero(playersMap) {
-            const container = document.getElementById('myBillingCardContainer');
-            if (!container) return;
-
-            if (!loggedPlayer) {
-                container.innerHTML = '';
-                return;
-            }
-
-            const myInfo = playersMap[loggedPlayer];
-            if (!myInfo || (myInfo.games === 0 && myInfo.paid === 0)) {
-                container.innerHTML = '';
-                return;
-            }
-
-            const due = myInfo.costDue;
-            const paid = myInfo.paid;
-            const saldo = paid - due;
-            const isPaid = (due > 0 && saldo >= -0.05);
-            const phone = (AppState.settings?.blikPhone || "517 077 482").replace(/\s+/g, '');
-            const title = `Siatka ${loggedPlayer} ${AppState.currentMonth}`;
-
-            container.innerHTML = `
-                <div class="bg-gradient-to-br ${isPaid ? 'from-emerald-950/80 via-slate-900 to-emerald-950/30 border-emerald-500/50' : 'from-amber-950/50 via-slate-900 to-rose-950/30 border-amber-500/50'} border rounded-3xl p-4 shadow-xl space-y-3">
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span class="text-base shrink-0">${isPaid ? '🎉' : '💳'}</span>
-                            <span class="text-xs font-black text-white uppercase tracking-wider truncate">Twoja składka</span>
-                        </div>
-                        ${isPaid 
-                            ? `<span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap shrink-0">✓ Uregulowane</span>`
-                            : `<span class="bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-black px-2.5 py-1 rounded-full font-mono whitespace-nowrap shrink-0">Do zapłaty: ${Math.abs(saldo).toFixed(2)}&nbsp;zł</span>`
-                        }
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
-                        <div class="text-xs space-y-1">
-                            <p class="text-slate-200">
-                                ${isPaid 
-                                    ? `Super! Wszystko opłacone na ten miesiąc: <strong class="text-emerald-400 font-mono font-bold whitespace-nowrap">${paid.toFixed(2)}&nbsp;zł</strong> (${pluralizeGames(myInfo.games)}). Dzięki! ✨`
-                                    : `Zagrano: <strong class="text-white">${pluralizeGames(myInfo.games)}</strong> • Należność: <strong class="text-amber-300 font-mono font-bold whitespace-nowrap">${due.toFixed(2)}&nbsp;zł</strong>`
-                                }
-                            </p>
-                            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 flex-wrap">
-                                <span>Tytuł przelewu:</span>
-                                <span class="text-slate-200 font-mono bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 font-semibold">${escapeHtml(title)}</span>
-                                <button type="button" onclick="copyTransferTitle(${toInlineArgument(loggedPlayer)})" class="text-emerald-400 hover:text-emerald-300 font-bold text-[10px] underline ml-0.5">
-                                    kopiuj tytuł
-                                </button>
-                            </div>
-                        </div>
-
-                        ${!isPaid ? `
-                            <button type="button" onclick="copyBlikNumber()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-4 py-2.5 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 shrink-0">
-                                <span>📲</span> Kopiuj nr BLIK (${phone})
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
+            copyToClipboard(phone, `Skopiowano nr BLIK! Kwota: ${dueAmount.toFixed(2)} zł • Tytuł: ${title}`);
         }
 
         function renderBilling() {
@@ -3486,73 +2953,16 @@
             const { playersMap, totalHallCost, totalPaid, totalDue } = calculateMonthlyBilling(AppState.currentMonth);
             const totalOutstanding = Math.max(0, totalDue - totalPaid);
 
-            const costEl = document.getElementById('monthTotalCost');
-            const paidEl = document.getElementById('monthTotalPaid');
-            const outEl = document.getElementById('monthTotalOutstanding');
-            if (costEl) costEl.innerHTML = `${totalHallCost.toFixed(2)}&nbsp;zł`;
-            if (paidEl) paidEl.innerHTML = `${totalPaid.toFixed(2)}&nbsp;zł`;
-            if (outEl) outEl.innerHTML = `${totalOutstanding.toFixed(2)}&nbsp;zł`;
-
-            // Update Progress Bar
-            const percent = totalHallCost > 0 ? Math.min(100, Math.round((totalPaid / totalHallCost) * 100)) : 0;
-            const barEl = document.getElementById('billingProgressBar');
-            const percentEl = document.getElementById('billingProgressPercent');
-            if (barEl) barEl.style.width = `${percent}%`;
-            if (percentEl) percentEl.innerText = `${percent}%`;
-
-            const subEl = document.getElementById('billingMonthSubtitle');
-            if (subEl) subEl.innerText = `Miesiąc: ${AppState.currentMonth}`;
-
-            const blikDisp = document.getElementById('blikPhoneDisplay');
-            if (blikDisp) blikDisp.innerText = AppState.settings?.blikPhone || "517 077 482";
-
-            // Render Personal Card for logged player
-            renderMyBillingHero(playersMap);
+            document.getElementById('monthTotalCost').innerText = `${totalHallCost.toFixed(2)} zł`;
+            document.getElementById('monthTotalPaid').innerText = `${totalPaid.toFixed(2)} zł`;
+            document.getElementById('monthTotalOutstanding').innerText = `${totalOutstanding.toFixed(2)} zł`;
 
             const query = (document.getElementById('billingSearchInput')?.value || '').toLowerCase().trim();
             const listEl = document.getElementById('billingCardsList');
             if (!listEl) return;
 
             const playerNames = Object.keys(playersMap).sort((a, b) => a.localeCompare(b, 'pl'));
-
-            // Calculate live counts
-            const allCount = playerNames.filter(p => (playersMap[p].games > 0 || playersMap[p].paid > 0)).length;
-            const unpaidCount = playerNames.filter(p => {
-                const info = playersMap[p];
-                const saldo = info.paid - info.costDue;
-                const isPaid = (info.costDue > 0 && saldo >= -0.05);
-                return !isPaid && (info.games > 0 || info.paid > 0);
-            }).length;
-            const paidCount = playerNames.filter(p => {
-                const info = playersMap[p];
-                const saldo = info.paid - info.costDue;
-                return (info.costDue > 0 && saldo >= -0.05);
-            }).length;
-
-            // Update Filter buttons UI with counts
-            const fAll = document.getElementById('billingFilterAll');
-            const fUnpaid = document.getElementById('billingFilterUnpaid');
-            const fPaid = document.getElementById('billingFilterPaid');
-
-            if (fAll) {
-                fAll.innerHTML = `Wszyscy <span class="text-[10px] opacity-80">(${allCount})</span>`;
-                fAll.className = currentBillingFilter === 'all' 
-                    ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition";
-            }
-            if (fUnpaid) {
-                fUnpaid.innerHTML = `🔴 Do zapłaty <span class="text-[10px] opacity-80">(${unpaidCount})</span>`;
-                fUnpaid.className = currentBillingFilter === 'unpaid' 
-                    ? "px-3 py-1.5 rounded-xl font-bold bg-rose-500 text-white transition shadow-sm" 
-                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition";
-            }
-            if (fPaid) {
-                fPaid.innerHTML = `🟢 Opłacone <span class="text-[10px] opacity-80">(${paidCount})</span>`;
-                fPaid.className = currentBillingFilter === 'paid' 
-                    ? "px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition";
-            }
-
+            
             const filtered = playerNames.filter(p => {
                 const info = playersMap[p];
                 const saldo = info.paid - info.costDue;
@@ -3578,88 +2988,45 @@
                 const isMe = (p === loggedPlayer);
 
                 return `
-                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/15 ring-1 ring-emerald-500/30' : 'border-slate-800/80'} rounded-2xl p-3 sm:p-3.5 space-y-2.5 transition shadow-sm">
-                        <!-- Row 1: Player Info & Status -->
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="flex items-center gap-2.5 min-w-0">
-                                ${getPlayerAvatarHtml(p, 'sm')}
-                                <div class="min-w-0">
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} truncate">${escapeHtml(p)}</span>
-                                        ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md">TY</span>` : ''}
-                                        <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
-                                    </div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
-                                        Należność: <strong class="text-slate-200 font-mono font-bold whitespace-nowrap">${due.toFixed(2)}&nbsp;zł</strong>
-                                    </div>
-                                </div>
+                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/10' : 'border-slate-800/80'} rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-0.5">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-xs ${isMe ? 'text-emerald-300 font-black' : 'text-white'}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                <span class="text-[10px] text-slate-400 font-mono">(${info.games} gier)</span>
+                                ${isPaid ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">✅ Opłacone</span>` : (paid > 0 ? `<span class="bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Częściowo</span>` : '')}
                             </div>
-
-                            <!-- Status Tag -->
-                            <div class="shrink-0 text-right whitespace-nowrap">
-                                ${isPaid 
-                                    ? `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800/80 text-[11px] font-black px-2.5 py-1 rounded-xl inline-flex items-center gap-1 whitespace-nowrap">
-                                        <span>✓</span> Opłacone
-                                       </span>` 
-                                    : (paid > 0 
-                                        ? `<div class="space-y-0.5 text-right whitespace-nowrap">
-                                            <span class="bg-amber-950/80 text-amber-300 border border-amber-800/80 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1 whitespace-nowrap">
-                                                <span>⏳</span> Częściowo
-                                            </span>
-                                            <div class="text-[10px] font-mono text-rose-400 font-bold whitespace-nowrap">
-                                                Brak: ${Math.abs(saldo).toFixed(2)}&nbsp;zł
-                                            </div>
-                                           </div>`
-                                        : `<div class="space-y-0.5 text-right whitespace-nowrap">
-                                            <span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1 whitespace-nowrap">
-                                                <span>🔴</span> Brak wpłaty
-                                            </span>
-                                            <div class="text-[10px] font-mono text-rose-400 font-bold whitespace-nowrap">
-                                                ${due > 0 ? `Do zapłaty: ${due.toFixed(2)}&nbsp;zł` : ''}
-                                            </div>
-                                           </div>`
-                                      )
-                                }
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="text-slate-400">Do zapłaty: <strong class="text-white">${due.toFixed(2)} zł</strong></span>
+                                <span class="text-slate-600">•</span>
+                                <span class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-rose-400'} font-bold font-mono">
+                                    ${saldo >= -0.05 ? 'Uregulowane' : `Brakuje: ${Math.abs(saldo).toFixed(2)} zł`}
+                                </span>
                             </div>
                         </div>
 
-                        <!-- Row 2: Fixed Two-Sided Action Bar (Never wraps unexpectedly!) -->
-                        <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-2">
-                            ${isAdmin ? `
-                                <!-- Left: Paid amount input -->
-                                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0 whitespace-nowrap">
-                                    <span class="text-[11px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
-                                    <input type="number" step="0.01" value="${paid || 0}" 
-                                           onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
-                                           aria-label="Wpisz kwotę wpłaty dla gracza ${escapeHtml(p)}"
-                                           class="w-16 bg-transparent text-xs font-black text-emerald-400 text-right focus:outline-none font-mono">
-                                    <span class="text-[11px] text-slate-400 ml-1">zł</span>
-                                </div>
+                        <div class="flex items-center gap-2 self-end sm:self-center flex-wrap">
+                            ${!isPaid && due > 0 ? `
+                                <button type="button" onclick="copySinglePlayerBlik(${toInlineArgument(p)}, ${due})" class="px-2.5 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-[11px] rounded-xl transition flex items-center gap-1 shadow-sm active:scale-95">
+                                    <span>📋</span> Kopiuj BLIK
+                                </button>
+                            ` : ''}
 
-                                <!-- Right: Action button (Całość or Zeruj) -->
-                                <div class="shrink-0">
-                                    ${!isPaid && due > 0 ? `
-                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 whitespace-nowrap">
-                                            <span>✅</span> Opłać całość
-                                        </button>
-                                    ` : `
-                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1 whitespace-nowrap" title="Wyzeruj wpłatę">
-                                            <span>↩️</span> Cofnij
-                                        </button>
-                                    `}
-                                </div>
+                            ${isAdmin ? `
+                            <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl px-2 py-1">
+                                <span class="text-[11px] text-slate-400 mr-1.5">Wpłata:</span>
+                                <input type="number" step="0.01" value="${paid || 0}" 
+                                       onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
+                                       aria-label="Wpisz kwotę wpłaty"
+                                       class="w-16 bg-transparent text-xs font-bold text-emerald-400 text-right focus:outline-none">
+                                <span class="text-[11px] text-slate-400 ml-1">zł</span>
+                            </div>
+                            <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] rounded-xl border border-slate-700 transition" title="Wpisz całą należność">
+                                + Całość
+                            </button>
                             ` : `
-                                <!-- Non-admin view -->
-                                <div class="text-xs text-slate-400 whitespace-nowrap">
-                                    Wpłacono: <strong class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-slate-200'} font-mono font-bold whitespace-nowrap">${paid.toFixed(2)}&nbsp;zł</strong>
-                                </div>
-                                <div class="shrink-0">
-                                    ${!isPaid && due > 0 ? `
-                                        <button type="button" onclick="copyBlikNumber()" class="px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 font-bold text-xs rounded-xl transition flex items-center gap-1.5 active:scale-95">
-                                            <span>📲</span> Kopiuj BLIK
-                                        </button>
-                                    ` : ''}
-                                </div>
+                            <span class="text-xs font-bold ${saldo >= -0.05 ? 'text-emerald-400' : 'text-rose-400'} bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700">
+                                Wpłacono: ${paid.toFixed(2)} zł
+                            </span>
                             `}
                         </div>
                     </div>
@@ -3687,6 +3054,11 @@
             renderBilling();
             renderProfileTab();
             showToast(`Opłacono całość (${val.toFixed(2)} zł) dla: ${pName} ✅`);
+        }
+
+        function copyBlikNumber() {
+            const blik = AppState.settings?.blikPhone || "517 077 482";
+            copyToClipboard(blik.replace(/\s+/g, ''), `Skopiowano numer BLIK: ${blik}`);
         }
 
         function copyDebtorsListMessage() {
@@ -3792,7 +3164,6 @@
         function calculatePlayerMatchHistory(playerName) {
             if (!playerName) return [];
             const history = [];
-            const todayStr = getLocalDateKey();
 
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach((m) => {
@@ -3802,7 +3173,7 @@
                     const teams = m.teams || null;
                     const dark = teams?.dark || [];
                     const light = teams?.light || [];
-                    let teamName = "";
+                    let teamName = "Skład";
                     let isDark = false;
                     let isLight = false;
 
@@ -3814,10 +3185,8 @@
                         isLight = true;
                     }
 
-                    const isPast = (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
-                    const scoreStr = m.score || "";
                     let outcome = "pending";
-
+                    const scoreStr = m.score || "";
                     if (scoreStr && (isDark || isLight)) {
                         const matchRes = scoreStr.match(/\s(\d+)\s*:\s*(\d+)\s/);
                         if (matchRes) {
@@ -3826,8 +3195,6 @@
                             if (isDark) outcome = (sA > sB) ? "win" : ((sB > sA) ? "loss" : "draw");
                             if (isLight) outcome = (sB > sA) ? "win" : ((sA > sB) ? "loss" : "draw");
                         }
-                    } else if (isPast) {
-                        outcome = "archived";
                     }
 
                     let isMvpWinner = false;
@@ -3842,24 +3209,13 @@
                         if (topNom === playerName && maxV > 0) isMvpWinner = true;
                     }
 
-                    let displayScore = scoreStr;
-                    if (!displayScore) {
-                        displayScore = isPast ? "Mecz rozegrany" : "Oczekuje na mecz";
-                    } else {
-                        const resMatch = scoreStr.match(/\s(\d+\s*:\s*\d+)\s/);
-                        if (resMatch) {
-                            displayScore = `Wynik: ${resMatch[1].trim()}`;
-                        }
-                    }
-
                     history.push({
                         date: m.date,
                         monthName: mName,
-                        score: displayScore,
-                        teamName: teamName || (isPast ? "Skład główny" : "Zapisany na mecz"),
+                        score: scoreStr || "W toku",
+                        teamName,
                         isDark,
                         isLight,
-                        hasTeams: isDark || isLight,
                         outcome,
                         isMvpWinner
                     });
@@ -3927,17 +3283,13 @@
             let votesCast = 0;
             let hasIronMonth = false;
 
-            const todayStr = getLocalDateKey();
-
             Object.keys(AppState.months || {}).forEach(mName => {
                 const matches = AppState.months[mName]?.matches || [];
                 let activeMatches = 0;
                 let playerAttended = 0;
 
                 matches.forEach(m => {
-                    // Licz wyłącznie mecze, które już się odbyły (w przeszłości lub z wpisanym wynikiem/MVP)
-                    const isPlayedMatch = !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
-                    if (isPlayedMatch) {
+                    if (!m.isCancelled) {
                         activeMatches++;
                         totalAvailableSeasonMatches++;
                         const mainSquad = (m.attendees || []).slice(0, 12);
@@ -4023,273 +3375,10 @@
             return { badges, totalGames, mvpWins, attendedMatches, attendancePercent };
         }
 
-        function getPlayerBadgesHtml(playerName, maxCount = null) {
+        function getPlayerBadgesHtml(playerName) {
             const { badges } = calculatePlayerBadges(playerName);
             if (!badges.length) return "";
-            if (maxCount && badges.length > maxCount) {
-                const visible = badges.slice(0, maxCount);
-                const remaining = badges.slice(maxCount);
-                const allTooltip = badges.map(b => `${b.icon} ${b.title}`).join('\n');
-                return visible.map(b => `<span title="${escapeHtml(b.title)}" class="text-xs cursor-help select-none inline-block hover:scale-125 transition transform">${b.icon}</span>`).join(' ') +
-                    ` <span title="${escapeHtml(allTooltip)}" class="text-[10px] font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 px-1 py-0.5 rounded cursor-help border border-slate-700 select-none inline-flex items-center leading-none">+${remaining.length}</span>`;
-            }
             return badges.map(b => `<span title="${escapeHtml(b.title)}" class="text-xs cursor-help select-none inline-block hover:scale-125 transition transform">${b.icon}</span>`).join(' ');
-        }
-
-        function pluralizeMatches(count) {
-            const n = Math.abs(Number(count) || 0);
-            if (n === 1) return `${count} mecz`;
-            const mod10 = n % 10;
-            const mod100 = n % 100;
-            if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) {
-                return `${count} mecze`;
-            }
-            return `${count} meczów`;
-        }
-
-        function pluralizeGames(count) {
-            const n = Math.abs(Number(count) || 0);
-            if (n === 1) return `${count} gra`;
-            const mod10 = n % 10;
-            const mod100 = n % 100;
-            if (mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)) {
-                return `${count} gry`;
-            }
-            return `${count} gier`;
-        }
-
-        function getPlayerAvatarHtml(playerName, size = 'sm', extraClasses = '') {
-            if (!playerName) return '';
-            const avatarVal = AppState.player_avatars?.[playerName];
-            const isOrganizer = (playerName === ORGANIZER_NAME);
-            const borderClass = isOrganizer ? 'border-amber-400/80 ring-1 ring-amber-400/40' : 'border-slate-700';
-
-            let sizeClass = 'w-6 h-6'; // 24px
-            let textSize = 'text-[10px]';
-            let imgRadius = 'rounded-full';
-            if (size === 'xs') {
-                sizeClass = 'w-5 h-5';
-                textSize = 'text-[9px]';
-            } else if (size === 'md') {
-                sizeClass = 'w-9 h-9';
-                textSize = 'text-sm';
-            } else if (size === 'lg') {
-                sizeClass = 'w-14 h-14';
-                textSize = 'text-xl';
-                imgRadius = 'rounded-2xl';
-            }
-
-            if (avatarVal && typeof avatarVal === 'string' && avatarVal.startsWith('data:image')) {
-                return `<img src="${avatarVal}" alt="${escapeHtml(playerName)}" class="${sizeClass} ${imgRadius} object-cover ${borderClass} shadow-sm shrink-0 select-none ${extraClasses}">`;
-            }
-
-            if (avatarVal && typeof avatarVal === 'string' && !avatarVal.startsWith('data:image')) {
-                const emojiTextSize = size === 'lg' ? 'text-2xl' : (size === 'md' ? 'text-base' : (size === 'xs' ? 'text-[11px]' : 'text-xs'));
-                return `<div class="${sizeClass} ${imgRadius} flex items-center justify-center bg-slate-800 border ${borderClass} select-none shrink-0 shadow-sm leading-none ${extraClasses}"><span class="${emojiTextSize}">${avatarVal}</span></div>`;
-            }
-
-            // Domyślne: Inicjały
-            const initials = playerName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-            const bgGradient = isOrganizer ? 'bg-gradient-to-tr from-amber-600 to-rose-600' : 'bg-gradient-to-tr from-slate-800 to-slate-700';
-            return `<div class="${sizeClass} ${imgRadius} flex items-center justify-center ${bgGradient} text-white font-black ${textSize} border ${borderClass} select-none shrink-0 shadow-sm leading-none ${extraClasses}"><span>${initials}</span></div>`;
-        }
-
-        const AVATAR_PRESETS = ['🏐', '👑', '🔥', '⚡', '🦁', '🐺', '🦅', '🦈', '🚀', '🎯', '🥷', '🦾', '🏆', '⭐', '💣', '🥇', '💥', '🛡️'];
-
-        function openAvatarPickerModal() {
-            if (!loggedPlayer) {
-                showToast('Zaloguj się najpierw swoim kodem PIN.');
-                return;
-            }
-            const modal = document.getElementById('avatarPickerModal');
-            if (!modal) return;
-
-            const previewContainer = document.getElementById('avatarModalPreviewContainer');
-            if (previewContainer) {
-                previewContainer.innerHTML = getPlayerAvatarHtml(loggedPlayer, 'lg');
-            }
-
-            const presetsGrid = document.getElementById('avatarPresetsGrid');
-            if (presetsGrid) {
-                presetsGrid.innerHTML = AVATAR_PRESETS.map(emoji => `
-                    <button type="button" onclick="selectPresetAvatar('${emoji}')" class="p-2 bg-slate-950 hover:bg-slate-800 active:scale-90 rounded-xl border border-slate-800 hover:border-emerald-500/60 text-lg transition flex items-center justify-center">
-                        ${emoji}
-                    </button>
-                `).join('');
-            }
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeAvatarPickerModal() {
-            const modal = document.getElementById('avatarPickerModal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        function selectPresetAvatar(emoji) {
-            if (!loggedPlayer) return;
-            AppState.player_avatars = AppState.player_avatars || {};
-            AppState.player_avatars[loggedPlayer] = emoji;
-            syncState();
-            renderCurrentView();
-            closeAvatarPickerModal();
-            showToast(`Ustawiono awatar ${emoji}! Widoczny dla wszystkich 🎉`);
-        }
-
-        function resetPlayerAvatar() {
-            if (!loggedPlayer) return;
-            if (AppState.player_avatars && AppState.player_avatars[loggedPlayer]) {
-                delete AppState.player_avatars[loggedPlayer];
-                syncState();
-                renderCurrentView();
-            }
-            closeAvatarPickerModal();
-            showToast('Przywrócono domyślne inicjały.');
-        }
-
-        function handleAvatarUpload(event) {
-            const file = event.target.files?.[0];
-            if (!file || !loggedPlayer) return;
-            event.target.value = '';
-
-            if (!file.type.startsWith('image/')) {
-                alert('Wybierz prawidłowy plik graficzny (JPG, PNG, WebP).');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        const targetSize = 120;
-                        canvas.width = targetSize;
-                        canvas.height = targetSize;
-                        const ctx = canvas.getContext('2d');
-
-                        const minDim = Math.min(img.width, img.height);
-                        const sx = (img.width - minDim) / 2;
-                        const sy = (img.height - minDim) / 2;
-
-                        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, targetSize, targetSize);
-
-                        let dataUrl = canvas.toDataURL('image/webp', 0.82);
-                        if (!dataUrl.startsWith('data:image/webp')) {
-                            dataUrl = canvas.toDataURL('image/jpeg', 0.82);
-                        }
-
-                        AppState.player_avatars = AppState.player_avatars || {};
-                        AppState.player_avatars[loggedPlayer] = dataUrl;
-                        syncState();
-                        renderCurrentView();
-                        closeAvatarPickerModal();
-                        showToast('Zaktualizowano Twoje zdjęcie profilowe! 📸 Widoczne dla wszystkich.');
-                    } catch (err) {
-                        console.error('Błąd zapisu zdjęcia:', err);
-                        alert('Wystąpił błąd podczas przetwarzania zdjęcia.');
-                    }
-                };
-                img.onerror = function() {
-                    alert('Nie udało się wczytać wybranego obrazka.');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function openPlayerCardModal(playerName) {
-            if (!playerName) return;
-            const modal = document.getElementById('playerCardModal');
-            if (!modal) return;
-
-            const isOrg = (playerName === ORGANIZER_NAME);
-            const { badges, totalGames, mvpWins, attendancePercent } = calculatePlayerBadges(playerName);
-            const formOutcomes = calculatePlayerForm(playerName);
-            const { bestPartner, topRival } = calculatePlayerChemistry(playerName);
-
-            const avatarEl = document.getElementById('playerCardAvatarContainer');
-            if (avatarEl) avatarEl.innerHTML = getPlayerAvatarHtml(playerName, 'lg');
-
-            const nameEl = document.getElementById('playerCardName');
-            if (nameEl) nameEl.innerText = playerName;
-
-            const roleBadgeEl = document.getElementById('playerCardRoleBadge');
-            if (roleBadgeEl) {
-                if (isOrg) {
-                    roleBadgeEl.className = "text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800";
-                    roleBadgeEl.innerText = "👑 Organizator";
-                } else {
-                    roleBadgeEl.className = "text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800";
-                    roleBadgeEl.innerText = "🏐 Zawodnik";
-                }
-            }
-
-            const gamesEl = document.getElementById('playerCardGames');
-            if (gamesEl) gamesEl.innerText = totalGames;
-
-            const mvpEl = document.getElementById('playerCardMvp');
-            if (mvpEl) mvpEl.innerText = `${mvpWins} 👑`;
-
-            const attEl = document.getElementById('playerCardAttendance');
-            if (attEl) attEl.innerText = `${attendancePercent}%`;
-
-            const formEl = document.getElementById('playerCardForm');
-            if (formEl) {
-                if (formOutcomes.length) {
-                    formEl.innerHTML = formOutcomes.map(o => `
-                        <span class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${o === 'W' ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'}">${o}</span>
-                    `).join('');
-                } else {
-                    formEl.innerHTML = `<span class="text-slate-500 text-[11px]">-</span>`;
-                }
-            }
-
-            const partnerEl = document.getElementById('playerCardPartner');
-            if (partnerEl) {
-                partnerEl.innerText = bestPartner ? `${bestPartner.name} (${bestPartner.winPct}% W - ${bestPartner.wins}/${bestPartner.together})` : "Brak danych";
-            }
-            const rivalEl = document.getElementById('playerCardRival');
-            if (rivalEl) {
-                rivalEl.innerText = topRival ? `${topRival.name} (${pluralizeMatches(topRival.against)})` : "Brak danych";
-            }
-
-            const badgeCountEl = document.getElementById('playerCardBadgeCount');
-            if (badgeCountEl) badgeCountEl.innerText = badges.length;
-
-            const badgesListEl = document.getElementById('playerCardBadgesList');
-            if (badgesListEl) {
-                if (!badges.length) {
-                    badgesListEl.innerHTML = `
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 text-center text-xs text-slate-500">
-                            Ten zawodnik zbiera jeszcze swoje pierwsze osiągnięcia w sezonie! 🚀
-                        </div>
-                    `;
-                } else {
-                    badgesListEl.innerHTML = badges.map(b => {
-                        const colonIdx = b.title.indexOf(':');
-                        const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : b.title;
-                        const badgeDesc = colonIdx !== -1 ? b.title.slice(colonIdx + 1).trim() : '';
-                        return `
-                            <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5 flex items-start gap-2.5 shadow-sm">
-                                <span class="text-xl shrink-0 mt-0.5">${b.icon}</span>
-                                <div class="min-w-0 flex-1">
-                                    <strong class="block text-white text-xs font-bold">${escapeHtml(badgeName)}</strong>
-                                    <p class="text-[11px] text-slate-400 leading-tight mt-0.5">${escapeHtml(badgeDesc)}</p>
-                                </div>
-                                <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.5 rounded-md shrink-0">Zdobyta ✓</span>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            }
-
-            modal.classList.remove('hidden');
-        }
-
-        function closePlayerCardModal() {
-            const modal = document.getElementById('playerCardModal');
-            if (modal) modal.classList.add('hidden');
         }
 
         function renderSeasonRecords() {
@@ -4326,7 +3415,7 @@
             });
             scores.sort((a, b) => b.total - a.total);
             const ironAttEl = document.getElementById('recordIronAttendance');
-            if (ironAttEl) ironAttEl.innerText = scores.length ? `${scores[0].name} (${pluralizeMatches(scores[0].total)})` : "-";
+            if (ironAttEl) ironAttEl.innerText = scores.length ? `${scores[0].name} (${scores[0].total} meczów)` : "-";
 
             let clashMatchText = "Wkrótce";
             Object.keys(AppState.months || {}).forEach(mName => {
@@ -4358,19 +3447,16 @@
             const tbody = document.getElementById('hallOfFameTableBody');
             if (!tbody) return;
 
-            const todayStr = getLocalDateKey();
-            const isPlayed = m => !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
-
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
-                const lip = (AppState.months['Lipiec']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
-                const sie = (AppState.months['Sierpień']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
-                const wrz = (AppState.months['Wrzesień']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
+                const lip = (AppState.months['Lipiec']?.matches || []).filter(m => !m.isCancelled && (m.attendees || []).slice(0, 12).includes(p)).length;
+                const sie = (AppState.months['Sierpień']?.matches || []).filter(m => !m.isCancelled && (m.attendees || []).slice(0, 12).includes(p)).length;
+                const wrz = (AppState.months['Wrzesień']?.matches || []).filter(m => !m.isCancelled && (m.attendees || []).slice(0, 12).includes(p)).length;
                 
                 let other = 0;
                 Object.keys(AppState.months || {}).forEach(m => {
                     if (!['Lipiec', 'Sierpień', 'Wrzesień'].includes(m)) {
-                        other += (AppState.months[m]?.matches || []).filter(x => isPlayed(x) && (x.attendees || []).slice(0, 12).includes(p)).length;
+                        other += (AppState.months[m]?.matches || []).filter(x => !x.isCancelled && (x.attendees || []).slice(0, 12).includes(p)).length;
                     }
                 });
                 const total = base + lip + sie + wrz + other;
@@ -4397,15 +3483,12 @@
                 ` : `<span class="text-slate-600 text-[10px]">-</span>`;
 
                 return `
-                    <tr onclick="openPlayerCardModal(${toInlineArgument(s.name)})" title="Dotknij, aby zobaczyć profil i odznaki gracza" class="hover:bg-slate-800/60 cursor-pointer transition active:bg-slate-800 ${isMe ? 'bg-emerald-950/20' : ''}">
+                    <tr class="hover:bg-slate-800/40 transition ${isMe ? 'bg-emerald-950/20' : ''}">
                         <td class="py-2.5 px-2.5 text-center font-bold font-mono text-slate-400">${rank}</td>
                         <td class="py-2.5 px-3 font-semibold text-white">
-                            <div class="flex items-center gap-2">
-                                ${getPlayerAvatarHtml(s.name, 'xs')}
-                                <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-                                    <span class="${isMe ? 'text-emerald-300 font-bold' : ''} truncate">${escapeHtml(s.name)}${isMe ? ' ⭐ (Ty)' : ''}</span>
-                                    <span class="flex items-center gap-0.5">${getPlayerBadgesHtml(s.name)}</span>
-                                </div>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="${isMe ? 'text-emerald-300 font-bold' : ''}">${escapeHtml(s.name)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                <span class="flex items-center gap-0.5">${getPlayerBadgesHtml(s.name)}</span>
                             </div>
                         </td>
                         <td class="py-2.5 px-2 text-center">${formHtml}</td>
@@ -4490,10 +3573,9 @@
                     
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="relative cursor-pointer shrink-0" onclick="openAvatarPickerModal()" title="Kliknij, aby zmienić zdjęcie lub awatar">
-                                ${getPlayerAvatarHtml(loggedPlayer, 'lg')}
-                                <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-full flex items-center justify-center text-[10px] shadow-md border border-slate-900 transition active:scale-90">
-                                    📷
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr ${isOrganizer ? 'from-amber-500 to-rose-500' : 'from-emerald-500 to-sky-500'} p-0.5 shadow-lg flex items-center justify-center shrink-0">
+                                <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center font-black text-sm text-white">
+                                    ${loggedPlayer.split(' ').map(n=>n[0]).join('').slice(0,2)}
                                 </div>
                             </div>
                             <div class="min-w-0">
@@ -4557,7 +3639,7 @@
                                     <span class="text-[10px] text-slate-400 block font-semibold">⚔️ Główny rywal:</span>
                                     <strong class="text-white text-xs block truncate">${topRival ? escapeHtml(topRival.name) : 'Brak danych'}</strong>
                                 </div>
-                                ${topRival ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-950 text-amber-300 border border-amber-800 shrink-0 font-mono">${pluralizeMatches(topRival.against)}</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
+                                ${topRival ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-950 text-amber-300 border border-amber-800 shrink-0 font-mono">${topRival.against} meczów</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
                             </div>
                         </div>
                     </div>
@@ -4566,7 +3648,7 @@
                     <div class="space-y-2 pt-1">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Moje Odznaki (${badges.length}):</span>
-                            <button type="button" onclick="openBadgesLegend()" class="text-[10px] text-amber-400 hover:underline">Zobacz wszystkie odznaki ➔</button>
+                            <button type="button" onclick="switchTab('halloffame')" class="text-[10px] text-amber-400 hover:underline">Zobacz wszystkie odznaki ➔</button>
                         </div>
                         <div class="flex flex-wrap gap-1.5">
                             ${badges.length ? badges.map(b => `
@@ -4590,10 +3672,9 @@
                         </div>
                         <div class="space-y-1.5 max-h-52 overflow-y-auto pr-1">
                             ${playerHistory.length ? playerHistory.map(h => {
-                                let outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">⏳ Oczekuje</span>`;
+                                let outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">⏳ W toku</span>`;
                                 if (h.outcome === 'win') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800">🏆 Wygrana</span>`;
                                 else if (h.outcome === 'loss') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-rose-950 text-rose-400 border border-rose-800">❌ Porażka</span>`;
-                                else if (h.outcome === 'archived') outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">✅ Rozegrany</span>`;
 
                                 return `
                                     <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2 text-xs">
@@ -4604,7 +3685,7 @@
                                                 ${h.isMvpWinner ? `<span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">👑 MVP</span>` : ''}
                                             </div>
                                             <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1 truncate">
-                                                <span>${h.hasTeams ? (h.isDark ? '⬛' : '⬜') : '🏐'} ${escapeHtml(h.teamName)}</span>
+                                                <span>${h.isDark ? '⬛' : '⬜'} ${escapeHtml(h.teamName)}</span>
                                                 <span class="text-slate-600">•</span>
                                                 <span class="font-mono text-slate-300">${escapeHtml(h.score)}</span>
                                             </p>
@@ -4622,38 +3703,20 @@
                         </div>
                     </div>
 
-                    <!-- Moje Finanse & Rozliczenie BLIK -->
-                    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-3">
+                    <!-- Moje Finanse & Szybki BLIK -->
+                    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-slate-200">Moje składki (${escapeHtml(AppState.currentMonth)}):</span>
-                            ${isMyPaid ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">✅ Opłacone</span>` : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800 font-bold">Do zapłaty: ${Math.max(0, myDue - myPaid).toFixed(2)} zł</span>`}
+                            ${isMyPaid ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">✅ Opłacone</span>` : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800">Do zapłaty: ${Math.max(0, myDue - myPaid).toFixed(2)} zł</span>`}
                         </div>
-
-                        <!-- Szczegóły wpłaty BLIK -->
-                        <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl p-3 space-y-2 text-xs">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400">Numer telefonu (BLIK):</span>
-                                <span class="font-mono font-black text-emerald-400 tracking-wider text-sm select-all">${escapeHtml(AppState.settings?.blikPhone || "517 077 482")}</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400">Kwota do zapłaty:</span>
-                                <strong class="font-mono text-sm ${!isMyPaid && myDue > 0 ? 'text-rose-400 font-black' : 'text-emerald-400 font-bold'}">${Math.max(0, myDue - myPaid).toFixed(2)} zł</strong>
-                            </div>
-                            <div class="flex items-center justify-between text-[11px] pt-1.5 border-t border-slate-800/60">
-                                <span class="text-slate-400">Tytuł przelewu:</span>
-                                <span class="font-mono text-slate-200 font-medium truncate max-w-[190px]">Siatka ${escapeHtml(loggedPlayer)} ${escapeHtml(AppState.currentMonth)}</span>
-                            </div>
+                        <div class="flex items-center justify-between text-xs pt-1">
+                            <span class="text-slate-400">Należność: <strong class="text-white">${myDue.toFixed(2)} zł</strong></span>
+                            <span class="text-slate-400">Wpłacono: <strong class="text-emerald-400">${myPaid.toFixed(2)} zł</strong></span>
                         </div>
-
                         ${!isMyPaid && myDue > 0 ? `
-                            <div class="flex flex-col sm:flex-row gap-2 pt-0.5">
-                                <button type="button" onclick="copyTransferTitle(${toInlineArgument(loggedPlayer)})" class="flex-1 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                                    <span>📋</span> Kopiuj tytuł przelewu
-                                </button>
-                                <button type="button" onclick="copyBlikNumber()" class="shrink-0 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-bold px-3.5 py-2.5 rounded-xl text-xs transition border border-slate-700 flex items-center justify-center gap-1.5">
-                                    <span>📱</span> Kopiuj nr BLIK
-                                </button>
-                            </div>
+                            <button type="button" onclick="copySinglePlayerBlik(${toInlineArgument(loggedPlayer)}, ${myDue})" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-md flex items-center justify-center gap-1.5">
+                                <span>📋</span> Kopiuj BLIK na moją kwotę (${myDue.toFixed(2)} zł)
+                            </button>
                         ` : ''}
                     </div>
 
@@ -4716,15 +3779,15 @@
                                 </h4>
                             </div>
                             <p class="text-[10px] text-slate-400">Jeśli ktoś zapomniał PIN-u, możesz go zresetować, aby mógł ustalić nowy:</p>
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <select id="resetPinPlayerSelect" class="flex-1 min-w-0 w-full bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500">
+                            <div class="flex gap-2">
+                                <select id="resetPinPlayerSelect" class="flex-1 bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-2.5 py-1.5">
                                     <option value="">-- Wybierz gracza --</option>
                                     ${AppState.all_players.filter(p => p !== ORGANIZER_NAME).map(p => `
                                         <option value="${escapeHtml(p)}">${escapeHtml(p)}${AppState.player_pins[p] ? ' (ma PIN)' : ' (brak PIN)'}</option>
                                     `).join('')}
                                 </select>
-                                <button type="button" onclick="resetSelectedPlayerPin()" class="w-full sm:w-auto shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                                    <span>🔑</span> Resetuj PIN
+                                <button type="button" onclick="resetSelectedPlayerPin()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                                    Resetuj
                                 </button>
                             </div>
                         </div>
@@ -4735,8 +3798,8 @@
                                 <span>👥</span> Baza Graczy (+ Dodaj nowego)
                             </h4>
                             <div class="flex gap-2">
-                                <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
-                                <button type="button" onclick="addNewPlayerToDirectory()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition active:scale-95">
+                                <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <button type="button" onclick="addNewPlayerToDirectory()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition active:scale-95">
                                     Dodaj
                                 </button>
                             </div>
@@ -4829,12 +3892,12 @@
             const existingPin = AppState.player_pins[name];
 
             if (!existingPin) {
-                AppState.player_pins[name] = hashPin(pin);
+                AppState.player_pins[name] = pin;
                 syncState();
                 loggedPlayer = name;
                 localStorage.setItem('siatka_active_player', name);
                 
-                if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                if (name === ORGANIZER_NAME) {
                     isAdmin = true;
                     localStorage.setItem('siatka_is_admin', 'true');
                 }
@@ -4845,15 +3908,11 @@
                 renderCurrentView();
                 showToast(`Witaj w ekipie, ${name}! Twój profil został utworzony! 🎉`);
             } else {
-                if (verifyPin(pin, existingPin) || verifyAdminPin(pin)) {
-                    if (!/^[0-9a-f]{64}$/i.test(existingPin)) {
-                        AppState.player_pins[name] = hashPin(pin);
-                        syncState();
-                    }
+                if (existingPin === pin || pin === ADMIN_PIN) {
                     loggedPlayer = name;
                     localStorage.setItem('siatka_active_player', name);
                     
-                    if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                    if (name === ORGANIZER_NAME || pin === ADMIN_PIN) {
                         isAdmin = true;
                         localStorage.setItem('siatka_is_admin', 'true');
                     }
@@ -4915,12 +3974,12 @@
 
             if (!existingPin) {
                 // First time setting PIN
-                AppState.player_pins[name] = hashPin(pin);
+                AppState.player_pins[name] = pin;
                 syncState();
                 loggedPlayer = name;
                 localStorage.setItem('siatka_active_player', name);
                 
-                if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                if (name === ORGANIZER_NAME) {
                     isAdmin = true;
                     localStorage.setItem('siatka_is_admin', 'true');
                 }
@@ -4932,15 +3991,11 @@
                 showToast(`Witaj ${name}! Twój PIN został pomyślnie zapisany! 🎉`);
             } else {
                 // Verification
-                if (verifyPin(pin, existingPin) || verifyAdminPin(pin)) {
-                    if (!/^[0-9a-f]{64}$/i.test(existingPin)) {
-                        AppState.player_pins[name] = hashPin(pin);
-                        syncState();
-                    }
+                if (existingPin === pin || pin === ADMIN_PIN) {
                     loggedPlayer = name;
                     localStorage.setItem('siatka_active_player', name);
                     
-                    if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                    if (name === ORGANIZER_NAME || pin === ADMIN_PIN) {
                         isAdmin = true;
                         localStorage.setItem('siatka_is_admin', 'true');
                     }
@@ -5015,11 +4070,6 @@
                 delete AppState.player_pins[oldName];
             }
 
-            if (AppState.player_avatars && AppState.player_avatars[oldName] !== undefined) {
-                AppState.player_avatars[newName] = AppState.player_avatars[oldName];
-                delete AppState.player_avatars[oldName];
-            }
-
             if (loggedPlayer === oldName) {
                 loggedPlayer = newName;
                 localStorage.setItem('siatka_active_player', newName);
@@ -5077,7 +4127,7 @@
             if (clean.length < 4) return alert("PIN musi mieć co najmniej 4 cyfry!");
 
             if (!AppState.player_pins) AppState.player_pins = {};
-            AppState.player_pins[loggedPlayer] = hashPin(clean);
+            AppState.player_pins[loggedPlayer] = clean;
             syncState();
             showToast("Twój kod PIN został zmieniony! 🔑");
         }
@@ -5483,7 +4533,7 @@
 
             if (type === 'monday') {
                 return `🔔 SIATKÓWKA - ZAPISY NA PIĄTEK (${dateStr}) 🔔\n\n` +
-                       `Siemanko! Ruszyły zapisy na ten piątek. Rozgrzewka 18:45, gramy 19:00 - 21:00!\n\n` +
+                       `Siemanko! Ruszyły zapisy na ten piątek. Gramy o 18:30!\n\n` +
                        `👉 Zapiszcie się przez link:\n${url}\n\n` +
                        `Limit składu to 12 osób, decyduje kolejność zgłoszeń!`;
             } else if (type === 'mvp') {
@@ -5499,7 +4549,7 @@
             }
 
             return `🏐 SIATKÓWKA DZISIAJ (${dateStr}) 🏐\n\n` +
-                   `⏰ Rozgrzewka: 18:45 • Gra: 19:00 - 21:00 (spotykamy i przebieramy się na hali)!\n` +
+                   `⏰ Startujemy o 18:30 (zbiórka 18:20)!\n` +
                    `📍 Skład: ${count}/12 (Wolne miejsca: ${freeSlots})\n` +
                    `💰 Koszt: ~${costPerPerson} zł / os.\n\n` +
                    `📲 Zapisy / Losowarka Składów / Wyniki:\n${url}\n\n` +
@@ -5578,7 +4628,7 @@
             if (Notification.permission !== "granted") {
                 requestPushNotificationPermission();
             } else {
-                sendLocalNotification("🏐 Siatkówka Piątek", "Działa! Przypomnienie o meczu: Piątek - rozgrzewka 18:45, gra 19:00 - 21:00 (przebieramy się na hali)!");
+                sendLocalNotification("🏐 Siatkówka Piątek", "Działa! Przypomnienie o meczu: Piątek godz. 18:30 (zbiórka 18:20 w szatni)!");
                 showToast("Wysłano testowe powiadomienie! 📲");
             }
         }
