@@ -754,9 +754,9 @@
                         </div>
                     </div>
                     <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🔥</span>
+                        <span class="text-xl shrink-0 mt-0.5">⚡</span>
                         <div class="min-w-0 flex-1">
-                            <strong class="block text-rose-400 text-xs font-bold">W Zwycięskim Cugu</strong>
+                            <strong class="block text-amber-300 text-xs font-bold">W Zwycięskim Cugu</strong>
                             <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Seria min. 3 wygranych z rzędu</p>
                         </div>
                     </div>
@@ -1147,6 +1147,12 @@
                 <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
                     <span class="text-[11px] font-bold text-slate-400">Główny rywal:</span>
                     <span id="playerCardRival" class="font-semibold text-slate-200">-</span>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
+                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                        <span>🔥</span> <span>Seria obecności:</span>
+                    </span>
+                    <span id="playerCardStreak" class="font-semibold text-amber-300">-</span>
                 </div>
             </div>
 
@@ -2235,17 +2241,25 @@
 
             // Main Squad list
             const mainListEl = document.getElementById('mainSquadList');
+            const allStreaks = typeof getAllPlayersStreaks === 'function' ? getAllPlayersStreaks() : {};
             let squadHtml = "";
             for (let i = 0; i < 12; i++) {
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
                     const isMe = (p === loggedPlayer);
+                    const pStreak = (allStreaks[p]?.current) || 0;
+                    const streakBadge = pStreak >= 2 ? `
+                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pStreak} mecze z rzędu">
+                            🔥 ${pStreak}
+                        </span>
+                    ` : '';
                     squadHtml += `
                         <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${streakBadge}
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
                         </div>
@@ -2272,12 +2286,19 @@
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
                 reserveListEl.innerHTML = reservePlayers.map((p, idx) => {
                     const isMe = (p === loggedPlayer);
+                    const pStreak = (allStreaks[p]?.current) || 0;
+                    const streakBadge = pStreak >= 2 ? `
+                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pStreak} mecze z rzędu">
+                            🔥 ${pStreak}
+                        </span>
+                    ` : '';
                     return `
                         <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${streakBadge}
                             </div>
                             <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
                         </div>
@@ -4011,7 +4032,7 @@
             if (hasUnanimousMvp) badges.push({ icon: "🎯", title: "Głos Ludu: >50% głosów na MVP w jednym meczu" });
 
             // 2. KATEGORIA FORMA & WYNIKI
-            if (isWinningStreak) badges.push({ icon: "🔥", title: "W Zwycięskim Cugu: 3 wygrane mecze z rzędu" });
+            if (isWinningStreak) badges.push({ icon: "⚡", title: "W Zwycięskim Cugu: 3 wygrane mecze z rzędu" });
             if (wonTieBreak) badges.push({ icon: "⚔️", title: "Mistrz Tie-breaka: Wygrany mecz 3:2 lub na przewagi" });
             if (wonAsDark && wonAsLight) badges.push({ icon: "🔀", title: "Kameleon Parkietu: Wygrane w Drużynie Ciemnej i Jasnej" });
 
@@ -4261,6 +4282,18 @@
                 rivalEl.innerText = topRival ? `${topRival.name} (${pluralizeMatches(topRival.against)})` : "Brak danych";
             }
 
+            const streakEl = document.getElementById('playerCardStreak');
+            if (streakEl) {
+                const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(playerName) : { current: 0, max: 0 };
+                if (pStreak.current >= 2) {
+                    streakEl.innerHTML = `<span class="text-amber-400 font-extrabold">🔥 ${pStreak.current} ${pluralizeMatches(pStreak.current)} z rzędu</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
+                } else if (pStreak.max > 0) {
+                    streakEl.innerHTML = `<span class="text-slate-300 font-semibold">${pStreak.current} ${pluralizeMatches(pStreak.current)}</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
+                } else {
+                    streakEl.innerHTML = `<span class="text-slate-500 font-medium">Brak serii</span>`;
+                }
+            }
+
             const badgeCountEl = document.getElementById('playerCardBadgeCount');
             if (badgeCountEl) badgeCountEl.innerText = badges.length;
 
@@ -4387,6 +4420,8 @@
 
             scores.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'pl'));
 
+            const allStreaks = typeof getAllPlayersStreaks === 'function' ? getAllPlayersStreaks() : {};
+
             tbody.innerHTML = scores.map((s, idx) => {
                 let rank = `${idx + 1}`;
                 if (idx === 0) rank = '🥇 1';
@@ -4403,6 +4438,11 @@
                     </div>
                 ` : `<span class="text-slate-600 text-[10px]">-</span>`;
 
+                const pStreak = (allStreaks[s.name]?.current) || 0;
+                const streakBadge = pStreak >= 2 ? `
+                    <span class="inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0" title="Aktualna seria: ${pStreak} mecze z rzędu">🔥 ${pStreak}</span>
+                ` : '';
+
                 return `
                     <tr onclick="openPlayerCardModal(${toInlineArgument(s.name)})" title="Dotknij, aby zobaczyć profil i odznaki gracza" class="hover:bg-slate-800/60 cursor-pointer transition active:bg-slate-800 ${isMe ? 'bg-emerald-950/20' : ''}">
                         <td class="py-2.5 px-2.5 text-center font-bold font-mono text-slate-400">${rank}</td>
@@ -4411,6 +4451,7 @@
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="flex items-center gap-1.5 flex-wrap min-w-0">
                                     <span class="${isMe ? 'text-emerald-300 font-bold' : ''} truncate">${escapeHtml(s.name)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                    ${streakBadge}
                                     <span class="flex items-center gap-0.5">${getPlayerBadgesHtml(s.name)}</span>
                                 </div>
                             </div>
@@ -5588,6 +5629,70 @@
                 sendLocalNotification("🏐 Siatkówka Piątek", "Działa! Przypomnienie o meczu: Piątek - rozgrzewka 18:45, gra 19:00 - 21:00 (przebieramy się na hali)!");
                 showToast("Wysłano testowe powiadomienie! 📲");
             }
+        }
+
+        // ================= ATTENDANCE STREAKS =================
+        function getAllPlayedMatchesSorted() {
+            const todayStr = getLocalDateKey();
+            const played = [];
+            Object.keys(AppState.months || {}).forEach(mName => {
+                (AppState.months[mName]?.matches || []).forEach(m => {
+                    if (!m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true)) {
+                        played.push(m);
+                    }
+                });
+            });
+            // Sort ascending by date
+            played.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+            return played;
+        }
+
+        function calculatePlayerStreaks(playerName) {
+            if (!playerName) return { current: 0, max: 0 };
+            const playedMatches = getAllPlayedMatchesSorted();
+            let current = 0;
+            let max = 0;
+            playedMatches.forEach(m => {
+                const attendees = (m.attendees || []).slice(0, 12);
+                if (attendees.includes(playerName)) {
+                    current++;
+                    if (current > max) max = current;
+                } else {
+                    current = 0;
+                }
+            });
+            return { current, max };
+        }
+
+        function getAllPlayersStreaks() {
+            const playedMatches = getAllPlayedMatchesSorted();
+            const streaks = {};
+
+            (AppState.all_players || []).forEach(p => {
+                streaks[p] = { current: 0, max: 0 };
+            });
+
+            playedMatches.forEach(m => {
+                const attendees = (m.attendees || []).slice(0, 12);
+                const attendeeSet = new Set(attendees);
+
+                attendees.forEach(p => {
+                    if (!streaks[p]) streaks[p] = { current: 0, max: 0 };
+                });
+
+                Object.keys(streaks).forEach(p => {
+                    if (attendeeSet.has(p)) {
+                        streaks[p].current++;
+                        if (streaks[p].current > streaks[p].max) {
+                            streaks[p].max = streaks[p].current;
+                        }
+                    } else {
+                        streaks[p].current = 0;
+                    }
+                });
+            });
+
+            return streaks;
         }
 
         // ================= APPLICATION BOOTSTRAP =================
