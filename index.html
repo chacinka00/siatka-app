@@ -227,9 +227,6 @@
                             Pokaż archiwalne
                         </button>
                     </div>
-                    <button type="button" id="addNewMatchBtnHeader" onclick="addNewMatchPrompt()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1">
-                        + Dodaj termin
-                    </button>
                 </div>
                 <div id="matchDatesContainer" class="flex gap-2 overflow-x-auto pb-1 scroll-smooth">
                     <!-- Populated dynamically -->
@@ -281,7 +278,7 @@
                             <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-xs">📊</span>
                             <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
                         </div>
-                        <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm">
+                        <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
                             <span>✏️</span>
                             <span id="editScoreBtnLabel">Wpisz wynik</span>
                         </button>
@@ -441,7 +438,7 @@
                             <span>🔀</span> Podział na 2 Zespoły
                         </h2>
                     </div>
-                    <div class="flex items-center gap-2 flex-wrap">
+                    <div id="teamsAdminControls" class="flex items-center gap-2 flex-wrap hidden">
                         <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3.5 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
                             <span>🎲</span> Losuj równe składy
                         </button>
@@ -470,7 +467,7 @@
                         <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
                             <span>👥</span> Gracze do przydziału (<span id="unassignedCount" class="text-indigo-400 font-mono font-bold">0</span>)
                         </h3>
-                        <span class="text-[10px] text-slate-400">Dotknij ⬛ lub ⬜, aby przypisać</span>
+                        <span id="unassignedHelperText" class="text-[10px] text-slate-400">Dotknij ⬛ lub ⬜, aby przypisać</span>
                     </div>
                     <div id="unassignedPlayersList" class="flex flex-wrap gap-2">
                         <!-- Populated dynamically -->
@@ -487,7 +484,7 @@
                                 <div class="flex items-center gap-2 flex-1 min-w-0">
                                     <span class="w-3 h-3 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
                                     <span id="teamDarkNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Ciemna</span>
-                                    <button type="button" onclick="editTeamNamePrompt('dark')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                                    <button type="button" onclick="editTeamNamePrompt('dark')" title="Zmień nazwę drużyny" class="team-edit-name-btn text-slate-400 hover:text-indigo-400 text-xs shrink-0 hidden">✏️</button>
                                 </div>
                                 <span id="teamDarkCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
                             </div>
@@ -509,7 +506,7 @@
                                 <div class="flex items-center gap-2 flex-1 min-w-0">
                                     <span class="w-3 h-3 rounded-full bg-white border border-slate-300 shrink-0"></span>
                                     <span id="teamLightNameDisplay" class="font-extrabold text-xs uppercase tracking-wider text-slate-200 truncate">Drużyna Jasna</span>
-                                    <button type="button" onclick="editTeamNamePrompt('light')" title="Zmień nazwę drużyny" class="text-slate-400 hover:text-indigo-400 text-xs shrink-0">✏️</button>
+                                    <button type="button" onclick="editTeamNamePrompt('light')" title="Zmień nazwę drużyny" class="team-edit-name-btn text-slate-400 hover:text-indigo-400 text-xs shrink-0 hidden">✏️</button>
                                 </div>
                                 <span id="teamLightCount" class="text-xs font-mono font-bold text-slate-400 shrink-0">0/6</span>
                             </div>
@@ -1458,8 +1455,17 @@
 
         function getSortedMonths() {
             return Object.keys(AppState.months || {}).sort((a, b) => {
-                const indexA = POLISH_MONTHS.indexOf(a);
-                const indexB = POLISH_MONTHS.indexOf(b);
+                const matchesA = AppState.months[a]?.matches || [];
+                const matchesB = AppState.months[b]?.matches || [];
+                const firstDateA = matchesA[0]?.date || '';
+                const firstDateB = matchesB[0]?.date || '';
+                if (firstDateA && firstDateB) {
+                    return firstDateA.localeCompare(firstDateB);
+                }
+                const baseA = a.split(' ')[0];
+                const baseB = b.split(' ')[0];
+                const indexA = POLISH_MONTHS.indexOf(baseA);
+                const indexB = POLISH_MONTHS.indexOf(baseB);
                 if (indexA === -1 && indexB === -1) return a.localeCompare(b, 'pl');
                 if (indexA === -1) return 1;
                 if (indexB === -1) return -1;
@@ -1541,9 +1547,10 @@
         function autoSelectUpcomingMatchOnLoad() {
             if (hasInitiallySelectedMonth) return;
             const globalUpcomingDate = getGlobalUpcomingMatchDate();
+            const sortedMonths = getSortedMonths();
             
             if (globalUpcomingDate) {
-                for (const mName of Object.keys(AppState.months || {})) {
+                for (const mName of sortedMonths) {
                     const matches = AppState.months[mName]?.matches || [];
                     const idx = matches.findIndex(m => m.date === globalUpcomingDate);
                     if (idx !== -1) {
@@ -1555,9 +1562,11 @@
                 }
             }
 
-            const currentMonthMatches = AppState.months[AppState.currentMonth]?.matches || [];
-            if (currentMonthMatches.length > 0) {
-                AppState.currentMatchIndex = currentMonthMatches.length - 1;
+            const targetMonth = sortedMonths[sortedMonths.length - 1] || AppState.currentMonth;
+            if (targetMonth && AppState.months[targetMonth]) {
+                AppState.currentMonth = targetMonth;
+                const matches = AppState.months[targetMonth].matches || [];
+                AppState.currentMatchIndex = Math.max(0, matches.length - 1);
             }
             hasInitiallySelectedMonth = true;
         }
@@ -1748,6 +1757,7 @@
         let isMatchActionPending = false;
 
         function renderCurrentView(forceAll = false) {
+            updateAdminUI();
             if (forceAll) {
                 renderMatchesTab();
                 renderTeamsTab();
@@ -1854,15 +1864,24 @@
             }
 
             const billingAdminRow = document.getElementById('billingAdminActionsRow');
+            const editScoreBtn = document.getElementById('editMatchScoreBtn');
+            const teamsAdminControls = document.getElementById('teamsAdminControls');
+            const teamEditBtns = document.querySelectorAll('.team-edit-name-btn');
 
             if (isAdmin) {
                 if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.remove('hidden');
                 if (billingAdminRow) billingAdminRow.classList.remove('hidden');
+                if (editScoreBtn) editScoreBtn.classList.remove('hidden');
+                if (teamsAdminControls) teamsAdminControls.classList.remove('hidden');
+                teamEditBtns.forEach(btn => btn.classList.remove('hidden'));
             } else {
                 if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
                 if (matchAdminBar) matchAdminBar.classList.add('hidden');
                 if (billingAdminRow) billingAdminRow.classList.add('hidden');
+                if (editScoreBtn) editScoreBtn.classList.add('hidden');
+                if (teamsAdminControls) teamsAdminControls.classList.add('hidden');
+                teamEditBtns.forEach(btn => btn.classList.add('hidden'));
             }
         }
 
@@ -1876,6 +1895,7 @@
                 isAdmin = true;
                 localStorage.setItem('siatka_is_admin', 'true');
                 updateAdminUI();
+                renderCurrentView();
                 actionCallback();
                 showToast("Zalogowano w trybie Organizatora! 👑");
             } else if (pin !== null) {
@@ -2072,7 +2092,7 @@
             });
 
             if (visibleMatches.length === 0) {
-                datesContainer.innerHTML = `<span class="text-xs text-slate-500 py-2">Brak nadchodzących meczów. Kliknij "+ Dodaj termin" lub "Pokaż archiwalne".</span>`;
+                datesContainer.innerHTML = `<span class="text-xs text-slate-500 py-2">Brak nadchodzących meczów. Kliknij "Pokaż archiwalne".</span>`;
             } else {
                 datesContainer.innerHTML = visibleMatches.map(item => {
                     const m = item.match;
@@ -2247,6 +2267,7 @@
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
                     const isMe = (p === loggedPlayer);
+                    const canRemove = isMe || isAdmin;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
                         <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pStreak} mecze z rzędu">
@@ -2261,7 +2282,11 @@
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                                 ${streakBadge}
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z listy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            ${canRemove ? `
+                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            ` : `
+                                <div class="w-8 shrink-0"></div>
+                            `}
                         </div>
                     `;
                 } else {
@@ -2286,6 +2311,7 @@
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
                 reserveListEl.innerHTML = reservePlayers.map((p, idx) => {
                     const isMe = (p === loggedPlayer);
+                    const canRemove = isMe || isAdmin;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
                         <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pStreak} mecze z rzędu">
@@ -2300,7 +2326,11 @@
                                 <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
                                 ${streakBadge}
                             </div>
-                            <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="Usuń z rezerwy" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            ${canRemove ? `
+                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                            ` : `
+                                <div class="w-8 shrink-0"></div>
+                            `}
                         </div>
                     `;
                 }).join('');
@@ -2438,6 +2468,11 @@
 
         function removePlayerFromCurrentMatch(name) {
             if (isMatchActionPending) return;
+            const isMe = (name === loggedPlayer);
+            if (!isAdmin && !isMe) {
+                showToast("Tylko Organizator może wypisywać innych graczy! 🔒");
+                return;
+            }
             if (!confirm(`Czy na pewno usunąć z listy gracza: ${name}?`)) return;
             isMatchActionPending = true;
 
@@ -2567,6 +2602,10 @@
         }
 
         function assignPlayerToTeam(playerName, targetTeamKey) {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zarządzać składami! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
@@ -2597,11 +2636,19 @@
         }
 
         function movePlayerToOtherTeam(playerName, currentTeamKey) {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zarządzać składami! 🔒");
+                return;
+            }
             const targetKey = currentTeamKey === 'dark' ? 'light' : 'dark';
             assignPlayerToTeam(playerName, targetKey);
         }
 
         function unassignPlayerFromTeams(playerName) {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zarządzać składami! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch || !currentMatch.teams) return;
@@ -2621,6 +2668,10 @@
         }
 
         function generateRandomTeams() {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może losować składy! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
@@ -2715,6 +2766,10 @@
         }
 
         function clearCurrentMatchTeams() {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może resetować składy! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch || !currentMatch.teams) {
@@ -2779,6 +2834,11 @@
             const unassigned = mainSquad.filter(p => !dark.includes(p) && !light.includes(p));
 
             // 1. Render Unassigned Pool
+            const unassignedHelper = document.getElementById('unassignedHelperText');
+            if (unassignedHelper) {
+                unassignedHelper.innerText = isAdmin ? "Dotknij ⬛ lub ⬜, aby przypisać" : "Oczekują na przydział do drużyn";
+            }
+
             if (unassignedCard && unassignedListEl) {
                 if (unassigned.length > 0 && teamsViewMode === 'list') {
                     unassignedCard.classList.remove('hidden');
@@ -2788,6 +2848,7 @@
                         return `
                             <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/70' : 'border-slate-800'} px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
                                 <span class="font-semibold ${isMe ? 'text-emerald-300' : 'text-slate-200'} truncate">${escapeHtml(p)}</span>
+                                ${isAdmin ? `
                                 <div class="flex items-center gap-1 shrink-0">
                                     <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition">
                                         ⬛ Ciemni
@@ -2796,6 +2857,9 @@
                                         ⬜ Jaśni
                                     </button>
                                 </div>
+                                ` : `
+                                <span class="text-[10px] text-slate-400 font-semibold px-2 py-0.5 bg-slate-950 rounded-lg border border-slate-800 shrink-0">Czeka na przydział</span>
+                                `}
                             </div>
                         `;
                     }).join('');
@@ -2806,7 +2870,7 @@
 
             // 2. Render Team Dark List
             if (dark.length === 0) {
-                darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
+                darkListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. ${isAdmin ? 'Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".' : 'Organizator nie przydzielił jeszcze składów.'}</div>`;
             } else {
                 darkListEl.innerHTML = dark.map((p, i) => {
                     const isMe = (p === loggedPlayer);
@@ -2817,6 +2881,7 @@
                                 <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
                             </div>
+                            ${isAdmin ? `
                             <div class="flex items-center gap-1 shrink-0">
                                 <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej (${escapeHtml(lightName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
                                     <span>⇄</span><span>Przenieś</span>
@@ -2825,6 +2890,7 @@
                                     ✕
                                 </button>
                             </div>
+                            ` : ''}
                         </div>
                     `;
                 }).join('');
@@ -2832,7 +2898,7 @@
 
             // Quick Add Select for Dark Team
             if (darkAddContainer) {
-                if (dark.length < 6 && unassigned.length > 0) {
+                if (isAdmin && dark.length < 6 && unassigned.length > 0) {
                     darkAddContainer.innerHTML = `
                         <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'dark'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
                             <option value="">+ Przypisz gracza do Ciemnych...</option>
@@ -2846,7 +2912,7 @@
 
             // 3. Render Team Light List
             if (light.length === 0) {
-                lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".</div>`;
+                lightListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-600">Brak graczy. ${isAdmin ? 'Przypisz ręcznie z listy powyżej lub kliknij "🎲 Losuj równe składy".' : 'Organizator nie przydzielił jeszcze składów.'}</div>`;
             } else {
                 lightListEl.innerHTML = light.map((p, i) => {
                     const isMe = (p === loggedPlayer);
@@ -2857,6 +2923,7 @@
                                 <span class="font-mono text-slate-500 font-bold w-4 shrink-0 text-right">${i+1}.</span>
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
                             </div>
+                            ${isAdmin ? `
                             <div class="flex items-center gap-1 shrink-0">
                                 <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej (${escapeHtml(darkName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
                                     <span>⇄</span><span>Przenieś</span>
@@ -2865,6 +2932,7 @@
                                     ✕
                                 </button>
                             </div>
+                            ` : ''}
                         </div>
                     `;
                 }).join('');
@@ -2872,7 +2940,7 @@
 
             // Quick Add Select for Light Team
             if (lightAddContainer) {
-                if (light.length < 6 && unassigned.length > 0) {
+                if (isAdmin && light.length < 6 && unassigned.length > 0) {
                     lightAddContainer.innerHTML = `
                         <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'light'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
                             <option value="">+ Przypisz gracza do Jasnych...</option>
@@ -2948,6 +3016,10 @@
         }
 
         function editTeamNamePrompt(teamKey) {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zmieniać nazwy drużyn! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
