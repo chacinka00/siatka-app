@@ -4286,9 +4286,9 @@
             if (streakEl) {
                 const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(playerName) : { current: 0, max: 0 };
                 if (pStreak.current >= 2) {
-                    streakEl.innerHTML = `<span class="text-amber-400 font-extrabold">🔥 ${pStreak.current} ${pluralizeMatches(pStreak.current)} z rzędu</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
+                    streakEl.innerHTML = `<span class="text-amber-400 font-extrabold">${pluralizeMatches(pStreak.current)} z rzędu</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
                 } else if (pStreak.max > 0) {
-                    streakEl.innerHTML = `<span class="text-slate-300 font-semibold">${pStreak.current} ${pluralizeMatches(pStreak.current)}</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
+                    streakEl.innerHTML = `<span class="text-slate-300 font-semibold">${pluralizeMatches(pStreak.current)}</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
                 } else {
                     streakEl.innerHTML = `<span class="text-slate-500 font-medium">Brak serii</span>`;
                 }
@@ -5154,18 +5154,28 @@
 
             if (!AppState.player_skills) AppState.player_skills = {};
 
-            grid.innerHTML = AppState.all_players.map(p => {
+            const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+
+            if (!sortedPlayers.length) {
+                grid.innerHTML = '<div class="text-xs text-slate-400 italic py-2 text-center">Brak graczy na liście</div>';
+                return;
+            }
+
+            grid.innerHTML = sortedPlayers.map(p => {
                 const currentRating = AppState.player_skills[p] || 3;
                 return `
-                    <div class="bg-slate-950/80 border border-slate-800/80 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
-                        <span class="font-semibold text-slate-200 truncate pr-2">${escapeHtml(p)}</span>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-900 border border-slate-700 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
-                                <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 - Początkujący</option>
-                                <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐⭐ 2 - Solidny</option>
-                                <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐⭐⭐ 3 - Średni</option>
-                                <option value="4" ${currentRating == 4 ? 'selected' : ''}>⭐⭐⭐⭐ 4 - Dobry / Lider</option>
-                                <option value="5" ${currentRating == 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐ 5 - PRO</option>
+                    <div class="bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 px-2.5 py-1.5 rounded-xl flex items-center justify-between gap-2 text-xs transition">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            ${getPlayerAvatarHtml(p, 'xs')}
+                            <span class="font-semibold text-slate-200 truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                        </div>
+                        <div class="shrink-0">
+                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-950 border border-slate-700/80 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none focus:border-amber-400 cursor-pointer w-[115px] sm:w-[125px]">
+                                <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 · Start</option>
+                                <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐ 2 · Solidny</option>
+                                <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐ 3 · Średni</option>
+                                <option value="4" ${currentRating == 4 ? 'selected' : ''}>⭐ 4 · Lider</option>
+                                <option value="5" ${currentRating == 5 ? 'selected' : ''}>⭐ 5 · PRO</option>
                             </select>
                         </div>
                     </div>
