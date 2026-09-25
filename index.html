@@ -4744,14 +4744,30 @@
                         </div>
 
                         <!-- Dyskretne Oceny Graczy (1-5 ⭐) -->
-                        <div class="bg-slate-950 border border-indigo-900/40 rounded-2xl p-3.5 space-y-2">
+                        <div class="bg-slate-950 border border-indigo-900/40 rounded-2xl p-3.5 space-y-2.5">
                             <div class="flex items-center justify-between">
-                                <h4 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider flex items-center gap-1">
+                                <h4 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
                                     <span>🤫</span> Ukryte Oceny Graczy (Balans 6v6)
                                 </h4>
-                                <span class="text-[9px] text-slate-400">Niewidoczne dla innych</span>
+                                <span class="text-[9px] text-slate-400 font-medium bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Tylko Ty widzisz</span>
                             </div>
-                            <div id="playerSkillsGrid" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+
+                            <div class="space-y-1.5">
+                                <input type="text" id="playerSkillsSearch" oninput="renderPlayerSkillsGrid()" placeholder="🔍 Szukaj gracza do oceny..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 text-xs text-slate-100 placeholder-slate-500 rounded-xl px-3 py-1.5 focus:outline-none transition">
+                                <div class="flex items-center justify-between text-[9px] text-slate-400 px-2 py-1 bg-slate-900/40 rounded-lg border border-slate-800/50">
+                                    <span class="text-slate-400 font-semibold">1★ Start</span>
+                                    <span class="text-slate-600">•</span>
+                                    <span class="text-slate-300 font-semibold">2★ Solid</span>
+                                    <span class="text-slate-600">•</span>
+                                    <span class="text-blue-300 font-semibold">3★ Średni</span>
+                                    <span class="text-slate-600">•</span>
+                                    <span class="text-amber-300 font-semibold">4★ Lider</span>
+                                    <span class="text-slate-600">•</span>
+                                    <span class="text-amber-400 font-bold">5★ PRO</span>
+                                </div>
+                            </div>
+
+                            <div id="playerSkillsGrid" class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                                 <!-- Populated dynamically -->
                             </div>
                         </div>
@@ -5154,40 +5170,79 @@
 
             if (!AppState.player_skills) AppState.player_skills = {};
 
-            const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+            const prevScrollTop = grid.scrollTop;
+            const searchInput = document.getElementById('playerSkillsSearch');
+            const query = (searchInput?.value || '').trim().toLowerCase();
+
+            let sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
+            if (query) {
+                sortedPlayers = sortedPlayers.filter(p => p.toLowerCase().includes(query));
+            }
 
             if (!sortedPlayers.length) {
-                grid.innerHTML = '<div class="text-xs text-slate-400 italic py-2 text-center">Brak graczy na liście</div>';
+                grid.innerHTML = '<div class="text-xs text-slate-400 italic py-4 text-center">Brak graczy spełniających kryteria</div>';
                 return;
             }
 
+            const levelConfig = {
+                1: { label: 'Start', badgeClass: 'bg-slate-800 text-slate-400 border-slate-700' },
+                2: { label: 'Solidny', badgeClass: 'bg-slate-800 text-slate-300 border-slate-700' },
+                3: { label: 'Średni', badgeClass: 'bg-blue-500/15 text-blue-300 border-blue-500/30' },
+                4: { label: 'Lider', badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+                5: { label: 'PRO', badgeClass: 'bg-amber-400 text-slate-950 font-black border-amber-400' }
+            };
+
             grid.innerHTML = sortedPlayers.map(p => {
                 const currentRating = AppState.player_skills[p] || 3;
+                const lvl = levelConfig[currentRating] || levelConfig[3];
+
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    const isFilled = (i <= currentRating);
+                    const starColor = isFilled 
+                        ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.4)]' 
+                        : 'text-slate-700 fill-slate-800/80 hover:text-slate-500';
+                    starsHtml += `
+                        <button type="button" 
+                                onclick="updatePlayerSkill(${toInlineArgument(p)}, ${i})" 
+                                aria-label="Ustaw ocenę ${i} dla ${escapeHtml(p)}" 
+                                class="p-1 -m-0.5 active:scale-125 transition transform focus:outline-none">
+                            <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 ${starColor}" viewBox="0 0 24 24">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                        </button>
+                    `;
+                }
+
                 return `
                     <div class="bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 px-2.5 py-1.5 rounded-xl flex items-center justify-between gap-2 text-xs transition">
                         <div class="flex items-center gap-2 min-w-0 flex-1">
                             ${getPlayerAvatarHtml(p, 'xs')}
-                            <span class="font-semibold text-slate-200 truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                            <span class="font-bold text-slate-200 truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
                         </div>
-                        <div class="shrink-0">
-                            <select onchange="updatePlayerSkill(${toInlineArgument(p)}, this.value)" aria-label="Ocena umiejętności dla ${escapeHtml(p)}" class="bg-slate-950 border border-slate-700/80 text-[11px] font-bold text-amber-400 rounded-lg px-2 py-1 focus:outline-none focus:border-amber-400 cursor-pointer w-[115px] sm:w-[125px]">
-                                <option value="1" ${currentRating == 1 ? 'selected' : ''}>⭐ 1 · Start</option>
-                                <option value="2" ${currentRating == 2 ? 'selected' : ''}>⭐ 2 · Solidny</option>
-                                <option value="3" ${currentRating == 3 ? 'selected' : ''}>⭐ 3 · Średni</option>
-                                <option value="4" ${currentRating == 4 ? 'selected' : ''}>⭐ 4 · Lider</option>
-                                <option value="5" ${currentRating == 5 ? 'selected' : ''}>⭐ 5 · PRO</option>
-                            </select>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <div class="flex items-center gap-0.5 bg-slate-950/90 px-1.5 py-1 rounded-lg border border-slate-800/80">
+                                ${starsHtml}
+                            </div>
+                            <span class="text-[9.5px] font-black px-1.5 py-0.5 rounded border min-w-[44px] text-center ${lvl.badgeClass}">
+                                ${lvl.label}
+                            </span>
                         </div>
                     </div>
                 `;
             }).join('');
+
+            grid.scrollTop = prevScrollTop;
         }
 
-        function updatePlayerSkill(playerName, ratingStr) {
+        function updatePlayerSkill(playerName, ratingVal) {
             if (!AppState.player_skills) AppState.player_skills = {};
-            AppState.player_skills[playerName] = parseInt(ratingStr, 10) || 3;
+            const newRating = parseInt(ratingVal, 10) || 3;
+            AppState.player_skills[playerName] = newRating;
             syncState();
-            showToast(`Zaktualizowano ocenę dla: ${playerName}`);
+            renderPlayerSkillsGrid();
+            const levelNames = { 1: 'Start', 2: 'Solidny', 3: 'Średni', 4: 'Lider', 5: 'PRO' };
+            showToast(`${playerName}: ${newRating} ⭐ (${levelNames[newRating] || ''})`);
         }
 
         // ================= DIRECTORY MANAGEMENT =================
