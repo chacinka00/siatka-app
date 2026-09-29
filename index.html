@@ -185,7 +185,7 @@
                     <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95 max-w-[125px] sm:max-w-none">
                         <!-- Populated dynamically -->
                     </select>
-                    <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 flex shrink-0">
+                    <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0">
                         <span>📣</span>
                         <span class="hidden sm:inline text-[11px]">Mess</span>
                     </button>
@@ -196,14 +196,14 @@
             <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/50">
                 <div class="flex items-center gap-1.5 min-w-0">
                     <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate flex items-center gap-1">
-                        ⏰ 18:45 (gra 19:00 - 21:00)
+                        ⏰ 19:45 (gra 20:00 - 21:45)
                     </div>
                     <span id="adminModeBadge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-800/80 items-center gap-1 shrink-0 shadow-sm shadow-amber-950/50">
                         👑 Organizator
                     </span>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-[10px] text-slate-400 font-medium">📍 Myśliborska 25</span>
+                    <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium">📍 Myśliborska 25</span>
                     <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
                         <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                     </span>
@@ -247,21 +247,39 @@
                     </span>
                 </div>
 
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
+                            2026-08-28
+                        </span>
+                        <span id="upcomingBadge" class="hidden text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
+                            ⏳ NAJBLIŻSZY
+                        </span>
+                        <span id="matchStatusBadge" class="hidden text-[11px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-950/80 border border-rose-800/80 px-2.5 py-0.5 rounded-full">
+                            🚫 ODWOŁANY
+                        </span>
+                    </div>
+
+                    <!-- Match Navigator Arrows -->
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button type="button" id="prevMatchBtn" onclick="selectAdjacentMatch(-1)" title="Poprzedni mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition active:scale-95 flex items-center gap-1 shadow-sm">
+                            <span>◀</span>
+                            <span class="hidden sm:inline">Poprzedni</span>
+                        </button>
+                        <button type="button" id="nextMatchBtn" onclick="selectAdjacentMatch(1)" title="Następny mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition active:scale-95 flex items-center gap-1 shadow-sm">
+                            <span class="hidden sm:inline">Następny</span>
+                            <span>▶</span>
+                        </button>
+                        <button type="button" id="adminQuickSettingsBtn" onclick="openGroupSettingsModal()" title="Ustawienia godzin i hali" class="p-1.5 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-amber-400 text-xs font-bold rounded-xl border border-slate-800 transition active:scale-95 hidden items-center justify-center shadow-sm">
+                            <span>⚙️</span>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="flex items-center justify-between gap-3">
                     <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
-                                2026-08-28
-                            </span>
-                            <span id="upcomingBadge" class="hidden text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
-                                ⏳ NAJBLIŻSZY
-                            </span>
-                            <span id="matchStatusBadge" class="hidden text-[11px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-950/80 border border-rose-800/80 px-2.5 py-0.5 rounded-full">
-                                🚫 ODWOŁANY
-                            </span>
-                        </div>
                         <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Piątkowy Mecz</h2>
-                        <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">18:45</span> • Gra: <span class="text-emerald-400 font-bold">19:00 - 21:00</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
+                        <p id="heroMatchDetails" class="text-xs text-slate-400 mt-0.5 leading-relaxed">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">19:45</span> • Gra: <span class="text-emerald-400 font-bold">20:00 - 21:45</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
                     </div>
 
                     <!-- Slots metric badge (Tylko Skład) -->
@@ -1172,6 +1190,55 @@
         </div>
     </div>
 
+    <!-- ================= MODAL: USTAWIENIA GODZIN, HALI I EKIPY ================= -->
+    <div id="groupSettingsModal" role="dialog" aria-modal="true" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl animate-fade-in my-auto text-xs">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                <h3 class="font-black text-sm text-white flex items-center gap-2"><span>⚙️</span> Ustawienia Godzin, Hali & Zbiórki</h3>
+                <button type="button" onclick="closeGroupSettingsModal()" class="text-slate-400 hover:text-white font-bold text-sm min-w-[32px] min-h-[32px] flex items-center justify-center">✕</button>
+            </div>
+            <p class="text-[11px] text-slate-400">Zmieniaj godziny meczów i rozgrzewki bez edycji kodu. Zmiany automatycznie zaktualizują się u wszystkich w bazie na żywo.</p>
+            <form onsubmit="event.preventDefault(); submitGroupSettings();" class="space-y-3">
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">⏰ Rozgrzewka / zbiórka:</label>
+                        <input id="editWarmupTimeInput" type="text" placeholder="19:45" required class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">🏐 Początek gry:</label>
+                        <input id="editStartTimeInput" type="text" placeholder="20:00" required class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">🏁 Koniec gry:</label>
+                        <input id="editEndTimeInput" type="text" placeholder="21:45" required class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">💰 Koszt hali (zł):</label>
+                        <input id="editHallCostInput" type="number" min="0" step="5" placeholder="250" required class="w-full bg-slate-950 border border-slate-700 text-white font-mono font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">📍 Nazwa / adres hali:</label>
+                    <input id="editHallAddressInput" type="text" placeholder="ul. Myśliborska 25 (hala)" required class="w-full bg-slate-950 border border-slate-700 text-white font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">📲 Numer BLIK do wpłat:</label>
+                    <input id="editBlikPhoneInput" type="tel" placeholder="517 077 482" required class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="closeGroupSettingsModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl transition">Anuluj</button>
+                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">Zapisz ustawienia 💾</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" role="status" aria-live="polite" class="fixed bottom-20 right-5 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50">
         Powiadomienie
@@ -1711,9 +1778,15 @@
                 }
             });
 
-            if (!AppState.settings) {
-                AppState.settings = { hallCost: 250, blikPhone: "517 077 482" };
+            if (!AppState.settings || typeof AppState.settings !== 'object') {
+                AppState.settings = {};
             }
+            if (!AppState.settings.hallCost) AppState.settings.hallCost = 250;
+            if (!AppState.settings.blikPhone) AppState.settings.blikPhone = "517 077 482";
+            if (!AppState.settings.warmupTime) AppState.settings.warmupTime = "19:45";
+            if (!AppState.settings.startTime) AppState.settings.startTime = "20:00";
+            if (!AppState.settings.gameEndTime) AppState.settings.gameEndTime = "21:45";
+            if (!AppState.settings.hallAddress) AppState.settings.hallAddress = "ul. Myśliborska 25 (hala)";
 
             if (!AppState.player_skills || typeof AppState.player_skills !== 'object') {
                 AppState.player_skills = {};
@@ -1812,8 +1885,15 @@
             if (parts.length !== 3 || parts.some(isNaN)) return;
 
             const [year, month, day] = parts;
-            const matchStartTime = new Date(year, month - 1, day, 18, 45, 0);
-            const matchEndTime = new Date(year, month - 1, day, 21, 0, 0);
+            const warmupTimeStr = AppState.settings?.warmupTime || "19:45";
+            const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+            const startTimeStr = AppState.settings?.startTime || "20:00";
+
+            const [warmHour, warmMin] = warmupTimeStr.split(':').map(Number);
+            const [endHour, endMin] = endTimeStr.split(':').map(Number);
+
+            const matchStartTime = new Date(year, month - 1, day, isNaN(warmHour) ? 19 : warmHour, isNaN(warmMin) ? 45 : warmMin, 0);
+            const matchEndTime = new Date(year, month - 1, day, isNaN(endHour) ? 21 : endHour, isNaN(endMin) ? 45 : endMin, 0);
             const now = new Date();
 
             if (now < matchStartTime) {
@@ -1829,7 +1909,7 @@
                 valueEl.onclick = null;
             } else if (now >= matchStartTime && now <= matchEndTime) {
                 labelEl.innerText = "Status:";
-                valueEl.innerHTML = "🔥 ROZGRZEWKA / MECZ! (18:45 - 21:00)";
+                valueEl.innerHTML = `🔥 ROZGRZEWKA / MECZ! (${warmupTimeStr} - ${endTimeStr})`;
                 valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 animate-pulse tracking-wider";
                 valueEl.onclick = null;
             } else {
@@ -1867,6 +1947,14 @@
             const editScoreBtn = document.getElementById('editMatchScoreBtn');
             const teamsAdminControls = document.getElementById('teamsAdminControls');
             const teamEditBtns = document.querySelectorAll('.team-edit-name-btn');
+            const shareBtn = document.getElementById('headerShareBtn');
+            const quickSettingsBtn = document.getElementById('adminQuickSettingsBtn');
+            const headerHall = document.getElementById('headerHallAddress');
+
+            if (headerHall && AppState.settings?.hallAddress) {
+                const shortHall = AppState.settings.hallAddress.replace(/\s*\(hala\)/i, '');
+                headerHall.innerText = `📍 ${shortHall}`;
+            }
 
             if (isAdmin) {
                 if (badge) { badge.classList.remove('hidden'); badge.classList.add('flex'); }
@@ -1874,6 +1962,8 @@
                 if (billingAdminRow) billingAdminRow.classList.remove('hidden');
                 if (editScoreBtn) editScoreBtn.classList.remove('hidden');
                 if (teamsAdminControls) teamsAdminControls.classList.remove('hidden');
+                if (shareBtn) { shareBtn.classList.remove('hidden'); shareBtn.classList.add('flex'); }
+                if (quickSettingsBtn) { quickSettingsBtn.classList.remove('hidden'); quickSettingsBtn.classList.add('flex'); }
                 teamEditBtns.forEach(btn => btn.classList.remove('hidden'));
             } else {
                 if (badge) { badge.classList.add('hidden'); badge.classList.remove('flex'); }
@@ -1881,6 +1971,8 @@
                 if (billingAdminRow) billingAdminRow.classList.add('hidden');
                 if (editScoreBtn) editScoreBtn.classList.add('hidden');
                 if (teamsAdminControls) teamsAdminControls.classList.add('hidden');
+                if (shareBtn) { shareBtn.classList.add('hidden'); shareBtn.classList.remove('flex'); }
+                if (quickSettingsBtn) { quickSettingsBtn.classList.add('hidden'); quickSettingsBtn.classList.remove('flex'); }
                 teamEditBtns.forEach(btn => btn.classList.add('hidden'));
             }
         }
@@ -2075,6 +2167,15 @@
             return `<div class="text-xs font-bold text-amber-300 py-1 text-center break-words">${escapeHtml(scoreStr)}</div>`;
         }
 
+        function selectAdjacentMatch(direction) {
+            const monthData = AppState.months[AppState.currentMonth];
+            if (!monthData?.matches?.length) return;
+            const newIdx = AppState.currentMatchIndex + direction;
+            if (newIdx >= 0 && newIdx < monthData.matches.length) {
+                selectMatch(newIdx);
+            }
+        }
+
         // ================= TAB 1: MATCHES & ATTENDANCE =================
         function renderMatchesTab() {
             renderMonthSelector();
@@ -2158,6 +2259,33 @@
             if (costEl) costEl.innerText = `${costPerPerson} zł`;
             document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/12`;
             document.getElementById('mainSquadBadge').innerText = `${mainPlayers.length}/12`;
+
+            // Update Hero Match Details with Live Settings
+            const warmupTime = AppState.settings?.warmupTime || "19:45";
+            const startTime = AppState.settings?.startTime || "20:00";
+            const gameEndTime = AppState.settings?.gameEndTime || "21:45";
+            const hallAddress = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
+
+            const heroDetails = document.getElementById('heroMatchDetails');
+            if (heroDetails) {
+                heroDetails.innerHTML = `⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">${escapeHtml(warmupTime)}</span> • Gra: <span class="text-emerald-400 font-bold">${escapeHtml(startTime)} - ${escapeHtml(gameEndTime)}</span> • 📍 <span class="text-slate-300 font-semibold">${escapeHtml(hallAddress)}</span>`;
+            }
+
+            // Update Match Navigation Buttons State
+            const prevBtn = document.getElementById('prevMatchBtn');
+            const nextBtn = document.getElementById('nextMatchBtn');
+            if (prevBtn) {
+                const canPrev = AppState.currentMatchIndex > 0;
+                prevBtn.disabled = !canPrev;
+                prevBtn.classList.toggle('opacity-40', !canPrev);
+                prevBtn.classList.toggle('cursor-not-allowed', !canPrev);
+            }
+            if (nextBtn) {
+                const canNext = AppState.currentMatchIndex < (monthData.matches.length - 1);
+                nextBtn.disabled = !canNext;
+                nextBtn.classList.toggle('opacity-40', !canNext);
+                nextBtn.classList.toggle('cursor-not-allowed', !canNext);
+            }
 
             if (scoreTextEl) {
                 const editLabel = document.getElementById('editScoreBtnLabel');
@@ -4801,6 +4929,41 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 2A: Godziny Meczu, Hala i Ustawienia Grupy -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                                    <span>⚙️</span> Godziny Meczu, Hala i Zbiórka
+                                </h4>
+                                <span class="text-[9px] text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-800/80">Panel Organizatora</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400">Możesz w każdej chwili zmienić godziny gry (np. 19:45 - 21:45), godzinę zbiórki, adres hali czy numer BLIK – bez edycji kodu:</p>
+                            <div class="bg-slate-900/90 border border-slate-800/90 rounded-xl p-2.5 space-y-1.5 text-xs text-slate-300">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-400">⏰ Zbiórka / rozgrzewka:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.warmupTime || "19:45")}</strong>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-400">🏐 Czas gry:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.startTime || "20:00")} - ${escapeHtml(AppState.settings?.gameEndTime || "21:45")}</strong>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-400">📍 Adres hali:</span>
+                                    <strong class="text-slate-200 truncate max-w-[210px]">${escapeHtml(AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)")}</strong>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-400">💰 Koszt hali:</span>
+                                    <strong class="text-white font-mono font-bold">${AppState.settings?.hallCost || 250} zł</strong>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-400">📲 Numer BLIK:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.blikPhone || "517 077 482")}</strong>
+                                </div>
+                            </div>
+                            <button type="button" onclick="openGroupSettingsModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+                                <span class="text-amber-400">⚙️</span> Dostosuj godziny i ustawienia ekipy
+                            </button>
+                        </div>
 
                         <!-- 2B: Szybki Generator Dłużników na Messengera -->
                         <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
@@ -5661,14 +5824,19 @@
             const attendees = currentMatch ? (currentMatch.attendees || []) : [];
             const count = attendees.slice(0, 12).length;
             const freeSlots = Math.max(0, 12 - count);
-            const cost = (currentMatch && currentMatch.isCancelled) ? 0 : 250;
-            const costPerPerson = count > 0 ? (cost / count).toFixed(2) : "20.83";
+            const cost = (currentMatch && currentMatch.isCancelled) ? 0 : (AppState.settings?.hallCost || 250);
+            const costPerPerson = count > 0 ? (cost / count).toFixed(2) : (cost / 12).toFixed(2);
             const blikPhone = String(AppState.settings?.blikPhone || "517 077 482");
+            const warmup = AppState.settings?.warmupTime || "19:45";
+            const start = AppState.settings?.startTime || "20:00";
+            const end = AppState.settings?.gameEndTime || "21:45";
+            const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
             const url = window.location.href;
 
             if (type === 'monday') {
                 return `🔔 SIATKÓWKA - ZAPISY NA PIĄTEK (${dateStr}) 🔔\n\n` +
-                       `Siemanko! Ruszyły zapisy na ten piątek. Rozgrzewka 18:45, gramy 19:00 - 21:00!\n\n` +
+                       `Siemanko! Ruszyły zapisy na ten piątek. Rozgrzewka ${warmup}, gramy ${start} - ${end}!\n` +
+                       `📍 Miejsce: ${hall}\n\n` +
                        `👉 Zapiszcie się przez link:\n${url}\n\n` +
                        `Limit składu to 12 osób, decyduje kolejność zgłoszeń!`;
             } else if (type === 'mvp') {
@@ -5684,7 +5852,8 @@
             }
 
             return `🏐 SIATKÓWKA DZISIAJ (${dateStr}) 🏐\n\n` +
-                   `⏰ Rozgrzewka: 18:45 • Gra: 19:00 - 21:00 (spotykamy i przebieramy się na hali)!\n` +
+                   `⏰ Rozgrzewka: ${warmup} • Gra: ${start} - ${end} (spotykamy i przebieramy się na hali)!\n` +
+                   `📍 Miejsce: ${hall}\n` +
                    `📍 Skład: ${count}/12 (Wolne miejsca: ${freeSlots})\n` +
                    `💰 Koszt: ~${costPerPerson} zł / os.\n\n` +
                    `📲 Zapisy / Losowarka Składów / Wyniki:\n${url}\n\n` +
@@ -5692,12 +5861,72 @@
         }
 
         function openShareModal() {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może generować ogłoszenia! 🔒");
+                return;
+            }
             selectTemplate('match');
             document.getElementById('shareModal')?.classList.remove('hidden');
         }
 
         function closeShareModal() {
             document.getElementById('shareModal')?.classList.add('hidden');
+        }
+
+        // ================= GROUP SETTINGS MODAL (GODZINY, HALA, BLIK) =================
+        function openGroupSettingsModal() {
+            requireAdminAuth(() => {
+                const modal = document.getElementById('groupSettingsModal');
+                if (!modal) return;
+                const s = AppState.settings || {};
+                const warmupInput = document.getElementById('editWarmupTimeInput');
+                const startInput = document.getElementById('editStartTimeInput');
+                const endInput = document.getElementById('editEndTimeInput');
+                const hallInput = document.getElementById('editHallAddressInput');
+                const costInput = document.getElementById('editHallCostInput');
+                const blikInput = document.getElementById('editBlikPhoneInput');
+
+                if (warmupInput) warmupInput.value = s.warmupTime || "19:45";
+                if (startInput) startInput.value = s.startTime || "20:00";
+                if (endInput) endInput.value = s.gameEndTime || "21:45";
+                if (hallInput) hallInput.value = s.hallAddress || "ul. Myśliborska 25 (hala)";
+                if (costInput) costInput.value = s.hallCost || 250;
+                if (blikInput) blikInput.value = s.blikPhone || "517 077 482";
+
+                modal.classList.remove('hidden');
+            });
+        }
+
+        function closeGroupSettingsModal() {
+            document.getElementById('groupSettingsModal')?.classList.add('hidden');
+        }
+
+        function submitGroupSettings() {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zmieniać ustawienia! 🔒");
+                return;
+            }
+            const warmupTime = (document.getElementById('editWarmupTimeInput')?.value || "19:45").trim();
+            const startTime = (document.getElementById('editStartTimeInput')?.value || "20:00").trim();
+            const gameEndTime = (document.getElementById('editEndTimeInput')?.value || "21:45").trim();
+            const hallAddress = (document.getElementById('editHallAddressInput')?.value || "ul. Myśliborska 25 (hala)").trim();
+            const hallCost = parseFloat(document.getElementById('editHallCostInput')?.value) || 250;
+            const blikPhone = (document.getElementById('editBlikPhoneInput')?.value || "517 077 482").trim();
+
+            if (!AppState.settings || typeof AppState.settings !== 'object') {
+                AppState.settings = {};
+            }
+            AppState.settings.warmupTime = warmupTime;
+            AppState.settings.startTime = startTime;
+            AppState.settings.gameEndTime = gameEndTime;
+            AppState.settings.hallAddress = hallAddress;
+            AppState.settings.hallCost = hallCost;
+            AppState.settings.blikPhone = blikPhone;
+
+            syncState();
+            closeGroupSettingsModal();
+            renderCurrentView(true);
+            showToast("Zapisano godziny i ustawienia ekipy! 💾");
         }
 
         async function executeShare() {
@@ -5763,7 +5992,11 @@
             if (Notification.permission !== "granted") {
                 requestPushNotificationPermission();
             } else {
-                sendLocalNotification("🏐 Siatkówka Piątek", "Działa! Przypomnienie o meczu: Piątek - rozgrzewka 18:45, gra 19:00 - 21:00 (przebieramy się na hali)!");
+                const warmup = AppState.settings?.warmupTime || "19:45";
+                const start = AppState.settings?.startTime || "20:00";
+                const end = AppState.settings?.gameEndTime || "21:45";
+                const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
+                sendLocalNotification("🏐 Siatkówka Piątek", `Działa! Przypomnienie o meczu: Piątek - rozgrzewka ${warmup}, gra ${start} - ${end} (${hall})!`);
                 showToast("Wysłano testowe powiadomienie! 📲");
             }
         }
