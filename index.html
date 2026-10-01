@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -97,9 +97,30 @@
         button:active:not(:disabled),
         .tab-btn:active,
         [role="button"]:active:not(:disabled) {
-            transform: scale(0.97);
+            transform: scale(0.96);
             opacity: 0.9;
             transition: transform 0.05s ease, opacity 0.05s ease;
+        }
+
+        /* Ergonomiczne podświetlenie aktywnej zakładki (iOS / Material 3) */
+        .tab-btn {
+            border-radius: 14px;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-btn.tab-active {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.35);
+        }
+        .tab-btn.tab-active .tab-icon {
+            transform: scale(1.15);
+        }
+        .tab-btn.tab-active .tab-text {
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .tab-icon {
+            transition: transform 0.18s ease;
         }
 
         /* Dynamiczne jednostki viewportu dla okien modalnych */
@@ -192,18 +213,18 @@
                 </div>
             </div>
 
-            <!-- Row 2: User Greeting, Role Badge & Sync Status -->
+            <!-- Row 2: User Greeting, Role Badge & Sync Status (No overlapping on mobile) -->
             <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/50">
-                <div class="flex items-center gap-1.5 min-w-0">
-                    <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate flex items-center gap-1">
+                <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                    <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium truncate">
                         ⏰ 19:45 (gra 20:00 - 21:45)
                     </div>
                     <span id="adminModeBadge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-800/80 items-center gap-1 shrink-0 shadow-sm shadow-amber-950/50">
                         👑 Organizator
                     </span>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
-                    <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium">📍 Myśliborska 25</span>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium hidden sm:inline">📍 Myśliborska 25</span>
                     <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
                         <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                     </span>
@@ -216,8 +237,19 @@
     <main class="max-w-2xl mx-auto px-3.5 py-3 flex-1 w-full space-y-4">
 
         <!-- ================= TAB 1: ZAPISY, MECZ & ZINTEGROWANE MVP ================= -->
-        <section id="tab-matches" class="space-y-4 animate-fade-in">
+        <section id="tab-matches" class="space-y-3.5 animate-fade-in">
             
+            <!-- Section Header -->
+            <div class="px-1">
+                <span class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
+                    Centrum Spotkania
+                </span>
+                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                    <span>📅</span> Terminy & Zapisy
+                </h2>
+                <p class="text-[11px] text-slate-400 mt-0.5">Wybierz piątek, zapisz się do składu i głosuj na MVP</p>
+            </div>
+
             <!-- Dates Carousel (Piątki) -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 shadow-md space-y-2">
                 <div class="flex items-center justify-between px-1">
@@ -276,16 +308,18 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-3">
-                    <div class="min-w-0 flex-1">
-                        <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Piątkowy Mecz</h2>
-                        <p id="heroMatchDetails" class="text-xs text-slate-400 mt-0.5 leading-relaxed">⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">19:45</span> • Gra: <span class="text-emerald-400 font-bold">20:00 - 21:45</span> • 📍 <span class="text-slate-300 font-semibold">ul. Myśliborska 25</span> (hala)</p>
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Piątkowy Mecz 🏐</h2>
+                        <!-- Slots metric badge -->
+                        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-1 px-3 text-center shrink-0 shadow-inner flex items-center gap-1.5">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skład:</span>
+                            <span id="matchPlayerCount" class="text-sm sm:text-base font-black text-sky-400 font-mono">0/12</span>
+                        </div>
                     </div>
-
-                    <!-- Slots metric badge (Tylko Skład) -->
-                    <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-2 px-3 sm:px-4 text-center shrink-0 shadow-inner min-w-[70px]">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skład</p>
-                        <p id="matchPlayerCount" class="text-lg sm:text-xl font-black text-sky-400 mt-0.5 font-mono">0/12</p>
+                    <!-- Quick Info Chips Row (Never overlaps on mobile) -->
+                    <div id="heroMatchDetails" class="grid grid-cols-2 gap-1.5 text-xs">
+                        <!-- Populated dynamically -->
                     </div>
                 </div>
 
@@ -327,8 +361,21 @@
                 </div>
             </div>
 
-            <!-- Squad Lists -->
-            <div class="space-y-4">
+            <!-- Przełącznik Segmentowy: Skład vs MVP (Koniec z długim przewijaniem na telefonie) -->
+            <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold shadow-md">
+                <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95">
+                    <span>📋</span>
+                    <span>Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
+                </button>
+                <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95">
+                    <span>🏆</span>
+                    <span>Głosowanie MVP</span>
+                    <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full font-black">👑</span>
+                </button>
+            </div>
+
+            <!-- Podwidok A: Skład Główny i Rezerwa -->
+            <div id="matchSquadSubtabContainer" class="space-y-4">
                 
                 <!-- Main Squad (12) -->
                 <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-4 shadow-md space-y-2.5">
@@ -362,6 +409,8 @@
 
             </div>
 
+            <!-- Podwidok B: Zintegrowane MVP (Wysuwane lub dedykowane na żądanie) -->
+            <div id="matchMvpSubtabContainer" class="hidden space-y-4">
             <!-- ================= ZINTEGROWANE GŁOSOWANIE MVP MECZU NA EKRANIE GŁÓWNYM ================= -->
             <div id="integratedMvpCard" class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/50 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
                 <div class="flex items-center justify-between">
@@ -440,31 +489,36 @@
                     </div>
                 </div>
             </div>
+            </div>
 
         </section>
 
 
         <!-- ================= TAB 2: SKŁADY, BALANS & BOISKO 6v6 ================= -->
-        <section id="tab-teams" class="space-y-4 hidden animate-fade-in">
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
-                <div class="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                        <span class="text-[11px] font-extrabold text-indigo-400 uppercase tracking-wider bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-0.5 rounded-full">
-                            Składy & Balansowanie
-                        </span>
-                        <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
-                            <span>🔀</span> Podział na 2 Zespoły
-                        </h2>
-                    </div>
-                    <div id="teamsAdminControls" class="flex items-center gap-2 flex-wrap hidden">
-                        <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3.5 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
-                            <span>🎲</span> Losuj równe składy
-                        </button>
-                        <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
-                            🧹 Resetuj
-                        </button>
-                    </div>
+        <section id="tab-teams" class="space-y-3.5 hidden animate-fade-in">
+            
+            <!-- Section Header -->
+            <div class="px-1 flex items-center justify-between gap-2 flex-wrap">
+                <div>
+                    <span class="text-[11px] font-extrabold text-indigo-400 uppercase tracking-wider bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-0.5 rounded-full">
+                        Składy & Balansowanie
+                    </span>
+                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                        <span>🔀</span> Podział na 2 Zespoły
+                    </h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Podziel graczy na Drużynę Ciemną i Jasną lub wylosuj równe składy</p>
                 </div>
+                <div id="teamsAdminControls" class="flex items-center gap-2 flex-wrap hidden">
+                    <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3.5 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
+                        <span>🎲</span> Losuj składy
+                    </button>
+                    <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
+                        🧹 Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
 
                 <!-- Przełącznik Widoku (Lista & Ręczny Wybór vs Boisko Graficzne) -->
                 <div class="flex items-center justify-between bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 text-xs">
@@ -579,6 +633,17 @@
         <!-- ================= TAB 3: ROZLICZENIE MIESIĘCZNE & BLIK ================= -->
         <section id="tab-billing" class="space-y-3.5 hidden animate-fade-in">
             
+            <!-- Section Header -->
+            <div class="px-1">
+                <span class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
+                    Finanse & Rozliczenia
+                </span>
+                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                    <span>💰</span> Składki za Halę
+                </h2>
+                <p class="text-[11px] text-slate-400 mt-0.5">Podsumowanie kosztów wynajmu, stan wpłat grupy i numer BLIK</p>
+            </div>
+            
             <!-- Modern Unified Financial Dashboard -->
             <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/50 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
                 
@@ -640,15 +705,15 @@
                     </div>
                 </div>
 
-                <!-- Filters with Dynamic Counts: Wszyscy / Nieopłacone / Opłacone -->
-                <div class="flex gap-1.5 text-[11px] pt-1">
-                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="px-3 py-1.5 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm">
+                <!-- Filters with Dynamic Counts: Wszyscy / Nieopłacone / Opłacone (Równe 3 kolumny na mobile) -->
+                <div class="grid grid-cols-3 gap-1.5 text-[11px] pt-1">
+                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="py-2 px-1 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm text-center">
                         Wszyscy
                     </button>
-                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition">
-                        🔴 Nieopłacone
+                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="py-2 px-1 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition text-center truncate">
+                        🔴 Do zapłaty
                     </button>
-                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition">
+                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="py-2 px-1 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition text-center truncate">
                         🟢 Opłacone
                     </button>
                 </div>
@@ -662,7 +727,18 @@
 
 
         <!-- ================= TAB 4: HALL OF FAME, BADGES & RECORDS ================= -->
-        <section id="tab-halloffame" class="space-y-4 hidden animate-fade-in">
+        <section id="tab-halloffame" class="space-y-3.5 hidden animate-fade-in">
+            
+            <!-- Section Header -->
+            <div class="px-1">
+                <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full">
+                    Ranking & Statystyki
+                </span>
+                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                    <span>🏆</span> Hall of Fame & Rekordy
+                </h2>
+                <p class="text-[11px] text-slate-400 mt-0.5">Oficjalny ranking frekwencji, odznaki zawodników i galeria rekordów sezonu</p>
+            </div>
             
             <!-- Hall of Fame Table -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
@@ -681,10 +757,10 @@
                                 <th class="py-2.5 px-2.5 text-center w-8">#</th>
                                 <th class="py-2.5 px-3">Zawodnik & Odznaki</th>
                                 <th class="py-2.5 px-2 text-center">Forma</th>
-                                <th class="py-2.5 px-1.5 text-center">Baza</th>
-                                <th class="py-2.5 px-1.5 text-center">Lip</th>
-                                <th class="py-2.5 px-1.5 text-center">Sie</th>
-                                <th class="py-2.5 px-1.5 text-center">Wrz</th>
+                                <th class="hidden sm:table-cell py-2.5 px-1.5 text-center">Baza</th>
+                                <th class="hidden sm:table-cell py-2.5 px-1.5 text-center">Lip</th>
+                                <th class="hidden sm:table-cell py-2.5 px-1.5 text-center">Sie</th>
+                                <th class="hidden sm:table-cell py-2.5 px-1.5 text-center">Wrz</th>
                                 <th class="py-2.5 px-3 text-right font-extrabold text-emerald-400">Suma</th>
                             </tr>
                         </thead>
@@ -848,31 +924,31 @@
 
     <!-- ================= FLOATING BOTTOM NAVIGATION BAR ================= -->
     <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
-        <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around">
+        <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around gap-1">
             
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
-                <span class="text-lg leading-none">📅</span>
-                <span class="text-[10px] tracking-tight">Mecz</span>
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn tab-active flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
+                <span class="tab-icon text-lg leading-none">📅</span>
+                <span class="tab-text text-[10px] tracking-tight">Mecz</span>
             </button>
 
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="text-lg leading-none">🔀</span>
-                <span class="text-[10px] tracking-tight">Składy</span>
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-lg leading-none">🔀</span>
+                <span class="tab-text text-[10px] tracking-tight">Składy</span>
             </button>
 
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="text-lg leading-none">💰</span>
-                <span class="text-[10px] tracking-tight">Składki</span>
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-lg leading-none">💰</span>
+                <span class="tab-text text-[10px] tracking-tight">Składki</span>
             </button>
 
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="text-lg leading-none">👑</span>
-                <span class="text-[10px] tracking-tight">Ranking</span>
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-lg leading-none">👑</span>
+                <span class="tab-text text-[10px] tracking-tight">Ranking</span>
             </button>
 
-            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-h-[48px] py-1.5 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="text-lg leading-none">👤</span>
-                <span id="navProfileLabel" class="text-[10px] tracking-tight">Profil</span>
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-lg leading-none">👤</span>
+                <span id="navProfileLabel" class="tab-text text-[10px] tracking-tight truncate max-w-[62px]">Profil</span>
             </button>
 
         </div>
@@ -1501,7 +1577,7 @@
                                       "Michał Chaciński":  "Kondziu Parszewski",
                                       "Mikołaj Morawski":  "Michał Chaciński",
                                       "Olga Bednarska":  "Maciek Lewandowski",
-                                      "Piotrek Bany":  "Kamil Kaczmarek",
+                                      "Piotrek Bany":  "Mikołaj Morawski",
                                       "Zuzanna Rostkowska":  "Maciek Lewandowski"
                                   }
                     },
@@ -1547,6 +1623,7 @@
                                   },
                         "votes":  {
                                       "Antek Kwaczek":  "Kuba Czapa Płocha",
+                                      "Błażej Składnik":  "Kuba Czapa Płocha",
                                       "Filip Morawski":  "Błażej Składnik",
                                       "Kacper Szafraniec":  "Błażej Składnik",
                                       "Kamil Skołek":  "Błażej Składnik",
@@ -1555,6 +1632,7 @@
                                       "Kuba Muszyński":  "Kuba Czapa Płocha",
                                       "Michał Chaciński":  "Błażej Składnik",
                                       "Mikołaj Morawski":  "Błażej Składnik",
+                                      "Rafał Rojda":  "Błażej Składnik",
                                       "Szymon Fronczak":  "Błażej Składnik"
                                   }
                     },
@@ -1602,9 +1680,13 @@
                                       "Antek Kwaczek":  "Kuba Parszewski",
                                       "Filip Morawski":  "Kuba Parszewski",
                                       "Iza Urbańska":  "Kuba Parszewski",
+                                      "Kondziu Parszewski":  "Kuba Parszewski",
                                       "Kuba Czapa Płocha":  "Kuba Parszewski",
+                                      "Kuba Parszewski":  "Antek Kwaczek",
+                                      "Maciek Lewandowski":  "Kuba Parszewski",
                                       "Michał Chaciński":  "Kuba Parszewski",
                                       "Mikołaj Morawski":  "Kuba Parszewski",
+                                      "Olga Bednarska":  "Maciek Lewandowski",
                                       "Piotrek Bany":  "Kuba Parszewski",
                                       "Szymon Fronczak":  "Kuba Parszewski"
                                   }
@@ -1649,13 +1731,17 @@
                                       "lightName":  "Drużyna Jasna"
                                   },
                         "votes":  {
+                                      "Albert Kubiak":  "Antek Kwaczek",
+                                      "Antek Kwaczek":  "Julka Czaplicka",
                                       "Julka Czaplicka":  "Antek Kwaczek",
                                       "Kacper Szafraniec":  "Antek Kwaczek",
+                                      "Kuba Czapa Płocha":  "Antek Kwaczek",
                                       "Maciek Lewandowski":  "Antek Kwaczek",
                                       "Michał Chaciński":  "Antek Kwaczek",
                                       "Mikołaj Morawski":  "Antek Kwaczek",
                                       "Olga Bednarska":  "Antek Kwaczek",
                                       "Piotrek Bany":  "Antek Kwaczek",
+                                      "Rafał Rojda":  "Antek Kwaczek",
                                       "Zuzanna Rostkowska":  "Antek Kwaczek"
                                   }
                     }
@@ -2371,7 +2457,7 @@
             currentActiveTab = tabName;
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('text-emerald-400');
+                btn.classList.remove('tab-active', 'text-emerald-400');
                 btn.classList.add('text-slate-400');
             });
 
@@ -2381,7 +2467,7 @@
             const activeBtn = document.getElementById(`tab-btn-${tabName}`);
             if (activeBtn) {
                 activeBtn.classList.remove('text-slate-400');
-                activeBtn.classList.add('text-emerald-400');
+                activeBtn.classList.add('tab-active', 'text-emerald-400');
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2547,6 +2633,35 @@
             }
         }
 
+        let currentMatchSubtab = 'squad';
+        function setMatchSubtab(subtab) {
+            currentMatchSubtab = subtab;
+            const squadBtn = document.getElementById('matchSubtabSquadBtn');
+            const mvpBtn = document.getElementById('matchSubtabMvpBtn');
+            const squadContainer = document.getElementById('matchSquadSubtabContainer');
+            const mvpContainer = document.getElementById('matchMvpSubtabContainer');
+
+            if (subtab === 'squad') {
+                if (squadContainer) squadContainer.classList.remove('hidden');
+                if (mvpContainer) mvpContainer.classList.add('hidden');
+                if (squadBtn) {
+                    squadBtn.className = "py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95";
+                }
+                if (mvpBtn) {
+                    mvpBtn.className = "py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95";
+                }
+            } else {
+                if (squadContainer) squadContainer.classList.add('hidden');
+                if (mvpContainer) mvpContainer.classList.remove('hidden');
+                if (mvpBtn) {
+                    mvpBtn.className = "py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 transition active:scale-95";
+                }
+                if (squadBtn) {
+                    squadBtn.className = "py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95";
+                }
+            }
+        }
+
         // ================= TAB 1: MATCHES & ATTENDANCE =================
         function renderMatchesTab() {
             renderMonthSelector();
@@ -2632,6 +2747,24 @@
             document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/12`;
             document.getElementById('mainSquadBadge').innerText = `${mainPlayers.length}/12`;
 
+            const subtabSquadCount = document.getElementById('matchSubtabSquadCount');
+            if (subtabSquadCount) subtabSquadCount.innerText = `${mainPlayers.length}/12`;
+
+            const subtabMvpBadge = document.getElementById('matchSubtabMvpBadge');
+            if (subtabMvpBadge) {
+                const isFinished = isMvpVotingFinished(currentMatch);
+                const votesCount = Object.keys(currentMatch.votes || {}).length;
+                if (isFinished) {
+                    subtabMvpBadge.classList.remove('hidden');
+                    subtabMvpBadge.innerText = "👑";
+                } else if (votesCount > 0) {
+                    subtabMvpBadge.classList.remove('hidden');
+                    subtabMvpBadge.innerText = `${votesCount}/12`;
+                } else {
+                    subtabMvpBadge.classList.add('hidden');
+                }
+            }
+
             // Update Hero Match Details with Live Settings
             const warmupTime = AppState.settings?.warmupTime || "19:45";
             const startTime = AppState.settings?.startTime || "20:00";
@@ -2640,7 +2773,23 @@
 
             const heroDetails = document.getElementById('heroMatchDetails');
             if (heroDetails) {
-                heroDetails.innerHTML = `⏰ Rozgrzewka: <span class="text-emerald-400 font-bold">${escapeHtml(warmupTime)}</span> • Gra: <span class="text-emerald-400 font-bold">${escapeHtml(startTime)} - ${escapeHtml(gameEndTime)}</span> • 📍 <span class="text-slate-300 font-semibold">${escapeHtml(hallAddress)}</span>`;
+                const shortHall = hallAddress.replace(/\s*\(hala\)/i, '');
+                heroDetails.innerHTML = `
+                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
+                        <span class="text-xs">⏰</span>
+                        <div class="min-w-0">
+                            <span class="text-[9px] uppercase font-bold text-slate-500 block leading-tight">Gra & Zbiórka</span>
+                            <span class="text-emerald-400 font-bold font-mono text-[11px] truncate block">${escapeHtml(warmupTime)} | ${escapeHtml(startTime)}-${escapeHtml(gameEndTime)}</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
+                        <span class="text-xs">📍</span>
+                        <div class="min-w-0">
+                            <span class="text-[9px] uppercase font-bold text-slate-500 block leading-tight">Hala</span>
+                            <span class="text-slate-200 font-semibold text-[11px] truncate block" title="${escapeHtml(hallAddress)}">${escapeHtml(shortHall)}</span>
+                        </div>
+                    </div>
+                `;
             }
 
             // Update Match Navigation Buttons State
@@ -2776,18 +2925,19 @@
                         </span>
                     ` : '';
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
-                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.2 rounded" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
+                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate min-w-0" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                ${isMe ? '<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md shrink-0">TY</span>' : ''}
+                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
                             ${canRemove ? `
-                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[36px] min-h-[36px] flex items-center justify-center transition text-sm shrink-0">✕</button>
                             ` : `
-                                <div class="w-8 shrink-0"></div>
+                                <div class="w-4 shrink-0"></div>
                             `}
                         </div>
                     `;
@@ -2822,18 +2972,19 @@
                         </span>
                     ` : '';
                     return `
-                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-3 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
-                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.2 rounded" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
+                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate min-w-0" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                ${isMe ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0">TY</span>' : ''}
+                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
                             ${canRemove ? `
-                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center transition text-sm shrink-0 -mr-1">✕</button>
+                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[36px] min-h-[36px] flex items-center justify-center transition text-sm shrink-0">✕</button>
                             ` : `
-                                <div class="w-8 shrink-0"></div>
+                                <div class="w-4 shrink-0"></div>
                             `}
                         </div>
                     `;
@@ -2849,6 +3000,7 @@
             renderTeamsTab();
             renderIntegratedMvpCard();
             updateCountdownDisplay();
+            setMatchSubtab(currentMatchSubtab);
         }
 
         function addNewMatchPrompt() {
@@ -5028,18 +5180,19 @@
                             <div class="flex items-center gap-2">
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="flex items-center gap-1.5 flex-wrap min-w-0">
-                                    <span class="${isMe ? 'text-emerald-300 font-bold' : ''} truncate">${escapeHtml(s.name)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                    <span class="${isMe ? 'text-emerald-300 font-bold' : ''} truncate min-w-0">${escapeHtml(s.name)}</span>
+                                    ${isMe ? '<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md shrink-0">TY</span>' : ''}
                                     ${streakBadge}
-                                    <span class="flex items-center gap-0.5">${getPlayerBadgesHtml(s.name)}</span>
+                                    <span class="flex items-center gap-0.5 shrink-0">${getPlayerBadgesHtml(s.name)}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="py-2.5 px-2 text-center">${formHtml}</td>
-                        <td class="py-2.5 px-1.5 text-center font-mono text-slate-400">${s.base}</td>
-                        <td class="py-2.5 px-1.5 text-center font-mono text-slate-300">${s.lip}</td>
-                        <td class="py-2.5 px-1.5 text-center font-mono text-slate-300">${s.sie}</td>
-                        <td class="py-2.5 px-1.5 text-center font-mono text-slate-300">${s.wrz}</td>
-                        <td class="py-2.5 px-3 text-right font-mono font-extrabold text-emerald-400">${s.total}</td>
+                        <td class="py-2.5 px-2 text-center shrink-0">${formHtml}</td>
+                        <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-400">${s.base}</td>
+                        <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.lip}</td>
+                        <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.sie}</td>
+                        <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.wrz}</td>
+                        <td class="py-2.5 px-3 text-right font-mono font-extrabold text-emerald-400 shrink-0">${s.total}</td>
                     </tr>
                 `;
             }).join('');
@@ -5056,7 +5209,18 @@
                 // Widok logowania / rejestracji PIN-em
                 const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
                 container.innerHTML = `
-                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4 max-w-md mx-auto">
+                <!-- Section Header -->
+                <div class="px-1 pb-1 max-w-md mx-auto">
+                    <span class="text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
+                        Konto Zawodnika
+                    </span>
+                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                        <span>👤</span> Strefa Gracza
+                    </h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Zaloguj się PIN-em, aby odblokować prywatną kartę i statystyki</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4 max-w-md mx-auto">
                         <div class="text-center space-y-1.5 pb-2 border-b border-slate-800">
                             <div class="w-14 h-14 mx-auto rounded-3xl bg-gradient-to-tr from-emerald-500 to-sky-500 p-0.5 shadow-lg flex items-center justify-center">
                                 <span class="text-2xl">👤</span>
@@ -5116,6 +5280,17 @@
             const isInMain = (attendees.slice(0, 12)).includes(loggedPlayer);
 
             container.innerHTML = `
+                <!-- Section Header -->
+                <div class="px-1 pb-1">
+                    <span class="text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
+                        Konto Zawodnika
+                    </span>
+                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                        <span>👤</span> Mój Profil & Ustawienia
+                    </h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Twoje statystyki, zdobyte odznaki, rozliczenie i panel organizatora</p>
+                </div>
+
                 <!-- 1. Karta Główna Gracza (Player Hub) -->
                 <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4 relative overflow-hidden">
                     
