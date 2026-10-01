@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -880,7 +880,7 @@
 
     <!-- Welcome Gate / First-Time Login Modal -->
     <div id="welcomeGateModal" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative">
+        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative max-h-[92vh] max-h-[92dvh] overflow-y-auto">
             
             <div class="text-center space-y-2">
                 <div class="relative w-16 h-16 mx-auto rounded-3xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-xl shadow-emerald-950/50 flex items-center justify-center">
@@ -888,11 +888,12 @@
                 </div>
                 <div>
                     <h2 id="welcomeModalTitle" class="text-xl font-black text-white tracking-tight">Siatkówka Piątek 🏐</h2>
-                    <p class="text-xs text-slate-400 mt-1">Wybierz swój profil zawodnika, aby wejść do gry i zapamiętać sesję na telefonie:</p>
+                    <p id="welcomeModalSubtitle" class="text-xs text-slate-400 mt-1">Wybierz swój profil zawodnika, aby wejść do gry i zapamiętać sesję na telefonie:</p>
                 </div>
             </div>
 
-            <form onsubmit="event.preventDefault(); handleWelcomeLogin();" class="space-y-3.5 pt-1">
+            <!-- 1. Formularz Logowania z Listy -->
+            <form id="welcomeLoginForm" onsubmit="event.preventDefault(); handleWelcomeLogin();" class="space-y-3.5 pt-1">
                 <div>
                     <label for="welcomePlayerSelect" class="block text-xs font-bold text-slate-300 mb-1">1. Kim jesteś? (Wybierz siebie):</label>
                     <select id="welcomePlayerSelect" onchange="checkWelcomePlayerHasPin(this.value)" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500 cursor-pointer">
@@ -915,6 +916,36 @@
 
                     <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
                         Przeglądaj jako gość (tylko podgląd) 👀
+                    </button>
+
+                    <button type="button" onclick="showWelcomeRegisterView(true)" class="w-full bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-800/60 text-indigo-300 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-1">
+                        <span>✨</span>
+                        <span>Nie ma Cię na liście? Stwórz nowy profil</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- 2. Formularz Rejestracji Nowego Gracza (Self-onboarding) -->
+            <form id="welcomeRegisterForm" onsubmit="event.preventDefault(); handleWelcomeRegister();" class="space-y-3.5 pt-1 hidden">
+                <div>
+                    <label for="regPlayerName" class="block text-xs font-bold text-slate-300 mb-1">1. Twoje Imię i Nazwisko (lub ksywka):</label>
+                    <input id="regPlayerName" type="text" placeholder="np. Jan Kowalski" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div class="space-y-1">
+                    <label for="regPlayerPin" class="block text-xs font-bold text-slate-300">2. Ustal swój 4-cyfrowy PIN:</label>
+                    <input id="regPlayerPin" type="password" maxlength="6" inputmode="numeric" placeholder="••••" required class="w-full bg-slate-950 border border-slate-700 text-center font-mono text-xl tracking-widest font-black text-emerald-400 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500">
+                    <p class="text-[10px] text-slate-400">Zapamiętaj ten PIN do logowania na swoim telefonie.</p>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                        <span>Dołącz do ekipy i wejdź</span>
+                        <span>🏐🚀</span>
+                    </button>
+
+                    <button type="button" onclick="showWelcomeRegisterView(false)" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
+                        ← Wróć do wyboru z listy
                     </button>
                 </div>
             </form>
@@ -1362,11 +1393,8 @@
             all_players: [
                 "Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", 
                 "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Albert Kubiak", 
-                "Iza Urbańska", "Kamil Kaczmarek", "Antek Kwaczek", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", 
-                "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)", "Kuba (od Kuby Parszewskiego)", 
-                "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Antka Kwaczka)", 
-                "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", 
-                "Artur Żbikowski", "Patryk Wendorff", "Karolina", "Czapa", "Piotr T", "Kuba Żurawski", "Kamil (od Konrada Pazio)"
+                "Iza Urbańska", "Kamil Kaczmarek", "Antek Kwaczek", "Kondziu Parszewski", "Bartek Kwaśny", 
+                "Julka Czaplicka", "Maciek Lewandowski", "Olga Bednarska", "Rafał Rojda", "Kuba Czapa Płocha", "Kamil Skołek"
             ],
             player_pins: {
                 "Michał Chaciński": ADMIN_PIN_HASH
@@ -1421,24 +1449,358 @@
                     rozliczenia: { "Mikołaj Morawski": { paid: 54.0 } }
                 },
                 "Wrzesień": {
-                    matches: [
-                        { date: "2026-09-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-09-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
-                    ],
-                    rozliczenia: {}
-                },
+    "matches":  [
+                    {
+                        "attendees":  [
+                                          "Maciek Lewandowski",
+                                          "Zuzanna Rostkowska",
+                                          "Olga Bednarska",
+                                          "Konrad Pazio",
+                                          "Kamil Skołek",
+                                          "Kamil Kaczmarek",
+                                          "Mikołaj Morawski",
+                                          "Piotrek Bany",
+                                          "Filip Morawski",
+                                          "Kondziu Parszewski",
+                                          "Michał Chaciński",
+                                          "Kuba Parszewski"
+                                      ],
+                        "cost":  250,
+                        "date":  "2026-09-04",
+                        "isCancelled":  false,
+                        "mvpClosed":  true,
+                        "score":  "Drużyna Ciemna 3 : 2 Drużyna Jasna (25:21, 20:25, 25:17, 22:25, 25:22)",
+                        "teams":  {
+                                      "dark":  [
+                                                   "Kondziu Parszewski",
+                                                   "Mikołaj Morawski",
+                                                   "Piotrek Bany",
+                                                   "Olga Bednarska",
+                                                   "Konrad Pazio",
+                                                   "Kamil Kaczmarek"
+                                               ],
+                                      "darkName":  "Drużyna Ciemna",
+                                      "light":  [
+                                                    "Kuba Parszewski",
+                                                    "Michał Chaciński",
+                                                    "Kamil Skołek",
+                                                    "Filip Morawski",
+                                                    "Zuzanna Rostkowska",
+                                                    "Maciek Lewandowski"
+                                                ],
+                                      "lightName":  "Drużyna Jasna"
+                                  },
+                        "votes":  {
+                                      "Filip Morawski":  "Mikołaj Morawski",
+                                      "Kamil Kaczmarek":  "Mikołaj Morawski",
+                                      "Kamil Skołek":  "Maciek Lewandowski",
+                                      "Kondziu Parszewski":  "Mikołaj Morawski",
+                                      "Konrad Pazio":  "Mikołaj Morawski",
+                                      "Kuba Parszewski":  "Maciek Lewandowski",
+                                      "Maciek Lewandowski":  "Olga Bednarska",
+                                      "Michał Chaciński":  "Kondziu Parszewski",
+                                      "Mikołaj Morawski":  "Michał Chaciński",
+                                      "Olga Bednarska":  "Maciek Lewandowski",
+                                      "Piotrek Bany":  "Kamil Kaczmarek",
+                                      "Zuzanna Rostkowska":  "Maciek Lewandowski"
+                                  }
+                    },
+                    {
+                        "attendees":  [
+                                          "Michał Chaciński",
+                                          "Mikołaj Morawski",
+                                          "Kamil Skołek",
+                                          "Szymon Fronczak",
+                                          "Filip Morawski",
+                                          "Kacper Szafraniec",
+                                          "Antek Kwaczek",
+                                          "Kondziu Parszewski",
+                                          "Rafał Rojda",
+                                          "Kuba Czapa Płocha",
+                                          "Kuba Muszyński",
+                                          "Błażej Składnik"
+                                      ],
+                        "cost":  250,
+                        "date":  "2026-09-11",
+                        "isCancelled":  false,
+                        "mvpClosed":  true,
+                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (19:25, 23:25, 25:14, 18:25)",
+                        "teams":  {
+                                      "dark":  [
+                                                   "Michał Chaciński",
+                                                   "Mikołaj Morawski",
+                                                   "Kamil Skołek",
+                                                   "Szymon Fronczak",
+                                                   "Filip Morawski",
+                                                   "Kondziu Parszewski"
+                                               ],
+                                      "darkName":  "Drużyna Ciemna",
+                                      "light":  [
+                                                    "Kacper Szafraniec",
+                                                    "Antek Kwaczek",
+                                                    "Rafał Rojda",
+                                                    "Kuba Czapa Płocha",
+                                                    "Kuba Muszyński",
+                                                    "Błażej Składnik"
+                                                ],
+                                      "lightName":  "Drużyna Jasna"
+                                  },
+                        "votes":  {
+                                      "Antek Kwaczek":  "Kuba Czapa Płocha",
+                                      "Filip Morawski":  "Błażej Składnik",
+                                      "Kacper Szafraniec":  "Błażej Składnik",
+                                      "Kamil Skołek":  "Błażej Składnik",
+                                      "Kondziu Parszewski":  "Błażej Składnik",
+                                      "Kuba Czapa Płocha":  "Błażej Składnik",
+                                      "Kuba Muszyński":  "Kuba Czapa Płocha",
+                                      "Michał Chaciński":  "Błażej Składnik",
+                                      "Mikołaj Morawski":  "Błażej Składnik",
+                                      "Szymon Fronczak":  "Błażej Składnik"
+                                  }
+                    },
+                    {
+                        "attendees":  [
+                                          "Mikołaj Morawski",
+                                          "Michał Chaciński",
+                                          "Kuba Parszewski",
+                                          "Filip Morawski",
+                                          "Antek Kwaczek",
+                                          "Piotrek Bany",
+                                          "Kuba Czapa Płocha",
+                                          "Kondziu Parszewski",
+                                          "Iza Urbańska",
+                                          "Maciek Lewandowski",
+                                          "Olga Bednarska",
+                                          "Szymon Fronczak"
+                                      ],
+                        "cost":  250,
+                        "date":  "2026-09-18",
+                        "isCancelled":  false,
+                        "mvpClosed":  true,
+                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (23:25, 22:25, 25:19, 20:25)",
+                        "teams":  {
+                                      "dark":  [
+                                                   "Mikołaj Morawski",
+                                                   "Michał Chaciński",
+                                                   "Kondziu Parszewski",
+                                                   "Maciek Lewandowski",
+                                                   "Olga Bednarska",
+                                                   "Piotrek Bany"
+                                               ],
+                                      "darkName":  "Drużyna Ciemna",
+                                      "light":  [
+                                                    "Antek Kwaczek",
+                                                    "Filip Morawski",
+                                                    "Kuba Czapa Płocha",
+                                                    "Kuba Parszewski",
+                                                    "Iza Urbańska",
+                                                    "Szymon Fronczak"
+                                                ],
+                                      "lightName":  "Drużyna Jasna"
+                                  },
+                        "votes":  {
+                                      "Antek Kwaczek":  "Kuba Parszewski",
+                                      "Filip Morawski":  "Kuba Parszewski",
+                                      "Iza Urbańska":  "Kuba Parszewski",
+                                      "Kuba Czapa Płocha":  "Kuba Parszewski",
+                                      "Michał Chaciński":  "Kuba Parszewski",
+                                      "Mikołaj Morawski":  "Kuba Parszewski",
+                                      "Piotrek Bany":  "Kuba Parszewski",
+                                      "Szymon Fronczak":  "Kuba Parszewski"
+                                  }
+                    },
+                    {
+                        "attendees":  [
+                                          "Michał Chaciński",
+                                          "Mikołaj Morawski",
+                                          "Antek Kwaczek",
+                                          "Julka Czaplicka",
+                                          "Olga Bednarska",
+                                          "Maciek Lewandowski",
+                                          "Kacper Szafraniec",
+                                          "Albert Kubiak",
+                                          "Piotrek Bany",
+                                          "Kuba Czapa Płocha",
+                                          "Zuzanna Rostkowska",
+                                          "Rafał Rojda"
+                                      ],
+                        "cost":  250,
+                        "date":  "2026-09-25",
+                        "mvpClosed":  true,
+                        "score":  "Drużyna Ciemna 2 : 3 Drużyna Jasna (19:25, 25:20, 25:19, 21:25, 4:15)",
+                        "teams":  {
+                                      "dark":  [
+                                                   "Michał Chaciński",
+                                                   "Kacper Szafraniec",
+                                                   "Albert Kubiak",
+                                                   "Kuba Czapa Płocha",
+                                                   "Zuzanna Rostkowska",
+                                                   "Rafał Rojda"
+                                               ],
+                                      "darkName":  "Drużyna Ciemna",
+                                      "light":  [
+                                                    "Mikołaj Morawski",
+                                                    "Antek Kwaczek",
+                                                    "Julka Czaplicka",
+                                                    "Olga Bednarska",
+                                                    "Maciek Lewandowski",
+                                                    "Piotrek Bany"
+                                                ],
+                                      "lightName":  "Drużyna Jasna"
+                                  },
+                        "votes":  {
+                                      "Julka Czaplicka":  "Antek Kwaczek",
+                                      "Kacper Szafraniec":  "Antek Kwaczek",
+                                      "Maciek Lewandowski":  "Antek Kwaczek",
+                                      "Michał Chaciński":  "Antek Kwaczek",
+                                      "Mikołaj Morawski":  "Antek Kwaczek",
+                                      "Olga Bednarska":  "Antek Kwaczek",
+                                      "Piotrek Bany":  "Antek Kwaczek",
+                                      "Zuzanna Rostkowska":  "Antek Kwaczek"
+                                  }
+                    }
+                ],
+    "rozliczenia":  {
+                        "Albert Kubiak":  {
+                                              "paid":  0
+                                          },
+                        "Antek Kwaczek":  {
+                                              "paid":  0
+                                          },
+                        "Artur Żbikowski":  {
+                                                "paid":  0
+                                            },
+                        "Bartek Kwaśny":  {
+                                              "paid":  0
+                                          },
+                        "Czarek (od Kuby Parszewskiego)":  {
+                                                               "paid":  0
+                                                           },
+                        "Filip Morawski":  {
+                                               "paid":  0
+                                           },
+                        "Iza Urbańska":  {
+                                             "paid":  0
+                                         },
+                        "Julka Czaplicka":  {
+                                                "paid":  0
+                                            },
+                        "Kacper Szafraniec":  {
+                                                  "paid":  0
+                                              },
+                        "Kamil Kaczmarek":  {
+                                                "paid":  0
+                                            },
+                        "Kamil Skołek":  {
+                                             "paid":  0
+                                         },
+                        "Karolina Stanicka":  {
+                                                  "paid":  0
+                                              },
+                        "Kondziu Parszewski":  {
+                                                   "paid":  0
+                                               },
+                        "Konrad Pazio":  {
+                                             "paid":  0
+                                         },
+                        "Kuba (od Kuby Parszewskiego)":  {
+                                                             "paid":  0
+                                                         },
+                        "Kuba Czapa Płocha":  {
+                                                  "paid":  0
+                                              },
+                        "Kuba Parszewski":  {
+                                                "paid":  0
+                                            },
+                        "Kuba Żurawski":  {
+                                              "paid":  0
+                                          },
+                        "Maciek (od Maćka Lewandowskiego)":  {
+                                                                 "paid":  0
+                                                             },
+                        "Maciek Lewandowski":  {
+                                                   "paid":  0
+                                               },
+                        "Magda (od Maćka Lewandowskiego)":  {
+                                                                "paid":  0
+                                                            },
+                        "Michał Chaciński":  {
+                                                 "paid":  0
+                                             },
+                        "Mikołaj Morawski":  {
+                                                 "paid":  0
+                                             },
+                        "Olga Bednarska":  {
+                                               "paid":  0
+                                           },
+                        "Patryk Wendorff":  {
+                                                "paid":  0
+                                            },
+                        "Piotr Tchórzewski":  {
+                                                  "paid":  0
+                                              },
+                        "Piotrek Bany":  {
+                                             "paid":  0
+                                         },
+                        "Rafał (od Maćka Lewandowskiego)":  {
+                                                                "paid":  0
+                                                            },
+                        "Rafał Rojda":  {
+                                            "paid":  0
+                                        },
+                        "Szymon Fronczak":  {
+                                                "paid":  0
+                                            },
+                        "Zuzanna Rostkowska":  {
+                                                   "paid":  0
+                                               }
+                    }
+},
                 "Październik": {
-                    matches: [
-                        { date: "2026-10-02", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-09", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-16", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-23", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-10-30", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
-                    ],
-                    rozliczenia: {}
-                },
+    "matches":  [
+                    {
+                        "attendees":  [
+                                          "Michał Chaciński",
+                                          "Julka Czaplicka",
+                                          "Albert Kubiak",
+                                          "Maciek Lewandowski",
+                                          "Mikołaj Morawski",
+                                          "Olga Bednarska",
+                                          "Zuzanna Rostkowska",
+                                          "Szymon Fronczak",
+                                          "Kacper Szafraniec"
+                                      ],
+                        "cost":  250,
+                        "date":  "2026-10-02",
+                        "isCancelled":  false,
+                        "score":  ""
+                    },
+                    {
+                        "cost":  250,
+                        "date":  "2026-10-09",
+                        "isCancelled":  false,
+                        "score":  ""
+                    },
+                    {
+                        "cost":  250,
+                        "date":  "2026-10-16",
+                        "isCancelled":  false,
+                        "score":  ""
+                    },
+                    {
+                        "cost":  250,
+                        "date":  "2026-10-23",
+                        "isCancelled":  false,
+                        "score":  ""
+                    },
+                    {
+                        "cost":  250,
+                        "date":  "2026-10-30",
+                        "isCancelled":  false,
+                        "score":  ""
+                    }
+                ]
+},
                 "Listopad": {
                     matches: [
                         { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
@@ -1642,6 +2004,11 @@
         function initApp() {
             checkUserAuthSession();
 
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('recover') === '1' || urlParams.get('restore') === 'local') {
+                setTimeout(checkEmergencyLocalStorageBackup, 300);
+            }
+
             loadLocalState();
             autoSelectUpcomingMatchOnLoad();
             renderCurrentView(true);
@@ -1817,6 +2184,10 @@
                 console.warn('LocalStorage error:', e);
             }
             if (db) {
+                if (!hasLoadedRemoteState) {
+                    console.warn('Sync delayed: Firebase remote state not loaded yet. Skipping remote write.');
+                    return;
+                }
                 db.ref('siatka_master_state').set(AppState).catch(error => {
                     console.warn('Firebase write fallback:', error);
                     isOnlineSync = false;
@@ -2187,8 +2558,9 @@
             const datesContainer = document.getElementById('matchDatesContainer');
             const allMatches = monthData.matches || [];
 
+            const isEntireMonthPast = allMatches.length > 0 && allMatches.every(m => (m.date || '') < todayStr);
             const visibleMatches = allMatches.map((m, idx) => ({ match: m, originalIndex: idx })).filter(item => {
-                if (showPastMatches) return true;
+                if (showPastMatches || isEntireMonthPast) return true;
                 return item.match.date >= todayStr || item.originalIndex === AppState.currentMatchIndex;
             });
 
@@ -2394,6 +2766,7 @@
             for (let i = 0; i < 12; i++) {
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
+                    const isGuest = !AppState.all_players.includes(p);
                     const isMe = (p === loggedPlayer);
                     const canRemove = isMe || isAdmin;
                     const pStreak = (allStreaks[p]?.current) || 0;
@@ -2408,6 +2781,7 @@
                                 <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.2 rounded" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
                             ${canRemove ? `
@@ -2439,6 +2813,7 @@
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
                 reserveListEl.innerHTML = reservePlayers.map((p, idx) => {
                     const isMe = (p === loggedPlayer);
+                    const isGuest = !AppState.all_players.includes(p);
                     const canRemove = isMe || isAdmin;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
@@ -2452,6 +2827,7 @@
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition truncate" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐ (Ty)' : ''}</span>
+                                ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.2 rounded" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
                             ${canRemove ? `
@@ -3558,7 +3934,7 @@
                                         <span class="w-2 h-2 rounded-full bg-slate-600 shrink-0"></span> ${escapeHtml(darkName)}
                                     </span>
                                     <ul class="text-slate-400 space-y-0.5 text-[10px]">
-                                        ${(teams.dark || []).map(p => `<li class="truncate">• ${escapeHtml(p)}</li>`).join('')}
+                                        ${(teams.dark || []).map(p => '<li class="truncate hover:text-emerald-300 cursor-pointer transition flex items-center gap-1" onclick="openPlayerCardModal(' + toInlineArgument(p) + ')"><span>\u2022</span> <span class="truncate">' + escapeHtml(p) + '</span>' + (!AppState.all_players.includes(p) ? '<span class="text-[8px] text-slate-500 shrink-0">(go\u015B\u0107)</span>' : '') + '</li>').join('')}
                                     </ul>
                                 </div>
                                 <div class="bg-slate-900/50 p-2 rounded-xl border border-slate-800">
@@ -3566,13 +3942,13 @@
                                         <span class="w-2 h-2 rounded-full bg-white shrink-0"></span> ${escapeHtml(lightName)}
                                     </span>
                                     <ul class="text-slate-400 space-y-0.5 text-[10px]">
-                                        ${(teams.light || []).map(p => `<li class="truncate">• ${escapeHtml(p)}</li>`).join('')}
+                                        ${(teams.light || []).map(p => '<li class="truncate hover:text-emerald-300 cursor-pointer transition flex items-center gap-1" onclick="openPlayerCardModal(' + toInlineArgument(p) + ')"><span>\u2022</span> <span class="truncate">' + escapeHtml(p) + '</span>' + (!AppState.all_players.includes(p) ? '<span class="text-[8px] text-slate-500 shrink-0">(go\u015B\u0107)</span>' : '') + '</li>').join('')}
                                     </ul>
                                 </div>
                             </div>
                         ` : `
                             <div class="text-[10px] text-slate-500 italic">
-                                Skład: ${attendees.map(escapeHtml).join(', ')}
+                                Sk\u0142ad: ${attendees.map(p => '<span class="hover:text-emerald-300 cursor-pointer not-italic font-semibold text-slate-300" onclick="openPlayerCardModal(' + toInlineArgument(p) + ')">' + escapeHtml(p) + (!AppState.all_players.includes(p) ? ' <span class="text-slate-500 font-normal text-[8px]">(go\u015B\u0107)</span>' : '') + '</span>').join(', ')}
                             </div>
                         `}
                     </div>
@@ -3804,6 +4180,7 @@
                 const saldo = paid - due;
                 const isPaid = (due > 0 && saldo >= -0.05);
                 const isMe = (p === loggedPlayer);
+                const isGuest = !AppState.all_players.includes(p);
 
                 return `
                     <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/15 ring-1 ring-emerald-500/30' : 'border-slate-800/80'} rounded-2xl p-3 sm:p-3.5 space-y-2.5 transition shadow-sm">
@@ -3815,6 +4192,7 @@
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} truncate">${escapeHtml(p)}</span>
                                         ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md">TY</span>` : ''}
+                                        ${isGuest ? '<span class="text-[9px] font-bold bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.2 rounded-md" title="Zawodnik go\u015Bcinny lub archiwalny">Go\u015B\u0107 / Archiwum</span>' : ''}
                                         <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
                                     </div>
                                     <div class="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
@@ -3921,9 +4299,9 @@
             const billingData = calculateMonthlyBilling(AppState.currentMonth);
             const debtors = [];
 
-            AppState.all_players.forEach(p => {
+            Object.keys(billingData.playersMap).forEach(p => {
                 const info = billingData.playersMap[p] || { costDue: 0, paid: 0 };
-                const outstanding = Math.max(0, info.costDue - info.paid);
+                const outstanding = Math.max(0, (info.costDue || 0) - (info.paid || 0));
                 if (outstanding > 0.05) {
                     debtors.push({ name: p, due: outstanding });
                 }
@@ -4705,6 +5083,11 @@
                             <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
                                 Otwórz mój profil 🚀
                             </button>
+
+                            <button type="button" onclick="openWelcomeGateModal(); showWelcomeRegisterView(true);" class="w-full bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-800/60 text-indigo-300 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-2">
+                                <span>✨</span>
+                                <span>Nie ma Cię na liście? Stwórz nowy profil</span>
+                            </button>
                         </form>
                     </div>
                 `;
@@ -5059,6 +5442,10 @@
                                     🔄 Reset bazy
                                 </button>
                             </div>
+                            <button type="button" onclick="checkEmergencyLocalStorageBackup()" class="w-full bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/60 text-amber-300 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-2">
+                                <span>🛡️</span>
+                                <span>Sprawdź / Przywróć kopię z pamięci telefonu</span>
+                            </button>
                         </div>
 
                     </div>
@@ -5097,6 +5484,90 @@
         function closeWelcomeGateModal() {
             const modal = document.getElementById('welcomeGateModal');
             if (modal) modal.classList.add('hidden');
+            showWelcomeRegisterView(false);
+        }
+
+        function showWelcomeRegisterView(show) {
+            const loginForm = document.getElementById('welcomeLoginForm');
+            const regForm = document.getElementById('welcomeRegisterForm');
+            const title = document.getElementById('welcomeModalTitle');
+            const sub = document.getElementById('welcomeModalSubtitle');
+
+            if (show) {
+                if (loginForm) loginForm.classList.add('hidden');
+                if (regForm) regForm.classList.remove('hidden');
+                if (title) title.innerText = "Stwórz profil zawodnika 🏐";
+                if (sub) sub.innerText = "Wpisz swoje dane, aby dołączyć do ekipy i zapamiętać konto:";
+                const nameInput = document.getElementById('regPlayerName');
+                if (nameInput) { nameInput.value = ''; nameInput.focus(); }
+                const pinInput = document.getElementById('regPlayerPin');
+                if (pinInput) pinInput.value = '';
+            } else {
+                if (regForm) regForm.classList.add('hidden');
+                if (loginForm) loginForm.classList.remove('hidden');
+                if (title) title.innerText = "Siatkówka Piątek 🏐";
+                if (sub) sub.innerText = "Wybierz swój profil zawodnika, aby wejść do gry i zapamiętać sesję na telefonie:";
+            }
+        }
+
+        function handleWelcomeRegister() {
+            if (!hasLoadedRemoteState) {
+                showToast("Łączenie z bazą danych... Poczekaj sekundę na zieloną diodę LIVE i spróbuj ponownie. ⏳");
+                return;
+            }
+            const nameInput = document.getElementById('regPlayerName');
+            const pinInput = document.getElementById('regPlayerPin');
+            const rawName = nameInput ? nameInput.value : '';
+            const pin = pinInput ? pinInput.value.trim() : '';
+
+            const name = normalizePlayerName(rawName);
+            if (!name || name.length < 2) {
+                alert("Podaj prawidłowe imię i nazwisko (co najmniej 2 znaki)!");
+                return;
+            }
+
+            if (!AppState.all_players) AppState.all_players = [];
+            const exists = AppState.all_players.some(p => p.localeCompare(name, 'pl', { sensitivity: 'base' }) === 0);
+            if (exists) {
+                alert(`Gracz "${name}" już istnieje w bazie! Jeśli to Ty, wybierz swoje nazwisko z listy i zaloguj się kodem PIN.`);
+                showWelcomeRegisterView(false);
+                const sel = document.getElementById('welcomePlayerSelect');
+                if (sel) sel.value = name;
+                return;
+            }
+
+            if (!pin || pin.length < 4) {
+                alert("Podaj co najmniej 4-cyfrowy kod PIN!");
+                return;
+            }
+
+            if (!AppState.player_pins) AppState.player_pins = {};
+            if (!AppState.player_skills) AppState.player_skills = {};
+            if (!AppState.base_games) AppState.base_games = {};
+            if (!AppState.player_avatars) AppState.player_avatars = {};
+
+            AppState.all_players.push(name);
+            AppState.player_pins[name] = hashPin(pin);
+            AppState.player_skills[name] = 3;
+            AppState.base_games[name] = 0;
+
+            syncState();
+
+            loggedPlayer = name;
+            localStorage.setItem('siatka_active_player', name);
+            if (name === ORGANIZER_NAME || verifyAdminPin(pin)) {
+                isAdmin = true;
+                localStorage.setItem('siatka_is_admin', 'true');
+            } else {
+                isAdmin = false;
+                localStorage.removeItem('siatka_is_admin');
+            }
+
+            sessionStorage.removeItem('siatka_guest_mode');
+            checkUserAuthSession();
+            closeWelcomeGateModal();
+            renderCurrentView();
+            showToast(`Witaj w ekipie, ${name}! Twój profil został utworzony 🎉`);
         }
 
         function checkWelcomePlayerHasPin(playerName) {
@@ -5514,7 +5985,7 @@
 
         function removePlayerFromDirectory(name) {
             requireAdminAuth(() => {
-                if (!confirm(`Usunąć ${name} z bazy? To nie usunie go z archiwalnych meczów.`)) return;
+                if (!confirm("Usun\u0105\u0107 \"" + name + "\" z bie\u017C\u0105cej bazy graczy?\n\nGracz przestanie za\u015Bmieca\u0107 ranking i list\u0119 aktywnych zawodnik\u00F3w, ale jego historia mecz\u00F3w, obecno\u015B\u0107 w sk\u0142adach oraz archiwalne sk\u0142adki pozostan\u0105 w 100% zachowane.")) return;
                 AppState.all_players = AppState.all_players.filter(p => p !== name);
                 if (AppState.player_skills && AppState.player_skills[name]) {
                     delete AppState.player_skills[name];
@@ -5523,8 +5994,8 @@
                     delete AppState.player_pins[name];
                 }
                 syncState();
-                renderProfileTab();
-                showToast(`Usunięto: ${name}`);
+                renderCurrentView();
+                showToast("Usuni\u0119to " + name + " z bazy (sk\u0142ady i sk\u0142adki w archiwum zachowane)");
             });
         }
 
@@ -5597,6 +6068,40 @@
                 renderCurrentView();
                 showToast("Przywrócono stan początkowy!");
             });
+        }
+
+        function checkEmergencyLocalStorageBackup() {
+            const raw = localStorage.getItem('siatka_master_app_state');
+            if (!raw) {
+                alert("Brak zapisanej kopii w pamięci tej przeglądarki.");
+                return;
+            }
+            try {
+                const parsed = JSON.parse(raw);
+                let octCount = 0;
+                let wrzCount = 0;
+                if (parsed.months?.['Październik']?.matches?.[0]?.attendees) {
+                    octCount = parsed.months['Październik'].matches[0].attendees.length;
+                }
+                if (parsed.months?.['Wrzesień']?.matches) {
+                    parsed.months['Wrzesień'].matches.forEach(m => {
+                        if (m.attendees?.length) wrzCount += m.attendees.length;
+                    });
+                }
+                const msg = `W pamięci lokalnej tego urządzenia wykryto stan:\n` +
+                            `• Zapisani na 2 października: ${octCount} os.\n` +
+                            `• Zapisy we wrześniu: ${wrzCount} os.\n\n` +
+                            `Czy chcesz przywrócić tę kopię i wysłać ją na żywo do chmury Firebase?`;
+                if (confirm(msg)) {
+                    AppState = parsed;
+                    ensureValidState();
+                    syncState();
+                    renderCurrentView();
+                    showToast("Pomyślnie przywrócono stan z pamięci urządzenia! 🎉");
+                }
+            } catch(e) {
+                alert("Błąd odczytu danych z pamięci: " + e.message);
+            }
         }
 
         // ================= SCOREBOARD BUILDER MODAL =================
@@ -6070,3 +6575,4 @@
     </script>
 </body>
 </html>
+
