@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odzyskiwanie Bazy Siatkówki 🏐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 flex flex-col items-center justify-center font-sans">
+    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+        <div class="text-center space-y-1">
+            <h1 class="text-xl font-black text-white flex items-center justify-center gap-2">
+                <span>🛡️</span> Narzędzie Odzyskiwania
+            </h1>
+            <p class="text-xs text-slate-400">Sprawdza lokalną pamięć tego telefonu/przeglądarki pod kątem poprzednich zapisów i statystyk.</p>
+        </div>
+
+        <button onclick="scanLocalMemory()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/20">
+            🔍 Sprawdź pamięć tego urządzenia
+        </button>
+
+        <div id="resultBox" class="hidden bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+            <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Wynik skanowania:</h3>
+            <div id="detailsText" class="text-xs text-slate-300 space-y-1 font-mono"></div>
+            
+            <button id="restoreBtn" onclick="restoreToFirebase()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-2xl text-sm transition shadow-lg shadow-amber-500/20 hidden">
+                🚀 Przywróć te dane do bazy Firebase!
+            </button>
+        </div>
+
+        <div id="statusMsg" class="text-xs text-center font-bold text-slate-400"></div>
+
+        <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-500 text-center">
+            Jeśli ten telefon nie ma kopii, poproś innego gracza (który był zapisany na mecz), aby otworzył ten link na swoim telefonie.
+        </div>
+    </div>
+
+    <script>
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyAtMMruMd7DHLFJD6b4f9GJXZJy4RjdxXA",
+            authDomain: "siatka-app.firebaseapp.com",
+            databaseURL: "https://siatka-app-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "siatka-app",
+            storageBucket: "siatka-app.firebasestorage.app",
+            messagingSenderId: "318864191472"
+        };
+        firebase.initializeApp(FIREBASE_CONFIG);
+        const db = firebase.database();
+
+        let foundState = null;
+
+        function scanLocalMemory() {
+            const raw = localStorage.getItem('siatka_master_app_state');
+            const resultBox = document.getElementById('resultBox');
+            const detailsText = document.getElementById('detailsText');
+            const restoreBtn = document.getElementById('restoreBtn');
+            const statusMsg = document.getElementById('statusMsg');
+
+            resultBox.classList.remove('hidden');
+
+            if (!raw) {
+                detailsText.innerHTML = '<span class="text-rose-400">Brak danych w pamięci podręcznej tej przeglądarki.</span>';
+                restoreBtn.classList.add('hidden');
+                return;
+            }
+
+            try {
+                foundState = JSON.parse(raw);
+                let octMatches = foundState.months?.['Październik']?.matches || [];
+                let sepMatches = foundState.months?.['Wrzesień']?.matches || [];
+
+                let oct0 = octMatches[0]?.attendees || [];
+                let sepAttendeesCount = 0;
+                sepMatches.forEach(m => { if (m.attendees) sepAttendeesCount += m.attendees.length; });
+
+                let html = `<div>• <b>Gracze w bazie:</b> ${foundState.all_players?.length || 0}</div>`;
+                html += `<div>• <b>Zapisani na 02.10 (jutro):</b> <span class="text-emerald-400 font-bold">${oct0.length} osób</span></div>`;
+                if (oct0.length) {
+                    html += `<div class="text-[10px] text-slate-400 pl-3">Osoby: ${oct0.join(', ')}</div>`;
+                }
+                html += `<div>• <b>Frekwencja we wrześniu:</b> ${sepAttendeesCount} zapisów</div>`;
+
+                detailsText.innerHTML = html;
+
+                if (oct0.length > 1 || sepAttendeesCount > 0) {
+                    restoreBtn.classList.remove('hidden');
+                    statusMsg.innerHTML = '<span class="text-emerald-400">Znaleziono cenną kopię sprzed wyczyszczenia! Możesz ją przywrócić.</span>';
+                } else {
+                    restoreBtn.classList.remove('hidden');
+                    statusMsg.innerHTML = '<span class="text-amber-400">Znaleziono stan, ale ma mało zapisów. Możesz go sprawdzić lub odtworzyć ręcznie.</span>';
+                }
+            } catch(e) {
+                detailsText.innerHTML = '<span class="text-rose-400">Błąd parsowania JSON: ' + e.message + '</span>';
+                restoreBtn.classList.add('hidden');
+            }
+        }
+
+        async function restoreToFirebase() {
+            if (!foundState) return;
+            const btn = document.getElementById('restoreBtn');
+            btn.disabled = true;
+            btn.innerText = "Wysyłanie do bazy...";
+            try {
+                // Remove Testowy Gracz if present
+                if (foundState.all_players) {
+                    foundState.all_players = foundState.all_players.filter(p => p !== 'Testowy Gracz');
+                }
+                if (foundState.base_games && foundState.base_games['Testowy Gracz'] !== undefined) {
+                    delete foundState.base_games['Testowy Gracz'];
+                }
+                if (foundState.player_pins && foundState.player_pins['Testowy Gracz'] !== undefined) {
+                    delete foundState.player_pins['Testowy Gracz'];
+                }
+
+                await db.ref('siatka_master_state').set(foundState);
+                document.getElementById('statusMsg').innerHTML = '<span class="text-emerald-400 text-sm font-black">🎉 SUKCES! Baza Firebase została w 100% przywrócona! Możesz wrócić do głównej aplikacji.</span>';
+                btn.innerText = "✅ Dane przywrócone!";
+            } catch(e) {
+                alert("Błąd zapisu do Firebase: " + e.message);
+                btn.disabled = false;
+                btn.innerText = "Spróbuj ponownie";
+            }
+        }
+    </script>
+</body>
+</html>
