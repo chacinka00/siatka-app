@@ -250,6 +250,9 @@
                 <p class="text-[11px] text-slate-400 mt-0.5">Wybierz piątek, zapisz się do składu i głosuj na MVP</p>
             </div>
 
+            <!-- Prominent MVP Banner (Dynamic Alert for Recent Match Voting) -->
+            <div id="recentMvpQuickBanner" class="hidden"></div>
+
             <!-- Dates Carousel (Piątki) -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-3 shadow-md space-y-2">
                 <div class="flex items-center justify-between px-1">
@@ -2043,6 +2046,262 @@
             }
         }
 
+        function getDaysSinceDate(dateStr) {
+            if (!isValidDateKey(dateStr)) return 999;
+            const [y, m, d] = dateStr.split('-').map(Number);
+            const matchDate = new Date(y, m - 1, d);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffTime = today.getTime() - matchDate.getTime();
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function isMatchFinished(match) {
+            if (!match) return false;
+            if (match.isCancelled) return false;
+            const todayStr = getLocalDateKey();
+            if (match.date < todayStr) return true;
+            if (Boolean(match.score)) return true;
+            if (match.mvpClosed === true) return true;
+            if (match.date === todayStr) {
+                const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+                const parts = endTimeStr.split(':').map(Number);
+                const endHour = isNaN(parts[0]) ? 21 : parts[0];
+                const endMin = isNaN(parts[1]) ? 45 : parts[1];
+                const now = new Date();
+                const [y, m, d] = match.date.split('-').map(Number);
+                const matchEnd = new Date(y, m - 1, d, endHour, endMin, 0);
+                return now >= matchEnd;
+            }
+            return false;
+        }
+
+        function getPendingUpcomingMatch() {
+            let pending = null;
+            const sortedMonths = getSortedMonths();
+            for (const mName of sortedMonths) {
+                const matches = AppState.months[mName]?.matches || [];
+                for (const m of matches) {
+                    if (!m.isCancelled && !isMatchFinished(m)) {
+                        if (!pending || m.date < pending.date) {
+                            pending = m;
+                        }
+                    }
+                }
+            }
+            return pending;
+        }
+
+        function isMatchSignupLocked(match) {
+            if (!match) return { locked: false };
+            if (match.isCancelled) {
+                return { locked: true, reason: 'cancelled', message: 'Ten mecz został odwołany.' };
+            }
+            if (isMatchFinished(match)) {
+                return { locked: true, reason: 'past', message: 'Ten mecz już się odbył. Zapisy są zamknięte.' };
+            }
+            const pending = getPendingUpcomingMatch();
+            if (pending && match.date > pending.date) {
+                return {
+                    locked: true,
+                    reason: 'future',
+                    pendingDate: pending.date,
+                    message: `Zapisy na ten mecz ruszą po rozegraniu najbliższego spotkania (${pending.date}).`
+                };
+            }
+            return { locked: false };
+        }
+
+        function selectMatchByDate(dateStr) {
+            if (!dateStr) return;
+            for (const mName of Object.keys(AppState.months || {})) {
+                const matches = AppState.months[mName]?.matches || [];
+                const idx = matches.findIndex(m => m.date === dateStr);
+                if (idx !== -1) {
+                    if (AppState.currentMonth !== mName) {
+                        AppState.currentMonth = mName;
+                    }
+                    selectMatch(idx);
+                    break;
+                }
+            }
+        }
+
+        function getLatestPlayedMatchInfo() {
+            let latest = null;
+            const todayStr = getLocalDateKey();
+            Object.keys(AppState.months || {}).forEach(mName => {
+                const matches = AppState.months[mName]?.matches || [];
+                matches.forEach((m, idx) => {
+                    if (!m.isCancelled && m.date <= todayStr && (m.attendees || []).length > 0) {
+                        if (!latest || m.date > latest.match.date) {
+                            latest = {
+                                monthName: mName,
+                                matchIndex: idx,
+                                match: m,
+                                daysAgo: getDaysSinceDate(m.date)
+                            };
+                        }
+                    }
+                });
+            });
+            return latest;
+        }
+
+        function renderRecentMvpQuickBanner() {
+            const bannerEl = document.getElementById('recentMvpQuickBanner');
+            if (!bannerEl) return;
+
+            const latest = getLatestPlayedMatchInfo();
+            // Pokaż powiadomienie dla meczów rozegranych do 4 dni wstecz (od piątku do wtorku)
+            if (!latest || latest.daysAgo < 0 || latest.daysAgo > 4) {
+                bannerEl.classList.add('hidden');
+                bannerEl.innerHTML = '';
+                return;
+            }
+
+            const currentMatch = AppState.months[AppState.currentMonth]?.matches[AppState.currentMatchIndex];
+            // Jeśli użytkownik ogląda dokładnie ten mecz i ma otwartą zakładkę MVP, schowaj baner, by nie dublować
+            if (currentMatch && currentMatch.date === latest.match.date && currentMatchSubtab === 'mvp') {
+                bannerEl.classList.add('hidden');
+                bannerEl.innerHTML = '';
+                return;
+            }
+
+            const attendees = (latest.match.attendees || []).slice(0, 12);
+            const votes = latest.match.votes || {};
+            const totalVotes = Object.keys(votes).length;
+            const isFinished = isMvpVotingFinished(latest.match);
+            const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
+            const hasVoted = Boolean(loggedPlayer && votes[loggedPlayer]);
+
+            bannerEl.classList.remove('hidden');
+
+            if (!isFinished) {
+                if (isAttendee && !hasVoted) {
+                    bannerEl.innerHTML = `
+                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="text-2xl shrink-0">🗳️</span>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md">TWÓJ GŁOS!</span>
+                                        <span class="text-xs font-black text-amber-200 truncate">MVP z piątku (${latest.match.date})</span>
+                                    </div>
+                                    <p class="text-[11px] text-amber-300/90 mt-0.5 leading-snug">
+                                        Grałeś w meczu! Zagłosuj na MVP (oddano: <strong class="font-mono text-white">${totalVotes}/${attendees.length}</strong>).
+                                    </p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
+                                <span>Głosuj</span>
+                                <span>➔</span>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    bannerEl.innerHTML = `
+                        <div class="bg-gradient-to-r from-emerald-500/15 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="text-2xl shrink-0">🏆</span>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md">Głosowanie MVP</span>
+                                        <span class="text-xs font-bold text-white truncate">Mecz z piątku (${latest.match.date})</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                                        ${hasVoted ? '✅ Twój głos jest zapisany. ' : ''}Trwa zbieranie głosów (<strong class="font-mono text-emerald-400">${totalVotes}/${attendees.length}</strong>).
+                                    </p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1 whitespace-nowrap">
+                                <span>Zobacz stan</span>
+                                <span>➔</span>
+                            </button>
+                        </div>
+                    `;
+                }
+            } else {
+                const tally = {};
+                attendees.forEach(p => tally[p] = 0);
+                Object.values(votes).forEach(candidate => {
+                    if (tally[candidate] !== undefined) tally[candidate]++;
+                });
+                let maxV = 0, winners = [];
+                Object.entries(tally).forEach(([k, v]) => {
+                    if (v > maxV) { maxV = v; winners = [k]; }
+                    else if (v === maxV && maxV > 0) { winners.push(k); }
+                });
+                const winnerDisplay = winners.length > 0 ? winners.join(' & ') : 'Zakończone';
+
+                bannerEl.innerHTML = `
+                    <div class="bg-gradient-to-r from-amber-500/15 via-purple-950/20 to-slate-900 border border-amber-500/30 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="text-2xl shrink-0">👑</span>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[10px] font-black uppercase tracking-wider bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-md">MVP Ostatniego Meczu</span>
+                                    <span class="text-xs font-bold text-white truncate">${latest.match.date}</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                                    Oficjalny MVP: <strong class="text-amber-300 font-bold">${escapeHtml(winnerDisplay)}</strong> (${maxV} ${maxV === 1 ? 'głos' : (maxV < 5 ? 'głosy' : 'głosów')}).
+                                </p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
+                            <span>Wyniki</span>
+                            <span>➔</span>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function jumpToRecentMvp() {
+            const latest = getLatestPlayedMatchInfo();
+            if (!latest) return;
+            if (AppState.currentMonth !== latest.monthName) {
+                AppState.currentMonth = latest.monthName;
+            }
+            selectMatch(latest.matchIndex, 'mvp');
+            syncState();
+            renderCurrentView();
+            setTimeout(() => {
+                const target = document.getElementById('matchMvpSubtabContainer') || document.getElementById('integratedMvpCard');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+        function handleUrlNavigationParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetTab = urlParams.get('tab');
+            const targetSubtab = urlParams.get('subtab');
+            const targetMatchDate = urlParams.get('match');
+
+            if (targetMatchDate) {
+                for (const mName of Object.keys(AppState.months || {})) {
+                    const matches = AppState.months[mName]?.matches || [];
+                    const idx = matches.findIndex(m => m.date === targetMatchDate);
+                    if (idx !== -1) {
+                        AppState.currentMonth = mName;
+                        AppState.currentMatchIndex = idx;
+                        hasInitiallySelectedMonth = true;
+                        break;
+                    }
+                }
+            }
+
+            if (targetSubtab === 'mvp') {
+                currentMatchSubtab = 'mvp';
+            }
+
+            if (targetTab && ['matches', 'teams', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
+                switchTab(targetTab);
+            }
+        }
+
         function getGlobalUpcomingMatchDate() {
             const todayStr = getLocalDateKey();
             let earliestDate = null;
@@ -2061,9 +2320,49 @@
 
         function autoSelectUpcomingMatchOnLoad() {
             if (hasInitiallySelectedMonth) return;
+
+            // 1. Jeśli w adresie URL przekazano konkretną datę meczu (np. z linku Messengera)
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetMatchDate = urlParams.get('match');
+            if (targetMatchDate) {
+                for (const mName of getSortedMonths()) {
+                    const matches = AppState.months[mName]?.matches || [];
+                    const idx = matches.findIndex(m => m.date === targetMatchDate);
+                    if (idx !== -1) {
+                        AppState.currentMonth = mName;
+                        AppState.currentMatchIndex = idx;
+                        hasInitiallySelectedMonth = true;
+                        if (urlParams.get('subtab') === 'mvp') currentMatchSubtab = 'mvp';
+                        return;
+                    }
+                }
+            }
+
+            // 2. Okres pomeczowy (Piątek wieczór, Sobota, Niedziela):
+            // Sprawdź czy jest świeżo rozegrany mecz (0-2 dni temu), gdzie trwa głosowanie MVP
+            const latestPlayed = getLatestPlayedMatchInfo();
+            if (latestPlayed && latestPlayed.daysAgo >= 0 && latestPlayed.daysAgo <= 2) {
+                const isFinished = isMvpVotingFinished(latestPlayed.match);
+                const attendees = (latestPlayed.match.attendees || []).slice(0, 12);
+                const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
+                const hasVoted = Boolean(loggedPlayer && latestPlayed.match.votes && latestPlayed.match.votes[loggedPlayer]);
+
+                // W piątek po meczu i całą sobotę (daysAgo <= 1): priorytet ma wczorajszy mecz!
+                // W niedzielę (daysAgo === 2): priorytet jeśli głosowanie jest w toku lub gracz jeszcze nie głosował
+                if (latestPlayed.daysAgo <= 1 || !isFinished || (isAttendee && !hasVoted)) {
+                    AppState.currentMonth = latestPlayed.monthName;
+                    AppState.currentMatchIndex = latestPlayed.matchIndex;
+                    hasInitiallySelectedMonth = true;
+                    if (isAttendee && !hasVoted) {
+                        currentMatchSubtab = 'mvp';
+                    }
+                    return;
+                }
+            }
+
+            // 3. W pozostałych przypadkach wybierz najbliższy nadchodzący mecz
             const globalUpcomingDate = getGlobalUpcomingMatchDate();
             const sortedMonths = getSortedMonths();
-            
             if (globalUpcomingDate) {
                 for (const mName of sortedMonths) {
                     const matches = AppState.months[mName]?.matches || [];
@@ -2077,6 +2376,7 @@
                 }
             }
 
+            // 4. Fallback na ostatni miesiąc i jego ostatni mecz
             const targetMonth = sortedMonths[sortedMonths.length - 1] || AppState.currentMonth;
             if (targetMonth && AppState.months[targetMonth]) {
                 AppState.currentMonth = targetMonth;
@@ -2097,6 +2397,7 @@
 
             loadLocalState();
             autoSelectUpcomingMatchOnLoad();
+            handleUrlNavigationParams();
             renderCurrentView(true);
             setSyncStatus('connecting');
 
@@ -2127,6 +2428,7 @@
                         if (!hasLoadedRemoteState) {
                             hasInitiallySelectedMonth = false;
                             autoSelectUpcomingMatchOnLoad();
+                            handleUrlNavigationParams();
                             hasLoadedRemoteState = true;
                             renderCurrentView(true);
                         } else {
@@ -2138,6 +2440,7 @@
                         checkUserAuthSession();
                         hasInitiallySelectedMonth = false;
                         autoSelectUpcomingMatchOnLoad();
+                        handleUrlNavigationParams();
                         hasLoadedRemoteState = true;
                         syncState();
                         renderCurrentView(true);
@@ -2372,10 +2675,14 @@
             } else {
                 const isFinished = isMvpVotingFinished(currentMatch);
                 labelEl.innerText = "Mecz zakończony:";
-                valueEl.innerText = isFinished ? "🏆 WYNIKI MVP ODKRYTE" : "🔒 TAJNE GŁOSOWANIE MVP";
-                valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 tracking-wider cursor-pointer";
+                valueEl.innerText = isFinished ? "🏆 WYNIKI MVP ODKRYTE" : "🔒 TAJNE GŁOSOWANIE MVP (Kliknij)";
+                valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 tracking-wider cursor-pointer underline decoration-amber-500/50 underline-offset-2";
                 valueEl.onclick = () => {
-                    document.getElementById('integratedMvpCard')?.scrollIntoView({ behavior: 'smooth' });
+                    setMatchSubtab('mvp');
+                    setTimeout(() => {
+                        const target = document.getElementById('matchMvpSubtabContainer') || document.getElementById('integratedMvpCard');
+                        target?.scrollIntoView({ behavior: 'smooth' });
+                    }, 50);
                 };
             }
         }
@@ -2513,9 +2820,14 @@
             
             const matches = AppState.months[mName].matches || [];
             const todayStr = getLocalDateKey();
-            const upIdx = matches.findIndex(m => m.date >= todayStr && !m.isCancelled);
-            
-            AppState.currentMatchIndex = (upIdx !== -1) ? upIdx : Math.max(0, matches.length - 1);
+            const latestPlayed = getLatestPlayedMatchInfo();
+
+            if (latestPlayed && latestPlayed.monthName === mName && latestPlayed.daysAgo >= 0 && latestPlayed.daysAgo <= 1) {
+                AppState.currentMatchIndex = latestPlayed.matchIndex;
+            } else {
+                const upIdx = matches.findIndex(m => m.date >= todayStr && !m.isCancelled);
+                AppState.currentMatchIndex = (upIdx !== -1) ? upIdx : Math.max(0, matches.length - 1);
+            }
             renderCurrentView();
         }
 
@@ -2665,18 +2977,24 @@
         // ================= TAB 1: MATCHES & ATTENDANCE =================
         function renderMatchesTab() {
             renderMonthSelector();
+            renderRecentMvpQuickBanner();
             const monthData = AppState.months[AppState.currentMonth];
             if (!monthData) return;
 
             const todayStr = getLocalDateKey();
             const globalUpcomingDate = getGlobalUpcomingMatchDate();
+            const latestPlayed = getLatestPlayedMatchInfo();
             const datesContainer = document.getElementById('matchDatesContainer');
             const allMatches = monthData.matches || [];
 
             const isEntireMonthPast = allMatches.length > 0 && allMatches.every(m => (m.date || '') < todayStr);
             const visibleMatches = allMatches.map((m, idx) => ({ match: m, originalIndex: idx })).filter(item => {
                 if (showPastMatches || isEntireMonthPast) return true;
-                return item.match.date >= todayStr || item.originalIndex === AppState.currentMatchIndex;
+                if (item.match.date >= todayStr || item.originalIndex === AppState.currentMatchIndex) return true;
+                // Nigdy nie ukrywaj ostatniego rozegranego meczu ani meczów z ostatnich 3 dni (np. piątek przez cały weekend)
+                if (getDaysSinceDate(item.match.date) <= 3) return true;
+                if (latestPlayed && latestPlayed.monthName === AppState.currentMonth && latestPlayed.matchIndex === item.originalIndex) return true;
+                return false;
             });
 
             if (visibleMatches.length === 0) {
@@ -2690,24 +3008,36 @@
                     const mainCount = Math.min(12, attendeesCount);
                     const isFull = attendeesCount >= 12;
                     const isPast = (m.date || '') < todayStr;
+                    const isRecent = getDaysSinceDate(m.date) <= 3 || (latestPlayed && latestPlayed.monthName === AppState.currentMonth && latestPlayed.matchIndex === idx);
+                    const isMvpDone = isMvpVotingFinished(m);
                     const dayDisplay = (m.date || '').slice(5);
+                    const mLock = isMatchSignupLocked(m);
+                    const isLockedFuture = mLock.locked && mLock.reason === 'future';
 
                     return `
                         <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition shrink-0 flex items-center gap-2 active:scale-95 shadow-sm ${
                             isSelected 
                                 ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20 ring-2 ring-emerald-400/40' 
-                                : isPast
-                                    ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
-                                    : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
+                                : (isRecent && isPast)
+                                    ? 'bg-slate-950 text-amber-300 border-amber-800/70 hover:border-amber-600'
+                                    : isLockedFuture
+                                        ? 'bg-slate-950 text-slate-400 border-slate-800/80 hover:border-slate-700'
+                                        : isPast
+                                            ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
+                                            : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
                         }">
-                            <span>${isPast ? '⏳' : '📅'} ${dayDisplay}</span>
+                            <span>${(isRecent && isPast) ? (isMvpDone ? '👑' : '🏆') : (isLockedFuture ? '🔒' : (isPast ? '⏳' : '📅'))} ${dayDisplay}</span>
                             <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
                                 isSelected 
                                     ? 'bg-slate-950/20 text-slate-950 font-black' 
-                                    : isFull 
-                                        ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
-                                        : 'bg-slate-900 text-slate-400 border border-slate-800'
-                            }">${mainCount}/12</span>
+                                    : (isRecent && isPast && !isMvpDone)
+                                        ? 'bg-amber-950 text-amber-300 border border-amber-800/80 font-bold'
+                                        : isLockedFuture
+                                            ? 'bg-slate-900 text-slate-500 border border-slate-800 flex items-center gap-0.5'
+                                            : isFull 
+                                                ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
+                                                : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            }">${(isRecent && isPast && !isMvpDone) ? 'Głosuj' : (isLockedFuture ? `🔒 ${mainCount}/12` : `${mainCount}/12`)}</span>
                         </button>
                     `;
                 }).join('');
@@ -2835,13 +3165,55 @@
 
             // Render Fast Join UI for Logged-In User or Guest
             if (fastJoinSection) {
-                if (loggedPlayer) {
-                    const isUserSigned = attendees.includes(loggedPlayer);
+                const matchLock = isMatchSignupLocked(currentMatch);
+                const isUserSigned = loggedPlayer ? attendees.includes(loggedPlayer) : false;
+
+                if (matchLock.locked && !isUserSigned && !isAdmin) {
+                    if (matchLock.reason === 'future') {
+                        fastJoinSection.innerHTML = `
+                            <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 text-center space-y-2.5 shadow-inner">
+                                <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-xl text-amber-400">
+                                    🔒
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-200 text-xs sm:text-sm">Zapisy na ten termin są jeszcze zablokowane</h4>
+                                    <p class="text-[11px] text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
+                                        Najpierw musi odbyć się najbliższy mecz: <strong class="text-emerald-400 font-bold">${escapeHtml(matchLock.pendingDate)}</strong>.<br>Zapisy na ten piątek ruszą automatycznie po jego rozegraniu! 🏐
+                                    </p>
+                                </div>
+                                <div class="pt-1 flex items-center justify-center gap-2 flex-wrap">
+                                    <button type="button" onclick="selectMatchByDate('${escapeHtml(matchLock.pendingDate)}')" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-xl text-xs font-bold transition active:scale-95 shadow-sm">
+                                        <span>📅 Przejdź do najbliższego meczu (${escapeHtml(matchLock.pendingDate.slice(5))})</span>
+                                        <span>➔</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    } else if (matchLock.reason === 'past') {
+                        fastJoinSection.innerHTML = `
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3.5 text-center text-xs text-slate-500 space-y-1">
+                                <span>⏳ Ten mecz już się odbył. Zapisy są zamknięte.</span>
+                            </div>
+                        `;
+                    } else {
+                        fastJoinSection.innerHTML = `
+                            <div class="bg-rose-950/20 border border-rose-900/40 rounded-2xl p-3.5 text-center text-xs text-rose-400 font-bold">
+                                🚫 Ten mecz został odwołany. Zapisy są niedostępne.
+                            </div>
+                        `;
+                    }
+                } else if (loggedPlayer) {
                     const isInMain = mainPlayers.includes(loggedPlayer);
                     const isReserve = isUserSigned && !isInMain;
 
                     fastJoinSection.innerHTML = `
                         <div class="space-y-2">
+                            ${matchLock.locked && matchLock.reason === 'future' && isAdmin ? `
+                                <div class="bg-amber-950/30 border border-amber-800/50 rounded-xl px-3 py-1.5 text-center text-[11px] text-amber-300 font-semibold flex items-center justify-center gap-1.5">
+                                    <span>🔒</span>
+                                    <span>Zapisy dla graczy zablokowane (czekają na mecz ${escapeHtml(matchLock.pendingDate)}). Tryb Organizatora aktywny.</span>
+                                </div>
+                            ` : ''}
                             ${isUserSigned ? `
                                 <div class="bg-slate-950 border border-emerald-800/80 rounded-2xl p-3 flex items-center justify-between gap-2">
                                     <div class="flex items-center gap-2.5 min-w-0">
@@ -2875,6 +3247,12 @@
                     const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
                     fastJoinSection.innerHTML = `
                         <div class="space-y-2">
+                            ${matchLock.locked && matchLock.reason === 'future' && isAdmin ? `
+                                <div class="bg-amber-950/30 border border-amber-800/50 rounded-xl px-3 py-1.5 text-center text-[11px] text-amber-300 font-semibold flex items-center justify-center gap-1.5">
+                                    <span>🔒</span>
+                                    <span>Zapisy dla graczy zablokowane (czekają na mecz ${escapeHtml(matchLock.pendingDate)}). Tryb Organizatora aktywny.</span>
+                                </div>
+                            ` : ''}
                             <div class="flex items-center justify-between">
                                 <label for="matchPlayerSelect" class="block text-xs font-extrabold text-slate-300 uppercase tracking-wider">
                                     Wybierz gracza z listy:
@@ -2994,8 +3372,11 @@
             }
         }
 
-        function selectMatch(idx) {
+        function selectMatch(idx, targetSubtab = null) {
             AppState.currentMatchIndex = idx;
+            if (targetSubtab) {
+                currentMatchSubtab = targetSubtab;
+            }
             renderMatchesTab();
             renderTeamsTab();
             renderIntegratedMvpCard();
@@ -3051,6 +3432,14 @@
                 const currentMatch = monthData?.matches[AppState.currentMatchIndex];
                 if (!currentMatch) return;
 
+                if (!isAdmin) {
+                    const lockStatus = isMatchSignupLocked(currentMatch);
+                    if (lockStatus.locked) {
+                        showToast(lockStatus.message);
+                        return;
+                    }
+                }
+
                 if (!currentMatch.attendees) currentMatch.attendees = [];
                 if (currentMatch.attendees.includes(name)) {
                     alert(`${name} jest już zapisany na ten mecz!`);
@@ -3082,13 +3471,21 @@
         }
 
         function openGuestSignupModal() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!isAdmin && currentMatch) {
+                const lockStatus = isMatchSignupLocked(currentMatch);
+                if (lockStatus.locked) {
+                    showToast(lockStatus.message);
+                    return;
+                }
+            }
+
             const select = document.getElementById('guestSelectFromDir');
             const input = document.getElementById('guestCustomNameInput');
             if (input) input.value = '';
 
             if (select) {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
                 const attendees = currentMatch ? (currentMatch.attendees || []) : [];
                 const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
 
@@ -5264,6 +5661,9 @@
             const { bestPartner, topRival } = calculatePlayerChemistry(loggedPlayer);
             const playerHistory = calculatePlayerMatchHistory(loggedPlayer);
             const isOrganizer = (loggedPlayer === ORGANIZER_NAME) || isAdmin;
+            const latestPlayed = getLatestPlayedMatchInfo();
+            const latestAttendees = latestPlayed ? (latestPlayed.match.attendees || []).slice(0, 12) : [];
+            const needsMvpVote = latestPlayed && !isMvpVotingFinished(latestPlayed.match) && latestAttendees.includes(loggedPlayer) && !latestPlayed.match.votes?.[loggedPlayer];
 
             // My Billing
             const billingData = calculateMonthlyBilling(AppState.currentMonth);
@@ -5318,6 +5718,22 @@
                             Wyloguj 🚪
                         </button>
                     </div>
+
+                    ${needsMvpVote ? `
+                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="text-2xl shrink-0">🗳️</span>
+                                <div class="min-w-0">
+                                    <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md inline-block">Czeka głosowanie MVP!</span>
+                                    <p class="text-xs font-bold text-white truncate mt-0.5">Mecz z piątku (${latestPlayed.match.date})</p>
+                                    <p class="text-[11px] text-amber-200/90 mt-0.5 leading-snug">Grałeś w meczu — oddaj swój głos!</p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 whitespace-nowrap">
+                                Głosuj ➔
+                            </button>
+                        </div>
+                    ` : ''}
 
                     <!-- Statystyki Gracza w Kapsułach -->
                     <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -6511,18 +6927,19 @@
             const start = AppState.settings?.startTime || "20:00";
             const end = AppState.settings?.gameEndTime || "21:45";
             const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
-            const url = window.location.href;
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const mvpUrl = `${baseUrl}?tab=matches&subtab=mvp&match=${encodeURIComponent(dateStr)}`;
 
             if (type === 'monday') {
                 return `🔔 SIATKÓWKA - ZAPISY NA PIĄTEK (${dateStr}) 🔔\n\n` +
                        `Siemanko! Ruszyły zapisy na ten piątek. Rozgrzewka ${warmup}, gramy ${start} - ${end}!\n` +
                        `📍 Miejsce: ${hall}\n\n` +
-                       `👉 Zapiszcie się przez link:\n${url}\n\n` +
+                       `👉 Zapiszcie się przez link:\n${baseUrl}\n\n` +
                        `Limit składu to 12 osób, decyduje kolejność zgłoszeń!`;
             } else if (type === 'mvp') {
                 return `🏆 GŁOSOWANIE NA MVP MECZU (${dateStr}) 🏆\n\n` +
                        `Dzięki za piątkową walkę na parkiecie! 🔥🏐\n\n` +
-                       `Głosowanie jest tajne 🔒 Kto Twoim zdaniem zasłużył na MVP? Oddaj głos:\n${url}\n\n` +
+                       `Głosowanie jest tajne 🔒 Kto Twoim zdaniem zasłużył na MVP? Oddaj głos:\n${mvpUrl}\n\n` +
                        `Wyniki i oficjalne podsumowanie pojawią się, gdy wszyscy zagłosują! 🌟`;
             } else if (type === 'billing') {
                 return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
