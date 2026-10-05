@@ -26,6 +26,7 @@
     
     <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 
@@ -2476,6 +2477,16 @@
                     firebase.initializeApp(FIREBASE_CONFIG);
                 }
                 db = firebase.database();
+
+                if (window.firebase?.auth) {
+                    try {
+                        firebase.auth().signInAnonymously().catch(authErr => {
+                            console.info("Anonymous auth notice:", authErr);
+                        });
+                    } catch(authE) {
+                        console.info("Anonymous auth init:", authE);
+                    }
+                }
 
                 try {
                     if (firebase.analytics) firebase.analytics();
