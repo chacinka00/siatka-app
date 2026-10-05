@@ -2465,7 +2465,6 @@
             // Fallback timeout na wypadek braku odpowiedzi z sieci (np. słaby zasięg / offline)
             setTimeout(() => {
                 if (!hasLoadedRemoteState) {
-                    hasLoadedRemoteState = true;
                     if (!isOnlineSync) setSyncStatus('local');
                     renderCurrentView(true);
                 }
@@ -2478,72 +2477,74 @@
                 }
                 db = firebase.database();
 
-                if (window.firebase?.auth) {
-                    try {
-                        firebase.auth().signInAnonymously().catch(authErr => {
-                            console.info("Anonymous auth notice:", authErr);
-                        });
-                    } catch(authE) {
-                        console.info("Anonymous auth init:", authE);
-                    }
-                }
-
                 try {
                     if (firebase.analytics) firebase.analytics();
                 } catch(err) {
                     console.info("Analytics info:", err);
                 }
 
-                db.ref('.info/connected').off('value');
-                db.ref('.info/connected').on('value', snapshot => {
-                    isOnlineSync = snapshot.val() === true;
-                    setSyncStatus(isOnlineSync ? 'live' : 'local');
-                }, error => {
-                    console.warn('.info/connected listener error:', error);
-                    isOnlineSync = false;
-                    setSyncStatus('local');
-                });
+                function setupDatabaseListeners() {
+                    db.ref('.info/connected').off('value');
+                    db.ref('.info/connected').on('value', snapshot => {
+                        isOnlineSync = snapshot.val() === true;
+                        setSyncStatus(isOnlineSync ? 'live' : 'local');
+                    }, error => {
+                        console.warn('.info/connected listener error:', error);
+                        isOnlineSync = false;
+                        setSyncStatus('local');
+                    });
 
-                db.ref('siatka_master_state').off('value');
-                db.ref('siatka_master_state').on('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (val) {
-                        AppState = val;
-                        ensureValidState();
-                        checkUserAuthSession();
-                        if (!hasLoadedRemoteState) {
-                            hasInitiallySelectedMonth = false;
-                            autoSelectUpcomingMatchOnLoad();
-                            handleUrlNavigationParams();
+                    db.ref('siatka_master_state').off('value');
+                    db.ref('siatka_master_state').on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val) {
+                            AppState = val;
+                            ensureValidState();
+                            checkUserAuthSession();
+                            if (!hasLoadedRemoteState) {
+                                hasInitiallySelectedMonth = false;
+                                autoSelectUpcomingMatchOnLoad();
+                                handleUrlNavigationParams();
+                                hasLoadedRemoteState = true;
+                                renderCurrentView(true);
+                            } else {
+                                renderCurrentView();
+                            }
+                        } else {
+                            console.warn("Węzeł siatka_master_state jest pusty w chmurze.");
                             hasLoadedRemoteState = true;
                             renderCurrentView(true);
-                        } else {
-                            renderCurrentView();
                         }
-                    } else {
-                        AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
-                        ensureValidState();
-                        checkUserAuthSession();
-                        hasInitiallySelectedMonth = false;
-                        autoSelectUpcomingMatchOnLoad();
-                        handleUrlNavigationParams();
-                        hasLoadedRemoteState = true;
-                        syncState();
-                        renderCurrentView(true);
-                    }
-                }, error => {
-                    console.warn("Firebase read error, fallback to local:", error);
-                    isOnlineSync = false;
-                    setSyncStatus('error');
-                    if (!hasLoadedRemoteState) {
-                        hasLoadedRemoteState = true;
-                        renderCurrentView(true);
-                    }
-                });
+                    }, error => {
+                        console.error("Firebase read error, dostęp zablokowany lub brak sieci:", error);
+                        isOnlineSync = false;
+                        setSyncStatus('error');
+                        // KRYTYCZNE: NIE ustawiamy hasLoadedRemoteState = true w razie błędu odczytu,
+                        // aby stary stan z localStorage nie nadpisał bazy w chmurze!
+                    });
+                }
+
+                if (window.firebase?.auth) {
+                    let authInitiated = false;
+                    firebase.auth().onAuthStateChanged((user) => {
+                        if (user) {
+                            console.info("Firebase Auth aktywny (UID:", user.uid, ")");
+                            setupDatabaseListeners();
+                        } else if (!authInitiated) {
+                            authInitiated = true;
+                            firebase.auth().signInAnonymously().catch(authErr => {
+                                console.error("Błąd logowania anonimowego:", authErr);
+                                isOnlineSync = false;
+                                setSyncStatus('error');
+                            });
+                        }
+                    });
+                } else {
+                    setupDatabaseListeners();
+                }
             } catch(e) {
                 console.warn("Firebase offline or local fallback:", e);
                 isOnlineSync = false;
-                hasLoadedRemoteState = true;
                 setSyncStatus('local');
             }
 
@@ -2664,15 +2665,15 @@
                 console.warn('LocalStorage error:', e);
             }
             if (db) {
-                if (!hasLoadedRemoteState) {
-                    console.warn('Sync delayed: Firebase remote state not loaded yet. Skipping remote write.');
+                if (!hasLoadedRemoteState || !isOnlineSync) {
+                    console.warn('Sync pominięty: brak załadowanego stanu zdalnego lub brak aktywnego połączenia online. Pomijanie nadpisania chmury.');
                     return;
                 }
                 db.ref('siatka_master_state').set(AppState).catch(error => {
                     console.warn('Firebase write fallback:', error);
                     isOnlineSync = false;
                     setSyncStatus('error');
-                    showToast('Zapisano lokalnie — synchronizacja chwilowo niedostępna.');
+                    showToast('Zapisano lokalnie — błąd synchronizacji z chmurą.');
                 });
             }
         }
@@ -2687,9 +2688,8 @@
                     return remoteData;
                 }, (error, committed, snapshot) => {
                     if (error) {
-                        console.warn('Firebase transaction fallback:', error);
-                        mutatorFn(AppState);
-                        syncState();
+                        console.warn('Firebase transaction error:', error);
+                        showToast('Błąd zapisu w chmurze: ' + (error.message || 'Spróbuj ponownie'));
                         if (onDone) onDone(false, error);
                     } else if (!committed) {
                         if (onDone) onDone(false, null);
@@ -2701,13 +2701,14 @@
                         try {
                             localStorage.setItem('siatka_master_app_state', JSON.stringify(AppState));
                         } catch(e) {}
+                        renderCurrentView();
                         if (onDone) onDone(true, null);
                     }
                 });
             } else {
-                mutatorFn(AppState);
-                syncState();
-                if (onDone) onDone(true, null);
+                console.warn('atomicStateTransaction odrzucone: brak połączenia z bazą.');
+                showToast('Chwileczkę, trwa łączenie z chmurą... Spróbuj za sekundę.');
+                if (onDone) onDone(false, new Error('Brak połączenia z chmurą'));
             }
         }
 
@@ -6829,9 +6830,19 @@
                 if (confirm(msg)) {
                     AppState = parsed;
                     ensureValidState();
-                    syncState();
+                    hasLoadedRemoteState = true;
+                    isOnlineSync = true;
+                    if (db) {
+                        db.ref('siatka_master_state').set(AppState).then(() => {
+                            showToast("Pomyślnie przywrócono stan z pamięci urządzenia do chmury! 🎉");
+                        }).catch(e => {
+                            alert("Błąd zapisu w chmurze: " + (e.message || e));
+                        });
+                    }
+                    try {
+                        localStorage.setItem('siatka_master_app_state', JSON.stringify(AppState));
+                    } catch(e) {}
                     renderCurrentView();
-                    showToast("Pomyślnie przywrócono stan z pamięci urządzenia! 🎉");
                 }
             } catch(e) {
                 alert("Błąd odczytu danych z pamięci: " + e.message);
