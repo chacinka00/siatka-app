@@ -1103,11 +1103,14 @@
 
             <textarea id="shareMessagePreview" rows="7" readonly class="w-full bg-slate-950 border border-slate-700 rounded-2xl p-3 text-xs font-mono text-emerald-300 focus:outline-none"></textarea>
 
-            <div class="flex flex-col gap-2">
-                <button type="button" onclick="executeShare()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
-                    <span>🚀</span> Wyślij / Skopiuj do schowka
+            <div class="space-y-2">
+                <button type="button" onclick="copyShareTextOnly()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-extrabold py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                    <span>📋</span> Kopiuj gotowy tekst na Messengera
                 </button>
-                <button type="button" onclick="closeShareModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-2xl text-xs transition">
+                <button type="button" onclick="executeShare()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold py-2.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
+                    <span>📱</span> Udostępnij (Share sheet)
+                </button>
+                <button type="button" onclick="closeShareModal()" class="w-full bg-transparent hover:bg-slate-800/40 text-slate-400 text-xs py-1 transition text-center">
                     Zamknij
                 </button>
             </div>
@@ -1957,6 +1960,10 @@
             return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, 80);
         }
 
+        function roundMoney(val) {
+            return Math.round(((Number(val) || 0) + Number.EPSILON) * 100) / 100;
+        }
+
         function getLocalDateKey(date = new Date()) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -2148,13 +2155,59 @@
             return latest;
         }
 
+        function dismissRecentMvpBanner(matchDate) {
+            try {
+                sessionStorage.setItem('dismiss_mvp_banner_' + matchDate, '1');
+            } catch (e) {}
+            const bannerEl = document.getElementById('recentMvpQuickBanner');
+            if (bannerEl) {
+                bannerEl.classList.add('hidden');
+                bannerEl.innerHTML = '';
+            }
+        }
+
         function renderRecentMvpQuickBanner() {
             const bannerEl = document.getElementById('recentMvpQuickBanner');
             if (!bannerEl) return;
 
             const latest = getLatestPlayedMatchInfo();
-            // Pokaż powiadomienie dla meczów rozegranych do 4 dni wstecz (od piątku do wtorku)
-            if (!latest || latest.daysAgo < 0 || latest.daysAgo > 4) {
+            // Baner pokazujemy maksymalnie do poniedziałku (daysAgo <= 3). Od wtorku (daysAgo > 3) chowamy.
+            if (!latest || latest.daysAgo < 0 || latest.daysAgo > 3) {
+                bannerEl.classList.add('hidden');
+                bannerEl.innerHTML = '';
+                return;
+            }
+
+            // Jeśli użytkownik zamknął ten baner w bieżącej sesji:
+            try {
+                if (sessionStorage.getItem('dismiss_mvp_banner_' + latest.match.date) === '1') {
+                    bannerEl.classList.add('hidden');
+                    bannerEl.innerHTML = '';
+                    return;
+                }
+            } catch (e) {}
+
+            const isFinished = isMvpVotingFinished(latest.match);
+
+            // Gdy MVP jest już wybrany (głosowanie zakończone):
+            // Pokazujemy baner z wynikiem tylko w weekend (piątek po meczu, sobota, niedziela: daysAgo <= 2).
+            // W poniedziałek (daysAgo >= 3) już go NIE wyświetlamy - zaczyna się nowy tydzień i zapisy na kolejny mecz!
+            if (isFinished && latest.daysAgo >= 3) {
+                bannerEl.classList.add('hidden');
+                bannerEl.innerHTML = '';
+                return;
+            }
+
+            const attendees = (latest.match.attendees || []).slice(0, 12);
+            const votes = latest.match.votes || {};
+            const totalVotes = Object.keys(votes).length;
+            const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
+            const hasVoted = Boolean(loggedPlayer && votes[loggedPlayer]);
+
+            // W poniedziałek (daysAgo === 3), jeśli głosowanie jeszcze formalnie nie dobiegło końca:
+            // Pokazujemy baner WYŁĄCZNIE osobie, która uczestniczyła w meczu i jeszcze nie zagłosowała!
+            // Dla osób, które już zagłosowały lub nie grały, poniedziałek ma być czysty i wolny od starych banerów.
+            if (latest.daysAgo >= 3 && (!isAttendee || hasVoted)) {
                 bannerEl.classList.add('hidden');
                 bannerEl.innerHTML = '';
                 return;
@@ -2168,22 +2221,15 @@
                 return;
             }
 
-            const attendees = (latest.match.attendees || []).slice(0, 12);
-            const votes = latest.match.votes || {};
-            const totalVotes = Object.keys(votes).length;
-            const isFinished = isMvpVotingFinished(latest.match);
-            const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
-            const hasVoted = Boolean(loggedPlayer && votes[loggedPlayer]);
-
             bannerEl.classList.remove('hidden');
 
             if (!isFinished) {
                 if (isAttendee && !hasVoted) {
                     bannerEl.innerHTML = `
-                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse">
-                            <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse relative">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                 <span class="text-2xl shrink-0">🗳️</span>
-                                <div class="min-w-0">
+                                <div class="min-w-0 flex-1">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md">TWÓJ GŁOS!</span>
                                         <span class="text-xs font-black text-amber-200 truncate">MVP z piątku (${latest.match.date})</span>
@@ -2193,18 +2239,21 @@
                                     </p>
                                 </div>
                             </div>
-                            <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
-                                <span>Głosuj</span>
-                                <span>➔</span>
-                            </button>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button type="button" onclick="jumpToRecentMvp()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
+                                    <span>Głosuj</span>
+                                    <span>➔</span>
+                                </button>
+                                <button type="button" onclick="dismissRecentMvpBanner('${latest.match.date}')" title="Zamknij" class="text-amber-400/70 hover:text-white p-1 rounded-lg text-xs leading-none transition">✕</button>
+                            </div>
                         </div>
                     `;
                 } else {
                     bannerEl.innerHTML = `
-                        <div class="bg-gradient-to-r from-emerald-500/15 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md">
-                            <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="bg-gradient-to-r from-emerald-500/15 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md relative">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                 <span class="text-2xl shrink-0">🏆</span>
-                                <div class="min-w-0">
+                                <div class="min-w-0 flex-1">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md">Głosowanie MVP</span>
                                         <span class="text-xs font-bold text-white truncate">Mecz z piątku (${latest.match.date})</span>
@@ -2214,10 +2263,13 @@
                                     </p>
                                 </div>
                             </div>
-                            <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1 whitespace-nowrap">
-                                <span>Zobacz stan</span>
-                                <span>➔</span>
-                            </button>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button type="button" onclick="jumpToRecentMvp()" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1 whitespace-nowrap">
+                                    <span>Zobacz stan</span>
+                                    <span>➔</span>
+                                </button>
+                                <button type="button" onclick="dismissRecentMvpBanner('${latest.match.date}')" title="Zamknij" class="text-slate-400 hover:text-white p-1 rounded-lg text-xs leading-none transition">✕</button>
+                            </div>
                         </div>
                     `;
                 }
@@ -2235,10 +2287,10 @@
                 const winnerDisplay = winners.length > 0 ? winners.join(' & ') : 'Zakończone';
 
                 bannerEl.innerHTML = `
-                    <div class="bg-gradient-to-r from-amber-500/15 via-purple-950/20 to-slate-900 border border-amber-500/30 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md">
-                        <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="bg-gradient-to-r from-amber-500/15 via-purple-950/20 to-slate-900 border border-amber-500/30 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md relative">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
                             <span class="text-2xl shrink-0">👑</span>
-                            <div class="min-w-0">
+                            <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="text-[10px] font-black uppercase tracking-wider bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-md">MVP Ostatniego Meczu</span>
                                     <span class="text-xs font-bold text-white truncate">${latest.match.date}</span>
@@ -2248,10 +2300,13 @@
                                 </p>
                             </div>
                         </div>
-                        <button type="button" onclick="jumpToRecentMvp()" class="shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
-                            <span>Wyniki</span>
-                            <span>➔</span>
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="jumpToRecentMvp()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
+                                <span>Wyniki</span>
+                                <span>➔</span>
+                            </button>
+                            <button type="button" onclick="dismissRecentMvpBanner('${latest.match.date}')" title="Zamknij" class="text-amber-400/70 hover:text-white p-1 rounded-lg text-xs leading-none transition">✕</button>
+                        </div>
                     </div>
                 `;
             }
@@ -2386,8 +2441,13 @@
             hasInitiallySelectedMonth = true;
         }
 
+        let isAppBootstrapDone = false;
+
         // ================= INITIALIZATION & REALTIME SYNC =================
         function initApp() {
+            if (isAppBootstrapDone) return;
+            isAppBootstrapDone = true;
+
             checkUserAuthSession();
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -2400,6 +2460,15 @@
             handleUrlNavigationParams();
             renderCurrentView(true);
             setSyncStatus('connecting');
+
+            // Fallback timeout na wypadek braku odpowiedzi z sieci (np. słaby zasięg / offline)
+            setTimeout(() => {
+                if (!hasLoadedRemoteState) {
+                    hasLoadedRemoteState = true;
+                    if (!isOnlineSync) setSyncStatus('local');
+                    renderCurrentView(true);
+                }
+            }, 4500);
 
             try {
                 if (!window.firebase?.database) throw new Error('Firebase SDK unavailable');
@@ -2414,11 +2483,17 @@
                     console.info("Analytics info:", err);
                 }
 
+                db.ref('.info/connected').off('value');
                 db.ref('.info/connected').on('value', snapshot => {
                     isOnlineSync = snapshot.val() === true;
                     setSyncStatus(isOnlineSync ? 'live' : 'local');
+                }, error => {
+                    console.warn('.info/connected listener error:', error);
+                    isOnlineSync = false;
+                    setSyncStatus('local');
                 });
 
+                db.ref('siatka_master_state').off('value');
                 db.ref('siatka_master_state').on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
@@ -2449,10 +2524,15 @@
                     console.warn("Firebase read error, fallback to local:", error);
                     isOnlineSync = false;
                     setSyncStatus('error');
+                    if (!hasLoadedRemoteState) {
+                        hasLoadedRemoteState = true;
+                        renderCurrentView(true);
+                    }
                 });
             } catch(e) {
                 console.warn("Firebase offline or local fallback:", e);
                 isOnlineSync = false;
+                hasLoadedRemoteState = true;
                 setSyncStatus('local');
             }
 
@@ -2583,6 +2663,40 @@
                     setSyncStatus('error');
                     showToast('Zapisano lokalnie — synchronizacja chwilowo niedostępna.');
                 });
+            }
+        }
+
+        function atomicStateTransaction(mutatorFn, onDone) {
+            ensureValidState();
+            if (db && isOnlineSync && hasLoadedRemoteState) {
+                db.ref('siatka_master_state').transaction((remoteData) => {
+                    if (!remoteData) return remoteData;
+                    const res = mutatorFn(remoteData);
+                    if (res === false) return undefined; // Anuluj transakcję
+                    return remoteData;
+                }, (error, committed, snapshot) => {
+                    if (error) {
+                        console.warn('Firebase transaction fallback:', error);
+                        mutatorFn(AppState);
+                        syncState();
+                        if (onDone) onDone(false, error);
+                    } else if (!committed) {
+                        if (onDone) onDone(false, null);
+                    } else {
+                        if (snapshot && snapshot.val()) {
+                            AppState = snapshot.val();
+                            ensureValidState();
+                        }
+                        try {
+                            localStorage.setItem('siatka_master_app_state', JSON.stringify(AppState));
+                        } catch(e) {}
+                        if (onDone) onDone(true, null);
+                    }
+                });
+            } else {
+                mutatorFn(AppState);
+                syncState();
+                if (onDone) onDone(true, null);
             }
         }
 
@@ -3427,40 +3541,50 @@
             if (isMatchActionPending) return;
             isMatchActionPending = true;
 
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
+            const targetMonth = AppState.currentMonth;
+            const targetMatchIndex = AppState.currentMatchIndex;
+            const currentMatch = AppState.months[targetMonth]?.matches[targetMatchIndex];
+            if (!currentMatch) {
+                isMatchActionPending = false;
+                return;
+            }
 
-                if (!isAdmin) {
-                    const lockStatus = isMatchSignupLocked(currentMatch);
-                    if (lockStatus.locked) {
-                        showToast(lockStatus.message);
-                        return;
-                    }
-                }
-
-                if (!currentMatch.attendees) currentMatch.attendees = [];
-                if (currentMatch.attendees.includes(name)) {
-                    alert(`${name} jest już zapisany na ten mecz!`);
+            if (!isAdmin) {
+                const lockStatus = isMatchSignupLocked(currentMatch);
+                if (lockStatus.locked) {
+                    showToast(lockStatus.message);
+                    isMatchActionPending = false;
                     return;
                 }
+            }
 
-                currentMatch.attendees.push(name);
-                if (!AppState.all_players.includes(name)) {
-                    AppState.all_players.push(name);
-                    if (!AppState.player_skills) AppState.player_skills = {};
-                    AppState.player_skills[name] = 3;
+            atomicStateTransaction((state) => {
+                const m = state.months?.[targetMonth]?.matches?.[targetMatchIndex];
+                if (!m) return false;
+                if (!Array.isArray(m.attendees)) m.attendees = [];
+                if (m.attendees.includes(name)) {
+                    return false;
                 }
 
-                syncState();
-                renderCurrentView();
-                showToast(`Zapisano: ${name} ✅`);
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
-            }
+                m.attendees.push(name);
+                if (!Array.isArray(state.all_players)) state.all_players = [];
+                if (!state.all_players.includes(name)) {
+                    state.all_players.push(name);
+                    if (!state.player_skills) state.player_skills = {};
+                    state.player_skills[name] = 3;
+                }
+                return state;
+            }, (success, err) => {
+                isMatchActionPending = false;
+                if (success) {
+                    renderCurrentView();
+                    showToast(`Zapisano: ${name} ✅`);
+                } else if (err) {
+                    showToast(`Błąd zapisu: ${err.message || 'spróbuj ponownie'}`);
+                } else {
+                    alert(`${name} jest już zapisany na ten mecz!`);
+                }
+            });
         }
 
         function addPlayerToCurrentMatchFromSelect() {
@@ -3529,42 +3653,39 @@
             if (!confirm(`Czy na pewno usunąć z listy gracza: ${name}?`)) return;
             isMatchActionPending = true;
 
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
+            const targetMonth = AppState.currentMonth;
+            const targetMatchIndex = AppState.currentMatchIndex;
+            let wasInMainSquad = false;
+            let firstReserve = null;
 
-                const oldAttendees = currentMatch.attendees || [];
-                const wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
-                const firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
+            atomicStateTransaction((state) => {
+                const m = state.months?.[targetMonth]?.matches?.[targetMatchIndex];
+                if (!m || !Array.isArray(m.attendees)) return false;
 
-                currentMatch.attendees = oldAttendees.filter(p => p !== name);
-                if (currentMatch.votes && currentMatch.votes[name]) {
-                    delete currentMatch.votes[name];
+                const oldAttendees = m.attendees;
+                wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
+                firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
+
+                m.attendees = oldAttendees.filter(p => p !== name);
+                if (m.votes && m.votes[name]) {
+                    delete m.votes[name];
                 }
-                
-                if (currentMatch.teams) {
-                    if (Array.isArray(currentMatch.teams.dark)) {
-                        currentMatch.teams.dark = currentMatch.teams.dark.filter(p => p !== name);
+                if (m.teams) {
+                    if (Array.isArray(m.teams.dark)) m.teams.dark = m.teams.dark.filter(p => p !== name);
+                    if (Array.isArray(m.teams.light)) m.teams.light = m.teams.light.filter(p => p !== name);
+                }
+                return state;
+            }, (success) => {
+                isMatchActionPending = false;
+                if (success) {
+                    renderCurrentView();
+                    if (wasInMainSquad && firstReserve && firstReserve !== name) {
+                        showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
+                    } else {
+                        showToast(`Wypisano: ${name}`);
                     }
-                    if (Array.isArray(currentMatch.teams.light)) {
-                        currentMatch.teams.light = currentMatch.teams.light.filter(p => p !== name);
-                    }
                 }
-
-                syncState();
-                renderCurrentView();
-
-                if (wasInMainSquad && firstReserve && firstReserve !== name) {
-                    showToast(`Wypisano ${name}. ${firstReserve} awansował(a) do składu głównego! 🏐`);
-                } else {
-                    showToast(`Wypisano: ${name}`);
-                }
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
-            }
+            });
         }
 
         function clearCurrentMatchSquadWithAuth() {
@@ -4338,54 +4459,55 @@
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
 
             isMatchActionPending = true;
-            try {
-                const monthData = AppState.months[AppState.currentMonth];
-                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-                if (!currentMatch) return;
+            const targetMonth = AppState.currentMonth;
+            const targetMatchIndex = AppState.currentMatchIndex;
+            let isNowCompleted = false;
+            let totalVotes = 0;
+            let attendeesCount = 0;
 
-                if (!currentMatch.votes) currentMatch.votes = {};
-                currentMatch.votes[voter] = nominee;
+            atomicStateTransaction((state) => {
+                const m = state.months?.[targetMonth]?.matches?.[targetMatchIndex];
+                if (!m) return false;
+                if (!m.votes || typeof m.votes !== 'object') m.votes = {};
+                m.votes[voter] = nominee;
 
-                const attendees = (currentMatch.attendees || []).slice(0, 12);
-                const totalVotes = Object.keys(currentMatch.votes).length;
-                const isNowCompleted = totalVotes >= attendees.length && attendees.length > 0;
-
+                const attendees = (m.attendees || []).slice(0, 12);
+                attendeesCount = attendees.length;
+                totalVotes = Object.keys(m.votes).length;
+                isNowCompleted = totalVotes >= attendeesCount && attendeesCount > 0;
                 if (isNowCompleted) {
-                    currentMatch.mvpClosed = true;
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 120,
-                            spread: 80,
-                            origin: { y: 0.6 },
-                            colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                        });
-                    }
-                } else {
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 40,
-                            spread: 50,
-                            origin: { y: 0.7 },
-                            colors: ['#10b981', '#ffffff']
-                        });
-                    }
+                    m.mvpClosed = true;
                 }
-
-                syncState();
-                renderIntegratedMvpCard();
-                renderMatchesTab();
-                renderProfileTab();
-
-                if (isNowCompleted) {
-                    showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
-                } else {
-                    showToast(`Głos zapisany tajnie! (${totalVotes}/${attendees.length}) 🔒`);
+                return state;
+            }, (success) => {
+                isMatchActionPending = false;
+                if (success) {
+                    if (isNowCompleted) {
+                        if (typeof confetti === 'function') {
+                            confetti({
+                                particleCount: 120,
+                                spread: 80,
+                                origin: { y: 0.6 },
+                                colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                            });
+                        }
+                        showToast(`Wszyscy zagłosowali! Wyniki MVP zostały ujawnione! 🎉🏆`);
+                    } else {
+                        if (typeof confetti === 'function') {
+                            confetti({
+                                particleCount: 40,
+                                spread: 50,
+                                origin: { y: 0.7 },
+                                colors: ['#10b981', '#ffffff']
+                            });
+                        }
+                        showToast(`Głos zapisany tajnie! (${totalVotes}/${attendeesCount}) 🔒`);
+                    }
+                    renderIntegratedMvpCard();
+                    renderMatchesTab();
+                    renderProfileTab();
                 }
-            } finally {
-                setTimeout(() => {
-                    isMatchActionPending = false;
-                }, 350);
-            }
+            });
         }
 
         function toggleMvpFinalizeWithAuth() {
@@ -4525,27 +4647,27 @@
                 activeMatchesCount++;
                 const attendees = m.attendees || [];
                 const mainSquad = attendees.slice(0, 12);
-                const cost = m.cost !== undefined ? m.cost : 250;
-                totalHallCost += cost;
+                const cost = m.cost !== undefined ? Number(m.cost) : 250;
+                totalHallCost = roundMoney(totalHallCost + cost);
 
                 const costPerPerson = mainSquad.length > 0 ? (cost / mainSquad.length) : 0;
                 mainSquad.forEach(p => {
                     if (!playersMap[p]) playersMap[p] = { games: 0, costDue: 0, paid: 0 };
                     playersMap[p].games += 1;
-                    playersMap[p].costDue += costPerPerson;
+                    playersMap[p].costDue = roundMoney(playersMap[p].costDue + costPerPerson);
                 });
             });
 
             const rozliczenia = monthData.rozliczenia || {};
             Object.keys(rozliczenia).forEach(p => {
                 if (!playersMap[p]) playersMap[p] = { games: 0, costDue: 0, paid: 0 };
-                playersMap[p].paid = rozliczenia[p]?.paid || 0;
+                playersMap[p].paid = roundMoney(rozliczenia[p]?.paid || 0);
             });
 
             let totalPaid = 0, totalDue = 0;
             Object.values(playersMap).forEach(v => { 
-                totalPaid += v.paid; 
-                totalDue += v.costDue; 
+                totalPaid = roundMoney(totalPaid + v.paid); 
+                totalDue = roundMoney(totalDue + v.costDue); 
             });
 
             return { playersMap, totalHallCost, totalPaid, totalDue, matchesCount: activeMatchesCount };
@@ -4672,14 +4794,14 @@
             const allCount = playerNames.filter(p => (playersMap[p].games > 0 || playersMap[p].paid > 0)).length;
             const unpaidCount = playerNames.filter(p => {
                 const info = playersMap[p];
-                const saldo = info.paid - info.costDue;
-                const isPaid = (info.costDue > 0 && saldo >= -0.05);
+                const saldo = roundMoney(info.paid - info.costDue);
+                const isPaid = (info.costDue > 0 && saldo >= -0.01);
                 return !isPaid && (info.games > 0 || info.paid > 0);
             }).length;
             const paidCount = playerNames.filter(p => {
                 const info = playersMap[p];
-                const saldo = info.paid - info.costDue;
-                return (info.costDue > 0 && saldo >= -0.05);
+                const saldo = roundMoney(info.paid - info.costDue);
+                return (info.costDue > 0 && saldo >= -0.01);
             }).length;
 
             // Update Filter buttons UI with counts
@@ -4708,8 +4830,8 @@
 
             const filtered = playerNames.filter(p => {
                 const info = playersMap[p];
-                const saldo = info.paid - info.costDue;
-                const isPaid = (info.costDue > 0 && saldo >= -0.05);
+                const saldo = roundMoney(info.paid - info.costDue);
+                const isPaid = (info.costDue > 0 && saldo >= -0.01);
 
                 if (currentBillingFilter === 'unpaid' && isPaid) return false;
                 if (currentBillingFilter === 'paid' && !isPaid) return false;
@@ -4726,8 +4848,8 @@
                 const info = playersMap[p];
                 const due = info.costDue;
                 const paid = info.paid;
-                const saldo = paid - due;
-                const isPaid = (due > 0 && saldo >= -0.05);
+                const saldo = roundMoney(paid - due);
+                const isPaid = (due > 0 && saldo >= -0.01);
                 const isMe = (p === loggedPlayer);
                 const isGuest = !AppState.all_players.includes(p);
 
@@ -4823,25 +4945,35 @@
         }
 
         function updatePlayerPaidAmount(pName, amountStr) {
-            const val = Math.max(0, parseFloat(amountStr) || 0);
-            const monthData = AppState.months[AppState.currentMonth];
-            if (!monthData.rozliczenia) monthData.rozliczenia = {};
-            monthData.rozliczenia[pName] = { paid: val };
-            syncState();
-            renderBilling();
-            renderProfileTab();
-            showToast(`Zapisano wpłatę ${val.toFixed(2)} zł dla: ${pName}`);
+            const val = roundMoney(Math.max(0, parseFloat(amountStr) || 0));
+            const targetMonth = AppState.currentMonth;
+            atomicStateTransaction((state) => {
+                const mData = state.months?.[targetMonth];
+                if (!mData) return false;
+                if (!mData.rozliczenia) mData.rozliczenia = {};
+                mData.rozliczenia[pName] = { paid: val };
+                return state;
+            }, () => {
+                renderBilling();
+                renderProfileTab();
+                showToast(`Zapisano wpłatę ${val.toFixed(2)} zł dla: ${pName}`);
+            });
         }
 
         function setFullPayment(pName, dueAmount) {
-            const val = parseFloat(dueAmount) || 0;
-            const monthData = AppState.months[AppState.currentMonth];
-            if (!monthData.rozliczenia) monthData.rozliczenia = {};
-            monthData.rozliczenia[pName] = { paid: val };
-            syncState();
-            renderBilling();
-            renderProfileTab();
-            showToast(`Opłacono całość (${val.toFixed(2)} zł) dla: ${pName} ✅`);
+            const val = roundMoney(parseFloat(dueAmount) || 0);
+            const targetMonth = AppState.currentMonth;
+            atomicStateTransaction((state) => {
+                const mData = state.months?.[targetMonth];
+                if (!mData) return false;
+                if (!mData.rozliczenia) mData.rozliczenia = {};
+                mData.rozliczenia[pName] = { paid: val };
+                return state;
+            }, () => {
+                renderBilling();
+                renderProfileTab();
+                showToast(`Opłacono całość (${val.toFixed(2)} zł) dla: ${pName} ✅`);
+            });
         }
 
         function copyDebtorsListMessage() {
@@ -6915,7 +7047,25 @@
 
         function generateShareMessage(type = 'match') {
             const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            let currentMatch = monthData?.matches[AppState.currentMatchIndex];
+
+            // Inteligentny dobór meczu zależnie od typu ogłoszenia:
+            if (type === 'monday') {
+                // Dla zapisów na poniedziałek bierzemy najbliższy nadchodzący mecz
+                const upcoming = getPendingUpcomingMatch();
+                if (upcoming) currentMatch = upcoming;
+            } else if (type === 'mvp') {
+                // Dla MVP bierzemy ostatnio rozegrany mecz
+                const latestPlayed = getLatestPlayedMatchInfo();
+                if (latestPlayed && latestPlayed.match) currentMatch = latestPlayed.match;
+            } else if (type === 'match') {
+                // Jeśli obecnie wybrany mecz już minął, a jest zaplanowany kolejny, użyj kolejnego
+                if (currentMatch && isMatchFinished(currentMatch)) {
+                    const upcoming = getPendingUpcomingMatch();
+                    if (upcoming) currentMatch = upcoming;
+                }
+            }
+
             const dateStr = currentMatch ? currentMatch.date : "najbliższy piątek";
             const attendees = currentMatch ? (currentMatch.attendees || []) : [];
             const count = attendees.slice(0, 12).length;
@@ -6928,6 +7078,7 @@
             const end = AppState.settings?.gameEndTime || "21:45";
             const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
             const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const url = baseUrl;
             const mvpUrl = `${baseUrl}?tab=matches&subtab=mvp&match=${encodeURIComponent(dateStr)}`;
 
             if (type === 'monday') {
@@ -6944,7 +7095,7 @@
             } else if (type === 'billing') {
                 return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
                        `Ekipa, faktura za halę za ${AppState.currentMonth} podsumowana!\n\n` +
-                       `👉 Sprawdź swoją kwotę na stronie:\n${url}\n\n` +
+                       `👉 Sprawdź swoją kwotę na stronie:\n${baseUrl}\n\n` +
                        `💸 Przelew BLIK na numer: ${blikPhone} (w tytule imię i nazwisko)`;
             }
 
@@ -6953,7 +7104,7 @@
                    `📍 Miejsce: ${hall}\n` +
                    `📍 Skład: ${count}/12 (Wolne miejsca: ${freeSlots})\n` +
                    `💰 Koszt: ~${costPerPerson} zł / os.\n\n` +
-                   `📲 Zapisy / Losowarka Składów / Wyniki:\n${url}\n\n` +
+                   `📲 Zapisy / Losowarka Składów / Wyniki:\n${baseUrl}\n\n` +
                    `💸 BLIK: ${blikPhone}`;
         }
 
@@ -6962,7 +7113,18 @@
                 showToast("Tylko Organizator może generować ogłoszenia! 🔒");
                 return;
             }
-            selectTemplate('match');
+            // Inteligentny wybór domyślnego szablonu zależnie od dnia tygodnia:
+            // Poniedziałek - Czwartek: zapisy ('monday')
+            // Piątek: zapowiedź meczu ('match')
+            // Sobota - Niedziela: głosowanie MVP ('mvp')
+            const dayOfWeek = new Date().getDay();
+            let defaultTpl = 'match';
+            if (dayOfWeek >= 1 && dayOfWeek <= 4) {
+                defaultTpl = 'monday';
+            } else if (dayOfWeek === 6 || dayOfWeek === 0) {
+                defaultTpl = 'mvp';
+            }
+            selectTemplate(defaultTpl);
             document.getElementById('shareModal')?.classList.remove('hidden');
         }
 
@@ -7026,14 +7188,21 @@
             showToast("Zapisano godziny i ustawienia ekipy! 💾");
         }
 
+        async function copyShareTextOnly() {
+            const msg = document.getElementById('shareMessagePreview')?.value || '';
+            if (!msg) return;
+            await copyToClipboard(msg, "Skopiowano gotowe ogłoszenie! Wklej na Messengera 💬");
+            closeShareModal();
+        }
+
         async function executeShare() {
             const msg = document.getElementById('shareMessagePreview')?.value || '';
+            if (!msg) return;
             if (navigator.share) {
                 try {
                     await navigator.share({
                         title: "Siatkówka Piątek",
-                        text: msg,
-                        url: window.location.href
+                        text: msg
                     });
                     closeShareModal();
                     return;
@@ -7041,7 +7210,7 @@
                     if (e.name === 'AbortError') return;
                 }
             }
-            await copyToClipboard(msg, "Skopiowano treść do schowka!");
+            await copyToClipboard(msg, "Skopiowano gotowe ogłoszenie! Wklej na Messengera 💬");
             closeShareModal();
         }
 
