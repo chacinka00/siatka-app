@@ -2498,6 +2498,8 @@
                     db.ref('siatka_master_state').on('value', (snapshot) => {
                         const val = snapshot.val();
                         if (val) {
+                            const activeMonth = AppState.currentMonth;
+                            const activeMatchIdx = AppState.currentMatchIndex;
                             AppState = val;
                             ensureValidState();
                             checkUserAuthSession();
@@ -2508,6 +2510,13 @@
                                 hasLoadedRemoteState = true;
                                 renderCurrentView(true);
                             } else {
+                                if (activeMonth && AppState.months && AppState.months[activeMonth]) {
+                                    AppState.currentMonth = activeMonth;
+                                    const matchCount = AppState.months[activeMonth].matches?.length || 0;
+                                    if (typeof activeMatchIdx === 'number' && activeMatchIdx < matchCount) {
+                                        AppState.currentMatchIndex = activeMatchIdx;
+                                    }
+                                }
                                 renderCurrentView();
                             }
                         } else {
@@ -2695,7 +2704,16 @@
                         if (onDone) onDone(false, null);
                     } else {
                         if (snapshot && snapshot.val()) {
+                            const activeMonth = AppState.currentMonth;
+                            const activeMatchIdx = AppState.currentMatchIndex;
                             AppState = snapshot.val();
+                            if (activeMonth && AppState.months && AppState.months[activeMonth]) {
+                                AppState.currentMonth = activeMonth;
+                                const matchCount = AppState.months[activeMonth].matches?.length || 0;
+                                if (typeof activeMatchIdx === 'number' && activeMatchIdx < matchCount) {
+                                    AppState.currentMatchIndex = activeMatchIdx;
+                                }
+                            }
                             ensureValidState();
                         }
                         try {
