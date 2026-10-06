@@ -417,7 +417,7 @@
             <div id="matchMvpSubtabContainer" class="hidden space-y-4">
             <!-- ================= ZINTEGROWANE GŁOSOWANIE MVP MECZU NA EKRANIE GŁÓWNYM ================= -->
             <div id="integratedMvpCard" class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/50 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">🏆</span>
                         <div>
@@ -425,9 +425,15 @@
                             <p id="mvpMatchDateBadge" class="text-[11px] text-amber-400 font-semibold">Mecz: -</p>
                         </div>
                     </div>
-                    <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60">
-                        Głosy: 0/0
-                    </span>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="copyMvpVoteDirectLink()" title="Skopiuj bezpośredni link do głosowania dla ekipy na Messengerze" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition active:scale-95 shadow-sm cursor-pointer">
+                            <span>🔗</span>
+                            <span>Kopiuj link do głosowania</span>
+                        </button>
+                        <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60">
+                            Głosy: 0/0
+                        </span>
+                    </div>
                 </div>
 
                 <!-- MVP Winner Highlight Card (Secret during voting, Celebratory when finished) -->
@@ -1473,447 +1479,964 @@
         }
 
         const INITIAL_STATE = {
-            all_players: [
-                "Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", 
-                "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Albert Kubiak", 
-                "Iza Urbańska", "Kamil Kaczmarek", "Antek Kwaczek", "Kondziu Parszewski", "Bartek Kwaśny", 
-                "Julka Czaplicka", "Maciek Lewandowski", "Olga Bednarska", "Rafał Rojda", "Kuba Czapa Płocha", "Kamil Skołek"
-            ],
-            player_pins: {
-                "Michał Chaciński": ADMIN_PIN_HASH
-            },
-            player_avatars: {},
-            base_games: {
-                "Michał Chaciński": 8, "Zuzanna Rostkowska": 8, "Mikołaj Morawski": 8, "Filip Morawski": 8, "Kuba Parszewski": 6,
-                "Szymon Fronczak": 7, "Konrad Pazio": 7, "Piotrek Bany": 0, "Kacper Szafraniec": 6, "Albert Kubiak": 4,
-                "Iza Urbańska": 5, "Kamil Kaczmarek": 3, "Antek Kwaczek": 5, "Kondziu Parszewski": 2, "Czarek (od Kuby Parszewskiego)": 0,
-                "Bartek (od Kuby Parszewskiego)": 0, "Julka (od Alberta Kubiaka)": 0, "Kuba (od Kuby Parszewskiego)": 0,
-                "Maciek Lewandowski": 0, "Olga (od Maćka Lewandowskiego)": 0, "Rafał (od Antka Kwaczka)": 2,
-                "Rafał (od Maćka Lewandowskiego)": 0, "Magda (od Maćka Lewandowskiego)": 0, "Maciek (od Maćka Lewandowskiego)": 0,
-                "Artur Żbikowski": 0, "Patryk Wendorff": 4, "Karolina": 4, "Czapa": 2, "Piotr T": 1, "Kuba Żurawski": 0, "Kamil (od Konrada Pazio)": 0
-            },
-            player_skills: {
-                "Michał Chaciński": 3, "Zuzanna Rostkowska": 3, "Mikołaj Morawski": 3, "Filip Morawski": 3, "Kuba Parszewski": 3,
-                "Szymon Fronczak": 3, "Konrad Pazio": 3, "Piotrek Bany": 3, "Kacper Szafraniec": 3, "Albert Kubiak": 3,
-                "Iza Urbańska": 3, "Kamil Kaczmarek": 3, "Antek Kwaczek": 3, "Kondziu Parszewski": 3, "Czarek (od Kuby Parszewskiego)": 3,
-                "Bartek (od Kuby Parszewskiego)": 3, "Julka (od Alberta Kubiaka)": 3, "Kuba (od Kuby Parszewskiego)": 3,
-                "Maciek Lewandowski": 3, "Olga (od Maćka Lewandowskiego)": 3, "Rafał (od Antka Kwaczka)": 3,
-                "Rafał (od Maćka Lewandowskiego)": 3, "Magda (od Maćka Lewandowskiego)": 3, "Maciek (od Maćka Lewandowskiego)": 3,
-                "Artur Żbikowski": 3, "Patryk Wendorff": 3, "Karolina": 3, "Czapa": 3, "Piotr T": 3, "Kuba Żurawski": 3, "Kamil (od Konrada Pazio)": 3
-            },
-            months: {
-                "Lipiec": {
-                    matches: [
-                        { date: "2026-07-03", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kacper Szafraniec", "Albert Kubiak", "Iza Urbańska", "Kamil Kaczmarek", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-17", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Albert Kubiak", "Kondziu Parszewski", "Czarek (od Kuby Parszewskiego)", "Bartek (od Kuby Parszewskiego)", "Julka (od Alberta Kubiaka)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-24", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Antek Kwaczek", "Kuba (od Kuby Parszewskiego)", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)"], votes: {}, mvpClosed: true },
-                        { date: "2026-07-31", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Filip Morawski", "Kuba Parszewski", "Kondziu Parszewski", "Maciek Lewandowski", "Olga (od Maćka Lewandowskiego)", "Rafał (od Maćka Lewandowskiego)", "Magda (od Maćka Lewandowskiego)", "Maciek (od Maćka Lewandowskiego)", "Artur Żbikowski", "Kuba Żurawski"], votes: {}, mvpClosed: true }
+    "all_players":  [
+                        "Michał Chaciński",
+                        "Zuzanna Rostkowska",
+                        "Mikołaj Morawski",
+                        "Filip Morawski",
+                        "Kuba Parszewski",
+                        "Szymon Fronczak",
+                        "Konrad Pazio",
+                        "Piotrek Bany",
+                        "Kacper Szafraniec",
+                        "Albert Kubiak",
+                        "Iza Urbańska",
+                        "Kamil Kaczmarek",
+                        "Antek Kwaczek",
+                        "Kondziu Parszewski",
+                        "Czarek (od Kuby Parszewskiego)",
+                        "Bartek Kwaśny",
+                        "Julka Czaplicka",
+                        "Kuba (od Kuby Parszewskiego)",
+                        "Maciek Lewandowski",
+                        "Olga Bednarska",
+                        "Rafał Rojda",
+                        "Artur Żbikowski",
+                        "Patryk Wendorff",
+                        "Kuba Czapa Płocha",
+                        "Kuba Żurawski",
+                        "Kamil Skołek",
+                        "Kuba Muszyński",
+                        "Błażej Składnik",
+                        "Radek Zduńczyk",
+                        "Dominik Pazio"
                     ],
-                    rozliczenia: {
-                        "Michał Chaciński": { paid: 83.33 }, "Zuzanna Rostkowska": { paid: 83.33 }, "Mikołaj Morawski": { paid: 62.5 },
-                        "Filip Morawski": { paid: 62.5 }, "Kuba Parszewski": { paid: 83.33 }, "Szymon Fronczak": { paid: 62.5 },
-                        "Konrad Pazio": { paid: 62.5 }, "Piotrek Bany": { paid: 41.67 }, "Kacper Szafraniec": { paid: 20.83 },
-                        "Albert Kubiak": { paid: 41.67 }, "Iza Urbańska": { paid: 20.83 }, "Kamil Kaczmarek": { paid: 20.83 },
-                        "Antek Kwaczek": { paid: 20.83 }, "Kondziu Parszewski": { paid: 41.67 }, "Czarek (od Kuby Parszewskiego)": { paid: 20.83 },
-                        "Bartek (od Kuby Parszewskiego)": { paid: 20.83 }, "Julka (od Alberta Kubiaka)": { paid: 41.67 },
-                        "Kuba (od Kuby Parszewskiego)": { paid: 20.83 }, "Maciek Lewandowski": { paid: 41.67 },
-                        "Olga (od Maćka Lewandowskiego)": { paid: 41.67 }, "Rafał (od Maćka Lewandowskiego)": { paid: 20.83 },
-                        "Magda (od Maćka Lewandowskiego)": { paid: 20.83 }, "Maciek (od Maćka Lewandowskiego)": { paid: 20.83 },
-                        "Artur Żbikowski": { paid: 20.83 }, "Kuba Żurawski": { paid: 20.83 }
-                    }
-                },
-                "Sierpień": {
-                    matches: [
-                        { date: "2026-08-07", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Antek Kwaczek", "Rafał (od Maćka Lewandowskiego)", "Czapa", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-14", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kondziu Parszewski", "Kuba (od Kuby Parszewskiego)", "Artur Żbikowski", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-21", cost: 250.0, isCancelled: false, attendees: ["Michał Chaciński", "Zuzanna Rostkowska", "Mikołaj Morawski", "Filip Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Piotrek Bany", "Kacper Szafraniec", "Kondziu Parszewski", "Bartek (od Kuby Parszewskiego)", "Kuba (od Kuby Parszewskiego)"], votes: {}, mvpClosed: true },
-                        { date: "2026-08-28", cost: 250.0, isCancelled: false, attendees: ["Mikołaj Morawski", "Kuba Parszewski", "Szymon Fronczak", "Konrad Pazio", "Kamil (od Konrada Pazio)"], votes: {}, mvpClosed: false }
-                    ],
-                    rozliczenia: { "Mikołaj Morawski": { paid: 54.0 } }
-                },
-                "Wrzesień": {
-    "matches":  [
-                    {
-                        "attendees":  [
-                                          "Maciek Lewandowski",
-                                          "Zuzanna Rostkowska",
-                                          "Olga Bednarska",
-                                          "Konrad Pazio",
-                                          "Kamil Skołek",
-                                          "Kamil Kaczmarek",
-                                          "Mikołaj Morawski",
-                                          "Piotrek Bany",
-                                          "Filip Morawski",
-                                          "Kondziu Parszewski",
-                                          "Michał Chaciński",
-                                          "Kuba Parszewski"
-                                      ],
-                        "cost":  250,
-                        "date":  "2026-09-04",
-                        "isCancelled":  false,
-                        "mvpClosed":  true,
-                        "score":  "Drużyna Ciemna 3 : 2 Drużyna Jasna (25:21, 20:25, 25:17, 22:25, 25:22)",
-                        "teams":  {
-                                      "dark":  [
-                                                   "Kondziu Parszewski",
-                                                   "Mikołaj Morawski",
-                                                   "Piotrek Bany",
-                                                   "Olga Bednarska",
-                                                   "Konrad Pazio",
-                                                   "Kamil Kaczmarek"
-                                               ],
-                                      "darkName":  "Drużyna Ciemna",
-                                      "light":  [
-                                                    "Kuba Parszewski",
-                                                    "Michał Chaciński",
-                                                    "Kamil Skołek",
-                                                    "Filip Morawski",
-                                                    "Zuzanna Rostkowska",
-                                                    "Maciek Lewandowski"
+    "player_pins":  {
+                        "Albert Kubiak":  "454d7ecd54aaa822a5578d7368a62069fdfd338bc92b60dce2e4058f752fdb48",
+                        "Antek Kwaczek":  "31817c29479d384350f4b6c198bac5f49d2dc0116a0bedfde857997cc3a577e5",
+                        "Błażej Składnik":  "42970048b5aad8400e0f9559bfba54475a6800591374b1f488e5fd563c90f2e3",
+                        "Filip Morawski":  "e55bae04583be66999131ab78da5024fa6aa707d7a78f516fbc4921c255a54d5",
+                        "Iza Urbańska":  "a228578a6bbbd0956afc0fcafa4ae0ccfca9ac2a04a1dd6a5278a96d68ad2292",
+                        "Kacper Szafraniec":  "3056d371a2ccb841c4cd5068b06552b95f7be93db4f3fd4de6d018c0d660ab99",
+                        "Kamil Skołek":  "c6bafef817f99b9fcecde7027f717347c6eee99a3b9e0cdf78bfe62aba3df95b",
+                        "Kondziu Parszewski":  "56d955251c710e6b04cf1e4d29d8d17a6fcdfb8d5bd3b7802c3ec2d1476ed4f3",
+                        "Konrad Pazio":  "3056d371a2ccb841c4cd5068b06552b95f7be93db4f3fd4de6d018c0d660ab99",
+                        "Kuba Czapa Płocha":  "c7f99d7e55f8164b3bb322d68d73ac8d684b09f55f55d77bb17ace1335f2a154",
+                        "Kuba Parszewski":  "c7f99d7e55f8164b3bb322d68d73ac8d684b09f55f55d77bb17ace1335f2a154",
+                        "Maciek Lewandowski":  "3056d371a2ccb841c4cd5068b06552b95f7be93db4f3fd4de6d018c0d660ab99",
+                        "Michał Chaciński":  "756f6167f0e830b6ed92808096f04ceb547f022a63f63bdba0f6c8ceab37f45c",
+                        "Mikołaj Morawski":  "6313f2bda564d6e7636a4c2c17393b3d2b2564b0de8efbf8d390ed744f7dbb35",
+                        "Olga Bednarska":  "3056d371a2ccb841c4cd5068b06552b95f7be93db4f3fd4de6d018c0d660ab99",
+                        "Piotrek Bany":  "054a19ecd4ab64089a4a7f150d4c66a6a05b6b27c0eb3e11c035b17cd0e228a6",
+                        "Rafał Rojda":  "63a5d0b4dc7b4f83c54c1719e984b7732ffd8f1ba4ee812025de162313e3eb0c",
+                        "Szymon Fronczak":  "e7129893ede944c4de1747bb10f55feccc4c1ab700f6832b63ad63f5a0a4a649",
+                        "Zuzanna Rostkowska":  "259c944144f70aaef05ea2e6b52ae8ec81c2ab273a2b9d6dc76ecca60b2db91e"
+                    },
+    "player_avatars":  {
+                           "Filip Morawski":  "data:image/jpeg;base64,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",
+                           "Konrad Pazio":  "data:image/webp;base64,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",
+                           "Michał Chaciński":  "data:image/jpeg;base64,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",
+                           "Mikołaj Morawski":  "data:image/jpeg;base64,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",
+                           "Piotrek Bany":  "data:image/jpeg;base64,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",
+                           "Szymon Fronczak":  "data:image/jpeg;base64,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",
+                           "Zuzanna Rostkowska":  "data:image/jpeg;base64,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"
+                       },
+    "base_games":  {
+                       "Albert Kubiak":  4,
+                       "Antek Kwaczek":  5,
+                       "Artur Żbikowski":  0,
+                       "Bartek Kwaśny":  0,
+                       "Czarek (od Kuby Parszewskiego)":  0,
+                       "Filip Morawski":  8,
+                       "Iza Urbańska":  5,
+                       "Julka (od Alberta Kubiaka)":  0,
+                       "Julka Czaplicka":  0,
+                       "Kacper Szafraniec":  6,
+                       "Kamil Kaczmarek":  3,
+                       "Kamil Skołek":  0,
+                       "Karolina Stanicka":  4,
+                       "Kondziu Parszewski":  2,
+                       "Konrad Pazio":  7,
+                       "Kuba (od Kuby Parszewskiego)":  0,
+                       "Kuba Czapa Płocha":  2,
+                       "Kuba Parszewski":  6,
+                       "Kuba Żurawski":  0,
+                       "Maciek (od Maćka Lewandowskiego)":  0,
+                       "Maciek Lewandowski":  0,
+                       "Magda (od Maćka Lewandowskiego)":  0,
+                       "Michał Chaciński":  8,
+                       "Mikołaj Morawski":  8,
+                       "Olga (od Maćka Lewandowskiego)":  0,
+                       "Olga Bednarska":  0,
+                       "Patryk Wendorff":  4,
+                       "Piotr T":  1,
+                       "Piotr Tchórzewski":  1,
+                       "Piotrek Bany":  0,
+                       "Rafał (od Maćka Lewandowskiego)":  0,
+                       "Rafał Rojda":  2,
+                       "Szymon Fronczak":  7,
+                       "Zuzanna Rostkowska":  8
+                   },
+    "player_skills":  {
+                          "Albert Kubiak":  3,
+                          "Antek Kwaczek":  5,
+                          "Artur Żbikowski":  2,
+                          "Bartek Kwaśny":  5,
+                          "Błażej Składnik":  5,
+                          "Czarek (od Kuby Parszewskiego)":  4,
+                          "Dominik Pazio":  3,
+                          "Filip Morawski":  4,
+                          "Iza Urbańska":  2,
+                          "Julka Czaplicka":  3,
+                          "Kacper Szafraniec":  3,
+                          "Kamil Kaczmarek":  3,
+                          "Kamil Skołek":  3,
+                          "Kondziu Parszewski":  4,
+                          "Konrad Pazio":  3,
+                          "Kuba (od Kuby Parszewskiego)":  4,
+                          "Kuba Czapa Płocha":  4,
+                          "Kuba Muszyński":  4,
+                          "Kuba Parszewski":  4,
+                          "Kuba Żurawski":  4,
+                          "Maciek Lewandowski":  2,
+                          "Michał Chaciński":  5,
+                          "Mikołaj Morawski":  5,
+                          "Olga Bednarska":  3,
+                          "Patryk Wendorff":  3,
+                          "Piotrek Bany":  4,
+                          "Radek Zduńczyk":  3,
+                          "Rafał Rojda":  4,
+                          "Szymon Fronczak":  4,
+                          "Zuzanna Rostkowska":  3
+                      },
+    "settings":  {
+                     "blikPhone":  "517 077 482",
+                     "gameEndTime":  "21:45",
+                     "hallAddress":  "ul. Myśliborska 25 (hala)",
+                     "hallCost":  250,
+                     "startTime":  "20:00",
+                     "warmupTime":  "19:45"
+                 },
+    "months":  {
+                   "Grudzień":  {
+                                    "matches":  [
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-12-04",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-12-11",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-12-18",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-12-25",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    }
+                                                ]
+                                },
+                   "Lipiec":  {
+                                  "matches":  [
+                                                  {
+                                                      "attendees":  [
+                                                                        "Michał Chaciński",
+                                                                        "Zuzanna Rostkowska",
+                                                                        "Mikołaj Morawski",
+                                                                        "Filip Morawski",
+                                                                        "Kuba Parszewski",
+                                                                        "Szymon Fronczak",
+                                                                        "Konrad Pazio",
+                                                                        "Kacper Szafraniec",
+                                                                        "Albert Kubiak",
+                                                                        "Iza Urbańska",
+                                                                        "Kamil Kaczmarek",
+                                                                        "Julka Czaplicka"
+                                                                    ],
+                                                      "cost":  250,
+                                                      "date":  "2026-07-03"
+                                                  },
+                                                  {
+                                                      "attendees":  [
+                                                                        "Michał Chaciński",
+                                                                        "Zuzanna Rostkowska",
+                                                                        "Mikołaj Morawski",
+                                                                        "Kuba Parszewski",
+                                                                        "Szymon Fronczak",
+                                                                        "Konrad Pazio",
+                                                                        "Piotrek Bany",
+                                                                        "Albert Kubiak",
+                                                                        "Kondziu Parszewski",
+                                                                        "Czarek (od Kuby Parszewskiego)",
+                                                                        "Bartek Kwaśny",
+                                                                        "Julka Czaplicka"
+                                                                    ],
+                                                      "cost":  250,
+                                                      "date":  "2026-07-17"
+                                                  },
+                                                  {
+                                                      "attendees":  [
+                                                                        "Michał Chaciński",
+                                                                        "Zuzanna Rostkowska",
+                                                                        "Mikołaj Morawski",
+                                                                        "Filip Morawski",
+                                                                        "Kuba Parszewski",
+                                                                        "Szymon Fronczak",
+                                                                        "Konrad Pazio",
+                                                                        "Piotrek Bany",
+                                                                        "Antek Kwaczek",
+                                                                        "Kuba (od Kuby Parszewskiego)",
+                                                                        "Maciek Lewandowski",
+                                                                        "Olga Bednarska"
+                                                                    ],
+                                                      "cost":  250,
+                                                      "date":  "2026-07-24"
+                                                  },
+                                                  {
+                                                      "attendees":  [
+                                                                        "Michał Chaciński",
+                                                                        "Zuzanna Rostkowska",
+                                                                        "Filip Morawski",
+                                                                        "Kuba Parszewski",
+                                                                        "Kondziu Parszewski",
+                                                                        "Maciek Lewandowski",
+                                                                        "Olga Bednarska",
+                                                                        "Rafał (od Maćka Lewandowskiego)",
+                                                                        "Magda (od Maćka Lewandowskiego)",
+                                                                        "Maciek (od Maćka Lewandowskiego)",
+                                                                        "Artur Żbikowski",
+                                                                        "Kuba Żurawski"
+                                                                    ],
+                                                      "cost":  250,
+                                                      "date":  "2026-07-31"
+                                                  }
+                                              ],
+                                  "rozliczenia":  {
+                                                      "Albert Kubiak":  {
+                                                                            "paid":  41.67
+                                                                        },
+                                                      "Antek Kwaczek":  {
+                                                                            "paid":  20.83
+                                                                        },
+                                                      "Artur Żbikowski":  {
+                                                                              "paid":  20.83
+                                                                          },
+                                                      "Bartek Kwaśny":  {
+                                                                            "paid":  20.83
+                                                                        },
+                                                      "Czarek (od Kuby Parszewskiego)":  {
+                                                                                             "paid":  20.83
+                                                                                         },
+                                                      "Filip Morawski":  {
+                                                                             "paid":  62.5
+                                                                         },
+                                                      "Iza Urbańska":  {
+                                                                           "paid":  20.83
+                                                                       },
+                                                      "Julka Czaplicka":  {
+                                                                              "paid":  41.67
+                                                                          },
+                                                      "Kacper Szafraniec":  {
+                                                                                "paid":  20.83
+                                                                            },
+                                                      "Kamil Kaczmarek":  {
+                                                                              "paid":  20.83
+                                                                          },
+                                                      "Kamil Skołek":  {
+                                                                           "paid":  0
+                                                                       },
+                                                      "Karolina Stanicka":  {
+                                                                                "paid":  0
+                                                                            },
+                                                      "Kondziu Parszewski":  {
+                                                                                 "paid":  41.67
+                                                                             },
+                                                      "Konrad Pazio":  {
+                                                                           "paid":  62.5
+                                                                       },
+                                                      "Kuba (od Kuby Parszewskiego)":  {
+                                                                                           "paid":  20.83
+                                                                                       },
+                                                      "Kuba Czapa Płocha":  {
+                                                                                "paid":  0
+                                                                            },
+                                                      "Kuba Parszewski":  {
+                                                                              "paid":  83.33
+                                                                          },
+                                                      "Kuba Żurawski":  {
+                                                                            "paid":  20.83
+                                                                        },
+                                                      "Maciek (od Maćka Lewandowskiego)":  {
+                                                                                               "paid":  20.83
+                                                                                           },
+                                                      "Maciek Lewandowski":  {
+                                                                                 "paid":  41.67
+                                                                             },
+                                                      "Magda (od Maćka Lewandowskiego)":  {
+                                                                                              "paid":  20.83
+                                                                                          },
+                                                      "Michał Chaciński":  {
+                                                                               "paid":  83.33
+                                                                           },
+                                                      "Mikołaj Morawski":  {
+                                                                               "paid":  62.5
+                                                                           },
+                                                      "Olga Bednarska":  {
+                                                                             "paid":  41.67
+                                                                         },
+                                                      "Patryk Wendorff":  {
+                                                                              "paid":  0
+                                                                          },
+                                                      "Piotr Tchórzewski":  {
+                                                                                "paid":  0
+                                                                            },
+                                                      "Piotrek Bany":  {
+                                                                           "paid":  41.67
+                                                                       },
+                                                      "Rafał (od Maćka Lewandowskiego)":  {
+                                                                                              "paid":  20.83
+                                                                                          },
+                                                      "Rafał Rojda":  {
+                                                                          "paid":  0
+                                                                      },
+                                                      "Szymon Fronczak":  {
+                                                                              "paid":  62.5
+                                                                          },
+                                                      "Zuzanna Rostkowska":  {
+                                                                                 "paid":  83.33
+                                                                             }
+                                                  }
+                              },
+                   "Listopad":  {
+                                    "matches":  [
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-11-06",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-11-13",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-11-20",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-11-27",
+                                                        "isCancelled":  false,
+                                                        "score":  ""
+                                                    }
+                                                ]
+                                },
+                   "Październik":  {
+                                       "matches":  [
+                                                       {
+                                                           "attendees":  [
+                                                                             "Michał Chaciński",
+                                                                             "Kacper Szafraniec",
+                                                                             "Radek Zduńczyk",
+                                                                             "Konrad Pazio",
+                                                                             "Kuba Parszewski",
+                                                                             "Zuzanna Rostkowska",
+                                                                             "Maciek Lewandowski",
+                                                                             "Olga Bednarska",
+                                                                             "Albert Kubiak",
+                                                                             "Mikołaj Morawski",
+                                                                             "Szymon Fronczak",
+                                                                             "Dominik Pazio"
+                                                                         ],
+                                                           "cost":  250,
+                                                           "date":  "2026-10-02",
+                                                           "isCancelled":  false,
+                                                           "mvpClosed":  true,
+                                                           "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (29:27, 24:26, 25:27, 19:25)",
+                                                           "teams":  {
+                                                                         "dark":  [
+                                                                                      "Kacper Szafraniec",
+                                                                                      "Radek Zduńczyk",
+                                                                                      "Olga Bednarska",
+                                                                                      "Mikołaj Morawski",
+                                                                                      "Szymon Fronczak",
+                                                                                      "Dominik Pazio"
+                                                                                  ],
+                                                                         "darkName":  "Drużyna Ciemna",
+                                                                         "light":  [
+                                                                                       "Zuzanna Rostkowska",
+                                                                                       "Michał Chaciński",
+                                                                                       "Albert Kubiak",
+                                                                                       "Maciek Lewandowski",
+                                                                                       "Kuba Parszewski",
+                                                                                       "Konrad Pazio"
+                                                                                   ],
+                                                                         "lightName":  "Drużyna Jasna"
+                                                                     },
+                                                           "votes":  {
+                                                                         "Albert Kubiak":  "Maciek Lewandowski",
+                                                                         "Dominik Pazio":  "Mikołaj Morawski",
+                                                                         "Kacper Szafraniec":  "Maciek Lewandowski",
+                                                                         "Konrad Pazio":  "Kuba Parszewski",
+                                                                         "Kuba Parszewski":  "Mikołaj Morawski",
+                                                                         "Maciek Lewandowski":  "Kuba Parszewski",
+                                                                         "Michał Chaciński":  "Maciek Lewandowski",
+                                                                         "Mikołaj Morawski":  "Szymon Fronczak",
+                                                                         "Olga Bednarska":  "Maciek Lewandowski",
+                                                                         "Radek Zduńczyk":  "Kuba Parszewski",
+                                                                         "Szymon Fronczak":  "Konrad Pazio",
+                                                                         "Zuzanna Rostkowska":  "Szymon Fronczak"
+                                                                     }
+                                                       },
+                                                       {
+                                                           "attendees":  [
+                                                                             "Szymon Fronczak",
+                                                                             "Michał Chaciński",
+                                                                             "Konrad Pazio",
+                                                                             "Zuzanna Rostkowska",
+                                                                             "Mikołaj Morawski",
+                                                                             "Albert Kubiak",
+                                                                             "Iza Urbańska",
+                                                                             "Filip Morawski",
+                                                                             "Radek Zduńczyk"
+                                                                         ],
+                                                           "cost":  250,
+                                                           "date":  "2026-10-09",
+                                                           "isCancelled":  false,
+                                                           "score":  ""
+                                                       },
+                                                       {
+                                                           "cost":  250,
+                                                           "date":  "2026-10-16",
+                                                           "isCancelled":  false,
+                                                           "score":  ""
+                                                       },
+                                                       {
+                                                           "cost":  250,
+                                                           "date":  "2026-10-23",
+                                                           "isCancelled":  false,
+                                                           "score":  ""
+                                                       },
+                                                       {
+                                                           "cost":  250,
+                                                           "date":  "2026-10-30",
+                                                           "isCancelled":  false,
+                                                           "score":  ""
+                                                       }
+                                                   ],
+                                       "rozliczenia":  {
+                                                           "Kuba Parszewski":  {
+                                                                                   "paid":  0
+                                                                               },
+                                                           "Maciek Lewandowski":  {
+                                                                                      "paid":  0
+                                                                                  },
+                                                           "Mikołaj Morawski":  {
+                                                                                    "paid":  0
+                                                                                },
+                                                           "Olga Bednarska":  {
+                                                                                  "paid":  0
+                                                                              },
+                                                           "Radek Zduńczyk":  {
+                                                                                  "paid":  20.83
+                                                                              }
+                                                       }
+                                   },
+                   "Sierpień":  {
+                                    "matches":  [
+                                                    {
+                                                        "attendees":  [
+                                                                          "Michał Chaciński",
+                                                                          "Zuzanna Rostkowska",
+                                                                          "Mikołaj Morawski",
+                                                                          "Filip Morawski",
+                                                                          "Szymon Fronczak",
+                                                                          "Konrad Pazio",
+                                                                          "Piotrek Bany",
+                                                                          "Kacper Szafraniec",
+                                                                          "Antek Kwaczek",
+                                                                          "Kuba Czapa Płocha",
+                                                                          "Kamil Skołek",
+                                                                          "Rafał Rojda"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-08-07"
+                                                    },
+                                                    {
+                                                        "attendees":  [
+                                                                          "Michał Chaciński",
+                                                                          "Zuzanna Rostkowska",
+                                                                          "Mikołaj Morawski",
+                                                                          "Filip Morawski",
+                                                                          "Kuba Parszewski",
+                                                                          "Szymon Fronczak",
+                                                                          "Konrad Pazio",
+                                                                          "Piotrek Bany",
+                                                                          "Kondziu Parszewski",
+                                                                          "Kuba (od Kuby Parszewskiego)",
+                                                                          "Artur Żbikowski",
+                                                                          "Kamil Skołek"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-08-14"
+                                                    },
+                                                    {
+                                                        "attendees":  [
+                                                                          "Michał Chaciński",
+                                                                          "Zuzanna Rostkowska",
+                                                                          "Mikołaj Morawski",
+                                                                          "Filip Morawski",
+                                                                          "Kuba Parszewski",
+                                                                          "Szymon Fronczak",
+                                                                          "Konrad Pazio",
+                                                                          "Piotrek Bany",
+                                                                          "Kacper Szafraniec",
+                                                                          "Kondziu Parszewski",
+                                                                          "Bartek Kwaśny",
+                                                                          "Kuba (od Kuby Parszewskiego)"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-08-21",
+                                                        "votes":  {
+                                                                      "Michał Chaciński":  "Bartek Kwaśny"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "cost":  250,
+                                                        "date":  "2026-08-28",
+                                                        "isCancelled":  true
+                                                    }
                                                 ],
-                                      "lightName":  "Drużyna Jasna"
-                                  },
-                        "votes":  {
-                                      "Filip Morawski":  "Mikołaj Morawski",
-                                      "Kamil Kaczmarek":  "Mikołaj Morawski",
-                                      "Kamil Skołek":  "Maciek Lewandowski",
-                                      "Kondziu Parszewski":  "Mikołaj Morawski",
-                                      "Konrad Pazio":  "Mikołaj Morawski",
-                                      "Kuba Parszewski":  "Maciek Lewandowski",
-                                      "Maciek Lewandowski":  "Olga Bednarska",
-                                      "Michał Chaciński":  "Kondziu Parszewski",
-                                      "Mikołaj Morawski":  "Michał Chaciński",
-                                      "Olga Bednarska":  "Maciek Lewandowski",
-                                      "Piotrek Bany":  "Mikołaj Morawski",
-                                      "Zuzanna Rostkowska":  "Maciek Lewandowski"
-                                  }
-                    },
-                    {
-                        "attendees":  [
-                                          "Michał Chaciński",
-                                          "Mikołaj Morawski",
-                                          "Kamil Skołek",
-                                          "Szymon Fronczak",
-                                          "Filip Morawski",
-                                          "Kacper Szafraniec",
-                                          "Antek Kwaczek",
-                                          "Kondziu Parszewski",
-                                          "Rafał Rojda",
-                                          "Kuba Czapa Płocha",
-                                          "Kuba Muszyński",
-                                          "Błażej Składnik"
-                                      ],
-                        "cost":  250,
-                        "date":  "2026-09-11",
-                        "isCancelled":  false,
-                        "mvpClosed":  true,
-                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (19:25, 23:25, 25:14, 18:25)",
-                        "teams":  {
-                                      "dark":  [
-                                                   "Michał Chaciński",
-                                                   "Mikołaj Morawski",
-                                                   "Kamil Skołek",
-                                                   "Szymon Fronczak",
-                                                   "Filip Morawski",
-                                                   "Kondziu Parszewski"
-                                               ],
-                                      "darkName":  "Drużyna Ciemna",
-                                      "light":  [
-                                                    "Kacper Szafraniec",
-                                                    "Antek Kwaczek",
-                                                    "Rafał Rojda",
-                                                    "Kuba Czapa Płocha",
-                                                    "Kuba Muszyński",
-                                                    "Błażej Składnik"
+                                    "rozliczenia":  {
+                                                        "Albert Kubiak":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Antek Kwaczek":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Artur Żbikowski":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Bartek Kwaśny":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Czarek (od Kuby Parszewskiego)":  {
+                                                                                               "paid":  0
+                                                                                           },
+                                                        "Filip Morawski":  {
+                                                                               "paid":  0
+                                                                           },
+                                                        "Iza Urbańska":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Julka Czaplicka":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Kacper Szafraniec":  {
+                                                                                  "paid":  41.66
+                                                                              },
+                                                        "Kamil Kaczmarek":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Kamil Skołek":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Karolina Stanicka":  {
+                                                                                  "paid":  0
+                                                                              },
+                                                        "Kondziu Parszewski":  {
+                                                                                   "paid":  0
+                                                                               },
+                                                        "Konrad Pazio":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Kuba (od Kuby Parszewskiego)":  {
+                                                                                             "paid":  0
+                                                                                         },
+                                                        "Kuba Czapa Płocha":  {
+                                                                                  "paid":  20.83
+                                                                              },
+                                                        "Kuba Parszewski":  {
+                                                                                "paid":  41.66
+                                                                            },
+                                                        "Kuba Żurawski":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Maciek (od Maćka Lewandowskiego)":  {
+                                                                                                 "paid":  0
+                                                                                             },
+                                                        "Maciek Lewandowski":  {
+                                                                                   "paid":  0
+                                                                               },
+                                                        "Magda (od Maćka Lewandowskiego)":  {
+                                                                                                "paid":  0
+                                                                                            },
+                                                        "Michał Chaciński":  {
+                                                                                 "paid":  62.49
+                                                                             },
+                                                        "Mikołaj Morawski":  {
+                                                                                 "paid":  62.49
+                                                                             },
+                                                        "Olga Bednarska":  {
+                                                                               "paid":  0
+                                                                           },
+                                                        "Patryk Wendorff":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Piotr Tchórzewski":  {
+                                                                                  "paid":  0
+                                                                              },
+                                                        "Piotrek Bany":  {
+                                                                             "paid":  62.49
+                                                                         },
+                                                        "Rafał (od Maćka Lewandowskiego)":  {
+                                                                                                "paid":  0
+                                                                                            },
+                                                        "Rafał Rojda":  {
+                                                                            "paid":  20.83
+                                                                        },
+                                                        "Szymon Fronczak":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Zuzanna Rostkowska":  {
+                                                                                   "paid":  0
+                                                                               }
+                                                    }
+                                },
+                   "Wrzesień":  {
+                                    "matches":  [
+                                                    {
+                                                        "attendees":  [
+                                                                          "Maciek Lewandowski",
+                                                                          "Zuzanna Rostkowska",
+                                                                          "Olga Bednarska",
+                                                                          "Konrad Pazio",
+                                                                          "Kamil Skołek",
+                                                                          "Kamil Kaczmarek",
+                                                                          "Mikołaj Morawski",
+                                                                          "Piotrek Bany",
+                                                                          "Filip Morawski",
+                                                                          "Kondziu Parszewski",
+                                                                          "Michał Chaciński",
+                                                                          "Kuba Parszewski"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-09-04",
+                                                        "isCancelled":  false,
+                                                        "score":  "Drużyna Ciemna 3 : 2 Drużyna Jasna (25:21, 20:25, 25:17, 22:25, 25:22)",
+                                                        "teams":  {
+                                                                      "dark":  [
+                                                                                   "Kondziu Parszewski",
+                                                                                   "Mikołaj Morawski",
+                                                                                   "Piotrek Bany",
+                                                                                   "Olga Bednarska",
+                                                                                   "Konrad Pazio",
+                                                                                   "Kamil Kaczmarek"
+                                                                               ],
+                                                                      "darkName":  "Drużyna Ciemna",
+                                                                      "light":  [
+                                                                                    "Kuba Parszewski",
+                                                                                    "Michał Chaciński",
+                                                                                    "Kamil Skołek",
+                                                                                    "Filip Morawski",
+                                                                                    "Zuzanna Rostkowska",
+                                                                                    "Maciek Lewandowski"
+                                                                                ],
+                                                                      "lightName":  "Drużyna Jasna"
+                                                                  },
+                                                        "votes":  {
+                                                                      "Filip Morawski":  "Mikołaj Morawski",
+                                                                      "Kamil Kaczmarek":  "Mikołaj Morawski",
+                                                                      "Kamil Skołek":  "Maciek Lewandowski",
+                                                                      "Kondziu Parszewski":  "Mikołaj Morawski",
+                                                                      "Konrad Pazio":  "Mikołaj Morawski",
+                                                                      "Kuba Parszewski":  "Maciek Lewandowski",
+                                                                      "Maciek Lewandowski":  "Olga Bednarska",
+                                                                      "Michał Chaciński":  "Kondziu Parszewski",
+                                                                      "Mikołaj Morawski":  "Michał Chaciński",
+                                                                      "Olga Bednarska":  "Maciek Lewandowski",
+                                                                      "Piotrek Bany":  "Kamil Kaczmarek",
+                                                                      "Zuzanna Rostkowska":  "Maciek Lewandowski"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "attendees":  [
+                                                                          "Michał Chaciński",
+                                                                          "Mikołaj Morawski",
+                                                                          "Kamil Skołek",
+                                                                          "Szymon Fronczak",
+                                                                          "Filip Morawski",
+                                                                          "Kacper Szafraniec",
+                                                                          "Antek Kwaczek",
+                                                                          "Kondziu Parszewski",
+                                                                          "Rafał Rojda",
+                                                                          "Kuba Czapa Płocha",
+                                                                          "Kuba Muszyński",
+                                                                          "Błażej Składnik"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-09-11",
+                                                        "mvpClosed":  true,
+                                                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (19:25, 23:25, 25:14, 18:25)",
+                                                        "teams":  {
+                                                                      "dark":  [
+                                                                                   "Michał Chaciński",
+                                                                                   "Mikołaj Morawski",
+                                                                                   "Kamil Skołek",
+                                                                                   "Szymon Fronczak",
+                                                                                   "Filip Morawski",
+                                                                                   "Kondziu Parszewski"
+                                                                               ],
+                                                                      "darkName":  "Drużyna Ciemna",
+                                                                      "light":  [
+                                                                                    "Kacper Szafraniec",
+                                                                                    "Antek Kwaczek",
+                                                                                    "Rafał Rojda",
+                                                                                    "Kuba Czapa Płocha",
+                                                                                    "Kuba Muszyński",
+                                                                                    "Błażej Składnik"
+                                                                                ],
+                                                                      "lightName":  "Drużyna Jasna"
+                                                                  },
+                                                        "votes":  {
+                                                                      "Antek Kwaczek":  "Kuba Czapa Płocha",
+                                                                      "Błażej Składnik":  "Kuba Czapa Płocha",
+                                                                      "Filip Morawski":  "Błażej Składnik",
+                                                                      "Kacper Szafraniec":  "Błażej Składnik",
+                                                                      "Kamil Skołek":  "Błażej Składnik",
+                                                                      "Kondziu Parszewski":  "Błażej Składnik",
+                                                                      "Kuba Czapa Płocha":  "Błażej Składnik",
+                                                                      "Kuba Muszyński":  "Kuba Czapa Płocha",
+                                                                      "Michał Chaciński":  "Błażej Składnik",
+                                                                      "Mikołaj Morawski":  "Błażej Składnik",
+                                                                      "Rafał Rojda":  "Błażej Składnik",
+                                                                      "Szymon Fronczak":  "Błażej Składnik"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "attendees":  [
+                                                                          "Mikołaj Morawski",
+                                                                          "Michał Chaciński",
+                                                                          "Kuba Parszewski",
+                                                                          "Filip Morawski",
+                                                                          "Antek Kwaczek",
+                                                                          "Piotrek Bany",
+                                                                          "Kuba Czapa Płocha",
+                                                                          "Kondziu Parszewski",
+                                                                          "Iza Urbańska",
+                                                                          "Maciek Lewandowski",
+                                                                          "Olga Bednarska",
+                                                                          "Szymon Fronczak"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-09-18",
+                                                        "mvpClosed":  true,
+                                                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (17:25, 19:25, 25:19, 22:25)",
+                                                        "teams":  {
+                                                                      "dark":  [
+                                                                                   "Kondziu Parszewski",
+                                                                                   "Piotrek Bany",
+                                                                                   "Maciek Lewandowski",
+                                                                                   "Olga Bednarska",
+                                                                                   "Michał Chaciński",
+                                                                                   "Mikołaj Morawski"
+                                                                               ],
+                                                                      "darkName":  "Drużyna Ciemna",
+                                                                      "light":  [
+                                                                                    "Iza Urbańska",
+                                                                                    "Antek Kwaczek",
+                                                                                    "Kuba Parszewski",
+                                                                                    "Szymon Fronczak",
+                                                                                    "Kuba Czapa Płocha",
+                                                                                    "Filip Morawski"
+                                                                                ],
+                                                                      "lightName":  "Drużyna Jasna"
+                                                                  },
+                                                        "votes":  {
+                                                                      "Antek Kwaczek":  "Iza Urbańska",
+                                                                      "Filip Morawski":  "Kuba Parszewski",
+                                                                      "Iza Urbańska":  "Michał Chaciński",
+                                                                      "Kondziu Parszewski":  "Antek Kwaczek",
+                                                                      "Kuba Czapa Płocha":  "Kuba Parszewski",
+                                                                      "Kuba Parszewski":  "Kuba Czapa Płocha",
+                                                                      "Maciek Lewandowski":  "Filip Morawski",
+                                                                      "Michał Chaciński":  "Kuba Parszewski",
+                                                                      "Mikołaj Morawski":  "Szymon Fronczak",
+                                                                      "Olga Bednarska":  "Filip Morawski",
+                                                                      "Piotrek Bany":  "Kuba Parszewski",
+                                                                      "Szymon Fronczak":  "Iza Urbańska"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "attendees":  [
+                                                                          "Mikołaj Morawski",
+                                                                          "Michał Chaciński",
+                                                                          "Albert Kubiak",
+                                                                          "Kacper Szafraniec",
+                                                                          "Zuzanna Rostkowska",
+                                                                          "Piotrek Bany",
+                                                                          "Julka Czaplicka",
+                                                                          "Kuba Czapa Płocha",
+                                                                          "Rafał Rojda",
+                                                                          "Antek Kwaczek",
+                                                                          "Maciek Lewandowski",
+                                                                          "Olga Bednarska"
+                                                                      ],
+                                                        "cost":  250,
+                                                        "date":  "2026-09-25",
+                                                        "mvpClosed":  true,
+                                                        "score":  "Drużyna Ciemna 2 : 3 Drużyna Jasna (25:22, 23:25, 24:26, 25:19, 4:15)",
+                                                        "teams":  {
+                                                                      "dark":  [
+                                                                                   "Rafał Rojda",
+                                                                                   "Kuba Czapa Płocha",
+                                                                                   "Zuzanna Rostkowska",
+                                                                                   "Albert Kubiak",
+                                                                                   "Michał Chaciński",
+                                                                                   "Kacper Szafraniec"
+                                                                               ],
+                                                                      "darkName":  "Drużyna Ciemna",
+                                                                      "light":  [
+                                                                                    "Antek Kwaczek",
+                                                                                    "Julka Czaplicka",
+                                                                                    "Piotrek Bany",
+                                                                                    "Olga Bednarska",
+                                                                                    "Maciek Lewandowski",
+                                                                                    "Mikołaj Morawski"
+                                                                                ],
+                                                                      "lightName":  "Drużyna Jasna"
+                                                                  },
+                                                        "votes":  {
+                                                                      "Albert Kubiak":  "Antek Kwaczek",
+                                                                      "Antek Kwaczek":  "Michał Chaciński",
+                                                                      "Julka Czaplicka":  "Antek Kwaczek",
+                                                                      "Kacper Szafraniec":  "Antek Kwaczek",
+                                                                      "Kuba Czapa Płocha":  "Michał Chaciński",
+                                                                      "Maciek Lewandowski":  "Antek Kwaczek",
+                                                                      "Michał Chaciński":  "Antek Kwaczek",
+                                                                      "Mikołaj Morawski":  "Antek Kwaczek",
+                                                                      "Olga Bednarska":  "Piotrek Bany",
+                                                                      "Piotrek Bany":  "Antek Kwaczek",
+                                                                      "Rafał Rojda":  "Mikołaj Morawski",
+                                                                      "Zuzanna Rostkowska":  "Antek Kwaczek"
+                                                                  }
+                                                    }
                                                 ],
-                                      "lightName":  "Drużyna Jasna"
-                                  },
-                        "votes":  {
-                                      "Antek Kwaczek":  "Kuba Czapa Płocha",
-                                      "Błażej Składnik":  "Kuba Czapa Płocha",
-                                      "Filip Morawski":  "Błażej Składnik",
-                                      "Kacper Szafraniec":  "Błażej Składnik",
-                                      "Kamil Skołek":  "Błażej Składnik",
-                                      "Kondziu Parszewski":  "Błażej Składnik",
-                                      "Kuba Czapa Płocha":  "Błażej Składnik",
-                                      "Kuba Muszyński":  "Kuba Czapa Płocha",
-                                      "Michał Chaciński":  "Błażej Składnik",
-                                      "Mikołaj Morawski":  "Błażej Składnik",
-                                      "Rafał Rojda":  "Błażej Składnik",
-                                      "Szymon Fronczak":  "Błażej Składnik"
-                                  }
-                    },
-                    {
-                        "attendees":  [
-                                          "Mikołaj Morawski",
-                                          "Michał Chaciński",
-                                          "Kuba Parszewski",
-                                          "Filip Morawski",
-                                          "Antek Kwaczek",
-                                          "Piotrek Bany",
-                                          "Kuba Czapa Płocha",
-                                          "Kondziu Parszewski",
-                                          "Iza Urbańska",
-                                          "Maciek Lewandowski",
-                                          "Olga Bednarska",
-                                          "Szymon Fronczak"
-                                      ],
-                        "cost":  250,
-                        "date":  "2026-09-18",
-                        "isCancelled":  false,
-                        "mvpClosed":  true,
-                        "score":  "Drużyna Ciemna 1 : 3 Drużyna Jasna (23:25, 22:25, 25:19, 20:25)",
-                        "teams":  {
-                                      "dark":  [
-                                                   "Mikołaj Morawski",
-                                                   "Michał Chaciński",
-                                                   "Kondziu Parszewski",
-                                                   "Maciek Lewandowski",
-                                                   "Olga Bednarska",
-                                                   "Piotrek Bany"
-                                               ],
-                                      "darkName":  "Drużyna Ciemna",
-                                      "light":  [
-                                                    "Antek Kwaczek",
-                                                    "Filip Morawski",
-                                                    "Kuba Czapa Płocha",
-                                                    "Kuba Parszewski",
-                                                    "Iza Urbańska",
-                                                    "Szymon Fronczak"
-                                                ],
-                                      "lightName":  "Drużyna Jasna"
-                                  },
-                        "votes":  {
-                                      "Antek Kwaczek":  "Kuba Parszewski",
-                                      "Filip Morawski":  "Kuba Parszewski",
-                                      "Iza Urbańska":  "Kuba Parszewski",
-                                      "Kondziu Parszewski":  "Kuba Parszewski",
-                                      "Kuba Czapa Płocha":  "Kuba Parszewski",
-                                      "Kuba Parszewski":  "Antek Kwaczek",
-                                      "Maciek Lewandowski":  "Kuba Parszewski",
-                                      "Michał Chaciński":  "Kuba Parszewski",
-                                      "Mikołaj Morawski":  "Kuba Parszewski",
-                                      "Olga Bednarska":  "Maciek Lewandowski",
-                                      "Piotrek Bany":  "Kuba Parszewski",
-                                      "Szymon Fronczak":  "Kuba Parszewski"
-                                  }
-                    },
-                    {
-                        "attendees":  [
-                                          "Michał Chaciński",
-                                          "Mikołaj Morawski",
-                                          "Antek Kwaczek",
-                                          "Julka Czaplicka",
-                                          "Olga Bednarska",
-                                          "Maciek Lewandowski",
-                                          "Kacper Szafraniec",
-                                          "Albert Kubiak",
-                                          "Piotrek Bany",
-                                          "Kuba Czapa Płocha",
-                                          "Zuzanna Rostkowska",
-                                          "Rafał Rojda"
-                                      ],
-                        "cost":  250,
-                        "date":  "2026-09-25",
-                        "mvpClosed":  true,
-                        "score":  "Drużyna Ciemna 2 : 3 Drużyna Jasna (19:25, 25:20, 25:19, 21:25, 4:15)",
-                        "teams":  {
-                                      "dark":  [
-                                                   "Michał Chaciński",
-                                                   "Kacper Szafraniec",
-                                                   "Albert Kubiak",
-                                                   "Kuba Czapa Płocha",
-                                                   "Zuzanna Rostkowska",
-                                                   "Rafał Rojda"
-                                               ],
-                                      "darkName":  "Drużyna Ciemna",
-                                      "light":  [
-                                                    "Mikołaj Morawski",
-                                                    "Antek Kwaczek",
-                                                    "Julka Czaplicka",
-                                                    "Olga Bednarska",
-                                                    "Maciek Lewandowski",
-                                                    "Piotrek Bany"
-                                                ],
-                                      "lightName":  "Drużyna Jasna"
-                                  },
-                        "votes":  {
-                                      "Albert Kubiak":  "Antek Kwaczek",
-                                      "Antek Kwaczek":  "Julka Czaplicka",
-                                      "Julka Czaplicka":  "Antek Kwaczek",
-                                      "Kacper Szafraniec":  "Antek Kwaczek",
-                                      "Kuba Czapa Płocha":  "Antek Kwaczek",
-                                      "Maciek Lewandowski":  "Antek Kwaczek",
-                                      "Michał Chaciński":  "Antek Kwaczek",
-                                      "Mikołaj Morawski":  "Antek Kwaczek",
-                                      "Olga Bednarska":  "Antek Kwaczek",
-                                      "Piotrek Bany":  "Antek Kwaczek",
-                                      "Rafał Rojda":  "Antek Kwaczek",
-                                      "Zuzanna Rostkowska":  "Antek Kwaczek"
-                                  }
-                    }
-                ],
-    "rozliczenia":  {
-                        "Albert Kubiak":  {
-                                              "paid":  0
-                                          },
-                        "Antek Kwaczek":  {
-                                              "paid":  0
-                                          },
-                        "Artur Żbikowski":  {
-                                                "paid":  0
-                                            },
-                        "Bartek Kwaśny":  {
-                                              "paid":  0
-                                          },
-                        "Czarek (od Kuby Parszewskiego)":  {
-                                                               "paid":  0
-                                                           },
-                        "Filip Morawski":  {
-                                               "paid":  0
-                                           },
-                        "Iza Urbańska":  {
-                                             "paid":  0
-                                         },
-                        "Julka Czaplicka":  {
-                                                "paid":  0
-                                            },
-                        "Kacper Szafraniec":  {
-                                                  "paid":  0
-                                              },
-                        "Kamil Kaczmarek":  {
-                                                "paid":  0
-                                            },
-                        "Kamil Skołek":  {
-                                             "paid":  0
-                                         },
-                        "Karolina Stanicka":  {
-                                                  "paid":  0
-                                              },
-                        "Kondziu Parszewski":  {
-                                                   "paid":  0
-                                               },
-                        "Konrad Pazio":  {
-                                             "paid":  0
-                                         },
-                        "Kuba (od Kuby Parszewskiego)":  {
-                                                             "paid":  0
-                                                         },
-                        "Kuba Czapa Płocha":  {
-                                                  "paid":  0
-                                              },
-                        "Kuba Parszewski":  {
-                                                "paid":  0
-                                            },
-                        "Kuba Żurawski":  {
-                                              "paid":  0
-                                          },
-                        "Maciek (od Maćka Lewandowskiego)":  {
-                                                                 "paid":  0
-                                                             },
-                        "Maciek Lewandowski":  {
-                                                   "paid":  0
-                                               },
-                        "Magda (od Maćka Lewandowskiego)":  {
-                                                                "paid":  0
-                                                            },
-                        "Michał Chaciński":  {
-                                                 "paid":  0
-                                             },
-                        "Mikołaj Morawski":  {
-                                                 "paid":  0
-                                             },
-                        "Olga Bednarska":  {
-                                               "paid":  0
-                                           },
-                        "Patryk Wendorff":  {
-                                                "paid":  0
-                                            },
-                        "Piotr Tchórzewski":  {
-                                                  "paid":  0
-                                              },
-                        "Piotrek Bany":  {
-                                             "paid":  0
-                                         },
-                        "Rafał (od Maćka Lewandowskiego)":  {
-                                                                "paid":  0
-                                                            },
-                        "Rafał Rojda":  {
-                                            "paid":  0
-                                        },
-                        "Szymon Fronczak":  {
-                                                "paid":  0
-                                            },
-                        "Zuzanna Rostkowska":  {
-                                                   "paid":  0
-                                               }
-                    }
-},
-                "Październik": {
-    "matches":  [
-                    {
-                        "attendees":  [
-                                          "Michał Chaciński",
-                                          "Julka Czaplicka",
-                                          "Albert Kubiak",
-                                          "Maciek Lewandowski",
-                                          "Mikołaj Morawski",
-                                          "Olga Bednarska",
-                                          "Zuzanna Rostkowska",
-                                          "Szymon Fronczak",
-                                          "Kacper Szafraniec"
-                                      ],
-                        "cost":  250,
-                        "date":  "2026-10-02",
-                        "isCancelled":  false,
-                        "score":  ""
-                    },
-                    {
-                        "cost":  250,
-                        "date":  "2026-10-09",
-                        "isCancelled":  false,
-                        "score":  ""
-                    },
-                    {
-                        "cost":  250,
-                        "date":  "2026-10-16",
-                        "isCancelled":  false,
-                        "score":  ""
-                    },
-                    {
-                        "cost":  250,
-                        "date":  "2026-10-23",
-                        "isCancelled":  false,
-                        "score":  ""
-                    },
-                    {
-                        "cost":  250,
-                        "date":  "2026-10-30",
-                        "isCancelled":  false,
-                        "score":  ""
-                    }
-                ]
-},
-                "Listopad": {
-                    matches: [
-                        { date: "2026-11-06", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-13", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-20", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-11-27", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
-                    ],
-                    rozliczenia: {}
-                },
-                "Grudzień": {
-                    matches: [
-                        { date: "2026-12-04", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-11", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-18", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false },
-                        { date: "2026-12-25", cost: 250.0, isCancelled: false, attendees: [], votes: {}, score: "", teams: null, mvpClosed: false }
-                    ],
-                    rozliczenia: {}
-                }
-            }
-        };
+                                    "rozliczenia":  {
+                                                        "Albert Kubiak":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Antek Kwaczek":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Artur Żbikowski":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Bartek Kwaśny":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Czarek (od Kuby Parszewskiego)":  {
+                                                                                               "paid":  0
+                                                                                           },
+                                                        "Filip Morawski":  {
+                                                                               "paid":  0
+                                                                           },
+                                                        "Iza Urbańska":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Julka Czaplicka":  {
+                                                                                "paid":  20.83
+                                                                            },
+                                                        "Kacper Szafraniec":  {
+                                                                                  "paid":  41.66
+                                                                              },
+                                                        "Kamil Kaczmarek":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Kamil Skołek":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Karolina Stanicka":  {
+                                                                                  "paid":  0
+                                                                              },
+                                                        "Kondziu Parszewski":  {
+                                                                                   "paid":  0
+                                                                               },
+                                                        "Konrad Pazio":  {
+                                                                             "paid":  0
+                                                                         },
+                                                        "Kuba (od Kuby Parszewskiego)":  {
+                                                                                             "paid":  0
+                                                                                         },
+                                                        "Kuba Czapa Płocha":  {
+                                                                                  "paid":  62.49
+                                                                              },
+                                                        "Kuba Muszyński":  {
+                                                                               "paid":  20.83
+                                                                           },
+                                                        "Kuba Parszewski":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Kuba Żurawski":  {
+                                                                              "paid":  0
+                                                                          },
+                                                        "Maciek (od Maćka Lewandowskiego)":  {
+                                                                                                 "paid":  0
+                                                                                             },
+                                                        "Maciek Lewandowski":  {
+                                                                                   "paid":  62.49
+                                                                               },
+                                                        "Magda (od Maćka Lewandowskiego)":  {
+                                                                                                "paid":  0
+                                                                                            },
+                                                        "Michał Chaciński":  {
+                                                                                 "paid":  83.32
+                                                                             },
+                                                        "Mikołaj Morawski":  {
+                                                                                 "paid":  83.32
+                                                                             },
+                                                        "Olga Bednarska":  {
+                                                                               "paid":  0
+                                                                           },
+                                                        "Patryk Wendorff":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Piotr Tchórzewski":  {
+                                                                                  "paid":  0
+                                                                              },
+                                                        "Piotrek Bany":  {
+                                                                             "paid":  62.49
+                                                                         },
+                                                        "Rafał (od Maćka Lewandowskiego)":  {
+                                                                                                "paid":  0
+                                                                                            },
+                                                        "Rafał Rojda":  {
+                                                                            "paid":  41.66
+                                                                        },
+                                                        "Szymon Fronczak":  {
+                                                                                "paid":  0
+                                                                            },
+                                                        "Zuzanna Rostkowska":  {
+                                                                                   "paid":  0
+                                                                               }
+                                                    }
+                                }
+               }
+};
 
         // ================= GLOBAL APPLICATION STATE =================
         let AppState = {
@@ -2334,26 +2857,47 @@
             const urlParams = new URLSearchParams(window.location.search);
             const targetTab = urlParams.get('tab');
             const targetSubtab = urlParams.get('subtab');
-            const targetMatchDate = urlParams.get('match');
+            const targetMatchDate = urlParams.get('match') || urlParams.get('mvp') || urlParams.get('vote') || urlParams.get('glosuj');
+            const isMvpLink = urlParams.has('mvp') || urlParams.has('vote') || urlParams.has('glosuj') || targetSubtab === 'mvp';
+
+            if (isMvpLink) {
+                sessionStorage.setItem('siatka_guest_mode', 'true');
+                currentMatchSubtab = 'mvp';
+            }
 
             if (targetMatchDate) {
-                for (const mName of Object.keys(AppState.months || {})) {
-                    const matches = AppState.months[mName]?.matches || [];
-                    const idx = matches.findIndex(m => m.date === targetMatchDate);
-                    if (idx !== -1) {
-                        AppState.currentMonth = mName;
-                        AppState.currentMatchIndex = idx;
+                if (targetMatchDate === 'latest') {
+                    const latest = getLatestPlayedMatchInfo();
+                    if (latest) {
+                        AppState.currentMonth = latest.monthName;
+                        AppState.currentMatchIndex = latest.matchIndex;
                         hasInitiallySelectedMonth = true;
-                        break;
+                    }
+                } else {
+                    for (const mName of Object.keys(AppState.months || {})) {
+                        const matches = AppState.months[mName]?.matches || [];
+                        const idx = matches.findIndex(m => m.date === targetMatchDate);
+                        if (idx !== -1) {
+                            AppState.currentMonth = mName;
+                            AppState.currentMatchIndex = idx;
+                            hasInitiallySelectedMonth = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            if (targetSubtab === 'mvp') {
+            if (isMvpLink) {
                 currentMatchSubtab = 'mvp';
-            }
-
-            if (targetTab && ['matches', 'teams', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
+                switchTab('matches');
+                setTimeout(() => {
+                    setMatchSubtab('mvp');
+                    const target = document.getElementById('matchMvpSubtabContainer') || document.getElementById('integratedMvpCard');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 120);
+            } else if (targetTab && ['matches', 'teams', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
                 switchTab(targetTab);
             }
         }
@@ -2377,10 +2921,22 @@
         function autoSelectUpcomingMatchOnLoad() {
             if (hasInitiallySelectedMonth) return;
 
-            // 1. Jeśli w adresie URL przekazano konkretną datę meczu (np. z linku Messengera)
+            // 1. Jeśli w adresie URL przekazano konkretną datę meczu (np. z linku Messengera do MVP lub meczu)
             const urlParams = new URLSearchParams(window.location.search);
-            const targetMatchDate = urlParams.get('match');
+            const targetMatchDate = urlParams.get('match') || urlParams.get('mvp') || urlParams.get('vote') || urlParams.get('glosuj');
+            const isMvpLink = urlParams.has('mvp') || urlParams.has('vote') || urlParams.has('glosuj') || urlParams.get('subtab') === 'mvp';
+
             if (targetMatchDate) {
+                if (targetMatchDate === 'latest') {
+                    const latest = getLatestPlayedMatchInfo();
+                    if (latest) {
+                        AppState.currentMonth = latest.monthName;
+                        AppState.currentMatchIndex = latest.matchIndex;
+                        hasInitiallySelectedMonth = true;
+                        if (isMvpLink) currentMatchSubtab = 'mvp';
+                        return;
+                    }
+                }
                 for (const mName of getSortedMonths()) {
                     const matches = AppState.months[mName]?.matches || [];
                     const idx = matches.findIndex(m => m.date === targetMatchDate);
@@ -2388,7 +2944,7 @@
                         AppState.currentMonth = mName;
                         AppState.currentMatchIndex = idx;
                         hasInitiallySelectedMonth = true;
-                        if (urlParams.get('subtab') === 'mvp') currentMatchSubtab = 'mvp';
+                        if (isMvpLink) currentMatchSubtab = 'mvp';
                         return;
                     }
                 }
@@ -4320,34 +4876,41 @@
                     const hasVoted = Boolean(votes[loggedPlayer]);
                     voterSelectContainer.innerHTML = `
                         <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                            <span class="text-slate-400">Głosujesz jako: <strong class="text-white">${escapeHtml(loggedPlayer)}</strong></span>
-                            <span class="text-[10px] font-bold ${hasVoted ? 'text-emerald-400' : 'text-amber-400'}">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="text-slate-400">Głosujesz jako: <strong class="text-white">${escapeHtml(loggedPlayer)}</strong></span>
+                                <button type="button" onclick="logoutCurrentPlayerForMvp()" class="text-[10px] text-amber-400 hover:text-amber-300 underline shrink-0 cursor-pointer">(zmień)</button>
+                            </div>
+                            <span class="text-[10px] font-bold ${hasVoted ? 'text-emerald-400' : 'text-amber-400'} shrink-0">
                                 ${hasVoted ? '✅ Głos oddany' : '⏳ Czekasz na głos'}
                             </span>
                         </div>
                         <input type="hidden" id="voterSelect" value="${escapeHtml(loggedPlayer)}">
                     `;
                 }
-            } else if (voterSelect) {
-                if (voterSelectContainer && !voterSelectContainer.querySelector('select')) {
-                    voterSelectContainer.innerHTML = `
-                        <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
-                        <select id="voterSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer"></select>
-                    `;
-                }
-                const activeVoterSelect = document.getElementById('voterSelect');
-                if (activeVoterSelect) {
-                    activeVoterSelect.innerHTML = `<option value="">-- Wybierz siebie ze składu --</option>` + attendees.map(p => {
-                        const hasVoted = Boolean(votes[p]);
-                        return `<option value="${escapeHtml(p)}">${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
-                    }).join('');
-                }
+            } else if (voterSelectContainer) {
+                const currentSelectedVal = document.getElementById('voterSelect')?.value || '';
+                voterSelectContainer.innerHTML = `
+                    <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
+                    <select id="voterSelect" onchange="handleMvpVoterChange()" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                        <option value="">-- Wybierz siebie ze składu --</option>
+                        ${attendees.map(p => {
+                            const hasVoted = Boolean(votes[p]);
+                            const isSelected = (p === currentSelectedVal);
+                            return `<option value="${escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
+                        }).join('')}
+                    </select>
+                    <div id="voterPinPromptContainer" class="${(currentSelectedVal && AppState.player_pins?.[currentSelectedVal]) ? '' : 'hidden'} mt-2 p-2.5 bg-slate-900/90 border border-amber-500/40 rounded-xl space-y-1.5">
+                        <label for="mvpVoterPinInput" class="block text-[11px] text-amber-300 font-semibold">🔐 Twój profil ma ustalony PIN. Podaj 4 cyfry, aby zagłosować:</label>
+                        <input type="password" id="mvpVoterPinInput" inputmode="numeric" maxlength="6" placeholder="Wpisz 4 cyfry PIN" class="w-full bg-slate-950 border border-amber-500/60 rounded-lg px-3 py-1.5 text-xs text-white text-center tracking-widest font-mono focus:outline-none focus:border-amber-400">
+                    </div>
+                `;
             }
 
             // 2. Nominee Select
             if (nomineeSelect) {
+                const curNominee = nomineeSelect.value || '';
                 nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + attendees.map(p => {
-                    return `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
+                    return `<option value="${escapeHtml(p)}" ${p === curNominee ? 'selected' : ''}>${escapeHtml(p)}</option>`;
                 }).join('');
             }
 
@@ -4479,14 +5042,87 @@
             }
         }
 
+        function copyMvpVoteDirectLink() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            const dateStr = currentMatch ? currentMatch.date : '';
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const link = dateStr ? `${baseUrl}?mvp=${encodeURIComponent(dateStr)}` : `${baseUrl}?mvp=latest`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast("Skopiowano link do głosowania do schowka! 📋");
+                }).catch(() => {
+                    prompt("Skopiuj link do głosowania na MVP:", link);
+                });
+            } else {
+                prompt("Skopiuj link do głosowania na MVP:", link);
+            }
+        }
+
+        function logoutCurrentPlayerForMvp() {
+            loggedPlayer = '';
+            localStorage.removeItem('siatka_active_player');
+            sessionStorage.setItem('siatka_guest_mode', 'true');
+            renderIntegratedMvpCard();
+            showToast("Wylogowano. Wybierz siebie z listy obecnych.");
+        }
+
+        function handleMvpVoterChange() {
+            const voterSelect = document.getElementById('voterSelect');
+            const pinContainer = document.getElementById('voterPinPromptContainer');
+            const pinInput = document.getElementById('mvpVoterPinInput');
+            if (!voterSelect) return;
+            const selectedPlayer = voterSelect.value.trim();
+            if (pinInput) pinInput.value = '';
+
+            if (pinContainer) {
+                if (selectedPlayer && AppState.player_pins && AppState.player_pins[selectedPlayer]) {
+                    pinContainer.classList.remove('hidden');
+                } else {
+                    pinContainer.classList.add('hidden');
+                }
+            }
+        }
+
         function submitMvpVote() {
             if (isMatchActionPending) return;
-            let voter = document.getElementById('voterSelect')?.value;
+            let voter = document.getElementById('voterSelect')?.value?.trim();
             if (!voter && loggedPlayer) voter = loggedPlayer;
-            const nominee = document.getElementById('nomineeSelect')?.value;
+            const nominee = document.getElementById('nomineeSelect')?.value?.trim();
 
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
+
+            // Jeśli profil gracza ma PIN, a użytkownik nie jest zalogowany jako ten gracz
+            const playerPinHash = AppState.player_pins?.[voter];
+            if (playerPinHash && loggedPlayer !== voter) {
+                const pinInput = document.getElementById('mvpVoterPinInput')?.value?.trim();
+                if (!pinInput) {
+                    alert(`Profil gracza ${voter} jest zabezpieczony kodem PIN. Wpisz swój PIN w wyznaczonym polu!`);
+                    document.getElementById('mvpVoterPinInput')?.focus();
+                    return;
+                }
+                if (!verifyPin(pinInput, playerPinHash) && !verifyAdminPin(pinInput)) {
+                    alert(`Nieprawidłowy kod PIN dla gracza ${voter}! Jeśli zapomniałeś PIN-u, skontaktuj się z Michałem.`);
+                    return;
+                }
+                // PIN poprawny - logujemy gracza
+                loggedPlayer = voter;
+                localStorage.setItem('siatka_active_player', voter);
+                if (voter === ORGANIZER_NAME || verifyAdminPin(pinInput)) {
+                    isAdmin = true;
+                    localStorage.setItem('siatka_is_admin', 'true');
+                }
+                sessionStorage.removeItem('siatka_guest_mode');
+                checkUserAuthSession();
+            } else if (!playerPinHash && loggedPlayer !== voter) {
+                // Gracz nie ma PIN-u (np. gość) - ustawiamy go jako aktywnego gracza
+                loggedPlayer = voter;
+                localStorage.setItem('siatka_active_player', voter);
+                sessionStorage.removeItem('siatka_guest_mode');
+                checkUserAuthSession();
+            }
 
             isMatchActionPending = true;
             const targetMonth = AppState.currentMonth;
@@ -6400,6 +7036,12 @@
         }
 
         function checkWelcomeGate() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('mvp') || urlParams.has('vote') || urlParams.has('glosuj')) {
+                sessionStorage.setItem('siatka_guest_mode', 'true');
+                closeWelcomeGateModal();
+                return;
+            }
             const isGuest = sessionStorage.getItem('siatka_guest_mode') === 'true';
             if (!loggedPlayer && !isGuest) {
                 openWelcomeGateModal();
@@ -7119,7 +7761,7 @@
             const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
             const baseUrl = window.location.href.split('?')[0].split('#')[0];
             const url = baseUrl;
-            const mvpUrl = `${baseUrl}?tab=matches&subtab=mvp&match=${encodeURIComponent(dateStr)}`;
+            const mvpUrl = `${baseUrl}?mvp=${encodeURIComponent(dateStr)}`;
 
             if (type === 'monday') {
                 return `🔔 SIATKÓWKA - ZAPISY NA PIĄTEK (${dateStr}) 🔔\n\n` +
