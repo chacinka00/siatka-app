@@ -9,6 +9,14 @@
     <meta name="apple-mobile-web-app-title" content="Siatkówka">
     <title>Siatkówka Piątek</title>
     
+    <!-- Meta Tagi Open Graph (Facebook, Messenger, WhatsApp) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Siatkówka Piątek 🏐">
+    <meta property="og:description" content="Zapisy na mecz, aktualna frekwencja, podział na składy i głosowanie na MVP.">
+    <meta property="og:site_name" content="Siatkówka Piątek">
+    <meta property="og:image" content="logo.jpg.jpg">
+    <meta name="description" content="Zapisy na mecz, aktualna frekwencja, podział na składy i głosowanie na MVP 🏐">
+    
     <!-- Favicon & App Icons -->
     <link rel="icon" type="image/jpeg" href="logo.jpg.jpg">
     <link rel="apple-touch-icon" href="logo.jpg.jpg">
@@ -445,28 +453,31 @@
 
                 <!-- Voting Form (Dla obecnych) -->
                 <div id="votingFormCard" class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-3">
-                    <h4 class="font-bold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>🗳️</span> Oddaj swój głos (Tylko obecni)
-                    </h4>
-                    
-                    <div class="space-y-2">
-                        <div id="voterSelectContainer">
-                            <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
-                            <select id="voterSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                <!-- Populated dynamically -->
-                            </select>
+                    <div id="votingFormNotice" class="hidden"></div>
+                    <div id="votingFormFields" class="space-y-3">
+                        <h4 class="font-bold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🗳️</span> Oddaj swój głos (Tylko obecni)
+                        </h4>
+                        
+                        <div class="space-y-2">
+                            <div id="voterSelectContainer">
+                                <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
+                                <select id="voterSelect" onchange="handleMvpVoterChange()" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu:</label>
+                                <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu:</label>
-                            <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
-                                <!-- Populated dynamically -->
-                            </select>
-                        </div>
-                    </div>
 
-                    <button type="button" onclick="submitMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
-                        Zatwierdź głos na MVP 🌟
-                    </button>
+                        <button type="button" onclick="submitMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
+                            Zatwierdź głos na MVP 🌟
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Admin Force Finish/Reveal Bar -->
@@ -2549,7 +2560,7 @@
             const attendees = (match.attendees || []).slice(0, 12);
             if (attendees.length === 0) return false;
             if (match.mvpClosed === true) return true;
-            const votesCount = Object.keys(match.votes || {}).length;
+            const votesCount = attendees.filter(p => Boolean(match.votes && match.votes[p])).length;
             return votesCount >= attendees.length && attendees.length > 0;
         }
 
@@ -2885,6 +2896,7 @@
             // Jeśli użytkownik wszedł z bezpośredniego linku do głosowania na MVP:
             // Otwieramy odizolowany, dedykowany panel głosowania bez nadawania uprawnień gościa aplikacji
             if (isMvpLink) {
+                document.title = "🏆 Głosowanie na MVP Meczu";
                 openDedicatedMvpModal(targetMatchDate);
                 return;
             }
@@ -4864,8 +4876,28 @@
 
             if (dateBadge) dateBadge.innerText = `Mecz: ${currentMatch.date}`;
             const attendees = (currentMatch.attendees || []).slice(0, 12);
+
+            const todayStr = getLocalDateKey();
+            const isFutureMatch = Boolean(currentMatch.date && currentMatch.date > todayStr && !currentMatch.score);
+
+            // Czyszczenie "widmo" głosów dla meczów z przyszłości lub usuniętych graczy
+            if (currentMatch.votes && typeof currentMatch.votes === 'object') {
+                if (isFutureMatch && Object.keys(currentMatch.votes).length > 0) {
+                    currentMatch.votes = {};
+                    if (isAdmin) syncState();
+                } else {
+                    const validVoters = Object.keys(currentMatch.votes).filter(v => attendees.includes(v));
+                    if (validVoters.length !== Object.keys(currentMatch.votes).length) {
+                        const cleanVotes = {};
+                        validVoters.forEach(v => { cleanVotes[v] = currentMatch.votes[v]; });
+                        currentMatch.votes = cleanVotes;
+                        if (isAdmin) syncState();
+                    }
+                }
+            }
+
             const votes = currentMatch.votes || {};
-            const totalVotesCast = Object.keys(votes).length;
+            const totalVotesCast = attendees.filter(p => Boolean(votes[p])).length;
             const isFinished = isMvpVotingFinished(currentMatch);
 
             if (votesBadge) votesBadge.innerText = `Głosy: ${totalVotesCast} / ${attendees.length}`;
@@ -4886,19 +4918,83 @@
                 if (adminBar) adminBar.classList.add('hidden');
             }
 
+            const votingFormNotice = document.getElementById('votingFormNotice');
+            const votingFormFields = document.getElementById('votingFormFields');
+
             if (attendees.length === 0) {
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "Status";
                 if (winnerName) winnerName.innerText = "Brak zapisanych graczy";
                 if (winnerVotes) winnerVotes.innerText = "Zapisz graczy w składzie głównym powyżej, aby odblokować głosowanie.";
-                if (voterSelect) voterSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
-                if (nomineeSelect) nomineeSelect.innerHTML = `<option value="">Brak obecnych graczy</option>`;
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">Zapisz graczy w składzie głównym powyżej, aby móc głosować.</div>`;
+                    votingFormNotice.classList.remove('hidden');
+                    votingFormFields.classList.add('hidden');
+                }
                 if (resultsList) resultsList.innerHTML = `<div class="p-4 text-center text-xs text-slate-600">Brak osób w składzie głównym.</div>`;
                 if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic text-xs">Brak graczy.</p>`;
                 if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0/0";
                 return;
             }
 
-            // 1. Voter Select: If logged in and in attendees, auto-lock to loggedPlayer
+            // 1. Sprawdzenie czy mecz jest w przyszłości
+            if (isFutureMatch) {
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "STATUS MECZU";
+                if (winnerName) winnerName.innerText = "Mecz jeszcze się nie odbył";
+                if (winnerVotes) winnerVotes.innerText = `Głosowanie na MVP zostanie otwarte w dniu meczu (${currentMatch.date}) po zakończeniu gry. 🏐`;
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.innerHTML = `
+                        <div class="py-2 space-y-2 text-center">
+                            <span class="text-3xl block">⏳</span>
+                            <h4 class="font-bold text-xs text-amber-300">Głosowanie MVP oczekuje na mecz</h4>
+                            <p class="text-[11px] text-slate-400 max-w-xs mx-auto leading-relaxed">
+                                Spotkanie zaplanowane na <strong class="text-white">${currentMatch.date}</strong> jeszcze się nie odbyło. Głosowanie na najlepszego gracza zostanie odblokowane po rozegraniu meczu! 🏐
+                            </p>
+                        </div>
+                    `;
+                    votingFormNotice.classList.remove('hidden');
+                    votingFormFields.classList.add('hidden');
+                }
+                if (resultsList) resultsList.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">Głosy będą zbierane po meczu.</div>`;
+                if (whoVotedList) whoVotedList.innerHTML = attendees.map(p => `
+                    <div class="bg-slate-950/60 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
+                        <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                        <span class="text-[10px] text-slate-500 font-mono">Zapisany na mecz</span>
+                    </div>
+                `).join('');
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0 / " + attendees.length;
+                if (adminBar) adminBar.classList.add('hidden');
+                return;
+            }
+
+            // 2. Jeśli mecz już się odbył, ale zalogowany gracz NIE grał w tym meczu:
+            if (loggedPlayer && !attendees.includes(loggedPlayer)) {
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.innerHTML = `
+                        <div class="p-2 space-y-1.5 text-center">
+                            <div class="text-xs font-bold text-amber-300 flex items-center justify-center gap-1.5">
+                                <span>ℹ️</span> <span>Głosowanie tylko dla uczestników spotkania</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed max-w-xs mx-auto">
+                                Jesteś zalogowany/a jako <strong class="text-white">${escapeHtml(loggedPlayer)}</strong>. Nie brałeś/aś udziału w tym meczu, dlatego prawo głosu mają wyłącznie gracze obecni w składzie.
+                            </p>
+                            <p class="text-[10px] text-slate-500">
+                                Poniżej możesz śledzić status i wyniki głosowania. 👀
+                            </p>
+                        </div>
+                    `;
+                    votingFormNotice.classList.remove('hidden');
+                    votingFormFields.classList.add('hidden');
+                }
+            } else {
+                // Gracz grał w meczu lub jest gościem -> pokazujemy formularz
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.classList.add('hidden');
+                    votingFormNotice.innerHTML = '';
+                    votingFormFields.classList.remove('hidden');
+                }
+            }
+
+            // 3. Voter Select: If logged in and in attendees, auto-lock to loggedPlayer
             if (loggedPlayer && attendees.includes(loggedPlayer)) {
                 if (voterSelectContainer) {
                     const hasVoted = Boolean(votes[loggedPlayer]);
@@ -4934,10 +5030,12 @@
                 `;
             }
 
-            // 2. Nominee Select
+            // 4. Nominee Select (bez możliwości głosu na siebie)
+            const currentVoter = (loggedPlayer && attendees.includes(loggedPlayer)) ? loggedPlayer : (document.getElementById('voterSelect')?.value || '');
             if (nomineeSelect) {
                 const curNominee = nomineeSelect.value || '';
-                nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + attendees.map(p => {
+                const availableCandidates = attendees.filter(p => !currentVoter || p !== currentVoter);
+                nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + availableCandidates.map(p => {
                     return `<option value="${escapeHtml(p)}" ${p === curNominee ? 'selected' : ''}>${escapeHtml(p)}</option>`;
                 }).join('');
             }
@@ -5074,8 +5172,23 @@
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             const dateStr = currentMatch ? currentMatch.date : '';
-            const baseUrl = window.location.href.split('?')[0].split('#')[0];
-            const link = dateStr ? `${baseUrl}?mvp=${encodeURIComponent(dateStr)}` : `${baseUrl}?mvp=latest`;
+            
+            // Generujemy link do mvp.html dla dedykowanego podglądu "🏆 Głosowanie na MVP Meczu" w Messengerze
+            let mvpUrl = 'mvp.html';
+            try {
+                const loc = window.location;
+                if (loc.origin && loc.origin !== 'null' && loc.origin.startsWith('http')) {
+                    const dir = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+                    mvpUrl = `${loc.origin}${dir}mvp.html`;
+                } else {
+                    const raw = loc.href.split('?')[0].split('#')[0];
+                    const dir = raw.substring(0, raw.lastIndexOf('/') + 1);
+                    mvpUrl = `${dir}mvp.html`;
+                }
+            } catch(e) {
+                mvpUrl = 'mvp.html';
+            }
+            const link = dateStr ? `${mvpUrl}?date=${encodeURIComponent(dateStr)}` : mvpUrl;
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(link).then(() => {
@@ -5126,11 +5239,13 @@
             const modal = document.getElementById('dedicatedMvpModal');
             if (modal) modal.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
+            document.title = (AppState?.custom_group?.group_name) || "Siatkówka Piątek";
         }
 
         function exitDedicatedMvpToApp() {
             try {
                 const cleanUrl = window.location.origin + window.location.pathname;
+                document.title = (AppState?.custom_group?.group_name) || "Siatkówka Piątek";
                 window.history.replaceState({}, document.title, cleanUrl);
             } catch(e) {}
             closeDedicatedMvpModal();
@@ -5165,8 +5280,48 @@
             if (dateBadge) dateBadge.innerText = `Mecz: ${match.date}`;
             const attendees = (match.attendees || []).slice(0, 12);
             const votes = match.votes || {};
-            const totalVotes = Object.keys(votes).length;
+            const totalVotes = attendees.filter(p => Boolean(votes[p])).length;
             const isFinished = isMvpVotingFinished(match);
+
+            const todayStr = getLocalDateKey();
+            const isFutureMatch = Boolean(match.date && match.date > todayStr && !match.score);
+            if (isFutureMatch) {
+                contentArea.innerHTML = `
+                    <div class="space-y-4 py-2 text-center animate-fade-in">
+                        <div class="bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/40 p-4 rounded-2xl space-y-2">
+                            <span class="text-3xl block">⏳</span>
+                            <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-300">Głosowanie oczekuje</span>
+                            <div class="text-base font-black text-white">Mecz jeszcze się nie odbył</div>
+                            <p class="text-xs text-slate-400">
+                                Głosowanie na najlepszego gracza z dnia <strong class="text-white">${match.date}</strong> zostanie odblokowane po rozegraniu spotkania! 🏐
+                            </p>
+                        </div>
+                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                            Zamknij okno 👋
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            if (loggedPlayer && !attendees.includes(loggedPlayer)) {
+                contentArea.innerHTML = `
+                    <div class="space-y-4 py-2 text-center animate-fade-in">
+                        <div class="bg-slate-950/80 border border-amber-500/30 p-4 rounded-2xl space-y-2">
+                            <span class="text-3xl block">ℹ️</span>
+                            <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-300">Tylko dla uczestników meczu</span>
+                            <div class="text-sm font-bold text-white">Jesteś zalogowany/a jako ${escapeHtml(loggedPlayer)}</div>
+                            <p class="text-xs text-slate-400">
+                                Nie brałeś/aś udziału w tym spotkaniu, dlatego prawo głosu na MVP mają wyłącznie gracze obecni w składzie.
+                            </p>
+                        </div>
+                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                            Zamknij okno 👋
+                        </button>
+                    </div>
+                `;
+                return;
+            }
 
             // Obliczenie wyników (tally)
             const tally = {};
@@ -5242,17 +5397,26 @@
 
                     <!-- Krok 1: Wybierz siebie -->
                     <div>
-                        <label for="dedicatedMvpVoterSelect" class="block text-xs font-bold text-slate-300 mb-1">
-                            1. Kim jesteś? (Wybierz siebie ze składu):
+                        <label class="block text-xs font-bold text-slate-300 mb-1">
+                            1. Kim jesteś? (Twój profil gracza):
                         </label>
-                        <select id="dedicatedMvpVoterSelect" onchange="onDedicatedMvpVoterChange(this.value)" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-amber-500 cursor-pointer">
-                            <option value="">-- Wybierz siebie z listy graczy --</option>
-                            ${attendees.map(p => {
-                                const hasVoted = Boolean(votes[p]);
-                                const isSel = (p === defaultVoter);
-                                return `<option value="${escapeHtml(p)}" ${isSel ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
-                            }).join('')}
-                        </select>
+                        ${defaultVoter ? `
+                            <div class="bg-slate-950 border border-amber-500/50 p-3 rounded-xl flex items-center justify-between text-xs">
+                                <span class="text-slate-300">Głosujesz jako: <strong class="text-white">${escapeHtml(defaultVoter)}</strong></span>
+                                <span class="text-[10px] font-bold ${votes[defaultVoter] ? 'text-emerald-400' : 'text-amber-400'}">
+                                    ${votes[defaultVoter] ? '✅ Oddano' : '⏳ Czekasz'}
+                                </span>
+                            </div>
+                            <input type="hidden" id="dedicatedMvpVoterSelect" value="${escapeHtml(defaultVoter)}">
+                        ` : `
+                            <select id="dedicatedMvpVoterSelect" onchange="onDedicatedMvpVoterChange(this.value)" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                <option value="">-- Wybierz siebie z listy graczy --</option>
+                                ${attendees.map(p => {
+                                    const hasVoted = Boolean(votes[p]);
+                                    return `<option value="${escapeHtml(p)}">${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
+                                }).join('')}
+                            </select>
+                        `}
                     </div>
 
                     <!-- Dynamiczny kontener na ostrzeżenie o oddanym głosie lub pole na PIN -->
@@ -5382,6 +5546,25 @@
             const info = window.dedicatedMvpMatchInfo;
             if (!info || !info.match) return alert("Brak danych meczu.");
 
+            const attendees = (info.match.attendees || []).slice(0, 12);
+            const todayStr = getLocalDateKey();
+            const isFutureMatch = Boolean(info.match.date && info.match.date > todayStr && !info.match.score);
+            if (isFutureMatch) {
+                return alert("Głosowanie na MVP dla tego meczu jeszcze się nie rozpoczęło (mecz w przyszłości)!");
+            }
+
+            if (loggedPlayer && !attendees.includes(loggedPlayer)) {
+                return alert("Tylko zawodnicy biorący udział w tym meczu mogą oddawać głosy na MVP!");
+            }
+
+            if (loggedPlayer && voter !== loggedPlayer) {
+                return alert(`Jesteś zalogowany jako ${loggedPlayer}. Nie możesz głosować w imieniu innego zawodnika!`);
+            }
+
+            if (!attendees.includes(voter)) {
+                return alert("Tylko zawodnicy biorący udział w tym spotkaniu mogą oddać głos na MVP!");
+            }
+
             // PIN check
             const playerPinHash = AppState.player_pins?.[voter];
             if (playerPinHash && loggedPlayer !== voter) {
@@ -5410,10 +5593,11 @@
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
 
-                const attendees = (m.attendees || []).slice(0, 12);
-                attendeesCount = attendees.length;
-                totalVotes = Object.keys(m.votes).length;
-                isNowCompleted = totalVotes >= attendeesCount && attendeesCount > 0;
+                const attendeesList = (m.attendees || []).slice(0, 12);
+                attendeesCount = attendeesList.length;
+                const validVotesCount = attendeesList.filter(p => Boolean(m.votes && m.votes[p])).length;
+                totalVotes = validVotesCount;
+                isNowCompleted = validVotesCount >= attendeesCount && attendeesCount > 0;
                 if (isNowCompleted) {
                     m.mvpClosed = true;
                 }
@@ -5485,6 +5669,20 @@
                     pinContainer.classList.add('hidden');
                 }
             }
+
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+            const attendees = (currentMatch.attendees || []).slice(0, 12);
+
+            const nomineeSelect = document.getElementById('nomineeSelect');
+            if (nomineeSelect) {
+                const curNom = nomineeSelect.value || '';
+                const availableCandidates = attendees.filter(p => !selectedPlayer || p !== selectedPlayer);
+                nomineeSelect.innerHTML = `<option value="">-- Wybierz kandydata na MVP --</option>` + availableCandidates.map(p => {
+                    return `<option value="${escapeHtml(p)}" ${p === curNom && p !== selectedPlayer ? 'selected' : ''}>${escapeHtml(p)}</option>`;
+                }).join('');
+            }
         }
 
         function submitMvpVote() {
@@ -5493,8 +5691,34 @@
             if (!voter && loggedPlayer) voter = loggedPlayer;
             const nominee = document.getElementById('nomineeSelect')?.value?.trim();
 
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+
+            const attendees = (currentMatch.attendees || []).slice(0, 12);
+            const todayStr = getLocalDateKey();
+            const isFutureMatch = Boolean(currentMatch.date && currentMatch.date > todayStr && !currentMatch.score);
+            if (isFutureMatch) {
+                return alert("Głosowanie na MVP dla tego meczu jeszcze się nie rozpoczęło (mecz w przyszłości)!");
+            }
+
+            if (loggedPlayer && !attendees.includes(loggedPlayer)) {
+                return alert("Tylko zawodnicy biorący udział w tym meczu mogą oddawać głosy na MVP!");
+            }
+
+            if (loggedPlayer && voter !== loggedPlayer) {
+                return alert(`Jesteś zalogowany jako ${loggedPlayer}. Nie możesz głosować w imieniu innego zawodnika!`);
+            }
+
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
+            if (!attendees.includes(voter)) {
+                return alert("Tylko zawodnicy biorący udział w tym spotkaniu mogą oddać głos na MVP!");
+            }
+
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
+            if (voter === nominee) {
+                return alert("Nie możesz zagłosować na samego siebie!");
+            }
 
             // Jeśli profil gracza ma PIN, a użytkownik nie jest zalogowany jako ten gracz
             const playerPinHash = AppState.player_pins?.[voter];
@@ -5536,10 +5760,11 @@
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
 
-                const attendees = (m.attendees || []).slice(0, 12);
-                attendeesCount = attendees.length;
-                totalVotes = Object.keys(m.votes).length;
-                isNowCompleted = totalVotes >= attendeesCount && attendeesCount > 0;
+                const attendeesList = (m.attendees || []).slice(0, 12);
+                attendeesCount = attendeesList.length;
+                const validVotesCount = attendeesList.filter(p => Boolean(m.votes && m.votes[p])).length;
+                totalVotes = validVotesCount;
+                isNowCompleted = validVotesCount >= attendeesCount && attendeesCount > 0;
                 if (isNowCompleted) {
                     m.mvpClosed = true;
                 }
