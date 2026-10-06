@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Głosowanie na MVP Meczu</title>
+
+    <!-- Meta Tagi Open Graph dla Facebook Messenger, WhatsApp, iMessage -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🏆 Głosowanie na MVP Meczu">
+    <meta property="og:description" content="Oddaj swój tajny głos na MVP spotkania siatkówki! 🏐">
+    <meta property="og:site_name" content="Siatkówka Piątek">
+    <meta name="description" content="Oddaj swój tajny głos na MVP spotkania siatkówki! 🏐">
+    <meta name="theme-color" content="#f59e0b">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="🏆 Głosowanie na MVP Meczu">
+    <meta name="twitter:description" content="Oddaj swój tajny głos na MVP spotkania siatkówki! 🏐">
+
+    <script>
+        // Błyskawiczne przekierowanie do dedykowanego panelu głosowania w aplikacji
+        (function() {
+            var search = window.location.search || '';
+            var target = './index.html';
+            if (search.indexOf('mvp=') !== -1) {
+                target += search;
+            } else if (search.indexOf('date=') !== -1) {
+                var match = search.match(/date=([^&]+)/);
+                target += '?mvp=' + (match ? match[1] : 'latest');
+            } else {
+                target += '?mvp=latest';
+            }
+            window.location.replace(target);
+        })();
+    </script>
+</head>
+<body style="background-color: #070a12; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; text-align: center; padding: 20px; box-sizing: border-box;">
+    <div>
+        <div style="font-size: 56px; margin-bottom: 16px;">🏆</div>
+        <h1 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 800; color: #ffffff;">Głosowanie na MVP Meczu</h1>
+        <p style="margin: 0 0 20px 0; font-size: 13px; color: #94a3b8;">Przekierowywanie do aplikacji...</p>
+        <noscript>
+            <a href="./index.html?mvp=latest" style="display: inline-block; background: #f59e0b; color: #000; padding: 12px 24px; border-radius: 12px; font-weight: bold; text-decoration: none;">Kliknij tutaj, aby przejść do głosowania</a>
+        </noscript>
+    </div>
+</body>
+</html>
