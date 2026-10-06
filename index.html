@@ -3347,7 +3347,11 @@
                     renderHallOfFame();
                     renderArchiveTab();
                 } else if (currentActiveTab === 'profile') {
-                    renderProfileTab();
+                    if (Date.now() - lastSkillUpdateTime < 3000) {
+                        // Ochrona przed skakaniem: pomijamy przebudowę profilu z Firebase tuż po zmianie gwiazdki
+                    } else {
+                        renderProfileTab();
+                    }
                 }
             }
             updateCountdownDisplay();
@@ -7024,6 +7028,16 @@
             const container = document.getElementById('profileMainContainer');
             if (!container) return;
 
+            const existingGrid = document.getElementById('playerSkillsGrid');
+            if (existingGrid && existingGrid.scrollTop > 0) {
+                lastSkillsGridScrollTop = existingGrid.scrollTop;
+            }
+            const existingSearch = document.getElementById('playerSkillsSearch');
+            if (existingSearch && existingSearch.value) {
+                lastSkillsSearchQuery = existingSearch.value;
+            }
+            const savedWinY = window.scrollY || document.documentElement.scrollTop || 0;
+
             if (!loggedPlayer) {
                 // Widok logowania / rejestracji PIN-em
                 const sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
@@ -7384,7 +7398,7 @@
                             </div>
 
                             <div class="space-y-1.5">
-                                <input type="text" id="playerSkillsSearch" oninput="renderPlayerSkillsGrid()" placeholder="🔍 Szukaj gracza do oceny..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 text-xs text-slate-100 placeholder-slate-500 rounded-xl px-3 py-1.5 focus:outline-none transition">
+                                <input type="text" id="playerSkillsSearch" oninput="lastSkillsSearchQuery = this.value; renderPlayerSkillsGrid()" placeholder="🔍 Szukaj gracza do oceny..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 text-xs text-slate-100 placeholder-slate-500 rounded-xl px-3 py-1.5 focus:outline-none transition">
                                 <div class="flex items-center justify-between text-[9px] text-slate-400 px-2 py-1 bg-slate-900/40 rounded-lg border border-slate-800/50">
                                     <span class="text-slate-400 font-semibold">1★ Start</span>
                                     <span class="text-slate-600">•</span>
@@ -7398,7 +7412,7 @@
                                 </div>
                             </div>
 
-                            <div id="playerSkillsGrid" class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
+                            <div id="playerSkillsGrid" onscroll="if (this.scrollTop > 0) lastSkillsGridScrollTop = this.scrollTop;" class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                                 <!-- Populated dynamically -->
                             </div>
                         </div>
@@ -7468,6 +7482,13 @@
             if (isOrganizer) {
                 renderPlayerSkillsGrid();
                 renderPlayerDirectoryTags();
+            }
+
+            if (savedWinY > 0) {
+                window.scrollTo({ top: savedWinY, behavior: 'instant' });
+                requestAnimationFrame(() => {
+                    window.scrollTo({ top: savedWinY, behavior: 'instant' });
+                });
             }
         }
 
@@ -7891,15 +7912,24 @@
         }
 
         // ================= DISCREET SKILL RATINGS (ADMIN ONLY) =================
+        let lastSkillsGridScrollTop = 0;
+        let lastSkillsSearchQuery = '';
+        let lastSkillUpdateTime = 0;
+
         function renderPlayerSkillsGrid() {
             const grid = document.getElementById('playerSkillsGrid');
             if (!grid) return;
 
             if (!AppState.player_skills) AppState.player_skills = {};
 
-            const prevScrollTop = grid.scrollTop;
+            if (grid.scrollTop > 0) {
+                lastSkillsGridScrollTop = grid.scrollTop;
+            }
             const searchInput = document.getElementById('playerSkillsSearch');
-            const query = (searchInput?.value || '').trim().toLowerCase();
+            if (searchInput && lastSkillsSearchQuery && !searchInput.value) {
+                searchInput.value = lastSkillsSearchQuery;
+            }
+            const query = (searchInput?.value || lastSkillsSearchQuery || '').trim().toLowerCase();
 
             let sortedPlayers = [...AppState.all_players].sort((a, b) => a.localeCompare(b, 'pl'));
             if (query) {
@@ -7933,7 +7963,7 @@
                         <button type="button" 
                                 onclick="updatePlayerSkill(${toInlineArgument(p)}, ${i})" 
                                 aria-label="Ustaw ocenę ${i} dla ${escapeHtml(p)}" 
-                                class="p-1 -m-0.5 active:scale-125 transition transform focus:outline-none">
+                                class="p-1 -m-0.5 active:scale-125 transition transform focus:outline-none cursor-pointer">
                             <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 ${starColor}" viewBox="0 0 24 24">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                             </svg>
@@ -7942,7 +7972,7 @@
                 }
 
                 return `
-                    <div class="bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 px-2.5 py-1.5 rounded-xl flex items-center justify-between gap-2 text-xs transition">
+                    <div data-skill-player="${escapeHtml(p)}" class="bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 px-2.5 py-1.5 rounded-xl flex items-center justify-between gap-2 text-xs transition">
                         <div class="flex items-center gap-2 min-w-0 flex-1">
                             ${getPlayerAvatarHtml(p, 'xs')}
                             <span class="font-bold text-slate-200 truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
@@ -7951,7 +7981,7 @@
                             <div class="flex items-center gap-0.5 bg-slate-950/90 px-1.5 py-1 rounded-lg border border-slate-800/80">
                                 ${starsHtml}
                             </div>
-                            <span class="text-[9.5px] font-black px-1.5 py-0.5 rounded border min-w-[44px] text-center ${lvl.badgeClass}">
+                            <span class="skill-level-badge text-[9.5px] font-black px-1.5 py-0.5 rounded border min-w-[44px] text-center ${lvl.badgeClass}">
                                 ${lvl.label}
                             </span>
                         </div>
@@ -7959,17 +7989,66 @@
                 `;
             }).join('');
 
-            grid.scrollTop = prevScrollTop;
+            const scrollTarget = lastSkillsGridScrollTop;
+            grid.scrollTop = scrollTarget;
+            requestAnimationFrame(() => {
+                if (grid) grid.scrollTop = scrollTarget;
+            });
+            setTimeout(() => {
+                if (grid) grid.scrollTop = scrollTarget;
+            }, 20);
         }
 
         function updatePlayerSkill(playerName, ratingVal) {
             if (!AppState.player_skills) AppState.player_skills = {};
             const newRating = parseInt(ratingVal, 10) || 3;
             AppState.player_skills[playerName] = newRating;
+
+            const grid = document.getElementById('playerSkillsGrid');
+            if (grid && grid.scrollTop > 0) {
+                lastSkillsGridScrollTop = grid.scrollTop;
+            }
+            const savedWinY = window.scrollY || document.documentElement.scrollTop || 0;
+
+            lastSkillUpdateTime = Date.now();
+
+            // Direct in-place DOM update so scroll never moves
+            let row = null;
+            if (grid) {
+                row = Array.from(grid.querySelectorAll('[data-skill-player]')).find(el => el.getAttribute('data-skill-player') === playerName);
+            }
+            if (row) {
+                const levelConfig = {
+                    1: { label: 'Start', badgeClass: 'bg-slate-800 text-slate-400 border-slate-700' },
+                    2: { label: 'Solidny', badgeClass: 'bg-slate-800 text-slate-300 border-slate-700' },
+                    3: { label: 'Średni', badgeClass: 'bg-blue-500/15 text-blue-300 border-blue-500/30' },
+                    4: { label: 'Lider', badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+                    5: { label: 'PRO', badgeClass: 'bg-amber-400 text-slate-950 font-black border-amber-400' }
+                };
+                const lvl = levelConfig[newRating] || levelConfig[3];
+                const badgeEl = row.querySelector('.skill-level-badge');
+                if (badgeEl) {
+                    badgeEl.className = `skill-level-badge text-[9.5px] font-black px-1.5 py-0.5 rounded border min-w-[44px] text-center ${lvl.badgeClass}`;
+                    badgeEl.innerText = lvl.label;
+                }
+                const starSvgs = row.querySelectorAll('button[onclick*="updatePlayerSkill"] svg');
+                starSvgs.forEach((svg, idx) => {
+                    const starNum = idx + 1;
+                    const isFilled = (starNum <= newRating);
+                    svg.setAttribute('class', `w-4 h-4 sm:w-4.5 sm:h-4.5 ${isFilled ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.4)]' : 'text-slate-700 fill-slate-800/80 hover:text-slate-500'}`);
+                });
+            } else {
+                renderPlayerSkillsGrid();
+            }
+
             syncState();
-            renderPlayerSkillsGrid();
+
             const levelNames = { 1: 'Start', 2: 'Solidny', 3: 'Średni', 4: 'Lider', 5: 'PRO' };
             showToast(`${playerName}: ${newRating} ⭐ (${levelNames[newRating] || ''})`);
+
+            if (savedWinY > 0) {
+                window.scrollTo({ top: savedWinY, behavior: 'instant' });
+            }
         }
 
         // ================= DIRECTORY MANAGEMENT =================
