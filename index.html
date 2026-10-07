@@ -39,6 +39,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 
     <script>
+        // Natychmiastowe ustawienie zapisanego motywu przed renderem DOM (Zero Flash)
+        (function() {
+            var t = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
+            document.documentElement.setAttribute('data-theme', t);
+            if (t === 'haaland-light' || t === 'mercurial-light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+        })();
+
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -59,6 +72,654 @@
         }
     </script>
     <style>
+        /* ==========================================================================
+           SYSTEM 4 MOTYWÓW + KLASYK (KOMPLEKSOWY SILNIK CSS Z PEŁNYM KONTRASTEM)
+           ========================================================================== */
+
+        /* --------------------------------------------------------------------------
+           1. HAALAND BŁĘKIT CIEMNY (Haaland Night)
+           -------------------------------------------------------------------------- */
+        [data-theme="haaland-dark"] body,
+        body[data-theme="haaland-dark"] {
+            background-color: #0c1322 !important;
+            color: #f8fafc !important;
+        }
+        [data-theme="haaland-dark"] header,
+        [data-theme="haaland-dark"] nav {
+            background-color: rgba(12, 19, 34, 0.95) !important;
+            border-color: rgba(56, 189, 248, 0.25) !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-slate-950"] {
+            background-color: #0c1322 !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-slate-900"] {
+            background-color: #151f33 !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-slate-850"] {
+            background-color: #1a2740 !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-slate-800"] {
+            background-color: #223354 !important;
+        }
+        [data-theme="haaland-dark"] [class*="border-slate-800"],
+        [data-theme="haaland-dark"] [class*="border-slate-850"] {
+            border-color: rgba(56, 189, 248, 0.22) !important;
+        }
+        [data-theme="haaland-dark"] [class*="border-slate-700"] {
+            border-color: rgba(56, 189, 248, 0.35) !important;
+        }
+        /* Akcenty i przyciski akcji Haaland Dark (Lodowy błękit & kobalt) */
+        [data-theme="haaland-dark"] .bg-emerald-500,
+        [data-theme="haaland-dark"] .bg-emerald-600,
+        [data-theme="haaland-dark"] [class*="from-emerald-"],
+        [data-theme="haaland-dark"] [class*="from-teal-"],
+        [data-theme="haaland-dark"] #matchSubtabSquadBtn.bg-gradient-to-r {
+            background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%) !important;
+            background-image: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%) !important;
+            color: #0c1322 !important;
+            border-color: #38bdf8 !important;
+        }
+        [data-theme="haaland-dark"] .bg-indigo-500,
+        [data-theme="haaland-dark"] .bg-indigo-600 {
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%) !important;
+            color: #0c1322 !important;
+        }
+        [data-theme="haaland-dark"] [class*="to-teal-"],
+        [data-theme="haaland-dark"] [class*="to-emerald-"] {
+            --tw-gradient-to: #0284c7 !important;
+        }
+        [data-theme="haaland-dark"] .hover\:bg-emerald-400:hover,
+        [data-theme="haaland-dark"] .hover\:bg-emerald-500:hover {
+            filter: brightness(1.1) !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-emerald-400"] {
+            background-color: #38bdf8 !important;
+        }
+        [data-theme="haaland-dark"] [class*="text-emerald-"],
+        [data-theme="haaland-dark"] [class*="text-teal-"],
+        [data-theme="haaland-dark"] [class*="text-indigo-400"],
+        [data-theme="haaland-dark"] [class*="text-indigo-300"] {
+            color: #38bdf8 !important;
+        }
+        [data-theme="haaland-dark"] [class*="border-emerald-"],
+        [data-theme="haaland-dark"] [class*="border-teal-"],
+        [data-theme="haaland-dark"] [class*="border-indigo-"] {
+            border-color: rgba(56, 189, 248, 0.45) !important;
+        }
+        [data-theme="haaland-dark"] [class*="bg-emerald-500/"],
+        [data-theme="haaland-dark"] [class*="bg-emerald-950"],
+        [data-theme="haaland-dark"] [class*="bg-indigo-950"],
+        [data-theme="haaland-dark"] [class*="bg-indigo-500/"] {
+            background-color: rgba(56, 189, 248, 0.16) !important;
+            color: #38bdf8 !important;
+            border-color: rgba(56, 189, 248, 0.35) !important;
+        }
+        [data-theme="haaland-dark"] [class*="ring-emerald-"] {
+            --tw-ring-color: #38bdf8 !important;
+            box-shadow: 0 0 0 2px #38bdf8 !important;
+        }
+        [data-theme="haaland-dark"] [class*="shadow-emerald-"],
+        [data-theme="haaland-dark"] [class*="shadow-indigo-"] {
+            box-shadow: 0 0 22px rgba(56, 189, 248, 0.4) !important;
+        }
+        [data-theme="haaland-dark"] .focus\:border-emerald-500:focus {
+            border-color: #38bdf8 !important;
+        }
+        [data-theme="haaland-dark"] .tab-btn.tab-active {
+            background: rgba(56, 189, 248, 0.18) !important;
+            color: #38bdf8 !important;
+            box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.45) !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           2. HAALAND BŁĘKIT JASNY (Haaland Day - Arktyczna Biel, Błękit & Pełny Kontrast)
+           -------------------------------------------------------------------------- */
+        [data-theme="haaland-light"] body,
+        body[data-theme="haaland-light"] {
+            background-color: #f0f9ff !important;
+            color: #0f172a !important;
+        }
+
+        /* Modal backdrops (muszą pozostać półprzezroczyste i przyciemniające) */
+        [data-theme="haaland-light"] .fixed.inset-0,
+        [data-theme="haaland-light"] [role="dialog"].fixed {
+            background-color: rgba(15, 23, 42, 0.65) !important;
+            box-shadow: none !important;
+        }
+
+        /* Wyłączenie ciemnych gradientów Tailwind na wszystkich kontenerach i kartach */
+        [data-theme="haaland-light"] div[class*="from-slate-"],
+        [data-theme="haaland-light"] section[class*="from-slate-"],
+        [data-theme="haaland-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-amber"]):not([class*="from-emerald"]):not([class*="from-indigo"]) {
+            background-image: none !important;
+        }
+
+        /* Główne karty, nagłówek, dolna nawigacja i modale stają się czysto białe (#ffffff) */
+        [data-theme="haaland-light"] header,
+        [data-theme="haaland-light"] nav,
+        [data-theme="haaland-light"] [class*="bg-slate-900"],
+        [data-theme="haaland-light"] div[class*="from-slate-"]:not(button),
+        [data-theme="haaland-light"] section[class*="from-slate-"],
+        [data-theme="haaland-light"] [role="dialog"] > div,
+        [data-theme="haaland-light"] [class*="bg-slate-950"]:not(.tab-active):not([class*="bg-emerald"]):not(.fixed):not([role="dialog"]) {
+            background-color: #ffffff !important;
+            border-color: #bae6fd !important;
+            box-shadow: 0 4px 20px -2px rgba(14, 165, 233, 0.08) !important;
+        }
+
+        /* Wewnętrzne boksy, kafelki informacyjne i kapsułki (subtelne podbicie kontrastu #f8fafc) */
+        [data-theme="haaland-light"] [class*="bg-slate-900"] [class*="bg-slate-950"],
+        [data-theme="haaland-light"] div[class*="from-slate-"] [class*="bg-slate-950"],
+        [data-theme="haaland-light"] [class*="bg-slate-850"],
+        [data-theme="haaland-light"] [class*="bg-slate-800"] {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        /* Kontrolki formularzy (select, input, textarea) */
+        [data-theme="haaland-light"] input:not([type="checkbox"]):not([type="radio"]),
+        [data-theme="haaland-light"] select,
+        [data-theme="haaland-light"] textarea {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        [data-theme="haaland-light"] select option {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        /* Przyciski pomocnicze (np. Poprzedni, Następny, Pokaż archiwalne, Gotowe) */
+        [data-theme="haaland-light"] button[class*="bg-slate-"]:not(.tab-active),
+        [data-theme="haaland-light"] button[class*="bg-slate-950"]:not(.tab-active) {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        [data-theme="haaland-light"] button[class*="bg-slate-"]:not(.tab-active):hover,
+        [data-theme="haaland-light"] button[class*="bg-slate-950"]:not(.tab-active):hover {
+            background-color: #f1f5f9 !important;
+            color: #0284c7 !important;
+        }
+
+        /* Wszystkie obramowania kart i linii podziału */
+        [data-theme="haaland-light"] [class*="border-slate-800"],
+        [data-theme="haaland-light"] [class*="border-slate-700"],
+        [data-theme="haaland-light"] [class*="border-slate-850"],
+        [data-theme="haaland-light"] [class*="divide-slate-800"] > * {
+            border-color: #e2e8f0 !important;
+        }
+
+        /* Wyrazisty, ciemny tekst o nienagannym kontraście */
+        [data-theme="haaland-light"] .text-white,
+        [data-theme="haaland-light"] [class*="text-slate-100"],
+        [data-theme="haaland-light"] [class*="text-slate-200"],
+        [data-theme="haaland-light"] h1,
+        [data-theme="haaland-light"] h2,
+        [data-theme="haaland-light"] h3,
+        [data-theme="haaland-light"] h4 {
+            color: #0f172a !important;
+        }
+        [data-theme="haaland-light"] [class*="text-slate-300"],
+        [data-theme="haaland-light"] [class*="text-slate-400"] {
+            color: #334155 !important;
+        }
+        [data-theme="haaland-light"] [class*="text-slate-500"] {
+            color: #64748b !important;
+        }
+        [data-theme="haaland-light"] [class*="text-slate-600"] {
+            color: #94a3b8 !important;
+        }
+
+        /* Kolory akcentów Haaland Light (Świeży błękit oceaniczny) */
+        [data-theme="haaland-light"] .bg-emerald-500,
+        [data-theme="haaland-light"] .bg-emerald-600,
+        [data-theme="haaland-light"] [class*="from-emerald-"],
+        [data-theme="haaland-light"] [class*="from-teal-"],
+        [data-theme="haaland-light"] #matchSubtabSquadBtn.bg-gradient-to-r {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
+            background-image: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
+            color: #ffffff !important;
+            border-color: #0284c7 !important;
+        }
+        [data-theme="haaland-light"] .bg-indigo-500,
+        [data-theme="haaland-light"] .bg-indigo-600 {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
+            color: #ffffff !important;
+        }
+        [data-theme="haaland-light"] [class*="to-teal-"],
+        [data-theme="haaland-light"] [class*="to-emerald-"] {
+            --tw-gradient-to: #0ea5e9 !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-emerald-400"] {
+            background-color: #0284c7 !important;
+        }
+        [data-theme="haaland-light"] [class*="text-emerald-"],
+        [data-theme="haaland-light"] [class*="text-teal-"],
+        [data-theme="haaland-light"] [class*="text-indigo-400"],
+        [data-theme="haaland-light"] [class*="text-indigo-300"] {
+            color: #0284c7 !important;
+        }
+        [data-theme="haaland-light"] [class*="border-emerald-"],
+        [data-theme="haaland-light"] [class*="border-teal-"],
+        [data-theme="haaland-light"] [class*="border-indigo-"] {
+            border-color: #bae6fd !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-emerald-500/"],
+        [data-theme="haaland-light"] [class*="bg-emerald-950"],
+        [data-theme="haaland-light"] [class*="bg-indigo-950"],
+        [data-theme="haaland-light"] [class*="bg-indigo-500/"] {
+            background-color: #e0f2fe !important;
+            color: #0284c7 !important;
+            border-color: #bae6fd !important;
+        }
+        [data-theme="haaland-light"] [class*="ring-emerald-"] {
+            --tw-ring-color: #0284c7 !important;
+            box-shadow: 0 0 0 2px #0284c7 !important;
+        }
+        [data-theme="haaland-light"] [class*="shadow-emerald-"],
+        [data-theme="haaland-light"] [class*="shadow-indigo-"] {
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important;
+        }
+        [data-theme="haaland-light"] .focus\:border-emerald-500:focus {
+            border-color: #0284c7 !important;
+        }
+
+        /* Pasek nawigacji dolnej */
+        [data-theme="haaland-light"] .tab-btn.tab-active {
+            background: rgba(2, 132, 199, 0.12) !important;
+            color: #0284c7 !important;
+            box-shadow: inset 0 0 0 1px rgba(2, 132, 199, 0.35) !important;
+        }
+        [data-theme="haaland-light"] .tab-btn.tab-active .tab-text {
+            color: #0f172a !important;
+        }
+        [data-theme="haaland-light"] .tab-btn:not(.tab-active) {
+            color: #64748b !important;
+        }
+
+        /* Kapsułki i badge stanów w Haaland Light */
+        [data-theme="haaland-light"] [class*="bg-sky-950"] {
+            background-color: #e0f2fe !important;
+            color: #0369a1 !important;
+            border-color: #bae6fd !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-amber-950"],
+        [data-theme="haaland-light"] [class*="bg-amber-500/"] {
+            background-color: #fef3c7 !important;
+            color: #b45309 !important;
+            border-color: #fde68a !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-rose-950"],
+        [data-theme="haaland-light"] [class*="bg-rose-500/"] {
+            background-color: #ffe4e6 !important;
+            color: #be123c !important;
+            border-color: #fecdd3 !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-indigo-950"] {
+            background-color: #e0e7ff !important;
+            color: #4338ca !important;
+            border-color: #c7d2fe !important;
+        }
+        [data-theme="haaland-light"] .text-amber-300,
+        [data-theme="haaland-light"] .text-amber-400 {
+            color: #b45309 !important;
+        }
+        [data-theme="haaland-light"] .text-sky-400 {
+            color: #0284c7 !important;
+        }
+        [data-theme="haaland-light"] .text-rose-400 {
+            color: #be123c !important;
+        }
+        [data-theme="haaland-light"] .text-indigo-400 {
+            color: #4338ca !important;
+        }
+
+        /* Tabela Hall of Fame w Haaland Light */
+        [data-theme="haaland-light"] table thead {
+            background-color: #f1f5f9 !important;
+            color: #475569 !important;
+        }
+        [data-theme="haaland-light"] table tbody {
+            background-color: #ffffff !important;
+        }
+        [data-theme="haaland-light"] table tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           3. MERCURIAL RÓŻ CIEMNY (Mercurial Night)
+           -------------------------------------------------------------------------- */
+        [data-theme="mercurial-dark"] body,
+        body[data-theme="mercurial-dark"] {
+            background-color: #08080c !important;
+            color: #f8fafc !important;
+        }
+        [data-theme="mercurial-dark"] header,
+        [data-theme="mercurial-dark"] nav {
+            background-color: rgba(12, 13, 18, 0.95) !important;
+            border-color: rgba(255, 23, 131, 0.25) !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-slate-950"] {
+            background-color: #08080c !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-slate-900"] {
+            background-color: #111218 !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-slate-850"] {
+            background-color: #171821 !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-slate-800"] {
+            background-color: #21222e !important;
+        }
+        [data-theme="mercurial-dark"] [class*="border-slate-800"],
+        [data-theme="mercurial-dark"] [class*="border-slate-850"] {
+            border-color: rgba(255, 23, 131, 0.22) !important;
+        }
+        [data-theme="mercurial-dark"] [class*="border-slate-700"] {
+            border-color: rgba(255, 23, 131, 0.35) !important;
+        }
+        /* Akcenty i przyciski akcji Mercurial Dark (Neonowy Pink Blast) */
+        [data-theme="mercurial-dark"] .bg-emerald-500,
+        [data-theme="mercurial-dark"] .bg-emerald-600,
+        [data-theme="mercurial-dark"] [class*="from-emerald-"],
+        [data-theme="mercurial-dark"] [class*="from-teal-"],
+        [data-theme="mercurial-dark"] #matchSubtabSquadBtn.bg-gradient-to-r {
+            background: linear-gradient(135deg, #ff1783 0%, #ff4b9b 55%, #ffffff 130%) !important;
+            background-image: linear-gradient(135deg, #ff1783 0%, #ff4b9b 55%, #ffffff 130%) !important;
+            color: #08080c !important;
+            border-color: #ff1783 !important;
+        }
+        [data-theme="mercurial-dark"] .bg-indigo-500,
+        [data-theme="mercurial-dark"] .bg-indigo-600 {
+            background: linear-gradient(135deg, #ff1783 0%, #ff4b9b 100%) !important;
+            color: #08080c !important;
+        }
+        [data-theme="mercurial-dark"] [class*="to-teal-"],
+        [data-theme="mercurial-dark"] [class*="to-emerald-"] {
+            --tw-gradient-to: #ff4b9b !important;
+        }
+        [data-theme="mercurial-dark"] .hover\:bg-emerald-400:hover,
+        [data-theme="mercurial-dark"] .hover\:bg-emerald-500:hover {
+            filter: brightness(1.1) !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-emerald-400"] {
+            background-color: #ff1783 !important;
+        }
+        [data-theme="mercurial-dark"] [class*="text-emerald-"],
+        [data-theme="mercurial-dark"] [class*="text-teal-"],
+        [data-theme="mercurial-dark"] [class*="text-indigo-400"],
+        [data-theme="mercurial-dark"] [class*="text-indigo-300"] {
+            color: #ff4b9b !important;
+        }
+        [data-theme="mercurial-dark"] [class*="border-emerald-"],
+        [data-theme="mercurial-dark"] [class*="border-teal-"],
+        [data-theme="mercurial-dark"] [class*="border-indigo-"] {
+            border-color: rgba(255, 23, 131, 0.45) !important;
+        }
+        [data-theme="mercurial-dark"] [class*="bg-emerald-500/"],
+        [data-theme="mercurial-dark"] [class*="bg-emerald-950"],
+        [data-theme="mercurial-dark"] [class*="bg-indigo-950"],
+        [data-theme="mercurial-dark"] [class*="bg-indigo-500/"] {
+            background-color: rgba(255, 23, 131, 0.16) !important;
+            color: #ff4b9b !important;
+            border-color: rgba(255, 23, 131, 0.35) !important;
+        }
+        [data-theme="mercurial-dark"] [class*="ring-emerald-"] {
+            --tw-ring-color: #ff1783 !important;
+            box-shadow: 0 0 0 2px #ff1783 !important;
+        }
+        [data-theme="mercurial-dark"] [class*="shadow-emerald-"],
+        [data-theme="mercurial-dark"] [class*="shadow-indigo-"] {
+            box-shadow: 0 0 25px rgba(255, 23, 131, 0.45) !important;
+        }
+        [data-theme="mercurial-dark"] .focus\:border-emerald-500:focus {
+            border-color: #ff1783 !important;
+        }
+        [data-theme="mercurial-dark"] .tab-btn.tab-active {
+            background: rgba(255, 23, 131, 0.18) !important;
+            color: #ff1783 !important;
+            box-shadow: inset 0 0 0 1px rgba(255, 23, 131, 0.45) !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           4. MERCURIAL RÓŻ JASNY (Mercurial Day - Perłowa Biel, Róż & Pełny Kontrast)
+           -------------------------------------------------------------------------- */
+        [data-theme="mercurial-light"] body,
+        body[data-theme="mercurial-light"] {
+            background-color: #fff5f8 !important;
+            color: #18181b !important;
+        }
+
+        /* Modal backdrops (muszą pozostać półprzezroczyste i przyciemniające) */
+        [data-theme="mercurial-light"] .fixed.inset-0,
+        [data-theme="mercurial-light"] [role="dialog"].fixed {
+            background-color: rgba(15, 23, 42, 0.65) !important;
+            box-shadow: none !important;
+        }
+
+        /* Wyłączenie ciemnych gradientów Tailwind na wszystkich kontenerach i kartach */
+        [data-theme="mercurial-light"] div[class*="from-slate-"],
+        [data-theme="mercurial-light"] section[class*="from-slate-"],
+        [data-theme="mercurial-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-amber"]):not([class*="from-emerald"]):not([class*="from-indigo"]) {
+            background-image: none !important;
+        }
+
+        /* Główne karty, nagłówek, dolna nawigacja i modale stają się czysto białe (#ffffff) */
+        [data-theme="mercurial-light"] header,
+        [data-theme="mercurial-light"] nav,
+        [data-theme="mercurial-light"] [class*="bg-slate-900"],
+        [data-theme="mercurial-light"] div[class*="from-slate-"]:not(button),
+        [data-theme="mercurial-light"] section[class*="from-slate-"],
+        [data-theme="mercurial-light"] [role="dialog"] > div,
+        [data-theme="mercurial-light"] [class*="bg-slate-950"]:not(.tab-active):not([class*="bg-emerald"]):not(.fixed):not([role="dialog"]) {
+            background-color: #ffffff !important;
+            border-color: #fbcfe8 !important;
+            box-shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.08) !important;
+        }
+
+        /* Wewnętrzne boksy, kafelki informacyjne i kapsułki (#fff1f5 z pudrową ramką) */
+        [data-theme="mercurial-light"] [class*="bg-slate-900"] [class*="bg-slate-950"],
+        [data-theme="mercurial-light"] div[class*="from-slate-"] [class*="bg-slate-950"],
+        [data-theme="mercurial-light"] [class*="bg-slate-850"],
+        [data-theme="mercurial-light"] [class*="bg-slate-800"] {
+            background-color: #fff1f5 !important;
+            border-color: #fce7f3 !important;
+        }
+
+        /* Kontrolki formularzy (select, input, textarea) */
+        [data-theme="mercurial-light"] input:not([type="checkbox"]):not([type="radio"]),
+        [data-theme="mercurial-light"] select,
+        [data-theme="mercurial-light"] textarea {
+            background-color: #ffffff !important;
+            color: #18181b !important;
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] select option {
+            background-color: #ffffff !important;
+            color: #18181b !important;
+        }
+
+        /* Przyciski pomocnicze */
+        [data-theme="mercurial-light"] button[class*="bg-slate-"]:not(.tab-active),
+        [data-theme="mercurial-light"] button[class*="bg-slate-950"]:not(.tab-active) {
+            background-color: #ffffff !important;
+            color: #18181b !important;
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] button[class*="bg-slate-"]:not(.tab-active):hover,
+        [data-theme="mercurial-light"] button[class*="bg-slate-950"]:not(.tab-active):hover {
+            background-color: #fff1f5 !important;
+            color: #e11d48 !important;
+        }
+
+        /* Obramowania */
+        [data-theme="mercurial-light"] [class*="border-slate-800"],
+        [data-theme="mercurial-light"] [class*="border-slate-700"],
+        [data-theme="mercurial-light"] [class*="border-slate-850"],
+        [data-theme="mercurial-light"] [class*="divide-slate-800"] > * {
+            border-color: #fce7f3 !important;
+        }
+
+        /* Ciemny, czytelny tekst */
+        [data-theme="mercurial-light"] .text-white,
+        [data-theme="mercurial-light"] [class*="text-slate-100"],
+        [data-theme="mercurial-light"] [class*="text-slate-200"],
+        [data-theme="mercurial-light"] h1,
+        [data-theme="mercurial-light"] h2,
+        [data-theme="mercurial-light"] h3,
+        [data-theme="mercurial-light"] h4 {
+            color: #18181b !important;
+        }
+        [data-theme="mercurial-light"] [class*="text-slate-300"],
+        [data-theme="mercurial-light"] [class*="text-slate-400"] {
+            color: #3f3f46 !important;
+        }
+        [data-theme="mercurial-light"] [class*="text-slate-500"] {
+            color: #71717a !important;
+        }
+        [data-theme="mercurial-light"] [class*="text-slate-600"] {
+            color: #a1a1aa !important;
+        }
+
+        /* Kolory akcentów Mercurial Light (Neonowy róż & malina) */
+        [data-theme="mercurial-light"] .bg-emerald-500,
+        [data-theme="mercurial-light"] .bg-emerald-600,
+        [data-theme="mercurial-light"] [class*="from-emerald-"],
+        [data-theme="mercurial-light"] [class*="from-teal-"],
+        [data-theme="mercurial-light"] #matchSubtabSquadBtn.bg-gradient-to-r {
+            background: linear-gradient(135deg, #e11d48 0%, #ff1783 100%) !important;
+            background-image: linear-gradient(135deg, #e11d48 0%, #ff1783 100%) !important;
+            color: #ffffff !important;
+            border-color: #e11d48 !important;
+        }
+        [data-theme="mercurial-light"] .bg-indigo-500,
+        [data-theme="mercurial-light"] .bg-indigo-600 {
+            background: linear-gradient(135deg, #e11d48 0%, #ff1783 100%) !important;
+            color: #ffffff !important;
+        }
+        [data-theme="mercurial-light"] [class*="to-teal-"],
+        [data-theme="mercurial-light"] [class*="to-emerald-"] {
+            --tw-gradient-to: #ff1783 !important;
+        }
+        [data-theme="mercurial-light"] [class*="bg-emerald-400"] {
+            background-color: #e11d48 !important;
+        }
+        [data-theme="mercurial-light"] [class*="text-emerald-"],
+        [data-theme="mercurial-light"] [class*="text-teal-"],
+        [data-theme="mercurial-light"] [class*="text-indigo-400"],
+        [data-theme="mercurial-light"] [class*="text-indigo-300"] {
+            color: #e11d48 !important;
+        }
+        [data-theme="mercurial-light"] [class*="border-emerald-"],
+        [data-theme="mercurial-light"] [class*="border-teal-"],
+        [data-theme="mercurial-light"] [class*="border-indigo-"] {
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] [class*="bg-emerald-500/"],
+        [data-theme="mercurial-light"] [class*="bg-emerald-950"],
+        [data-theme="mercurial-light"] [class*="bg-indigo-950"],
+        [data-theme="mercurial-light"] [class*="bg-indigo-500/"] {
+            background-color: #fce7f3 !important;
+            color: #e11d48 !important;
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] [class*="ring-emerald-"] {
+            --tw-ring-color: #e11d48 !important;
+            box-shadow: 0 0 0 2px #e11d48 !important;
+        }
+        [data-theme="mercurial-light"] [class*="shadow-emerald-"],
+        [data-theme="mercurial-light"] [class*="shadow-indigo-"] {
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25) !important;
+        }
+        [data-theme="mercurial-light"] .focus\:border-emerald-500:focus {
+            border-color: #e11d48 !important;
+        }
+
+        /* Pasek nawigacji dolnej */
+        [data-theme="mercurial-light"] .tab-btn.tab-active {
+            background: rgba(225, 29, 72, 0.12) !important;
+            color: #e11d48 !important;
+            box-shadow: inset 0 0 0 1px rgba(225, 29, 72, 0.35) !important;
+        }
+        [data-theme="mercurial-light"] .tab-btn.tab-active .tab-text {
+            color: #18181b !important;
+        }
+        [data-theme="mercurial-light"] .tab-btn:not(.tab-active) {
+            color: #71717a !important;
+        }
+
+        /* Kapsułki i badge w Mercurial Light */
+        [data-theme="mercurial-light"] [class*="bg-sky-950"] {
+            background-color: #fce7f3 !important;
+            color: #be123c !important;
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] [class*="bg-amber-950"],
+        [data-theme="mercurial-light"] [class*="bg-amber-500/"] {
+            background-color: #fef3c7 !important;
+            color: #b45309 !important;
+            border-color: #fde68a !important;
+        }
+        [data-theme="mercurial-light"] [class*="bg-rose-950"],
+        [data-theme="mercurial-light"] [class*="bg-rose-500/"] {
+            background-color: #ffe4e6 !important;
+            color: #be123c !important;
+            border-color: #fecdd3 !important;
+        }
+        [data-theme="mercurial-light"] [class*="bg-indigo-950"] {
+            background-color: #fdf2f8 !important;
+            color: #be123c !important;
+            border-color: #fbcfe8 !important;
+        }
+        [data-theme="mercurial-light"] .text-amber-300,
+        [data-theme="mercurial-light"] .text-amber-400 {
+            color: #b45309 !important;
+        }
+        [data-theme="mercurial-light"] .text-sky-400 {
+            color: #e11d48 !important;
+        }
+        [data-theme="mercurial-light"] .text-rose-400 {
+            color: #be123c !important;
+        }
+        [data-theme="mercurial-light"] .text-indigo-400 {
+            color: #be123c !important;
+        }
+
+        /* Tabela Hall of Fame w Mercurial Light */
+        [data-theme="mercurial-light"] table thead {
+            background-color: #fff1f5 !important;
+            color: #71717a !important;
+        }
+        [data-theme="mercurial-light"] table tbody {
+            background-color: #ffffff !important;
+        }
+        [data-theme="mercurial-light"] table tbody tr:hover {
+            background-color: #fff1f5 !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           5. KLASYCZNY ORYGINAŁ (Classic Dark)
+           -------------------------------------------------------------------------- */
+        [data-theme="classic"] body,
+        body[data-theme="classic"] {
+            background-color: #070a12 !important;
+            color: #f1f5f9 !important;
+        }
+        [data-theme="classic"] .tab-btn.tab-active {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #10b981 !important;
+            box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.45) !important;
+        }
+
+        /* Zabezpieczenie czytelności licznika / plakietki aktywnego meczu na pasku dat */
+        #matchDatesContainer button[class*="from-emerald-"] span.font-mono,
+        #matchDatesContainer button.shadow-md span.font-mono {
+            background-color: rgba(0, 0, 0, 0.28) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+
         html, body {
             overscroll-behavior-y: contain;
         }
@@ -67,6 +728,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
             background-color: #070a12;
+            transition: background-color 0.25s ease-in-out;
         }
         
         .ios-safe-header {
@@ -210,11 +872,15 @@
                     <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">Siatkówka Piątek</h1>
                 </div>
 
-                <!-- Month Select & Share Action -->
+                <!-- Month Select & Share Action & Theme Button -->
                 <div class="flex items-center gap-1.5 shrink-0">
                     <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95 max-w-[125px] sm:max-w-none">
                         <!-- Populated dynamically -->
                     </select>
+                    <button type="button" onclick="openThemePickerModal()" title="Zmień motyw aplikacji (4 opcje + Klasyk)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition flex items-center gap-1 shadow-sm active:scale-95 shrink-0">
+                        <span>🎨</span>
+                        <span class="hidden sm:inline text-[11px]">Motyw</span>
+                    </button>
                     <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0">
                         <span>📣</span>
                         <span class="hidden sm:inline text-[11px]">Mess</span>
@@ -1152,6 +1818,33 @@
                 </button>
                 <button type="button" onclick="closeShareModal()" class="w-full bg-transparent hover:bg-slate-800/40 text-slate-400 text-xs py-1 transition text-center">
                     Zamknij
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Picker Modal (Pomysł Mikołaja - 4 motywy + Klasyk) -->
+    <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">🎨</span>
+                    <div>
+                        <h3 id="themePickerModalTitle" class="font-black text-white text-base">Wybierz Motyw</h3>
+                        <p class="text-[10px] text-slate-400">Zapisze się tylko na Twoim telefonie</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeThemePickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[36px] min-h-[36px] flex items-center justify-center -mr-1">✕</button>
+            </div>
+
+            <!-- Kontener na opcje motywów -->
+            <div id="themePickerOptionsContainer" class="space-y-2">
+                <!-- Wypełniane dynamicznie -->
+            </div>
+
+            <div class="pt-1">
+                <button type="button" onclick="closeThemePickerModal()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold py-2.5 rounded-2xl text-xs transition">
+                    Gotowe
                 </button>
             </div>
         </div>
@@ -3041,6 +3734,7 @@
             if (isAppBootstrapDone) return;
             isAppBootstrapDone = true;
 
+            applyAppTheme(localStorage.getItem('siatka_app_theme') || 'haaland-dark');
             checkUserAuthSession();
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -3773,7 +4467,7 @@
                             <span>${(isRecent && isPast) ? (isMvpDone ? '👑' : '🏆') : (isLockedFuture ? '🔒' : (isPast ? '⏳' : '📅'))} ${dayDisplay}</span>
                             <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
                                 isSelected 
-                                    ? 'bg-slate-950/20 text-slate-950 font-black' 
+                                    ? 'bg-black/30 text-white font-black shadow-inner' 
                                     : (isRecent && isPast && !isMvpDone)
                                         ? 'bg-amber-950 text-amber-300 border border-amber-800/80 font-bold'
                                         : isLockedFuture
@@ -6819,7 +7513,7 @@
             if (formEl) {
                 if (formOutcomes.length) {
                     formEl.innerHTML = formOutcomes.map(o => `
-                        <span class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black ${o === 'W' ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'}">${o}</span>
+                        <span class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
                     `).join('');
                 } else {
                     formEl.innerHTML = `<span class="text-slate-500 text-[11px]">-</span>`;
@@ -6986,7 +7680,7 @@
                 const formHtml = s.form.length ? `
                     <div class="flex items-center justify-center gap-0.5">
                         ${s.form.map(o => `
-                            <span class="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[7px] font-black ${o === 'W' ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'}">${o}</span>
+                            <span class="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[7.5px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
                         `).join('')}
                     </div>
                 ` : `<span class="text-slate-600 text-[10px]">-</span>`;
@@ -7086,6 +7780,24 @@
                                 <span>Nie ma Cię na liście? Stwórz nowy profil</span>
                             </button>
                         </form>
+                    </div>
+
+                    <!-- Karta Wyboru Motywu dla niezalogowanych -->
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3 max-w-md mx-auto mt-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-black text-white flex items-center gap-2">
+                                    <span>🎨</span> Motyw Aplikacji
+                                </h3>
+                                <p class="text-[11px] text-slate-400">Wybierz swój ulubiony wygląd (zapisze się na telefonie)</p>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                4 Opcje + Klasyk
+                            </span>
+                        </div>
+                        <div id="unloggedThemePickerContainer" class="space-y-2">
+                            ${getThemePickerHtml()}
+                        </div>
                     </div>
                 `;
                 return;
@@ -7192,7 +7904,7 @@
                         <span class="text-[11px] font-bold text-slate-300">Ostatnia forma (W/L):</span>
                         <div class="flex items-center gap-1">
                             ${formOutcomes.length ? formOutcomes.map(o => `
-                                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black ${o === 'W' ? 'bg-emerald-500 text-slate-950' : 'bg-rose-500 text-white'}">${o}</span>
+                                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
                             `).join('') : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
                         </div>
                     </div>
@@ -7325,6 +8037,24 @@
                         </button>
                     </div>
 
+                </div>
+
+                <!-- Karta Wyboru Motywu dla zalogowanego gracza -->
+                <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-black text-white flex items-center gap-2">
+                                <span>🎨</span> Motyw Aplikacji
+                            </h3>
+                            <p class="text-[11px] text-slate-400">Wybierz swój ulubiony styl (zapisze się na telefonie)</p>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                            4 Opcje + Klasyk
+                        </span>
+                    </div>
+                    <div id="profileThemePickerContainer" class="space-y-2">
+                        ${getThemePickerHtml()}
+                    </div>
                 </div>
 
                 <!-- 2. STREFA ORGANIZATORA (WIDOCZNA TYLKO DLA MICHAŁA CHACIŃSKIEGO) -->
@@ -8517,6 +9247,143 @@
 
         function closeShareModal() {
             document.getElementById('shareModal')?.classList.add('hidden');
+        }
+
+        // ================= SYSTEM 4 MOTYWÓW + KLASYK (POMYSŁ MIKOŁAJA) =================
+        function openThemePickerModal() {
+            const modal = document.getElementById('themePickerModal');
+            if (modal) {
+                renderThemePickerOptions();
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeThemePickerModal() {
+            document.getElementById('themePickerModal')?.classList.add('hidden');
+        }
+
+        function setAppTheme(themeKey) {
+            localStorage.setItem('siatka_app_theme', themeKey);
+            applyAppTheme(themeKey);
+            const names = {
+                'haaland-dark': '❄️🌙 Błękit Ciemny (Haaland)',
+                'haaland-light': '❄️☀️ Błękit Jasny (Haaland)',
+                'mercurial-dark': '👟🌙 Róż Ciemny (Mercurial)',
+                'mercurial-light': '👟☀️ Róż Jasny (Mercurial)',
+                'classic': '🏐 Klasyczny (Oryginał)'
+            };
+            if (typeof showToast === 'function') {
+                showToast(`Zastosowano motyw: ${names[themeKey] || themeKey}`);
+            }
+            renderThemePickerOptions();
+        }
+
+        function applyAppTheme(themeKey) {
+            const valid = ['haaland-dark', 'haaland-light', 'mercurial-dark', 'mercurial-light', 'classic'];
+            const selected = valid.includes(themeKey) ? themeKey : 'haaland-dark';
+            document.documentElement.setAttribute('data-theme', selected);
+            document.body.setAttribute('data-theme', selected);
+            
+            if (selected === 'haaland-light' || selected === 'mercurial-light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+            
+            const themeColors = {
+                'haaland-dark': '#0c1322',
+                'haaland-light': '#f0f9ff',
+                'mercurial-dark': '#08080c',
+                'mercurial-light': '#fff5f8',
+                'classic': '#070a12'
+            };
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', themeColors[selected]);
+        }
+
+        function getThemePickerHtml() {
+            const currentTheme = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
+            const themes = [
+                {
+                    key: 'haaland-dark',
+                    name: 'Błękit Ciemny (Haaland)',
+                    subtitle: 'Chłodny doświetlony grafit & lodowy błękit',
+                    icon: '❄️🌙',
+                    badge: 'Polecany',
+                    badgeClass: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
+                    bgPreview: 'background: linear-gradient(135deg, #0c1322 0%, #151f33 100%);'
+                },
+                {
+                    key: 'haaland-light',
+                    name: 'Błękit Jasny (Haaland)',
+                    subtitle: 'Świeża arktyczna biel, błękit & czysty kontrast',
+                    icon: '❄️☀️',
+                    badge: 'Jasny',
+                    badgeClass: 'bg-sky-100 text-sky-800 border-sky-300',
+                    bgPreview: 'background: linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%);'
+                },
+                {
+                    key: 'mercurial-dark',
+                    name: 'Róż Ciemny (Mercurial)',
+                    subtitle: 'Smolisty grafit & neonowy Pink Blast z buta',
+                    icon: '👟🌙',
+                    badge: 'Energia',
+                    badgeClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+                    bgPreview: 'background: linear-gradient(135deg, #08080c 0%, #171821 100%);'
+                },
+                {
+                    key: 'mercurial-light',
+                    name: 'Róż Jasny (Mercurial)',
+                    subtitle: 'Perłowa jasność z malinowymi akcentami',
+                    icon: '👟☀️',
+                    badge: 'Jasny',
+                    badgeClass: 'bg-pink-100 text-pink-800 border-pink-300',
+                    bgPreview: 'background: linear-gradient(135deg, #fff5f8 0%, #fbcfe8 100%);'
+                },
+                {
+                    key: 'classic',
+                    name: 'Klasyczny (Oryginał)',
+                    subtitle: 'Głęboki nocny granat & szmaragdowa zieleń',
+                    icon: '🏐',
+                    badge: 'Klasyk',
+                    badgeClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+                    bgPreview: 'background: linear-gradient(135deg, #070a12 0%, #11192c 100%);'
+                }
+            ];
+
+            return themes.map(t => {
+                const isCurrent = (t.key === currentTheme);
+                return `
+                    <div onclick="setAppTheme('${t.key}')" class="p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 ${isCurrent ? 'ring-2 ring-emerald-400 bg-slate-800/80 border-emerald-400 shadow-md' : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'}">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 shadow-inner border border-white/10" style="${t.bgPreview}">
+                                ${t.icon}
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="font-extrabold text-xs text-white truncate">${t.name}</span>
+                                    <span class="text-[9px] font-bold px-1.5 py-0.2 rounded-full border ${t.badgeClass}">${t.badge}</span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 truncate mt-0.5">${t.subtitle}</p>
+                            </div>
+                        </div>
+                        <div class="shrink-0">
+                            ${isCurrent ? '<span class="text-xs bg-emerald-500 text-slate-950 font-black px-2 py-0.5 rounded-full shadow-sm">✓ AKTYWNY</span>' : '<span class="text-[11px] text-slate-500 font-bold px-2 py-0.5 rounded-full border border-slate-800 hover:border-slate-700">Wybierz</span>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderThemePickerOptions() {
+            const cModal = document.getElementById('themePickerOptionsContainer');
+            if (cModal) cModal.innerHTML = getThemePickerHtml();
+            const cProfile = document.getElementById('profileThemePickerContainer');
+            if (cProfile) cProfile.innerHTML = getThemePickerHtml();
+            const cUnlogged = document.getElementById('unloggedThemePickerContainer');
+            if (cUnlogged) cUnlogged.innerHTML = getThemePickerHtml();
         }
 
         // ================= GROUP SETTINGS MODAL (GODZINY, HALA, BLIK) =================
