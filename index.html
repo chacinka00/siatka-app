@@ -983,6 +983,13 @@
             padding-right: max(12px, env(safe-area-inset-right, 12px));
         }
 
+        .ios-safe-modal-overlay {
+            padding-top: max(24px, calc(env(safe-area-inset-top, 24px) + 16px));
+            padding-bottom: max(20px, calc(env(safe-area-inset-bottom, 20px) + 16px));
+            padding-left: max(14px, env(safe-area-inset-left, 14px));
+            padding-right: max(14px, env(safe-area-inset-right, 14px));
+        }
+
         /* Eliminacja 300ms opóźnienia dotyku (tap delay) i zoomu dwuklikiem */
         button, a, input, select, textarea, [role="button"], .cursor-pointer, .tab-btn {
             touch-action: manipulation;
@@ -1878,8 +1885,8 @@
     </nav>
 
     <!-- Dedicated MVP Voting Modal / Isolated Terminal -->
-    <div id="dedicatedMvpModal" role="dialog" aria-modal="true" aria-labelledby="dedicatedMvpModalTitle" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
-        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-amber-500/30 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative my-auto">
+    <div id="dedicatedMvpModal" role="dialog" aria-modal="true" aria-labelledby="dedicatedMvpModalTitle" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-amber-500/30 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <!-- Header -->
             <div class="text-center space-y-1.5 pb-2 border-b border-slate-800/80">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 text-2xl shadow-lg shadow-amber-500/20 mb-1">
@@ -1900,8 +1907,8 @@
     </div>
 
     <!-- Welcome Gate / First-Time Login Modal -->
-    <div id="welcomeGateModal" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative max-h-[92vh] max-h-[92dvh] overflow-y-auto">
+    <div id="welcomeGateModal" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto my-auto">
             
             <div class="text-center space-y-2">
                 <div class="relative w-16 h-16 mx-auto rounded-3xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-xl shadow-emerald-950/50 flex items-center justify-center">
@@ -1974,13 +1981,13 @@
     </div>
 
     <!-- Guest / Friend Signup Modal -->
-    <div id="guestSignupModal" role="dialog" aria-modal="true" aria-labelledby="guestModalTitle" onclick="if(event.target === this) closeGuestSignupModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
+    <div id="guestSignupModal" role="dialog" aria-modal="true" aria-labelledby="guestModalTitle" onclick="if(event.target === this) closeGuestSignupModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                 <h3 id="guestModalTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
                     <span>👥</span> Dopisz Znajomego / Gościa
                 </h3>
-                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-base min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400 leading-relaxed">
@@ -2019,13 +2026,13 @@
     </div>
 
     <!-- Share / Messenger Modal -->
-    <div id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle" onclick="if(event.target === this) closeShareModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
+    <div id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle" onclick="if(event.target === this) closeShareModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <div class="flex items-center justify-between">
                 <h3 id="shareModalTitle" class="font-black text-white text-base flex items-center gap-2">
                     <span>📣</span> Przypomnienie na Messengera
                 </h3>
-                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
             
             <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px]">
@@ -2060,8 +2067,8 @@
     </div>
 
     <!-- Theme Picker Modal (Pomysł Mikołaja - 4 motywy + Klasyk) -->
-    <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+    <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto my-auto">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🎨</span>
@@ -2070,7 +2077,7 @@
                         <p class="text-[10px] text-slate-400">Zapisze się tylko na Twoim telefonie</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeThemePickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[36px] min-h-[36px] flex items-center justify-center -mr-1">✕</button>
+                <button type="button" onclick="closeThemePickerModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1">✕</button>
             </div>
 
             <!-- Kontener na opcje motywów -->
@@ -2087,14 +2094,14 @@
     </div>
 
     <!-- Scoreboard Builder Modal -->
-    <div id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in">
+    <div id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" onclick="if(event.target === this) closeScoreModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto animate-fade-in my-auto">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📊</span>
                     <h3 id="scoreModalTitle" class="font-black text-white text-base">Wprowadź wynik meczu</h3>
                 </div>
-                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400">
@@ -2146,14 +2153,14 @@
     </div>
 
     <!-- Avatar Picker Modal -->
-    <div id="avatarPickerModal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle" onclick="if(event.target === this) closeAvatarPickerModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in">
+    <div id="avatarPickerModal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle" onclick="if(event.target === this) closeAvatarPickerModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto my-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📷</span>
                     <h3 id="avatarPickerTitle" class="font-black text-white text-base">Zmień awatar / zdjęcie</h3>
                 </div>
-                <button type="button" onclick="closeAvatarPickerModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -my-1">✕</button>
+                <button type="button" onclick="closeAvatarPickerModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
 
             <!-- Current Avatar Preview -->
@@ -2195,8 +2202,8 @@
     </div>
 
     <!-- Player Card Modal (Ranking & Roster touch inspection) -->
-    <div id="playerCardModal" role="dialog" aria-modal="true" aria-labelledby="playerCardName" onclick="if(event.target === this) closePlayerCardModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-fade-in relative">
+    <div id="playerCardModal" role="dialog" aria-modal="true" aria-labelledby="playerCardName" onclick="if(event.target === this) closePlayerCardModal()" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto animate-fade-in relative my-auto">
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-3 min-w-0">
                     <div id="playerCardAvatarContainer" class="shrink-0">
@@ -2212,7 +2219,7 @@
                         <p id="playerCardSubtext" class="text-xs text-slate-400 mt-0.5">Karta zawodnika w sezonie 2026</p>
                     </div>
                 </div>
-                <button type="button" onclick="closePlayerCardModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2 -mt-1">✕</button>
+                <button type="button" onclick="closePlayerCardModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -mt-1">✕</button>
             </div>
 
             <!-- Quick Stats 3-box -->
@@ -2273,21 +2280,21 @@
     </div>
 
     <!-- ================= MODAL: SZCZEGÓŁY ARCHIWALNEGO MECZU ================= -->
-    <div id="archivedMatchModal" role="dialog" aria-modal="true" aria-labelledby="archivedMatchModalTitle" onclick="if(event.target === this) closeArchivedMatchModal()" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
-        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 max-w-md w-full space-y-3.5 shadow-2xl max-h-[92vh] max-h-[92dvh] overflow-y-auto animate-fade-in relative my-auto">
-            <!-- Header -->
-            <div class="flex items-start justify-between border-b border-slate-800/80 pb-3">
+    <div id="archivedMatchModal" role="dialog" aria-modal="true" aria-labelledby="archivedMatchModalTitle" onclick="if(event.target === this) closeArchivedMatchModal()" class="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 max-w-md w-full space-y-3.5 shadow-2xl max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto animate-fade-in relative my-auto">
+            <!-- Header (Sticky, Solid & High Contrast) -->
+            <div class="sticky -top-4 -mx-4 px-4 sm:-top-5 sm:-mx-5 sm:px-5 pt-3 pb-3 bg-slate-900/98 backdrop-blur-md border-b border-slate-800/90 z-20 flex items-start justify-between gap-2 rounded-t-3xl shadow-sm">
                 <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2 py-0.5 rounded-full">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-emerald-300 bg-emerald-950 border border-emerald-700/80 px-2.5 py-0.5 rounded-full shadow-sm">
                             Raport z meczu
                         </span>
-                        <span id="archivedMatchModalDateBadge" class="text-[11px] font-mono font-black text-slate-200 bg-slate-800/80 px-2 py-0.5 rounded-full">--</span>
+                        <span id="archivedMatchModalDateBadge" class="text-[11px] font-mono font-black text-slate-200 bg-slate-800 border border-slate-700 px-2.5 py-0.5 rounded-full shadow-sm">--</span>
                     </div>
                     <h3 id="archivedMatchModalTitle" class="text-base sm:text-lg font-black text-white mt-1 leading-snug whitespace-normal break-words">Podsumowanie spotkania</h3>
                     <p id="archivedMatchModalSubtext" class="text-[11px] text-slate-400 mt-0.5 whitespace-normal break-words">Składy drużyn, oficjalny wynik i nagroda MVP</p>
                 </div>
-                <button type="button" onclick="closeArchivedMatchModal()" aria-label="Zamknij" class="text-slate-400 hover:text-white font-bold text-lg min-w-[38px] min-h-[38px] rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-center transition active:scale-90 shrink-0 -mr-1 -mt-1">✕</button>
+                <button type="button" onclick="closeArchivedMatchModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer">✕</button>
             </div>
 
             <!-- Dynamic Content Body -->
@@ -2305,11 +2312,11 @@
     </div>
 
     <!-- ================= MODAL: USTAWIENIA GODZIN, HALI I EKIPY ================= -->
-    <div id="groupSettingsModal" role="dialog" aria-modal="true" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl animate-fade-in my-auto text-xs">
+    <div id="groupSettingsModal" role="dialog" aria-modal="true" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center ios-safe-modal-overlay overflow-y-auto hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl animate-fade-in my-auto text-xs max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                 <h3 class="font-black text-sm text-white flex items-center gap-2"><span>⚙️</span> Ustawienia Godzin, Hali & Zbiórki</h3>
-                <button type="button" onclick="closeGroupSettingsModal()" class="text-slate-400 hover:text-white font-bold text-sm min-w-[32px] min-h-[32px] flex items-center justify-center">✕</button>
+                <button type="button" onclick="closeGroupSettingsModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
             <p class="text-[11px] text-slate-400">Zmieniaj godziny meczów i rozgrzewki bez edycji kodu. Zmiany automatycznie zaktualizują się u wszystkich w bazie na żywo.</p>
             <form onsubmit="event.preventDefault(); submitGroupSettings();" class="space-y-3">
@@ -6951,7 +6958,7 @@
                             <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md inline-flex items-center gap-1 shadow-sm">
                                 <span>👑</span> MVP SPOTKANIA
                             </span>
-                            <span class="text-[11px] font-mono font-bold text-amber-300">${maxV} ${pluralizeVotes(maxV)}</span>
+                            <span class="text-[11px] font-mono font-bold text-amber-300">${pluralizeVotes(maxV)}</span>
                         </div>
                         <div class="flex items-center justify-between gap-3 pt-0.5">
                             <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(mvpWinner)});" title="Zobacz profil zawodnika">
