@@ -1318,6 +1318,9 @@
                         <span id="matchStatusBadge" class="hidden text-[11px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-950/80 border border-rose-800/80 px-2.5 py-0.5 rounded-full">
                             🚫 ODWOŁANY
                         </span>
+                        <span id="matchFreeBadge" class="hidden text-[11px] font-extrabold text-amber-300 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full">
+                            💸 MECZ PNH (0 ZŁ)
+                        </span>
                     </div>
 
                     <!-- Match Navigator Arrows -->
@@ -1375,15 +1378,17 @@
 
                 <!-- Match Admin Bar (Only for Michał / Admin) -->
                 <div id="matchAdminBarContainer" class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/40 text-xs hidden">
-                    <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1 transition">
-                        🚫 Odwołaj mecz
-                    </button>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1 transition">
+                            🚫 Odwołaj mecz
+                        </button>
+                        <button type="button" id="matchCostToggleBtn" onclick="toggleMatchCostFreeWithAuth()" class="text-slate-400 hover:text-emerald-400 font-semibold flex items-center gap-1 transition" title="Zmień koszt hali dla tego meczu (np. 0 zł na PnH)">
+                            💸 Koszt: 250 zł
+                        </button>
+                    </div>
                     <div class="flex items-center gap-3">
                         <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="text-amber-400/90 hover:text-amber-300 font-semibold flex items-center gap-1 transition" title="Wyczyść całą listę zapisanych graczy">
                             🧹 Wyczyść skład
-                        </button>
-                        <button type="button" onclick="deleteCurrentMatchWithAuth()" class="text-rose-400/80 hover:text-rose-300 font-semibold flex items-center gap-1 transition">
-                            🗑️ Usuń termin
                         </button>
                     </div>
                 </div>
@@ -3015,7 +3020,7 @@
                                                                              "Filip Morawski",
                                                                              "Radek Zduńczyk"
                                                                          ],
-                                                           "cost":  250,
+                                                           "cost":  0,
                                                            "date":  "2026-10-09",
                                                            "isCancelled":  false,
                                                            "score":  ""
@@ -4296,6 +4301,17 @@
                 }
             });
 
+            // Specjalna obsługa meczu z 09.10.2026 (mecz na innej hali / PnH):
+            // Jeśli był odznaczony jako odwołany w celu wyzerowania składek, automatycznie przestawiamy go jako aktywny mecz bezkosztowy (0 zł)
+            const octMatches = AppState.months?.['Październik']?.matches;
+            if (octMatches) {
+                const oct9 = octMatches.find(m => m.date === '2026-10-09');
+                if (oct9 && (oct9.isCancelled || oct9.cost !== 0)) {
+                    oct9.isCancelled = false;
+                    oct9.cost = 0;
+                }
+            }
+
             if (!AppState.settings || typeof AppState.settings !== 'object') {
                 AppState.settings = {};
             }
@@ -4968,12 +4984,26 @@
                 if (upcomingBadge) upcomingBadge.classList.add('hidden');
             }
 
+            const freeBadge = document.getElementById('matchFreeBadge');
+            const isFree = (currentMatch.cost === 0 && !isCancelled);
+            if (freeBadge) {
+                if (isFree) freeBadge.classList.remove('hidden');
+                else freeBadge.classList.add('hidden');
+            }
+
             if (isCancelled) {
                 statusBadge.classList.remove('hidden');
                 cancelBtn.innerText = "✅ Przywróć mecz";
             } else {
                 statusBadge.classList.add('hidden');
-                cancelBtn.innerText = "🚫 Odwołaj mecz (0 zł)";
+                cancelBtn.innerText = "🚫 Odwołaj mecz";
+            }
+
+            const costToggleBtn = document.getElementById('matchCostToggleBtn');
+            if (costToggleBtn) {
+                costToggleBtn.innerHTML = isFree 
+                    ? `💸 Koszt: <strong class="text-emerald-400 font-mono font-bold">0 zł (PnH)</strong> <span class="text-[10px] text-slate-400 font-normal">(przywróć 250 zł)</span>`
+                    : `💸 Koszt: <strong class="text-slate-200 font-mono font-bold">${cost} zł</strong> <span class="text-[10px] text-slate-400 font-normal">(zmień na 0 zł PnH)</span>`;
             }
 
             // Render Fast Join UI for Logged-In User or Guest
@@ -5414,22 +5444,33 @@
                 currentMatch.isCancelled = !currentMatch.isCancelled;
                 syncState();
                 renderCurrentView();
-                showToast(currentMatch.isCancelled ? "Mecz odwołany (0 zł)!" : "Mecz przywrócony!");
+                showToast(currentMatch.isCancelled ? "Mecz został odwołany!" : "Mecz został przywrócony!");
             });
         }
 
-        function deleteCurrentMatchWithAuth() {
+        function toggleMatchCostFreeWithAuth() {
             requireAdminAuth(() => {
                 const monthData = AppState.months[AppState.currentMonth];
                 const currentMatch = monthData?.matches[AppState.currentMatchIndex];
                 if (!currentMatch) return;
 
-                if (!confirm(`Trwale usunąć mecz ${currentMatch.date}?`)) return;
-                monthData.matches.splice(AppState.currentMatchIndex, 1);
-                AppState.currentMatchIndex = Math.max(0, monthData.matches.length - 1);
-                syncState();
-                renderCurrentView();
-                showToast("Mecz usunięty!");
+                const defaultCost = Number(AppState.settings?.hallCost || 250);
+                const curCost = currentMatch.cost !== undefined ? Number(currentMatch.cost) : defaultCost;
+
+                if (curCost > 0) {
+                    currentMatch.cost = 0;
+                    if (currentMatch.isCancelled) {
+                        currentMatch.isCancelled = false;
+                    }
+                    syncState();
+                    renderCurrentView();
+                    showToast("Ustawiono mecz jako bezkosztowy (0 zł / PnH)! 💸");
+                } else {
+                    currentMatch.cost = defaultCost;
+                    syncState();
+                    renderCurrentView();
+                    showToast(`Przywrócono standardowy koszt hali (${defaultCost} zł)! 💰`);
+                }
             });
         }
 
@@ -6009,6 +6050,31 @@
                 return;
             }
 
+            // 0. Sprawdzenie czy mecz jest odwołany
+            if (currentMatch.isCancelled) {
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "STATUS MECZU";
+                if (winnerName) winnerName.innerText = "Mecz został odwołany";
+                if (winnerVotes) winnerVotes.innerText = "Dla odwołanego terminu głosowanie na MVP jest wyłączone.";
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.innerHTML = `
+                        <div class="py-3 space-y-2 text-center">
+                            <span class="text-3xl block">🚫</span>
+                            <h4 class="font-bold text-xs text-rose-400">Głosowanie MVP niedostępne</h4>
+                            <p class="text-[11px] text-slate-400 max-w-xs mx-auto leading-relaxed">
+                                Spotkanie zostało odwołane — wybór gracza meczu jest wyłączony.
+                            </p>
+                        </div>
+                    `;
+                    votingFormNotice.classList.remove('hidden');
+                    votingFormFields.classList.add('hidden');
+                }
+                if (resultsList) resultsList.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">Brak głosowania dla odwołanego meczu.</div>`;
+                if (whoVotedList) whoVotedList.innerHTML = `<p class="text-slate-500 italic text-xs">Mecz odwołany.</p>`;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "—";
+                if (adminBar) adminBar.classList.add('hidden');
+                return;
+            }
+
             // 1. Sprawdzenie czy mecz jest w przyszłości
             if (isFutureMatch) {
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "STATUS MECZU";
@@ -6030,7 +6096,7 @@
                 if (resultsList) resultsList.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">Głosy będą zbierane po meczu.</div>`;
                 if (whoVotedList) whoVotedList.innerHTML = attendees.map(p => `
                     <div class="bg-slate-950/60 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                        <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                        <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
                         <span class="text-[10px] text-slate-500 font-mono">Zapisany na mecz</span>
                     </div>
                 `).join('');
@@ -6229,8 +6295,8 @@
                     whoVotedList.innerHTML = attendees.map(p => {
                         const hasVoted = Boolean(votes[p]);
                         return `
-                            <div class="bg-slate-950/60 border ${hasVoted ? 'border-emerald-900/40 bg-emerald-950/10' : 'border-slate-800/60'} px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                                <span class="font-semibold text-slate-300 truncate">${escapeHtml(p)}</span>
+                            <div class="bg-slate-950/60 border ${hasVoted ? 'border-emerald-900/40 bg-emerald-950/10' : 'border-slate-800/60'} px-3 py-1.5 rounded-xl flex items-center justify-between text-xs gap-2">
+                                <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
                                 <span class="font-bold text-[10px] ${hasVoted ? 'text-emerald-400' : 'text-slate-500'} shrink-0 flex items-center gap-1">
                                     ${hasVoted ? '<span>✅</span> Oddał głos' : '<span>⏳</span> Czeka na głos'}
                                 </span>
@@ -6618,6 +6684,9 @@
 
             const info = window.dedicatedMvpMatchInfo;
             if (!info || !info.match) return alert("Brak danych meczu.");
+            if (info.match.isCancelled) {
+                return alert("Ten mecz został odwołany — głosowanie na MVP jest wyłączone!");
+            }
 
             const attendees = (info.match.attendees || []).slice(0, 12);
             const todayStr = getLocalDateKey();
@@ -6767,6 +6836,9 @@
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
+            if (currentMatch.isCancelled) {
+                return alert("Ten mecz został odwołany — głosowanie na MVP jest wyłączone!");
+            }
 
             const attendees = (currentMatch.attendees || []).slice(0, 12);
             const todayStr = getLocalDateKey();
@@ -8379,7 +8451,7 @@
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="min-w-0 flex-1 leading-tight">
                                     <div class="flex items-center gap-1 min-w-0">
-                                        <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs truncate">${escapeHtml(s.name)}</span>
+                                        <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs whitespace-normal break-words">${escapeHtml(s.name)}</span>
                                         ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.2 rounded shrink-0">TY</span>' : ''}
                                         ${streakBadge}
                                     </div>
@@ -8531,7 +8603,7 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="flex items-center gap-1.5 flex-wrap">
-                                    <h2 class="text-base sm:text-lg font-black text-white truncate">${escapeHtml(loggedPlayer)}</h2>
+                                    <h2 class="text-base sm:text-lg font-black text-white whitespace-normal break-words">${escapeHtml(loggedPlayer)}</h2>
                                     <button type="button" onclick="changeMyPlayerNamePrompt()" title="Zmień swoje imię i nazwisko" class="text-slate-400 hover:text-indigo-300 text-xs transition">✏️</button>
                                     <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full ${isOrganizer ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'}">
                                         ${isOrganizer ? '👑 Organizator' : '🏐 Zawodnik'}
