@@ -1385,6 +1385,9 @@
                         <button type="button" id="matchCostToggleBtn" onclick="toggleMatchCostFreeWithAuth()" class="text-slate-400 hover:text-emerald-400 font-semibold flex items-center gap-1 transition" title="Zmień koszt hali dla tego meczu (np. 0 zł na PnH)">
                             💸 Koszt: 250 zł
                         </button>
+                        <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="text-slate-400 hover:text-amber-400 font-semibold flex items-center gap-1 transition" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
+                            🔄 Zmiany: Wył (12 os.)
+                        </button>
                     </div>
                     <div class="flex items-center gap-3">
                         <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="text-amber-400/90 hover:text-amber-300 font-semibold flex items-center gap-1 transition" title="Wyczyść całą listę zapisanych graczy">
@@ -1415,7 +1418,7 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Skład Główny (Maks 12)</h3>
+                            <h3 id="mainSquadTitle" class="text-xs font-bold text-slate-200 uppercase tracking-wider">Skład Główny</h3>
                         </div>
                         <span id="mainSquadBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-md">0/12</span>
                     </div>
@@ -1427,13 +1430,18 @@
 
                 <!-- Reserves Squad -->
                 <div id="reserveCardContainer" class="bg-slate-900/90 border border-amber-900/40 rounded-2xl p-4 shadow-md space-y-2.5 hidden">
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider">Lista Rezerwowa (Kolejka)</h3>
                         </div>
-                        <span id="reserveSquadBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded-md">0</span>
+                        <div class="flex items-center gap-2">
+                            <div id="reservePlayingActionContainer"></div>
+                            <span id="reserveSquadBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded-md">0</span>
+                        </div>
                     </div>
+
+                    <div id="reservePlayingInfoBanner" class="hidden"></div>
 
                     <div id="reserveSquadList" class="space-y-1.5">
                         <!-- Populated dynamically -->
@@ -3628,9 +3636,25 @@
             });
         }
 
+        function getMatchPlayingLimit(match) {
+            if (!match) return 12;
+            const extra = Math.min(2, Math.max(0, Number(match.extraPlayingCount || 0)));
+            return 12 + extra;
+        }
+
+        function getMatchPlayingSquad(match) {
+            if (!match || !Array.isArray(match.attendees)) return [];
+            return match.attendees.slice(0, getMatchPlayingLimit(match));
+        }
+
+        function getMatchPlayingReserves(match) {
+            if (!match || !Array.isArray(match.attendees)) return [];
+            return match.attendees.slice(getMatchPlayingLimit(match));
+        }
+
         function isMvpVotingFinished(match) {
             if (!match || match.isCancelled) return false;
-            const attendees = (match.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(match);
             if (attendees.length === 0) return false;
             if (match.mvpClosed === true) return true;
             const votesCount = attendees.filter(p => Boolean(match.votes && match.votes[p])).length;
@@ -3828,7 +3852,7 @@
                 return;
             }
 
-            const attendees = (latest.match.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(latest.match);
             const votes = latest.match.votes || {};
             const totalVotes = Object.keys(votes).length;
             const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
@@ -4064,7 +4088,7 @@
             const latestPlayed = getLatestPlayedMatchInfo();
             if (latestPlayed && latestPlayed.daysAgo >= 0 && latestPlayed.daysAgo <= 2) {
                 const isFinished = isMvpVotingFinished(latestPlayed.match);
-                const attendees = (latestPlayed.match.attendees || []).slice(0, 12);
+                const attendees = getMatchPlayingSquad(latestPlayed.match);
                 const isAttendee = Boolean(loggedPlayer && attendees.includes(loggedPlayer));
                 const hasVoted = Boolean(loggedPlayer && latestPlayed.match.votes && latestPlayed.match.votes[loggedPlayer]);
 
@@ -4300,18 +4324,7 @@
                     }
                 }
             });
-
-            // Specjalna obsługa meczu z 09.10.2026 (mecz na innej hali / PnH):
-            // Jeśli był odznaczony jako odwołany w celu wyzerowania składek, automatycznie przestawiamy go jako aktywny mecz bezkosztowy (0 zł)
-            const octMatches = AppState.months?.['Październik']?.matches;
-            if (octMatches) {
-                const oct9 = octMatches.find(m => m.date === '2026-10-09');
-                if (oct9 && (oct9.isCancelled || oct9.cost !== 0)) {
-                    oct9.isCancelled = false;
-                    oct9.cost = 0;
-                }
-            }
-
+            // Ensure settings object exists
             if (!AppState.settings || typeof AppState.settings !== 'object') {
                 AppState.settings = {};
             }
@@ -4834,39 +4847,49 @@
                     const idx = item.originalIndex;
                     const isSelected = idx === AppState.currentMatchIndex;
                     const attendeesCount = (m.attendees || []).length;
-                    const mainCount = Math.min(12, attendeesCount);
-                    const isFull = attendeesCount >= 12;
+                    const pLimit = getMatchPlayingLimit(m);
+                    const pSquad = getMatchPlayingSquad(m);
+                    const mainCount = pSquad.length;
+                    const isFull = attendeesCount >= pLimit;
                     const isPast = (m.date || '') < todayStr;
                     const isRecent = getDaysSinceDate(m.date) <= 3 || (latestPlayed && latestPlayed.monthName === AppState.currentMonth && latestPlayed.matchIndex === idx);
                     const isMvpDone = isMvpVotingFinished(m);
                     const dayDisplay = (m.date || '').slice(5);
+                    const isCancelledMatch = Boolean(m.isCancelled);
                     const mLock = isMatchSignupLocked(m);
                     const isLockedFuture = mLock.locked && mLock.reason === 'future';
+
+                    const chipIcon = isCancelledMatch ? '🚫' : (isRecent && isPast) ? (isMvpDone ? '👑' : '🏆') : (isLockedFuture ? '🔒' : (isPast ? '⏳' : '📅'));
+                    const badgeText = isCancelledMatch ? 'Odwołany' : (isRecent && isPast && !isMvpDone) ? 'Głosuj' : (isLockedFuture ? `🔒 ${mainCount}/${pLimit}` : `${mainCount}/${pLimit}`);
 
                     return `
                         <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition shrink-0 flex items-center gap-2 active:scale-95 shadow-sm ${
                             isSelected 
                                 ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20 ring-2 ring-emerald-400/40' 
-                                : (isRecent && isPast)
-                                    ? 'bg-slate-950 text-amber-300 border-amber-800/70 hover:border-amber-600'
-                                    : isLockedFuture
-                                        ? 'bg-slate-950 text-slate-400 border-slate-800/80 hover:border-slate-700'
-                                        : isPast
-                                            ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
-                                            : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
+                                : isCancelledMatch
+                                    ? 'bg-slate-950 text-rose-400 border-rose-900/60 hover:border-rose-700'
+                                    : (isRecent && isPast)
+                                        ? 'bg-slate-950 text-amber-300 border-amber-800/70 hover:border-amber-600'
+                                        : isLockedFuture
+                                            ? 'bg-slate-950 text-slate-400 border-slate-800/80 hover:border-slate-700'
+                                            : isPast
+                                                ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
+                                                : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
                         }">
-                            <span>${(isRecent && isPast) ? (isMvpDone ? '👑' : '🏆') : (isLockedFuture ? '🔒' : (isPast ? '⏳' : '📅'))} ${dayDisplay}</span>
+                            <span>${chipIcon} ${dayDisplay}</span>
                             <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
                                 isSelected 
                                     ? 'bg-black/30 text-white font-black shadow-inner' 
-                                    : (isRecent && isPast && !isMvpDone)
-                                        ? 'bg-amber-950 text-amber-300 border border-amber-800/80 font-bold'
-                                        : isLockedFuture
-                                            ? 'bg-slate-900 text-slate-500 border border-slate-800 flex items-center gap-0.5'
-                                            : isFull 
-                                                ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
-                                                : 'bg-slate-900 text-slate-400 border border-slate-800'
-                            }">${(isRecent && isPast && !isMvpDone) ? 'Głosuj' : (isLockedFuture ? `🔒 ${mainCount}/12` : `${mainCount}/12`)}</span>
+                                    : isCancelledMatch
+                                        ? 'bg-rose-950 text-rose-400 border border-rose-900/60 font-bold'
+                                        : (isRecent && isPast && !isMvpDone)
+                                            ? 'bg-amber-950 text-amber-300 border border-amber-800/80 font-bold'
+                                            : isLockedFuture
+                                                ? 'bg-slate-900 text-slate-500 border border-slate-800 flex items-center gap-0.5'
+                                                : isFull 
+                                                    ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60' 
+                                                    : 'bg-slate-900 text-slate-400 border border-slate-800'
+                            }">${badgeText}</span>
                         </button>
                     `;
                 }).join('');
@@ -4894,33 +4917,46 @@
 
             const isCancelled = !!currentMatch.isCancelled;
             const attendees = currentMatch.attendees || [];
-            const mainPlayers = attendees.slice(0, 12);
-            const reservePlayers = attendees.slice(12);
+            const playingLimit = getMatchPlayingLimit(currentMatch);
+            const mainPlayers = attendees.slice(0, playingLimit);
+            const reservePlayers = attendees.slice(playingLimit);
+            const extraCount = playingLimit - 12;
 
-            const cost = isCancelled ? 0 : (currentMatch.cost !== undefined ? currentMatch.cost : 250);
-            const costPerPerson = (isCancelled || mainPlayers.length === 0) ? "0.00" : (cost / mainPlayers.length).toFixed(2);
+            const defaultCost = Number(AppState.settings?.hallCost || 250);
+            const matchConfiguredCost = currentMatch.cost !== undefined ? Number(currentMatch.cost) : defaultCost;
+            const cost = isCancelled ? 0 : matchConfiguredCost;
+            const costPerPerson = (isCancelled || mainPlayers.length === 0 || cost === 0) ? "0.00" : (cost / mainPlayers.length).toFixed(2);
 
             document.getElementById('matchDateBadge').innerText = currentMatch.date;
             const costEl = document.getElementById('matchCostPerPerson');
             if (costEl) costEl.innerText = `${costPerPerson} zł`;
-            document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/12`;
-            document.getElementById('mainSquadBadge').innerText = `${mainPlayers.length}/12`;
+            document.getElementById('matchPlayerCount').innerText = `${mainPlayers.length}/${playingLimit}`;
+            const squadBadgeText = extraCount > 0 ? `${mainPlayers.length}/${playingLimit} (${extraCount === 1 ? '+1 zmiana' : '+2 zmiany'})` : `${mainPlayers.length}/12`;
+            document.getElementById('mainSquadBadge').innerText = squadBadgeText;
+            const mainSquadTitle = document.getElementById('mainSquadTitle');
+            if (mainSquadTitle) {
+                mainSquadTitle.innerText = extraCount > 0 ? `Skład Meczowy (${playingLimit} os. - Gra na zmiany)` : `Skład Główny (Maks 12)`;
+            }
 
             const subtabSquadCount = document.getElementById('matchSubtabSquadCount');
-            if (subtabSquadCount) subtabSquadCount.innerText = `${mainPlayers.length}/12`;
+            if (subtabSquadCount) subtabSquadCount.innerText = `${mainPlayers.length}/${playingLimit}`;
 
             const subtabMvpBadge = document.getElementById('matchSubtabMvpBadge');
             if (subtabMvpBadge) {
-                const isFinished = isMvpVotingFinished(currentMatch);
-                const votesCount = Object.keys(currentMatch.votes || {}).length;
-                if (isFinished) {
-                    subtabMvpBadge.classList.remove('hidden');
-                    subtabMvpBadge.innerText = "👑";
-                } else if (votesCount > 0) {
-                    subtabMvpBadge.classList.remove('hidden');
-                    subtabMvpBadge.innerText = `${votesCount}/12`;
-                } else {
+                if (isCancelled) {
                     subtabMvpBadge.classList.add('hidden');
+                } else {
+                    const isFinished = isMvpVotingFinished(currentMatch);
+                    const votesCount = Object.keys(currentMatch.votes || {}).length;
+                    if (isFinished) {
+                        subtabMvpBadge.classList.remove('hidden');
+                        subtabMvpBadge.innerText = "👑";
+                    } else if (votesCount > 0) {
+                        subtabMvpBadge.classList.remove('hidden');
+                        subtabMvpBadge.innerText = `${votesCount}/12`;
+                    } else {
+                        subtabMvpBadge.classList.add('hidden');
+                    }
                 }
             }
 
@@ -4985,7 +5021,7 @@
             }
 
             const freeBadge = document.getElementById('matchFreeBadge');
-            const isFree = (currentMatch.cost === 0 && !isCancelled);
+            const isFree = (matchConfiguredCost === 0 && !isCancelled);
             if (freeBadge) {
                 if (isFree) freeBadge.classList.remove('hidden');
                 else freeBadge.classList.add('hidden');
@@ -5001,9 +5037,20 @@
 
             const costToggleBtn = document.getElementById('matchCostToggleBtn');
             if (costToggleBtn) {
-                costToggleBtn.innerHTML = isFree 
-                    ? `💸 Koszt: <strong class="text-emerald-400 font-mono font-bold">0 zł (PnH)</strong> <span class="text-[10px] text-slate-400 font-normal">(przywróć 250 zł)</span>`
-                    : `💸 Koszt: <strong class="text-slate-200 font-mono font-bold">${cost} zł</strong> <span class="text-[10px] text-slate-400 font-normal">(zmień na 0 zł PnH)</span>`;
+                costToggleBtn.innerHTML = matchConfiguredCost === 0 
+                    ? `💸 Koszt: <strong class="text-emerald-400 font-mono font-bold">0 zł (PnH)</strong> <span class="text-[10px] text-slate-400 font-normal">(przywróć ${defaultCost} zł)</span>`
+                    : `💸 Koszt: <strong class="text-slate-200 font-mono font-bold">${matchConfiguredCost} zł</strong> <span class="text-[10px] text-slate-400 font-normal">(zmień na 0 zł PnH)</span>`;
+            }
+
+            const extraPlayingBtn = document.getElementById('matchExtraPlayingToggleBtn');
+            if (extraPlayingBtn) {
+                const totalAttendeesCount = attendees.length;
+                const reservesCount = Math.max(0, totalAttendeesCount - 12);
+                if (extraCount > 0) {
+                    extraPlayingBtn.innerHTML = `🔄 Zmiany: <strong class="text-amber-400 font-bold">${12 + extraCount} os. (WŁ)</strong> <span class="text-[10px] text-slate-400 font-normal">(wyłącz)</span>`;
+                } else {
+                    extraPlayingBtn.innerHTML = `🔄 Zmiany: <strong class="text-slate-400 font-normal">Wył (12 os.)</strong>${reservesCount > 0 ? ` <span class="text-[10px] text-amber-400/90 font-semibold">(włącz +${Math.min(2, reservesCount)})</span>` : ''}`;
+                }
             }
 
             // Render Fast Join UI for Logged-In User or Guest
@@ -5011,7 +5058,13 @@
                 const matchLock = isMatchSignupLocked(currentMatch);
                 const isUserSigned = loggedPlayer ? attendees.includes(loggedPlayer) : false;
 
-                if (matchLock.locked && !isUserSigned && !isAdmin) {
+                if (matchLock.locked && matchLock.reason === 'cancelled') {
+                    fastJoinSection.innerHTML = `
+                        <div class="bg-rose-950/20 border border-rose-900/40 rounded-2xl p-3.5 text-center text-xs text-rose-400 font-bold">
+                            🚫 Ten mecz został odwołany. Zapisy są niedostępne.
+                        </div>
+                    `;
+                } else if (matchLock.locked && !isUserSigned && !isAdmin) {
                     if (matchLock.reason === 'future') {
                         fastJoinSection.innerHTML = `
                             <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 text-center space-y-2.5 shadow-inner">
@@ -5133,9 +5186,10 @@
             const mainListEl = document.getElementById('mainSquadList');
             const allStreaks = typeof getAllPlayersStreaks === 'function' ? getAllPlayersStreaks() : {};
             let squadHtml = "";
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < playingLimit; i++) {
                 if (i < mainPlayers.length) {
                     const p = mainPlayers[i];
+                    const isExtraPlaying = (i >= 12);
                     const isGuest = !AppState.all_players.includes(p);
                     const isMe = (p === loggedPlayer);
                     const canRemove = isMe || isAdmin;
@@ -5146,23 +5200,29 @@
                         </span>
                     ` : '';
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center justify-between bg-slate-950 border ${isExtraPlaying ? (isMe ? 'border-amber-500/80 bg-amber-950/30' : 'border-amber-900/50 bg-amber-950/15') : (isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80')} pl-2.5 pr-1 py-1.5 rounded-xl text-xs gap-2">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
-                                <span class="font-mono font-bold text-slate-500 w-4 shrink-0">${i + 1}.</span>
+                                <span class="font-mono font-bold ${isExtraPlaying ? 'text-amber-400' : 'text-slate-500'} w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="font-semibold ${isMe ? (isExtraPlaying ? 'text-amber-300' : 'text-emerald-300') : 'text-slate-200'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                ${isExtraPlaying ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0 flex items-center gap-0.5" title="Gra na zmiany przy serwisie">🔄 Zmiana (serwis)</span>' : ''}
                                 ${isMe ? '<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md shrink-0">TY</span>' : ''}
                                 ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
-                            ${canRemove ? `
-                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[36px] min-h-[36px] flex items-center justify-center transition text-sm shrink-0">✕</button>
-                            ` : `
-                                <div class="w-4 shrink-0"></div>
-                            `}
+                            <div class="flex items-center gap-1 shrink-0">
+                                ${isExtraPlaying && isAdmin ? `
+                                    <button type="button" onclick="toggleReservePlayingWithAuth(${i - 12})" title="Przenieś z powrotem na listę rezerwową" class="text-slate-400 hover:text-amber-300 text-[10px] font-bold px-1.5 py-1 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg transition active:scale-95">↩ Rezerwa</button>
+                                ` : ''}
+                                ${canRemove ? `
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition text-sm">✕</button>
+                                ` : `
+                                    <div class="w-4 shrink-0"></div>
+                                `}
+                            </div>
                         </div>
                     `;
-                } else {
+                } else if (i < 12) {
                     squadHtml += `
                         <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-1.5 rounded-xl text-xs text-slate-600">
                             <div class="flex items-center gap-2">
@@ -5179,6 +5239,42 @@
             // Reserve Squad list
             const reserveCard = document.getElementById('reserveCardContainer');
             const reserveListEl = document.getElementById('reserveSquadList');
+            const reserveActionContainer = document.getElementById('reservePlayingActionContainer');
+            const reserveBanner = document.getElementById('reservePlayingInfoBanner');
+
+            if (reserveBanner) {
+                if (extraCount > 0) {
+                    reserveBanner.className = "text-[11px] text-amber-300/90 bg-amber-950/40 border border-amber-800/40 px-3 py-2 rounded-xl flex items-center gap-2";
+                    reserveBanner.innerHTML = `<span>🔄</span><span>W tym meczu gramy na zmiany przy serwisie (<strong>${12 + extraCount}</strong> graczy w składzie).</span>`;
+                } else {
+                    reserveBanner.className = "hidden";
+                    reserveBanner.innerHTML = "";
+                }
+            }
+
+            if (reserveActionContainer) {
+                if (isAdmin && (reservePlayers.length > 0 || extraCount > 0)) {
+                    if (extraCount > 0) {
+                        reserveActionContainer.innerHTML = `
+                            <button type="button" onclick="toggleReservePlayingWithAuth(0)" class="text-[10px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-lg transition active:scale-95" title="Przywróć standardowy skład 12-osobowy">
+                                ↩ Wyłącz zmiany
+                            </button>
+                        `;
+                    } else if (reservePlayers.length > 0) {
+                        const canAdd = Math.min(2, reservePlayers.length);
+                        reserveActionContainer.innerHTML = `
+                            <button type="button" onclick="toggleReservePlayingWithAuth()" class="text-[10px] font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-lg transition active:scale-95" title="Włącz rezerwowych do gry na zmiany przy serwisie (max 2 osoby)">
+                                🔄 Włącz grę na zmiany (+${canAdd})
+                            </button>
+                        `;
+                    } else {
+                        reserveActionContainer.innerHTML = '';
+                    }
+                } else {
+                    reserveActionContainer.innerHTML = '';
+                }
+            }
+
             if (reservePlayers.length > 0) {
                 reserveCard.classList.remove('hidden');
                 document.getElementById('reserveSquadBadge').innerText = `${reservePlayers.length} w kolejce`;
@@ -5186,6 +5282,7 @@
                     const isMe = (p === loggedPlayer);
                     const isGuest = !AppState.all_players.includes(p);
                     const canRemove = isMe || isAdmin;
+                    const canPromote = isAdmin && extraCount < 2;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
                         <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pStreak} mecze z rzędu">
@@ -5193,7 +5290,7 @@
                         </span>
                     ` : '';
                     return `
-                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs">
+                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs gap-2">
                             <div class="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
@@ -5202,11 +5299,18 @@
                                 ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
-                            ${canRemove ? `
-                                <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[36px] min-h-[36px] flex items-center justify-center transition text-sm shrink-0">✕</button>
-                            ` : `
-                                <div class="w-4 shrink-0"></div>
-                            `}
+                            <div class="flex items-center gap-1 shrink-0">
+                                ${canPromote ? `
+                                    <button type="button" onclick="toggleReservePlayingWithAuth(${extraCount + 1})" title="Włącz tego gracza do meczu na zmiany" class="text-amber-300 hover:text-white bg-amber-950/80 hover:bg-amber-900 border border-amber-800/80 text-[10px] font-bold px-2 py-1 rounded-lg transition active:scale-95">
+                                        + Dołącz do gry
+                                    </button>
+                                ` : ''}
+                                ${canRemove ? `
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition text-sm">✕</button>
+                                ` : `
+                                    <div class="w-4 shrink-0"></div>
+                                `}
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -5392,10 +5496,16 @@
                 if (!m || !Array.isArray(m.attendees)) return false;
 
                 const oldAttendees = m.attendees;
-                wasInMainSquad = oldAttendees.slice(0, 12).includes(name);
-                firstReserve = oldAttendees.length > 12 ? oldAttendees[12] : null;
+                const playingLimit = getMatchPlayingLimit(m);
+                wasInMainSquad = oldAttendees.slice(0, playingLimit).includes(name);
+                firstReserve = oldAttendees.length > playingLimit ? oldAttendees[playingLimit] : null;
 
                 m.attendees = oldAttendees.filter(p => p !== name);
+                const maxExtraPossible = Math.min(2, Math.max(0, m.attendees.length - 12));
+                if (Number(m.extraPlayingCount || 0) > maxExtraPossible) {
+                    m.extraPlayingCount = maxExtraPossible;
+                    if (m.extraPlayingCount <= 0) delete m.extraPlayingCount;
+                }
                 if (m.votes && m.votes[name]) {
                     delete m.votes[name];
                 }
@@ -5459,9 +5569,6 @@
 
                 if (curCost > 0) {
                     currentMatch.cost = 0;
-                    if (currentMatch.isCancelled) {
-                        currentMatch.isCancelled = false;
-                    }
                     syncState();
                     renderCurrentView();
                     showToast("Ustawiono mecz jako bezkosztowy (0 zł / PnH)! 💸");
@@ -5470,6 +5577,41 @@
                     syncState();
                     renderCurrentView();
                     showToast(`Przywrócono standardowy koszt hali (${defaultCost} zł)! 💰`);
+                }
+            });
+        }
+
+        function toggleReservePlayingWithAuth(targetCount = null) {
+            requireAdminAuth(() => {
+                const monthData = AppState.months[AppState.currentMonth];
+                const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+                if (!currentMatch) return;
+
+                const attendees = currentMatch.attendees || [];
+                const totalAttendees = attendees.length;
+                const availableExtra = Math.min(2, Math.max(0, totalAttendees - 12));
+                const currentExtra = Math.min(2, Math.max(0, Number(currentMatch.extraPlayingCount || 0)));
+
+                if (typeof targetCount === 'number') {
+                    currentMatch.extraPlayingCount = Math.max(0, Math.min(availableExtra, targetCount));
+                } else {
+                    if (currentExtra > 0) {
+                        currentMatch.extraPlayingCount = 0;
+                    } else {
+                        if (availableExtra === 0) {
+                            return showToast("Brak zawodników na rezerwie do włączenia!");
+                        }
+                        currentMatch.extraPlayingCount = availableExtra;
+                    }
+                }
+
+                syncState();
+                renderCurrentView();
+                const newExtra = Number(currentMatch.extraPlayingCount || 0);
+                if (newExtra > 0) {
+                    showToast(`Włączono grę ze zmianami (+${newExtra} z rezerwy, łącznie ${12 + newExtra} os.)! 🔄`);
+                } else {
+                    showToast("Przywrócono standardowy skład 12-osobowy (rezerwa oczekuje). 📋");
                 }
             });
         }
@@ -5524,7 +5666,7 @@
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
 
-            const mainSquad = (currentMatch.attendees || []).slice(0, 12);
+            const mainSquad = getMatchPlayingSquad(currentMatch);
             if (!mainSquad.includes(playerName)) {
                 return alert("Gracz musi znajdować się w składzie głównym tego meczu!");
             }
@@ -5536,8 +5678,9 @@
 
             if (targetList.includes(playerName)) return;
 
-            if (targetList.length >= 6) {
-                return alert(`"${teamTitle}" ma już komplet graczy (maks 6)!`);
+            const maxPerTeam = Math.max(6, Math.ceil(mainSquad.length / 2));
+            if (targetList.length >= maxPerTeam) {
+                return alert(`"${teamTitle}" ma już komplet graczy (maks ${maxPerTeam})!`);
             }
 
             const otherIdx = otherList.indexOf(playerName);
@@ -5590,7 +5733,7 @@
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
 
-            const mainSquad = (currentMatch.attendees || []).slice(0, 12);
+            const mainSquad = getMatchPlayingSquad(currentMatch);
             if (mainSquad.length < 2) {
                 alert("Potrzebujesz co najmniej 2 graczy w składzie głównym do losowania!");
                 return;
@@ -5729,7 +5872,8 @@
                 return;
             }
 
-            const mainSquad = (currentMatch.attendees || []).slice(0, 12);
+            const mainSquad = getMatchPlayingSquad(currentMatch);
+            const maxPerTeam = Math.max(6, Math.ceil(mainSquad.length / 2));
             const teams = currentMatch.teams || { dark: [], light: [], darkName: "Drużyna Ciemna", lightName: "Drużyna Jasna" };
 
             const dark = (teams.dark || []).filter(p => mainSquad.includes(p));
@@ -5742,8 +5886,8 @@
             if (courtDarkTitle) courtDarkTitle.innerText = `⬛ ${darkName}`;
             if (courtLightTitle) courtLightTitle.innerText = `⬜ ${lightName}`;
 
-            if (darkCountEl) darkCountEl.innerText = `${dark.length}/6`;
-            if (lightCountEl) lightCountEl.innerText = `${light.length}/6`;
+            if (darkCountEl) darkCountEl.innerText = `${dark.length}/${maxPerTeam}`;
+            if (lightCountEl) lightCountEl.innerText = `${light.length}/${maxPerTeam}`;
 
             const unassigned = mainSquad.filter(p => !dark.includes(p) && !light.includes(p));
 
@@ -5812,7 +5956,7 @@
 
             // Quick Add Select for Dark Team
             if (darkAddContainer) {
-                if (isAdmin && dark.length < 6 && unassigned.length > 0) {
+                if (isAdmin && dark.length < maxPerTeam && unassigned.length > 0) {
                     darkAddContainer.innerHTML = `
                         <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'dark'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
                             <option value="">+ Przypisz gracza do Ciemnych...</option>
@@ -5854,7 +5998,7 @@
 
             // Quick Add Select for Light Team
             if (lightAddContainer) {
-                if (isAdmin && light.length < 6 && unassigned.length > 0) {
+                if (isAdmin && light.length < maxPerTeam && unassigned.length > 0) {
                     lightAddContainer.innerHTML = `
                         <select onchange="if(this.value){ assignPlayerToTeam(this.value, 'light'); this.value=''; }" class="w-full bg-slate-900 border border-dashed border-slate-700 hover:border-indigo-500 text-slate-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
                             <option value="">+ Przypisz gracza do Jasnych...</option>
@@ -5866,7 +6010,7 @@
                 }
             }
 
-            // 4. Render Volleyball Court Grid 6v6
+            // 4. Render Volleyball Court Grid 6v6 + Rotation Bench if > 6
             if (courtDarkGrid) {
                 let darkCourtHtml = "";
                 for (let i = 0; i < 6; i++) {
@@ -5886,6 +6030,19 @@
                             </div>
                         `;
                     }
+                }
+                if (dark.length > 6) {
+                    const benchDark = dark.slice(6);
+                    darkCourtHtml += `
+                        <div class="col-span-3 mt-1.5 p-1.5 bg-slate-900/90 border border-amber-500/40 rounded-xl flex items-center justify-center gap-2">
+                            <span class="text-[10px] text-amber-400 font-bold">🔄 Zmiana (serwis):</span>
+                            ${benchDark.map(p => `
+                                <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-700 text-[10px] font-bold text-white">
+                                    ${escapeHtml(p.split(' ')[0])}
+                                </span>
+                            `).join('')}
+                        </div>
+                    `;
                 }
                 courtDarkGrid.innerHTML = darkCourtHtml;
             }
@@ -5910,17 +6067,34 @@
                         `;
                     }
                 }
+                if (light.length > 6) {
+                    const benchLight = light.slice(6);
+                    lightCourtHtml += `
+                        <div class="col-span-3 mt-1.5 p-1.5 bg-amber-950/50 border border-amber-500/40 rounded-xl flex items-center justify-center gap-2">
+                            <span class="text-[10px] text-amber-400 font-bold">🔄 Zmiana (serwis):</span>
+                            ${benchLight.map(p => `
+                                <span class="inline-flex items-center gap-1 bg-amber-900/60 px-2 py-0.5 rounded-lg border border-amber-700/80 text-[10px] font-bold text-amber-200">
+                                    ${escapeHtml(p.split(' ')[0])}
+                                </span>
+                            `).join('')}
+                        </div>
+                    `;
+                }
                 courtLightGrid.innerHTML = lightCourtHtml;
             }
 
             // 5. Update Balance indicator
             if (balanceInd) {
                 const totalAssigned = dark.length + light.length;
+                const isBalanced = (mainSquad.length >= 12)
+                    ? (dark.length >= 6 && light.length >= 6 && totalAssigned === mainSquad.length)
+                    : (dark.length === Math.floor(mainSquad.length / 2) && light.length === Math.ceil(mainSquad.length / 2) && totalAssigned === mainSquad.length);
+
                 if (totalAssigned === 0) {
                     balanceInd.innerText = "Status: Wybierz składy ręcznie lub wylosuj 🎲";
                     balanceInd.className = "font-bold text-slate-400 text-[11px] ml-2";
-                } else if (dark.length === 6 && light.length === 6) {
-                    balanceInd.innerText = "Status: Składy gotowe (6v6) ✅";
+                } else if (isBalanced) {
+                    balanceInd.innerText = `Status: Składy gotowe (${dark.length}v${light.length}) ✅`;
                     balanceInd.className = "font-bold text-emerald-400 text-[11px] ml-2";
                 } else {
                     balanceInd.innerText = `Status: Przypisano ${totalAssigned}/${mainSquad.length} graczy (${dark.length} vs ${light.length})`;
@@ -5989,24 +6163,19 @@
             }
 
             if (dateBadge) dateBadge.innerText = `Mecz: ${currentMatch.date}`;
-            const attendees = (currentMatch.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(currentMatch);
 
             const todayStr = getLocalDateKey();
             const isFutureMatch = Boolean(currentMatch.date && currentMatch.date > todayStr && !currentMatch.score);
 
-            // Czyszczenie "widmo" głosów dla meczów z przyszłości lub usuniętych graczy
+            // Czyszczenie "widmo" głosów dla usuniętych ze składu graczy
             if (currentMatch.votes && typeof currentMatch.votes === 'object') {
-                if (isFutureMatch && Object.keys(currentMatch.votes).length > 0) {
-                    currentMatch.votes = {};
+                const validVoters = Object.keys(currentMatch.votes).filter(v => attendees.includes(v));
+                if (validVoters.length !== Object.keys(currentMatch.votes).length) {
+                    const cleanVotes = {};
+                    validVoters.forEach(v => { cleanVotes[v] = currentMatch.votes[v]; });
+                    currentMatch.votes = cleanVotes;
                     if (isAdmin) syncState();
-                } else {
-                    const validVoters = Object.keys(currentMatch.votes).filter(v => attendees.includes(v));
-                    if (validVoters.length !== Object.keys(currentMatch.votes).length) {
-                        const cleanVotes = {};
-                        validVoters.forEach(v => { cleanVotes[v] = currentMatch.votes[v]; });
-                        currentMatch.votes = cleanVotes;
-                        if (isAdmin) syncState();
-                    }
                 }
             }
 
@@ -6075,18 +6244,18 @@
                 return;
             }
 
-            // 1. Sprawdzenie czy mecz jest w przyszłości
-            if (isFutureMatch) {
+            // 1. Sprawdzenie czy mecz jeszcze się nie odbył (brak wpisanego wyniku lub przed końcem gry)
+            if (!isMatchFinished(currentMatch)) {
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "STATUS MECZU";
                 if (winnerName) winnerName.innerText = "Mecz jeszcze się nie odbył";
-                if (winnerVotes) winnerVotes.innerText = `Głosowanie na MVP zostanie otwarte w dniu meczu (${currentMatch.date}) po zakończeniu gry. 🏐`;
+                if (winnerVotes) winnerVotes.innerText = `Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku). 🏐`;
                 if (votingFormNotice && votingFormFields) {
                     votingFormNotice.innerHTML = `
                         <div class="py-2 space-y-2 text-center">
                             <span class="text-3xl block">⏳</span>
                             <h4 class="font-bold text-xs text-amber-300">Głosowanie MVP oczekuje na mecz</h4>
                             <p class="text-[11px] text-slate-400 max-w-xs mx-auto leading-relaxed">
-                                Spotkanie zaplanowane na <strong class="text-white">${currentMatch.date}</strong> jeszcze się nie odbyło. Głosowanie na najlepszego gracza zostanie odblokowane po rozegraniu meczu! 🏐
+                                Spotkanie zaplanowane na <strong class="text-white">${currentMatch.date}</strong> jeszcze się nie odbyło. Głosowanie na najlepszego gracza zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku spotkania)! 🏐
                             </p>
                         </div>
                     `;
@@ -6417,14 +6586,31 @@
 
             const match = info.match;
             if (dateBadge) dateBadge.innerText = `Mecz: ${match.date}`;
-            const attendees = (match.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(match);
             const votes = match.votes || {};
             const totalVotes = attendees.filter(p => Boolean(votes[p])).length;
             const isFinished = isMvpVotingFinished(match);
 
-            const todayStr = getLocalDateKey();
-            const isFutureMatch = Boolean(match.date && match.date > todayStr && !match.score);
-            if (isFutureMatch) {
+            if (match.isCancelled) {
+                contentArea.innerHTML = `
+                    <div class="space-y-4 py-2 text-center animate-fade-in">
+                        <div class="bg-slate-950/80 border border-rose-500/40 p-4 rounded-2xl space-y-2">
+                            <span class="text-3xl block">🚫</span>
+                            <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-400">Mecz odwołany</span>
+                            <div class="text-base font-black text-white">Spotkanie zostało odwołane</div>
+                            <p class="text-xs text-slate-400">
+                                Głosowanie na MVP dla terminu <strong class="text-white">${match.date}</strong> jest wyłączone.
+                            </p>
+                        </div>
+                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                            Zamknij okno 👋
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            if (!isMatchFinished(match)) {
                 contentArea.innerHTML = `
                     <div class="space-y-4 py-2 text-center animate-fade-in">
                         <div class="bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/40 p-4 rounded-2xl space-y-2">
@@ -6432,7 +6618,7 @@
                             <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-300">Głosowanie oczekuje</span>
                             <div class="text-base font-black text-white">Mecz jeszcze się nie odbył</div>
                             <p class="text-xs text-slate-400">
-                                Głosowanie na najlepszego gracza z dnia <strong class="text-white">${match.date}</strong> zostanie odblokowane po rozegraniu spotkania! 🏐
+                                Głosowanie na najlepszego gracza z dnia <strong class="text-white">${match.date}</strong> zostanie odblokowane po rozegraniu spotkania (lub po wpisaniu wyniku)! 🏐
                             </p>
                         </div>
                         <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
@@ -6602,7 +6788,7 @@
             if (!info || !info.match || !feedbackEl) return;
 
             const match = info.match;
-            const attendees = (match.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(match);
             const votes = match.votes || {};
 
             if (!voterName) {
@@ -6688,11 +6874,9 @@
                 return alert("Ten mecz został odwołany — głosowanie na MVP jest wyłączone!");
             }
 
-            const attendees = (info.match.attendees || []).slice(0, 12);
-            const todayStr = getLocalDateKey();
-            const isFutureMatch = Boolean(info.match.date && info.match.date > todayStr && !info.match.score);
-            if (isFutureMatch) {
-                return alert("Głosowanie na MVP dla tego meczu jeszcze się nie rozpoczęło (mecz w przyszłości)!");
+            const attendees = getMatchPlayingSquad(info.match);
+            if (!isMatchFinished(info.match)) {
+                return alert("Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku)!");
             }
 
             if (loggedPlayer && !attendees.includes(loggedPlayer)) {
@@ -6735,7 +6919,7 @@
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
 
-                const attendeesList = (m.attendees || []).slice(0, 12);
+                const attendeesList = getMatchPlayingSquad(m);
                 attendeesCount = attendeesList.length;
                 const validVotesCount = attendeesList.filter(p => Boolean(m.votes && m.votes[p])).length;
                 totalVotes = validVotesCount;
@@ -6815,7 +6999,7 @@
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
-            const attendees = (currentMatch.attendees || []).slice(0, 12);
+            const attendees = getMatchPlayingSquad(currentMatch);
 
             const nomineeSelect = document.getElementById('nomineeSelect');
             if (nomineeSelect) {
@@ -6840,11 +7024,9 @@
                 return alert("Ten mecz został odwołany — głosowanie na MVP jest wyłączone!");
             }
 
-            const attendees = (currentMatch.attendees || []).slice(0, 12);
-            const todayStr = getLocalDateKey();
-            const isFutureMatch = Boolean(currentMatch.date && currentMatch.date > todayStr && !currentMatch.score);
-            if (isFutureMatch) {
-                return alert("Głosowanie na MVP dla tego meczu jeszcze się nie rozpoczęło (mecz w przyszłości)!");
+            const attendees = getMatchPlayingSquad(currentMatch);
+            if (!isMatchFinished(currentMatch)) {
+                return alert("Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku)!");
             }
 
             if (loggedPlayer && !attendees.includes(loggedPlayer)) {
@@ -6905,7 +7087,7 @@
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
 
-                const attendeesList = (m.attendees || []).slice(0, 12);
+                const attendeesList = getMatchPlayingSquad(m);
                 attendeesCount = attendeesList.length;
                 const validVotesCount = attendeesList.filter(p => Boolean(m.votes && m.votes[p])).length;
                 totalVotes = validVotesCount;
@@ -6993,7 +7175,7 @@
             }
 
             container.innerHTML = historyMatches.map(m => {
-                const attendees = (m.attendees || []).slice(0, 12);
+                const attendees = getMatchPlayingSquad(m);
                 const score = m.score || "Brak wpisanego wyniku";
                 const teams = m.teams || null;
                 const isFinished = isMvpVotingFinished(m);
@@ -7090,9 +7272,10 @@
             if (dateBadge) dateBadge.innerText = targetMatch.date;
             if (titleEl) titleEl.innerText = `Spotkanie: ${targetMatch.date}`;
             const attendees = (targetMatch.attendees || []);
-            const mainSquad = attendees.slice(0, 12);
-            const reserves = attendees.slice(12);
-            if (subtextEl) subtextEl.innerText = `${targetMonth || ''} • Frekwencja na parkiecie: ${mainSquad.length}/12 graczy`;
+            const mainSquad = getMatchPlayingSquad(targetMatch);
+            const reserves = getMatchPlayingReserves(targetMatch);
+            const playingLimit = getMatchPlayingLimit(targetMatch);
+            if (subtextEl) subtextEl.innerText = `${targetMonth || ''} • Frekwencja na parkiecie: ${mainSquad.length}/${playingLimit} graczy`;
 
             const isFinished = isMvpVotingFinished(targetMatch);
             const votes = targetMatch.votes || {};
@@ -7341,8 +7524,7 @@
             matches.forEach(m => {
                 if (m.isCancelled) return;
                 activeMatchesCount++;
-                const attendees = m.attendees || [];
-                const mainSquad = attendees.slice(0, 12);
+                const mainSquad = getMatchPlayingSquad(m);
                 const cost = m.cost !== undefined ? Number(m.cost) : 250;
                 totalHallCost = roundMoney(totalHallCost + cost);
 
@@ -7803,7 +7985,7 @@
 
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach((m) => {
-                    const attendees = (m.attendees || []).slice(0, 12);
+                    const attendees = getMatchPlayingSquad(m);
                     if (!attendees.includes(playerName)) return;
 
                     const teams = m.teams || null;
@@ -7891,7 +8073,7 @@
             const outcomes = [];
 
             allMatches.forEach(m => {
-                const attendees = (m.attendees || []).slice(0, 12);
+                const attendees = getMatchPlayingSquad(m);
                 if (!attendees.includes(playerName)) return;
 
                 const scoreStr = m.score || '';
@@ -7947,7 +8129,7 @@
                     if (isPlayedMatch) {
                         activeMatches++;
                         totalAvailableSeasonMatches++;
-                        const mainSquad = (m.attendees || []).slice(0, 12);
+                        const mainSquad = getMatchPlayingSquad(m);
                         if (mainSquad.includes(playerName)) {
                             playerAttended++;
                             attendedMatches++;
@@ -8350,7 +8532,7 @@
                 const base = AppState.base_games[p] || 0;
                 let games = 0;
                 Object.keys(AppState.months || {}).forEach(m => {
-                    games += (AppState.months[m]?.matches || []).filter(x => !x.isCancelled && (x.attendees || []).slice(0, 12).includes(p)).length;
+                    games += (AppState.months[m]?.matches || []).filter(x => !x.isCancelled && getMatchPlayingSquad(x).includes(p)).length;
                 });
                 return { name: p, total: base + games };
             });
@@ -8393,14 +8575,14 @@
 
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
-                const lip = (AppState.months['Lipiec']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
-                const sie = (AppState.months['Sierpień']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
-                const wrz = (AppState.months['Wrzesień']?.matches || []).filter(m => isPlayed(m) && (m.attendees || []).slice(0, 12).includes(p)).length;
+                const lip = (AppState.months['Lipiec']?.matches || []).filter(m => isPlayed(m) && getMatchPlayingSquad(m).includes(p)).length;
+                const sie = (AppState.months['Sierpień']?.matches || []).filter(m => isPlayed(m) && getMatchPlayingSquad(m).includes(p)).length;
+                const wrz = (AppState.months['Wrzesień']?.matches || []).filter(m => isPlayed(m) && getMatchPlayingSquad(m).includes(p)).length;
                 
                 let other = 0;
                 Object.keys(AppState.months || {}).forEach(m => {
                     if (!['Lipiec', 'Sierpień', 'Wrzesień'].includes(m)) {
-                        other += (AppState.months[m]?.matches || []).filter(x => isPlayed(x) && (x.attendees || []).slice(0, 12).includes(p)).length;
+                        other += (AppState.months[m]?.matches || []).filter(x => isPlayed(x) && getMatchPlayingSquad(x).includes(p)).length;
                     }
                 });
                 const total = base + lip + sie + wrz + other;
@@ -8569,14 +8751,14 @@
             const playerHistory = calculatePlayerMatchHistory(loggedPlayer);
             const isOrganizer = (loggedPlayer === ORGANIZER_NAME) || isAdmin;
             const latestPlayed = getLatestPlayedMatchInfo();
-            const latestAttendees = latestPlayed ? (latestPlayed.match.attendees || []).slice(0, 12) : [];
+            const latestAttendees = latestPlayed ? getMatchPlayingSquad(latestPlayed.match) : [];
             const needsMvpVote = latestPlayed && !isMvpVotingFinished(latestPlayed.match) && latestAttendees.includes(loggedPlayer) && !latestPlayed.match.votes?.[loggedPlayer];
 
             // My Current Match Status
             const currentMatch = AppState.months[AppState.currentMonth]?.matches[AppState.currentMatchIndex];
             const attendees = currentMatch ? (currentMatch.attendees || []) : [];
             const isSigned = attendees.includes(loggedPlayer);
-            const isInMain = (attendees.slice(0, 12)).includes(loggedPlayer);
+            const isInMain = currentMatch ? getMatchPlayingSquad(currentMatch).includes(loggedPlayer) : false;
 
             container.innerHTML = `
                 <!-- Section Header -->
@@ -9901,11 +10083,12 @@
             }
 
             const dateStr = currentMatch ? currentMatch.date : "najbliższy piątek";
-            const attendees = currentMatch ? (currentMatch.attendees || []) : [];
-            const count = attendees.slice(0, 12).length;
-            const freeSlots = Math.max(0, 12 - count);
-            const cost = (currentMatch && currentMatch.isCancelled) ? 0 : (AppState.settings?.hallCost || 250);
-            const costPerPerson = count > 0 ? (cost / count).toFixed(2) : (cost / 12).toFixed(2);
+            const playingSquad = getMatchPlayingSquad(currentMatch);
+            const count = playingSquad.length;
+            const playingLimit = getMatchPlayingLimit(currentMatch);
+            const freeSlots = Math.max(0, playingLimit - count);
+            const cost = (currentMatch && currentMatch.isCancelled) ? 0 : (currentMatch && currentMatch.cost !== undefined ? Number(currentMatch.cost) : (AppState.settings?.hallCost || 250));
+            const costPerPerson = count > 0 ? (cost / count).toFixed(2) : (cost / playingLimit).toFixed(2);
             const blikPhone = String(AppState.settings?.blikPhone || "517 077 482");
             const warmup = AppState.settings?.warmupTime || "19:45";
             const start = AppState.settings?.startTime || "20:00";
@@ -10273,7 +10456,7 @@
             let current = 0;
             let max = 0;
             playedMatches.forEach(m => {
-                const attendees = (m.attendees || []).slice(0, 12);
+                const attendees = getMatchPlayingSquad(m);
                 if (attendees.includes(playerName)) {
                     current++;
                     if (current > max) max = current;
@@ -10293,7 +10476,7 @@
             });
 
             playedMatches.forEach(m => {
-                const attendees = (m.attendees || []).slice(0, 12);
+                const attendees = getMatchPlayingSquad(m);
                 const attendeeSet = new Set(attendees);
 
                 attendees.forEach(p => {
