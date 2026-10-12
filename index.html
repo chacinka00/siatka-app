@@ -1406,7 +1406,7 @@
                 <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95">
                     <span>🏆</span>
                     <span>Głosowanie MVP</span>
-                    <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full font-black">👑</span>
+                    <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black">👑</span>
                 </button>
             </div>
 
@@ -1998,8 +1998,11 @@
     </nav>
 
     <!-- Dedicated MVP Voting Modal / Isolated Terminal -->
-    <div id="dedicatedMvpModal" role="dialog" aria-modal="true" aria-labelledby="dedicatedMvpModalTitle" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
+    <div id="dedicatedMvpModal" role="dialog" aria-modal="true" aria-labelledby="dedicatedMvpModalTitle" onclick="if(event.target === this) exitDedicatedMvpToApp()" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
         <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-amber-500/30 rounded-3xl p-5 sm:p-6 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in relative my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
+            <!-- Close button for direct exit to main app -->
+            <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" aria-label="Zamknij" class="absolute top-4 right-4 text-white hover:text-rose-400 font-black text-sm w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-700 flex items-center justify-center transition cursor-pointer shadow-md z-10">✕</button>
+
             <!-- Header -->
             <div class="text-center space-y-1.5 pb-2 border-b border-slate-800/80">
                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 text-2xl shadow-lg shadow-amber-500/20 mb-1">
@@ -4827,6 +4830,7 @@
             const globalUpcomingDate = getGlobalUpcomingMatchDate();
             const latestPlayed = getLatestPlayedMatchInfo();
             const datesContainer = document.getElementById('matchDatesContainer');
+            if (!datesContainer) return;
             const allMatches = monthData.matches || [];
 
             const isEntireMonthPast = allMatches.length > 0 && allMatches.every(m => (m.date || '') < todayStr);
@@ -6576,7 +6580,7 @@
                     <div class="text-center py-6 space-y-3">
                         <div class="text-3xl">⚠️</div>
                         <p class="text-xs text-slate-300">Nie znaleziono meczu powiązanego z tym linkiem.</p>
-                        <button type="button" onclick="window.close()" class="px-4 py-2 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition">
                             Zamknij okno 👋
                         </button>
                     </div>
@@ -6602,7 +6606,7 @@
                                 Głosowanie na MVP dla terminu <strong class="text-white">${match.date}</strong> jest wyłączone.
                             </p>
                         </div>
-                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
                             Zamknij okno 👋
                         </button>
                     </div>
@@ -6621,7 +6625,7 @@
                                 Głosowanie na najlepszego gracza z dnia <strong class="text-white">${match.date}</strong> zostanie odblokowane po rozegraniu spotkania (lub po wpisaniu wyniku)! 🏐
                             </p>
                         </div>
-                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
                             Zamknij okno 👋
                         </button>
                     </div>
@@ -6640,7 +6644,7 @@
                                 Nie brałeś/aś udziału w tym spotkaniu, dlatego prawo głosu na MVP mają wyłącznie gracze obecni w składzie.
                             </p>
                         </div>
-                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
                             Zamknij okno 👋
                         </button>
                     </div>
@@ -6682,7 +6686,7 @@
                             <p class="text-[10px] text-slate-500 mt-1">Dziękujemy wszystkim zawodnikom za oddane głosy!</p>
                         </div>
                         <div class="pt-2">
-                            <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
+                            <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
                                 Zamknij okno 👋
                             </button>
                         </div>
@@ -6696,7 +6700,7 @@
                 contentArea.innerHTML = `
                     <div class="text-center py-6 space-y-2">
                         <p class="text-xs text-slate-400">Brak zapisanych graczy na ten mecz.</p>
-                        <button type="button" onclick="window.close()" class="px-4 py-2 bg-slate-800 text-slate-300 font-bold rounded-xl text-xs">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition">
                             Zamknij okno 👋
                         </button>
                     </div>
@@ -6813,7 +6817,7 @@
                 if (nomineeSection) nomineeSection.classList.add('hidden');
                 if (submitSection) {
                     submitSection.innerHTML = `
-                        <button type="button" onclick="window.close()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition">
+                        <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition">
                             Możesz zamknąć tę kartę 👋
                         </button>
                     `;
@@ -6957,8 +6961,8 @@
                                 </div>
                                 <p class="text-xs text-slate-400">Możesz teraz bezpiecznie zamknąć tę kartę 👋</p>
                                 <div class="pt-2">
-                                    <button type="button" onclick="window.close()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3.5 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
-                                        <span>Zamknij kartę</span>
+                                    <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3.5 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                                        <span>Wróć do aplikacji</span>
                                         <span>👋</span>
                                     </button>
                                 </div>
@@ -7382,8 +7386,8 @@
                                     <span class="font-extrabold text-xs text-slate-100 hover:text-white transition whitespace-normal break-words leading-tight ${isMe ? 'text-emerald-300' : ''}">${escapeHtml(p)}</span>
                                 </div>
                                 <div class="flex items-center gap-1 shrink-0">
-                                    ${isPlayerMvp ? `<span class="text-[9px] font-black bg-amber-500 text-slate-950 px-1.5 py-0.2 rounded shadow-sm inline-flex items-center gap-0.5">👑 MVP</span>` : ''}
-                                    ${isMe ? `<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800 px-1 py-0.2 rounded">TY</span>` : ''}
+                                    ${isPlayerMvp ? `<span class="text-[9px] font-black bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm inline-flex items-center gap-0.5">👑 MVP</span>` : ''}
+                                    ${isMe ? `<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800 px-1 py-0.5 rounded">TY</span>` : ''}
                                     ${isGuest ? `<span class="text-[8px] text-slate-500 font-semibold">(gość)</span>` : ''}
                                 </div>
                             </div>
@@ -7450,8 +7454,8 @@
                                             <span class="font-extrabold text-xs text-slate-100 whitespace-normal break-words leading-tight ${isMe ? 'text-emerald-300' : ''}">${escapeHtml(p)}</span>
                                         </div>
                                         <div class="flex items-center gap-1 shrink-0">
-                                            ${isPlayerMvp ? `<span class="text-[9px] font-black bg-amber-500 text-slate-950 px-1.5 py-0.2 rounded">👑 MVP</span>` : ''}
-                                            ${isMe ? `<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800 px-1 py-0.2 rounded">TY</span>` : ''}
+                                            ${isPlayerMvp ? `<span class="text-[9px] font-black bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded">👑 MVP</span>` : ''}
+                                            ${isMe ? `<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800 px-1 py-0.5 rounded">TY</span>` : ''}
                                             ${isGuest ? `<span class="text-[8px] text-slate-500 font-semibold">(gość)</span>` : ''}
                                         </div>
                                     </div>
@@ -7771,8 +7775,8 @@
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} whitespace-normal break-words">${escapeHtml(p)}</span>
-                                        ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.2 rounded-md">TY</span>` : ''}
-                                        ${isGuest ? '<span class="text-[9px] font-bold bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.2 rounded-md" title="Zawodnik go\u015Bcinny lub archiwalny">Go\u015B\u0107 / Archiwum</span>' : ''}
+                                        ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md">TY</span>` : ''}
+                                        ${isGuest ? '<span class="text-[9px] font-bold bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.5 rounded-md" title="Zawodnik gościnny lub archiwalny">Gość / Archiwum</span>' : ''}
                                         <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
                                     </div>
                                     <div class="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
@@ -8620,7 +8624,7 @@
 
                 const pStreak = (allStreaks[s.name]?.current) || 0;
                 const streakBadge = pStreak >= 2 ? `
-                    <span class="inline-flex items-center gap-0.5 px-1 py-0.2 rounded text-[8.5px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0" title="Aktualna seria: ${pStreak} mecze z rzędu">🔥 ${pStreak}</span>
+                    <span class="inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[8.5px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0" title="Aktualna seria: ${pStreak} mecze z rzędu">🔥 ${pStreak}</span>
                 ` : '';
 
                 const badgesHtml = getPlayerBadgesHtml(s.name);
@@ -8634,7 +8638,7 @@
                                 <div class="min-w-0 flex-1 leading-tight">
                                     <div class="flex items-center gap-1 min-w-0 flex-wrap">
                                         <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs whitespace-normal break-words">${escapeHtml(s.name)}</span>
-                                        ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.2 rounded shrink-0">TY</span>' : ''}
+                                        ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.5 rounded shrink-0">TY</span>' : ''}
                                         ${streakBadge}
                                     </div>
                                     ${badgesHtml ? `
