@@ -720,6 +720,98 @@
             border: none !important;
         }
 
+        /* ================= CZYTELNOŚĆ LICZNIKA GŁOSÓW MVP I BANERA WE WSZYSTKICH MOTYWACH ================= */
+        #recentMvpQuickBanner .mvp-quick-banner-card,
+        #recentMvpQuickBanner > div {
+            background: #0f172a !important;
+            background-image: none !important;
+            border-color: rgba(56, 189, 248, 0.4) !important;
+        }
+        [data-theme="haaland-dark"] #recentMvpQuickBanner .mvp-quick-banner-card,
+        [data-theme="haaland-dark"] #recentMvpQuickBanner > div {
+            background: #0f172a !important;
+            background-image: none !important;
+            border-color: rgba(56, 189, 248, 0.4) !important;
+        }
+        [data-theme="haaland-light"] #recentMvpQuickBanner .mvp-quick-banner-card,
+        [data-theme="haaland-light"] #recentMvpQuickBanner > div {
+            background: #ffffff !important;
+            background-image: none !important;
+            border-color: #bae6fd !important;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.12) !important;
+        }
+        [data-theme="haaland-light"] #recentMvpQuickBanner h2,
+        [data-theme="haaland-light"] #recentMvpQuickBanner span.text-white,
+        [data-theme="haaland-light"] #recentMvpQuickBanner span.text-xs {
+            color: #0c1322 !important;
+        }
+        [data-theme="haaland-light"] #recentMvpQuickBanner p {
+            color: #334155 !important;
+        }
+        [data-theme="mercurial-dark"] #recentMvpQuickBanner .mvp-quick-banner-card,
+        [data-theme="mercurial-dark"] #recentMvpQuickBanner > div {
+            background: #180915 !important;
+            background-image: none !important;
+            border-color: rgba(244, 63, 94, 0.4) !important;
+        }
+        [data-theme="mercurial-light"] #recentMvpQuickBanner .mvp-quick-banner-card,
+        [data-theme="mercurial-light"] #recentMvpQuickBanner > div {
+            background: #ffffff !important;
+            background-image: none !important;
+            border-color: #fecdd3 !important;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.12) !important;
+        }
+        [data-theme="mercurial-light"] #recentMvpQuickBanner h2,
+        [data-theme="mercurial-light"] #recentMvpQuickBanner span.text-white,
+        [data-theme="mercurial-light"] #recentMvpQuickBanner span.text-xs {
+            color: #120912 !important;
+        }
+        [data-theme="mercurial-light"] #recentMvpQuickBanner p {
+            color: #475569 !important;
+        }
+
+        /* Wyrazista plakietka liczby oddanych głosów MVP (Super czytelna w każdym motywie) */
+        .mvp-votes-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+            font-weight: 900 !important;
+            font-size: 11px !important;
+            padding: 2px 8px !important;
+            border-radius: 8px !important;
+            background-color: #020617 !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(52, 211, 153, 0.5) !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+            line-height: 1.2 !important;
+            white-space: nowrap !important;
+        }
+        [data-theme="haaland-dark"] .mvp-votes-pill {
+            background-color: #030c1a !important;
+            color: #38bdf8 !important;
+            border-color: #0284c7 !important;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25) !important;
+        }
+        [data-theme="haaland-light"] .mvp-votes-pill {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+            border-color: #0369a1 !important;
+            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.35) !important;
+        }
+        [data-theme="mercurial-dark"] .mvp-votes-pill {
+            background-color: #1c0514 !important;
+            color: #fb7185 !important;
+            border-color: #e11d48 !important;
+            box-shadow: 0 0 10px rgba(244, 63, 94, 0.25) !important;
+        }
+        [data-theme="mercurial-light"] .mvp-votes-pill {
+            background-color: #e11d48 !important;
+            color: #ffffff !important;
+            border-color: #be123c !important;
+            box-shadow: 0 1px 3px rgba(225, 29, 72, 0.35) !important;
+        }
+
         /* ================= KARTA MOJA SKŁADKA W KAŻDYM MOTYWIE ================= */
         .billing-badge-paid {
             background-color: #10b981 !important;
@@ -1532,7 +1624,7 @@
                 <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
                     <div class="flex items-center justify-between">
                         <span id="whoVotedTitle" class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Status obecnych:</span>
-                        <span id="whoVotedProgressRatio" class="font-mono text-emerald-400 font-bold text-[10px]">0 / 0</span>
+                        <span id="whoVotedProgressRatio" class="mvp-votes-pill text-[10px]">0 / 0</span>
                     </div>
                     <div id="whoVotedList" class="space-y-1 max-h-48 overflow-y-auto pr-1">
                         <!-- Rendered dynamically -->
@@ -3883,7 +3975,7 @@
             if (!isFinished) {
                 if (isAttendee && !hasVoted) {
                     bannerEl.innerHTML = `
-                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse relative">
+                        <div class="mvp-quick-banner-card bg-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse relative">
                             <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                 <span class="text-2xl shrink-0">🗳️</span>
                                 <div class="min-w-0 flex-1">
@@ -3891,8 +3983,9 @@
                                         <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md">TWÓJ GŁOS!</span>
                                         <span class="text-xs font-black text-amber-200 whitespace-normal break-words leading-tight">MVP z piątku (${latest.match.date})</span>
                                     </div>
-                                    <p class="text-[11px] text-amber-300/90 mt-0.5 leading-snug">
-                                        Grałeś w meczu! Zagłosuj na MVP (oddano: <strong class="font-mono text-white">${totalVotes}/${attendees.length}</strong>).
+                                    <p class="text-[11px] text-amber-300/90 mt-1 leading-snug flex items-center gap-1.5 flex-wrap">
+                                        <span>Grałeś w meczu! Zagłosuj na MVP:</span>
+                                        <span class="mvp-votes-pill">${totalVotes} / ${attendees.length}</span>
                                     </p>
                                 </div>
                             </div>
@@ -3907,16 +4000,17 @@
                     `;
                 } else {
                     bannerEl.innerHTML = `
-                        <div class="bg-gradient-to-r from-emerald-500/15 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md relative">
+                        <div class="mvp-quick-banner-card bg-slate-900 border border-sky-500/40 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-md relative">
                             <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                 <span class="text-2xl shrink-0">🏆</span>
                                 <div class="min-w-0 flex-1">
                                     <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-md">Głosowanie MVP</span>
+                                        <span class="text-[10px] font-black uppercase tracking-wider bg-slate-950 text-sky-300 border border-sky-500/40 px-2 py-0.5 rounded-md">Głosowanie MVP</span>
                                         <span class="text-xs font-bold text-white whitespace-normal break-words leading-tight">Mecz z piątku (${latest.match.date})</span>
                                     </div>
-                                    <p class="text-[11px] text-slate-300 mt-0.5 leading-snug">
-                                        ${hasVoted ? '✅ Twój głos jest zapisany. ' : ''}Trwa zbieranie głosów (<strong class="font-mono text-emerald-400">${totalVotes}/${attendees.length}</strong>).
+                                    <p class="text-[11px] text-slate-300 mt-1 leading-snug flex items-center gap-1.5 flex-wrap">
+                                        <span>${hasVoted ? '✅ Twój głos jest zapisany.' : ''} Trwa zbieranie głosów:</span>
+                                        <span class="mvp-votes-pill">${totalVotes} / ${attendees.length}</span>
                                     </p>
                                 </div>
                             </div>
@@ -6450,7 +6544,7 @@
                                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                                     <span>Trwa zbieranie głosów</span>
                                 </span>
-                                <span class="font-mono font-bold text-amber-400">${totalVotesCast} / ${attendees.length} (${percentDone}%)</span>
+                                <span class="mvp-votes-pill">${totalVotesCast} / ${attendees.length} (${percentDone}%)</span>
                             </div>
                             <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
                                 <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-sky-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percentDone}%"></div>
@@ -6717,7 +6811,7 @@
                     <div class="space-y-1.5 bg-slate-950/70 p-2.5 rounded-2xl border border-slate-800">
                         <div class="flex items-center justify-between text-[11px]">
                             <span class="text-slate-400 font-semibold">Postęp głosowania:</span>
-                            <span class="font-mono font-bold text-amber-300">${totalVotes} / ${attendees.length} (${pct}%)</span>
+                            <span class="mvp-votes-pill">${totalVotes} / ${attendees.length} (${pct}%)</span>
                         </div>
                         <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
                             <div class="bg-gradient-to-r from-amber-500 to-amber-400 h-full transition-all duration-500" style="width: ${pct}%"></div>
