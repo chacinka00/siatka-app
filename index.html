@@ -9911,17 +9911,24 @@
                 updateSeasonCard('recordTitleServe', 'recordKingServe', 'serve', '🌪️');
             }
 
+            const todayStr = getLocalDateKey();
+            const isPlayed = m => !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
+
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
                 let games = 0;
                 Object.keys(AppState.months || {}).forEach(m => {
-                    games += (AppState.months[m]?.matches || []).filter(x => !x.isCancelled && getMatchPlayingSquad(x).includes(p)).length;
+                    games += (AppState.months[m]?.matches || []).filter(x => isPlayed(x) && getMatchPlayingSquad(x).includes(p)).length;
                 });
                 return { name: p, total: base + games };
             });
             scores.sort((a, b) => b.total - a.total);
+            const topAttendance = scores.length ? scores[0].total : 0;
+            const topAttLeaders = scores.filter(s => s.total === topAttendance && s.total > 0).map(s => s.name);
             const ironAttEl = document.getElementById('recordIronAttendance');
-            if (ironAttEl) ironAttEl.innerText = scores.length ? `${scores[0].name} (${pluralizeMatches(scores[0].total)})` : "-";
+            if (ironAttEl) {
+                ironAttEl.innerText = topAttendance > 0 ? `${topAttLeaders.join(' & ')} (${pluralizeMatches(topAttendance)})` : "-";
+            }
 
             let clashMatchText = "Wkrótce";
             Object.keys(AppState.months || {}).forEach(mName => {
