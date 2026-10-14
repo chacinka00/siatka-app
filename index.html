@@ -1159,10 +1159,6 @@
             border-color: rgba(16, 185, 129, 0.25) !important;
         }
 
-        html, body {
-            overscroll-behavior-y: contain;
-        }
-
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
@@ -1303,9 +1299,14 @@
         }
 
         /* ================= MOBILE OPTIMIZATIONS & OVERFLOW BLOCK ================= */
-        html, body {
-            overflow-x: hidden;
-            max-width: 100vw;
+        html {
+            overflow-y: auto;
+            overflow-x: clip;
+        }
+        body {
+            overflow-x: clip;
+            position: relative;
+            width: 100%;
         }
 
         .scrollbar-none {
@@ -1594,6 +1595,9 @@
                     <p id="mvpWinnerVotes" class="text-xs text-slate-400 whitespace-normal break-words leading-tight">Wyniki zostaną ujawnione, gdy wszyscy zagłosują!</p>
                 </div>
 
+                <!-- Special Awards Result Box (Widoczne po zakończeniu głosowania) -->
+                <div id="mvpSpecialAwardsContainer"></div>
+
                 <!-- Voting Form (Dla obecnych) -->
                 <div id="votingFormCard" class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-3">
                     <div id="votingFormNotice" class="hidden"></div>
@@ -1610,10 +1614,45 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu:</label>
+                                <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu 🌟:</label>
                                 <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
                                     <!-- Populated dynamically -->
                                 </select>
+                            </div>
+
+                            <!-- 4 Wyróżnienia Meczowe (Opcjonalne - Compact Grid 2x2) -->
+                            <div class="pt-2 border-t border-slate-800 space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
+                                        <span>✨</span> Wyróżnienia Meczowe <span class="text-[9px] text-slate-400 font-normal lowercase">(opcjonalne)</span>
+                                    </span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
+                                    <div>
+                                        <label for="voteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
+                                        <select id="voteAwardBlock" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <option value="">-- Pomiń --</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="voteAwardSpike" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🔨 Gwóźdź (atak):</label>
+                                        <select id="voteAwardSpike" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <option value="">-- Pomiń --</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="voteAwardDefense" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🐟 Ryba (obrona):</label>
+                                        <select id="voteAwardDefense" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <option value="">-- Pomiń --</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="voteAwardServe" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🌪️ Serwis Turbo:</label>
+                                        <select id="voteAwardServe" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <option value="">-- Pomiń --</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1962,6 +2001,46 @@
                         <div>
                             <span class="text-[10px] text-slate-400 font-bold uppercase">Czyste Składki</span>
                             <p id="recordCleanPayers" class="font-extrabold text-sky-400 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Władcy Parkietu – Wyróżnienia Sezonu (Czapa, Gwóźdź, Ryba, Turbo) -->
+                <div class="pt-3 border-t border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>✨</span> Władcy Parkietu – Wyróżnienia Sezonu
+                        </span>
+                        <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-xl">🧱</span>
+                            <div>
+                                <span id="recordTitleBlock" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Bloków</span>
+                                <p id="recordKingBlock" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-xl">🔨</span>
+                            <div>
+                                <span id="recordTitleSpike" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Ataku</span>
+                                <p id="recordKingSpike" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-xl">🐟</span>
+                            <div>
+                                <span id="recordTitleDefense" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Obron</span>
+                                <p id="recordKingDefense" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-xl">🌪️</span>
+                            <div>
+                                <span id="recordTitleServe" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Zagrywki</span>
+                                <p id="recordKingServe" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2516,6 +2595,12 @@
                         <span>📈</span> <span>Bilans setów:</span>
                     </span>
                     <span id="playerCardSets" class="font-semibold text-cyan-400 text-right font-mono text-xs whitespace-normal break-words leading-tight">-</span>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
+                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                        <span>✨</span> <span>Wyróżnienia:</span>
+                    </span>
+                    <span id="playerCardSpecialAwards" class="font-semibold text-amber-300 text-right text-xs whitespace-normal break-words leading-tight">-</span>
                 </div>
             </div>
 
@@ -4287,6 +4372,8 @@
             isAppBootstrapDone = true;
 
             applyAppTheme(localStorage.getItem('siatka_app_theme') || 'haaland-dark');
+            document.body.classList.remove('overflow-hidden');
+            document.body.style.overflow = '';
             checkUserAuthSession();
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -6327,6 +6414,15 @@
                     if (isAdmin) syncState();
                 }
             }
+            if (currentMatch.specialVotes && typeof currentMatch.specialVotes === 'object') {
+                const validSpecialVoters = Object.keys(currentMatch.specialVotes).filter(v => attendees.includes(v));
+                if (validSpecialVoters.length !== Object.keys(currentMatch.specialVotes).length) {
+                    const cleanSpecialVotes = {};
+                    validSpecialVoters.forEach(v => { cleanSpecialVotes[v] = currentMatch.specialVotes[v]; });
+                    currentMatch.specialVotes = cleanSpecialVotes;
+                    if (isAdmin) syncState();
+                }
+            }
 
             const votes = currentMatch.votes || {};
             const totalVotesCast = attendees.filter(p => Boolean(votes[p])).length;
@@ -6497,6 +6593,9 @@
                 }).join('');
             }
 
+            // 4B. Populate Special Awards Selects
+            populateSpecialAwardSelects(currentMatch, currentVoter, '');
+
             // Tally counts
             const tally = {};
             attendees.forEach(p => tally[p] = 0);
@@ -6514,6 +6613,11 @@
                     leaders.push(name);
                 }
             });
+
+            const specialAwardsContainer = document.getElementById('mvpSpecialAwardsContainer');
+            if (specialAwardsContainer) {
+                specialAwardsContainer.innerHTML = isFinished ? renderMatchSpecialAwardsSectionHtml(currentMatch) : '';
+            }
 
             // 3. Render Hero & Results based on Secret vs Finished State
             if (isFinished) {
@@ -6826,6 +6930,7 @@
                             <div class="text-lg font-black text-white">${escapeHtml(winnerNameStr)}</div>
                             ${winnerVotesStr ? `<div class="text-xs font-bold text-amber-400 font-mono">${winnerVotesStr}</div>` : ''}
                         </div>
+                        ${renderMatchSpecialAwardsSectionHtml(match)}
                         <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-center">
                             <p class="text-xs text-slate-300 font-medium">Głosowanie na ten mecz zostało oficjalnie zakończone. 🎉</p>
                             <p class="text-[10px] text-slate-500 mt-1">Dziękujemy wszystkim zawodnikom za oddane głosy!</p>
@@ -6896,17 +7001,54 @@
                     <!-- Dynamiczny kontener na ostrzeżenie o oddanym głosie lub pole na PIN -->
                     <div id="dedicatedMvpVoterFeedback"></div>
 
-                    <!-- Krok 2: Twój głos na MVP -->
-                    <div id="dedicatedNomineeSection">
-                        <label for="dedicatedMvpNomineeSelect" class="block text-xs font-bold text-slate-300 mb-1">
-                            2. Twój głos na MVP Meczu 🌟:
-                        </label>
-                        <select id="dedicatedMvpNomineeSelect" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-amber-500 cursor-pointer">
-                            <option value="">-- Kto Twoim zdaniem zagrał najlepiej? --</option>
-                            ${attendees.map(p => {
-                                return `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
-                            }).join('')}
-                        </select>
+                    <!-- Krok 2: Twój głos na MVP & Wyróżnienia -->
+                    <div id="dedicatedNomineeSection" class="space-y-2.5">
+                        <div>
+                            <label for="dedicatedMvpNomineeSelect" class="block text-xs font-bold text-slate-300 mb-1">
+                                2. Twój głos na MVP Meczu 🌟:
+                            </label>
+                            <select id="dedicatedMvpNomineeSelect" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                <option value="">-- Kto Twoim zdaniem zagrał najlepiej? --</option>
+                                ${attendees.map(p => {
+                                    return `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`;
+                                }).join('')}
+                            </select>
+                        </div>
+
+                        <!-- 4 Wyróżnienia Meczowe w Modalu (Opcjonalne - Compact Grid 2x2) -->
+                        <div class="pt-2 border-t border-slate-800 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
+                                    <span>✨</span> Wyróżnienia Meczowe <span class="text-[9px] text-slate-400 font-normal lowercase">(opcjonalne)</span>
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
+                                <div>
+                                    <label for="dedVoteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
+                                    <select id="dedVoteAwardBlock" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <option value="">-- Pomiń --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="dedVoteAwardSpike" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🔨 Gwóźdź (atak):</label>
+                                    <select id="dedVoteAwardSpike" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <option value="">-- Pomiń --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="dedVoteAwardDefense" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🐟 Ryba (obrona):</label>
+                                    <select id="dedVoteAwardDefense" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <option value="">-- Pomiń --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="dedVoteAwardServe" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🌪️ Serwis Turbo:</label>
+                                    <select id="dedVoteAwardServe" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <option value="">-- Pomiń --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Przycisk oddania głosu -->
@@ -6948,6 +7090,7 @@
                     nomineeSelect.innerHTML = `<option value="">-- Kto Twoim zdaniem zagrał najlepiej? --</option>` +
                         attendees.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
                 }
+                populateSpecialAwardSelects(match, '', 'ded');
                 return;
             }
 
@@ -6987,6 +7130,7 @@
                 nomineeSelect.innerHTML = `<option value="">-- Kto Twoim zdaniem zagrał najlepiej? --</option>` +
                     candidates.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
             }
+            populateSpecialAwardSelects(match, voterName, 'ded');
 
             // 3. Sprawdź czy profil ma PIN
             const hasPin = Boolean(AppState.player_pins?.[voterName]);
@@ -7012,6 +7156,11 @@
             const nomineeSelect = document.getElementById('dedicatedMvpNomineeSelect');
             const voter = voterSelect?.value?.trim();
             const nominee = nomineeSelect?.value?.trim();
+
+            const blockNominee = document.getElementById('dedVoteAwardBlock')?.value?.trim() || '';
+            const spikeNominee = document.getElementById('dedVoteAwardSpike')?.value?.trim() || '';
+            const defenseNominee = document.getElementById('dedVoteAwardDefense')?.value?.trim() || '';
+            const serveNominee = document.getElementById('dedVoteAwardServe')?.value?.trim() || '';
 
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy!");
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
@@ -7067,6 +7216,19 @@
                 if (!m) return false;
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
+
+                // Zapis wyróżnień meczowych w poddrzewie match.specialVotes
+                if (!m.specialVotes || typeof m.specialVotes !== 'object') m.specialVotes = {};
+                const squad = getMatchPlayingSquad(m);
+                const sanitizeAwardNominee = (cand) => {
+                    return (cand && cand !== voter && squad.includes(cand)) ? cand : "";
+                };
+                m.specialVotes[voter] = {
+                    block: sanitizeAwardNominee(blockNominee),
+                    spike: sanitizeAwardNominee(spikeNominee),
+                    defense: sanitizeAwardNominee(defenseNominee),
+                    serve: sanitizeAwardNominee(serveNominee)
+                };
 
                 const attendeesList = getMatchPlayingSquad(m);
                 attendeesCount = attendeesList.length;
@@ -7158,6 +7320,7 @@
                     return `<option value="${escapeHtml(p)}" ${p === curNom && p !== selectedPlayer ? 'selected' : ''}>${escapeHtml(p)}</option>`;
                 }).join('');
             }
+            populateSpecialAwardSelects(currentMatch, selectedPlayer, '');
         }
 
         function submitMvpVote() {
@@ -7165,6 +7328,11 @@
             let voter = document.getElementById('voterSelect')?.value?.trim();
             if (!voter && loggedPlayer) voter = loggedPlayer;
             const nominee = document.getElementById('nomineeSelect')?.value?.trim();
+
+            const blockNominee = document.getElementById('voteAwardBlock')?.value?.trim() || '';
+            const spikeNominee = document.getElementById('voteAwardSpike')?.value?.trim() || '';
+            const defenseNominee = document.getElementById('voteAwardDefense')?.value?.trim() || '';
+            const serveNominee = document.getElementById('voteAwardServe')?.value?.trim() || '';
 
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
@@ -7235,6 +7403,19 @@
                 if (!m) return false;
                 if (!m.votes || typeof m.votes !== 'object') m.votes = {};
                 m.votes[voter] = nominee;
+
+                // Zapis wyróżnień meczowych w poddrzewie match.specialVotes
+                if (!m.specialVotes || typeof m.specialVotes !== 'object') m.specialVotes = {};
+                const squad = getMatchPlayingSquad(m);
+                const sanitizeAwardNominee = (cand) => {
+                    return (cand && cand !== voter && squad.includes(cand)) ? cand : "";
+                };
+                m.specialVotes[voter] = {
+                    block: sanitizeAwardNominee(blockNominee),
+                    spike: sanitizeAwardNominee(spikeNominee),
+                    defense: sanitizeAwardNominee(defenseNominee),
+                    serve: sanitizeAwardNominee(serveNominee)
+                };
 
                 const attendeesList = getMatchPlayingSquad(m);
                 attendeesCount = attendeesList.length;
@@ -7647,6 +7828,9 @@
 
                 <!-- MVP Spotkania -->
                 ${mvpHtml}
+
+                <!-- Wyróżnienia Meczowe (gdy zakończono głosowanie) -->
+                ${isFinished ? renderMatchSpecialAwardsSectionHtml(targetMatch) : ''}
 
                 <!-- Dwie drużyny po stronach boiska -->
                 ${teamsHtml}
@@ -8489,6 +8673,282 @@
                     setBalanceRanking: [],
                     playerAdvMap: {}
                 };
+        // ================= WYRÓŻNIENIA MECZOWE & TYTUŁY SEZONOWE =================
+        function getGenderTitle(playerName, maleTitle, femaleTitle) {
+            if (!playerName) return maleTitle;
+            const firstName = playerName.trim().split(/\s+/)[0].toLowerCase();
+            if (firstName === 'kuba') return maleTitle;
+            if (firstName.endsWith('a')) return femaleTitle;
+            return maleTitle;
+        }
+
+        function populateSpecialAwardSelects(match, voter, prefix = '') {
+            if (!match) return;
+            const attendees = getMatchPlayingSquad(match);
+            const availableCandidates = attendees.filter(p => !voter || p !== voter);
+            const existingVotes = (voter && match.specialVotes && typeof match.specialVotes === 'object') ? (match.specialVotes[voter] || {}) : {};
+
+            const awards = [
+                { id: prefix === 'ded' ? 'dedVoteAwardBlock' : 'voteAwardBlock', key: 'block' },
+                { id: prefix === 'ded' ? 'dedVoteAwardSpike' : 'voteAwardSpike', key: 'spike' },
+                { id: prefix === 'ded' ? 'dedVoteAwardDefense' : 'voteAwardDefense', key: 'defense' },
+                { id: prefix === 'ded' ? 'dedVoteAwardServe' : 'voteAwardServe', key: 'serve' }
+            ];
+
+            awards.forEach(a => {
+                const select = document.getElementById(a.id);
+                if (!select) return;
+                const savedVal = existingVotes[a.key] || '';
+                const currentVal = (savedVal && availableCandidates.includes(savedVal)) ? savedVal : (select.value || '');
+                select.innerHTML = `<option value="">-- Pomiń --</option>` + availableCandidates.map(p => {
+                    return `<option value="${escapeHtml(p)}" ${p === currentVal ? 'selected' : ''}>${escapeHtml(p)}</option>`;
+                }).join('');
+            });
+        }
+
+        function getMatchSpecialAwardWinners(match) {
+            const attendees = getMatchPlayingSquad(match);
+            const result = {
+                block: { winners: [], maxVotes: 0 },
+                spike: { winners: [], maxVotes: 0 },
+                defense: { winners: [], maxVotes: 0 },
+                serve: { winners: [], maxVotes: 0 }
+            };
+
+            if (!match || !match.specialVotes || typeof match.specialVotes !== 'object') {
+                return result;
+            }
+
+            const tallies = { block: {}, spike: {}, defense: {}, serve: {} };
+            attendees.forEach(p => {
+                tallies.block[p] = 0;
+                tallies.spike[p] = 0;
+                tallies.defense[p] = 0;
+                tallies.serve[p] = 0;
+            });
+
+            Object.entries(match.specialVotes).forEach(([voter, vObj]) => {
+                if (!attendees.includes(voter) || !vObj || typeof vObj !== 'object') return;
+                ['block', 'spike', 'defense', 'serve'].forEach(cat => {
+                    const cand = vObj[cat];
+                    if (cand && cand !== voter && attendees.includes(cand)) {
+                        tallies[cat][cand] = (tallies[cat][cand] || 0) + 1;
+                    }
+                });
+            });
+
+            ['block', 'spike', 'defense', 'serve'].forEach(cat => {
+                let maxV = 0;
+                Object.entries(tallies[cat]).forEach(([_, count]) => {
+                    if (count > maxV) maxV = count;
+                });
+                if (maxV > 0) {
+                    const winners = Object.entries(tallies[cat])
+                        .filter(([_, count]) => count === maxV)
+                        .map(([name]) => name);
+                    result[cat] = { winners, maxVotes: maxV };
+                }
+            });
+
+            return result;
+        }
+
+        function renderMatchSpecialAwardsSectionHtml(match) {
+            if (!match) return '';
+            const aw = getMatchSpecialAwardWinners(match);
+            const catMeta = [
+                { key: 'block', title: 'Czapa Meczu', icon: '🧱' },
+                { key: 'spike', title: 'Gwóźdź Meczu', icon: '🔨' },
+                { key: 'defense', title: 'Obrona Życia', icon: '🐟' },
+                { key: 'serve', title: 'Serwis Turbo', icon: '🌪️' }
+            ];
+
+            const hasAny = catMeta.some(c => aw[c.key].winners.length > 0);
+
+            return `
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>✨</span> Wyróżnienia Meczowe
+                        </span>
+                        <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
+                    </div>
+                    ${!hasAny ? `
+                        <div class="p-2 text-center text-slate-500 text-[11px] italic">
+                            Brak oddanych głosów na wyróżnienia w tym meczu.
+                        </div>
+                    ` : `
+                        <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
+                            ${catMeta.map(c => {
+                                const info = aw[c.key];
+                                const winCount = info.winners.length;
+                                const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : 'Brak nominacji';
+                                const voteStr = info.maxVotes > 0 ? `${info.maxVotes} ${pluralizeVotes(info.maxVotes)}` : '';
+                                return `
+                                    <div class="bg-slate-900/90 border ${winCount > 0 ? 'border-slate-800' : 'border-slate-850 opacity-60'} p-2 rounded-xl flex flex-col justify-between space-y-1">
+                                        <div class="flex items-center justify-between gap-1">
+                                            <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+                                                <span>${c.icon}</span> <span class="leading-tight">${c.title}</span>
+                                            </span>
+                                            ${voteStr ? `<span class="text-[9px] font-mono font-bold text-amber-400 shrink-0">${voteStr}</span>` : ''}
+                                        </div>
+                                        <div class="text-xs font-black ${winCount > 0 ? 'text-white' : 'text-slate-500'} whitespace-normal break-words leading-tight">
+                                            ${winStr}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        function calculateSeasonSpecialAwards(state = AppState) {
+            const cats = ['block', 'spike', 'defense', 'serve'];
+            const catLabels = {
+                block: { m: "Król Bloków", f: "Królowa Bloków", icon: "🧱" },
+                spike: { m: "Król Ataku", f: "Królowa Ataku", icon: "🔨" },
+                defense: { m: "Król Obron", f: "Królowa Obron", icon: "🐟" },
+                serve: { m: "Król Zagrywki", f: "Królowa Zagrywki", icon: "🌪️" }
+            };
+
+            const defaultResult = {
+                leaders: {
+                    block: { title: "Król Bloków", leadersStr: "-", wins: 0, votes: 0, isTied: false },
+                    spike: { title: "Król Ataku", leadersStr: "-", wins: 0, votes: 0, isTied: false },
+                    defense: { title: "Król Obron", leadersStr: "-", wins: 0, votes: 0, isTied: false },
+                    serve: { title: "Król Zagrywki", leadersStr: "-", wins: 0, votes: 0, isTied: false }
+                },
+                playerStats: {}
+            };
+
+            try {
+                if (!state || !state.months) return defaultResult;
+
+                const playerStats = {};
+                (state.all_players || []).forEach(p => {
+                    playerStats[p] = {
+                        block: { wins: 0, votes: 0 },
+                        spike: { wins: 0, votes: 0 },
+                        defense: { wins: 0, votes: 0 },
+                        serve: { wins: 0, votes: 0 },
+                        totalWins: 0,
+                        totalVotes: 0,
+                        titles: []
+                    };
+                });
+
+                Object.keys(state.months).forEach(mName => {
+                    const matches = state.months[mName]?.matches || [];
+                    matches.forEach(m => {
+                        if (!isMvpVotingFinished(m) || !m.specialVotes || typeof m.specialVotes !== 'object') return;
+                        const attendees = getMatchPlayingSquad(m);
+
+                        const matchTallies = { block: {}, spike: {}, defense: {}, serve: {} };
+                        attendees.forEach(p => {
+                            cats.forEach(c => { matchTallies[c][p] = 0; });
+                        });
+
+                        Object.entries(m.specialVotes).forEach(([voter, vObj]) => {
+                            if (!attendees.includes(voter) || !vObj || typeof vObj !== 'object') return;
+                            cats.forEach(cat => {
+                                const cand = vObj[cat];
+                                if (cand && cand !== voter && attendees.includes(cand)) {
+                                    matchTallies[cat][cand] = (matchTallies[cat][cand] || 0) + 1;
+                                    if (!playerStats[cand]) {
+                                        playerStats[cand] = {
+                                            block: { wins: 0, votes: 0 },
+                                            spike: { wins: 0, votes: 0 },
+                                            defense: { wins: 0, votes: 0 },
+                                            serve: { wins: 0, votes: 0 },
+                                            totalWins: 0,
+                                            totalVotes: 0,
+                                            titles: []
+                                        };
+                                    }
+                                    playerStats[cand][cat].votes++;
+                                    playerStats[cand].totalVotes++;
+                                }
+                            });
+                        });
+
+                        cats.forEach(cat => {
+                            let maxV = 0;
+                            Object.values(matchTallies[cat]).forEach(v => { if (v > maxV) maxV = v; });
+                            if (maxV > 0) {
+                                Object.entries(matchTallies[cat]).forEach(([player, cnt]) => {
+                                    if (cnt === maxV) {
+                                        if (!playerStats[player]) {
+                                            playerStats[player] = {
+                                                block: { wins: 0, votes: 0 },
+                                                spike: { wins: 0, votes: 0 },
+                                                defense: { wins: 0, votes: 0 },
+                                                serve: { wins: 0, votes: 0 },
+                                                totalWins: 0,
+                                                totalVotes: 0,
+                                                titles: []
+                                            };
+                                        }
+                                        playerStats[player][cat].wins++;
+                                        playerStats[player].totalWins++;
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+
+                const leaders = {};
+                cats.forEach(cat => {
+                    const eligiblePlayers = Object.entries(playerStats)
+                        .map(([p, data]) => ({ name: p, wins: data[cat].wins, votes: data[cat].votes }))
+                        .filter(item => item.wins > 0 || item.votes > 0)
+                        .sort((a, b) => b.wins - a.wins || b.votes - a.votes || a.name.localeCompare(b.name, 'pl'));
+
+                    if (eligiblePlayers.length === 0 || eligiblePlayers[0].wins === 0) {
+                        leaders[cat] = {
+                            title: catLabels[cat].m,
+                            leadersStr: "-",
+                            wins: 0,
+                            votes: 0,
+                            isTied: false,
+                            leaderList: []
+                        };
+                    } else {
+                        const topWins = eligiblePlayers[0].wins;
+                        const topVotes = eligiblePlayers[0].votes;
+                        const topContenders = eligiblePlayers.filter(p => p.wins === topWins && p.votes === topVotes);
+                        const firstLeader = topContenders[0].name;
+                        const title = getGenderTitle(firstLeader, catLabels[cat].m, catLabels[cat].f);
+                        const leadersStr = topContenders.map(c => c.name).join(' & ');
+
+                        leaders[cat] = {
+                            title,
+                            leadersStr,
+                            wins: topWins,
+                            votes: topVotes,
+                            isTied: topContenders.length > 1,
+                            leaderList: topContenders.map(c => c.name)
+                        };
+
+                        topContenders.forEach(c => {
+                            const indivTitle = getGenderTitle(c.name, catLabels[cat].m, catLabels[cat].f);
+                            playerStats[c.name].titles.push({
+                                cat,
+                                title: indivTitle,
+                                icon: catLabels[cat].icon,
+                                wins: topWins,
+                                votes: topVotes
+                            });
+                        });
+                    }
+                });
+
+                return { leaders, playerStats };
+            } catch (e) {
+                console.error("calculateSeasonSpecialAwards error:", e);
+                return defaultResult;
             }
         }
 
@@ -8496,12 +8956,14 @@
 
         function switchAdvancedStatsSubTab(tabName) {
             currentAdvancedStatsTab = tabName;
-            renderAdvancedStatsSection();
+            renderAdvancedStatsSection(true);
         }
 
-        function renderAdvancedStatsSection() {
+        function renderAdvancedStatsSection(isTabClick = false) {
             const container = document.getElementById('advancedStatsContainer');
             if (!container) return;
+
+            const prevScrollLeft = document.getElementById('advancedStatsTabsScroll')?.scrollLeft || 0;
 
             const stats = calculateAdvancedMatchStats(AppState);
 
@@ -8787,20 +9249,20 @@
                 </div>
 
                 <!-- Sub-tab Pills (Mobile Horizontal Scroll) -->
-                <div class="flex items-center gap-1.5 overflow-x-auto py-1 px-0.5 scrollbar-none text-[11px] font-bold">
-                    <button type="button" onclick="switchAdvancedStatsSubTab('winimpact')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                <div id="advancedStatsTabsScroll" class="flex items-center gap-1.5 overflow-x-auto py-1 px-0.5 scrollbar-none text-[11px] font-bold">
+                    <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
                         🎯 Wpływ na wygraną
                     </button>
-                    <button type="button" onclick="switchAdvancedStatsSubTab('duos')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                    <button type="button" data-adv-tab="duos" onclick="switchAdvancedStatsSubTab('duos')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
                         🤝 Duety (Synergia)
                     </button>
-                    <button type="button" onclick="switchAdvancedStatsSubTab('kryptonite')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                    <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
                         🥊 Kryptonity
                     </button>
-                    <button type="button" onclick="switchAdvancedStatsSubTab('clutch')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
                         🔥 Mistrz 5. Setów
                     </button>
-                    <button type="button" onclick="switchAdvancedStatsSubTab('sets')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
                         📈 Bilans Setów
                     </button>
                 </div>
@@ -8808,6 +9270,20 @@
                 <!-- Sub-tab Body -->
                 ${subTabContentHtml}
             `;
+
+            const tabsScroll = document.getElementById('advancedStatsTabsScroll');
+            if (tabsScroll) {
+                if (prevScrollLeft > 0) {
+                    tabsScroll.scrollLeft = prevScrollLeft;
+                }
+                if (isTabClick) {
+                    const activePill = tabsScroll.querySelector(`[data-adv-tab="${currentAdvancedStatsTab}"]`);
+                    if (activePill) {
+                        const targetLeft = activePill.offsetLeft - (tabsScroll.clientWidth / 2) + (activePill.offsetWidth / 2);
+                        tabsScroll.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+                    }
+                }
+            }
         }
 
         function calculatePlayerMatchHistory(playerName) {
@@ -9312,6 +9788,40 @@
                 if (setsEl) setsEl.innerText = pAdv?.setsDiffFormatted && pAdv.setsDiffFormatted !== "-" ? `${pAdv.setsDiffFormatted} (${pAdv.setsSub})` : "-";
             }
 
+            // Wyróżnienia Meczowe w Karcie Gracza
+            const specialAwardsEl = document.getElementById('playerCardSpecialAwards');
+            if (specialAwardsEl) {
+                const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
+                const pAwards = seasonAwards?.playerStats?.[playerName];
+                if (pAwards && (pAwards.totalWins > 0 || pAwards.totalVotes > 0)) {
+                    const awardTokens = [];
+                    const catMeta = [
+                        { key: 'block', icon: '🧱' },
+                        { key: 'spike', icon: '🔨' },
+                        { key: 'defense', icon: '🐟' },
+                        { key: 'serve', icon: '🌪️' }
+                    ];
+                    catMeta.forEach(c => {
+                        const w = pAwards[c.key]?.wins || 0;
+                        const v = pAwards[c.key]?.votes || 0;
+                        if (w > 0) {
+                            awardTokens.push(`${w}x ${c.icon} (${v} gł.)`);
+                        } else if (v > 0) {
+                            awardTokens.push(`${c.icon} (${v} gł.)`);
+                        }
+                    });
+
+                    const titleStrs = (pAwards.titles || []).map(t => `${t.icon} ${t.title}`);
+                    if (titleStrs.length > 0) {
+                        specialAwardsEl.innerHTML = `<span class="text-amber-300 font-bold">${titleStrs.join(', ')}</span> <span class="text-slate-400">(${awardTokens.join(' • ')})</span>`;
+                    } else {
+                        specialAwardsEl.innerText = awardTokens.length ? awardTokens.join(' • ') : "Brak wyróżnień w tym sezonie";
+                    }
+                } else {
+                    specialAwardsEl.innerText = "Brak wyróżnień w tym sezonie";
+                }
+            }
+
             const badgeCountEl = document.getElementById('playerCardBadgeCount');
             if (badgeCountEl) badgeCountEl.innerText = badges.length;
 
@@ -9367,12 +9877,36 @@
                 });
             });
 
-            let topMvpName = "-", topMvpCount = 0;
-            Object.entries(mvpTally).forEach(([name, count]) => {
-                if (count > topMvpCount) { topMvpCount = count; topMvpName = name; }
+            let topMvpCount = 0;
+            Object.values(mvpTally).forEach(count => {
+                if (count > topMvpCount) topMvpCount = count;
             });
+            const topMvpNominees = Object.entries(mvpTally)
+                .filter(([_, count]) => count === topMvpCount && count > 0)
+                .map(([nom]) => nom);
             const kingMvpEl = document.getElementById('recordKingMvp');
-            if (kingMvpEl) kingMvpEl.innerText = topMvpCount > 0 ? `${topMvpName} (${topMvpCount}x 👑)` : "Sezon w toku";
+            if (kingMvpEl) {
+                kingMvpEl.innerText = topMvpCount > 0 ? `${topMvpNominees.join(' & ')} (${topMvpCount}x 👑)` : "Sezon w toku";
+            }
+
+            // Władcy Parkietu – Wyróżnienia Sezonu
+            if (typeof calculateSeasonSpecialAwards === 'function') {
+                const { leaders } = calculateSeasonSpecialAwards(AppState);
+                const updateSeasonCard = (titleId, kingId, catKey, icon) => {
+                    const l = leaders?.[catKey];
+                    const tEl = document.getElementById(titleId);
+                    const kEl = document.getElementById(kingId);
+                    if (tEl && l) tEl.innerText = l.title;
+                    if (kEl && l) {
+                        kEl.innerText = l.wins > 0 ? `${l.leadersStr} (${l.wins}x ${icon} • ${l.votes} gł.)` : "Sezon w toku";
+                    }
+                };
+
+                updateSeasonCard('recordTitleBlock', 'recordKingBlock', 'block', '🧱');
+                updateSeasonCard('recordTitleSpike', 'recordKingSpike', 'spike', '🔨');
+                updateSeasonCard('recordTitleDefense', 'recordKingDefense', 'defense', '🐟');
+                updateSeasonCard('recordTitleServe', 'recordKingServe', 'serve', '🌪️');
+            }
 
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
@@ -9599,6 +10133,8 @@
             const { bestPartner, topRival } = calculatePlayerChemistry(loggedPlayer);
             const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats(AppState) : null;
             const pAdv = advStats?.playerAdvMap?.[loggedPlayer];
+            const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
+            const myAwards = seasonAwards?.playerStats?.[loggedPlayer];
             const playerHistory = calculatePlayerMatchHistory(loggedPlayer);
             const isOrganizer = (loggedPlayer === ORGANIZER_NAME) || isAdmin;
             const latestPlayed = getLatestPlayedMatchInfo();
@@ -9751,6 +10287,76 @@
                                 <div class="mt-1">
                                     <strong class="text-cyan-400 text-sm font-mono font-black">${pAdv?.setsDiffFormatted || '-'}</strong>
                                     <span class="text-[9px] text-slate-400 block">${pAdv?.setsSub || '0-0'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1C: Moje Wyróżnienia & Korony Meczowe -->
+                    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2.5 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>✨</span> Moje Wyróżnienia & Korony Meczowe
+                            </span>
+                            <span class="text-[10px] text-amber-400 font-mono font-bold">
+                                ${(myAwards?.totalWins || 0)}x wygrane • ${(myAwards?.totalVotes || 0)} gł.
+                            </span>
+                        </div>
+
+                        ${myAwards?.titles?.length ? `
+                            <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/40 rounded-xl p-2.5 flex items-center gap-2 flex-wrap">
+                                <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">👑 Tytuł sezonu:</span>
+                                ${myAwards.titles.map(t => `
+                                    <span class="bg-slate-950/90 border border-amber-500/50 text-amber-200 font-bold px-2 py-0.5 rounded-lg text-xs flex items-center gap-1 shadow-sm">
+                                        <span>${t.icon}</span> <span>${escapeHtml(t.title)}</span>
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400 font-semibold">🧱 Czapa</span>
+                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.block?.votes || 0} gł.</span>
+                                </div>
+                                <div class="mt-1">
+                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
+                                        ${(myAwards?.block?.wins || 0)}x wygrana
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400 font-semibold">🔨 Gwóźdź</span>
+                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.spike?.votes || 0} gł.</span>
+                                </div>
+                                <div class="mt-1">
+                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
+                                        ${(myAwards?.spike?.wins || 0)}x wygrana
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400 font-semibold">🐟 Ryba</span>
+                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.defense?.votes || 0} gł.</span>
+                                </div>
+                                <div class="mt-1">
+                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
+                                        ${(myAwards?.defense?.wins || 0)}x wygrana
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400 font-semibold">🌪️ Serwis</span>
+                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.serve?.votes || 0} gł.</span>
+                                </div>
+                                <div class="mt-1">
+                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
+                                        ${(myAwards?.serve?.wins || 0)}x wygrana
+                                    </strong>
                                 </div>
                             </div>
                         </div>
