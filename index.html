@@ -1346,9 +1346,9 @@
                     <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2 py-1.5 sm:px-2.5 sm:py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
                         <!-- Populated dynamically -->
                     </select>
-                    <button type="button" id="headerShareBtn" onclick="openShareModal()" title="Udostępnij na Messengerze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0">
-                        <span>📣</span>
-                        <span class="hidden sm:inline text-[11px]">Mess</span>
+                    <button type="button" id="headerShareBtn" onclick="copyQuickMatchLink()" title="Kopiuj link do zapisów na Messengera (1-klik)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0 cursor-pointer">
+                        <span>📋</span>
+                        <span class="hidden sm:inline text-[11px]">Zapisy</span>
                     </button>
                 </div>
             </div>
@@ -2339,46 +2339,6 @@
         </div>
     </div>
 
-    <!-- Share / Messenger Modal -->
-    <div id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle" onclick="if(event.target === this) closeShareModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
-            <div class="flex items-center justify-between">
-                <h3 id="shareModalTitle" class="font-black text-white text-base flex items-center gap-2">
-                    <span>📣</span> Przypomnienie na Messengera
-                </h3>
-                <button type="button" onclick="closeShareModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
-            </div>
-            
-            <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[10px]">
-                <button type="button" id="tplBtn-match" onclick="selectTemplate('match')" class="py-1.5 px-0.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition text-center leading-tight whitespace-normal break-words">
-                    Mecz (Pt)
-                </button>
-                <button type="button" id="tplBtn-monday" onclick="selectTemplate('monday')" class="py-1.5 px-0.5 rounded-lg font-bold text-slate-400 hover:text-white transition text-center leading-tight whitespace-normal break-words">
-                    Zapisy (Pn)
-                </button>
-                <button type="button" id="tplBtn-mvp" onclick="selectTemplate('mvp')" class="py-1.5 px-0.5 rounded-lg font-bold text-slate-400 hover:text-white transition text-center leading-tight whitespace-normal break-words">
-                    MVP 🏆
-                </button>
-                <button type="button" id="tplBtn-billing" onclick="selectTemplate('billing')" class="py-1.5 px-0.5 rounded-lg font-bold text-slate-400 hover:text-white transition text-center leading-tight whitespace-normal break-words">
-                    Składki 💰
-                </button>
-            </div>
-
-            <textarea id="shareMessagePreview" rows="7" readonly class="w-full bg-slate-950 border border-slate-700 rounded-2xl p-3 text-xs font-mono text-emerald-300 focus:outline-none"></textarea>
-
-            <div class="space-y-2">
-                <button type="button" onclick="copyShareTextOnly()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-extrabold py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
-                    <span>📋</span> Kopiuj gotowy tekst na Messengera
-                </button>
-                <button type="button" onclick="executeShare()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold py-2.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
-                    <span>📱</span> Udostępnij (Share sheet)
-                </button>
-                <button type="button" onclick="closeShareModal()" class="w-full bg-transparent hover:bg-slate-800/40 text-slate-400 text-xs py-1 transition text-center">
-                    Zamknij
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Theme Picker Modal (Pomysł Mikołaja - 4 motywy + Klasyk) -->
     <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
@@ -3801,7 +3761,6 @@
         let isAdmin = (loggedPlayer === ORGANIZER_NAME) || (localStorage.getItem('siatka_is_admin') === 'true');
         
         let showPastMatches = false;
-        let currentTemplateType = 'match';
         let hasInitiallySelectedMonth = false;
         let hasLoadedRemoteState = false;
         let countdownTimerInterval = null;
@@ -11555,105 +11514,42 @@
             showToast("Wyczyszczono wynik meczu.");
         }
 
-        // ================= SHARE / MESSENGER TEMPLATES =================
-        function selectTemplate(type) {
-            currentTemplateType = type;
-            document.querySelectorAll('#shareModal button[id^="tplBtn-"]').forEach(btn => {
-                btn.className = "py-1.5 px-0.5 rounded-lg font-bold text-slate-400 hover:text-white transition text-center leading-tight whitespace-normal break-words";
-            });
-            const activeBtn = document.getElementById(`tplBtn-${type}`);
-            if (activeBtn) activeBtn.className = "py-1.5 px-0.5 rounded-lg font-bold bg-emerald-500 text-slate-950 transition text-center leading-tight whitespace-normal break-words";
-            
-            const preview = document.getElementById('shareMessagePreview');
-            if (preview) preview.value = generateShareMessage(type);
-        }
-
-        function generateShareMessage(type = 'match') {
-            const monthData = AppState.months[AppState.currentMonth];
-            let currentMatch = monthData?.matches[AppState.currentMatchIndex];
-
-            // Inteligentny dobór meczu zależnie od typu ogłoszenia:
-            if (type === 'monday') {
-                // Dla zapisów na poniedziałek bierzemy najbliższy nadchodzący mecz
-                const upcoming = getPendingUpcomingMatch();
-                if (upcoming) currentMatch = upcoming;
-            } else if (type === 'mvp') {
-                // Dla MVP bierzemy ostatnio rozegrany mecz
-                const latestPlayed = getLatestPlayedMatchInfo();
-                if (latestPlayed && latestPlayed.match) currentMatch = latestPlayed.match;
-            } else if (type === 'match') {
-                // Jeśli obecnie wybrany mecz już minął, a jest zaplanowany kolejny, użyj kolejnego
-                if (currentMatch && isMatchFinished(currentMatch)) {
-                    const upcoming = getPendingUpcomingMatch();
-                    if (upcoming) currentMatch = upcoming;
-                }
-            }
-
-            const dateStr = currentMatch ? currentMatch.date : "najbliższy piątek";
-            const playingSquad = getMatchPlayingSquad(currentMatch);
-            const count = playingSquad.length;
-            const playingLimit = getMatchPlayingLimit(currentMatch);
-            const freeSlots = Math.max(0, playingLimit - count);
-            const cost = (currentMatch && currentMatch.isCancelled) ? 0 : (currentMatch && currentMatch.cost !== undefined ? Number(currentMatch.cost) : (AppState.settings?.hallCost || 250));
-            const costPerPerson = count > 0 ? (cost / count).toFixed(2) : (cost / playingLimit).toFixed(2);
-            const blikPhone = String(AppState.settings?.blikPhone || "517 077 482");
-            const warmup = AppState.settings?.warmupTime || "19:45";
-            const start = AppState.settings?.startTime || "20:00";
-            const end = AppState.settings?.gameEndTime || "21:45";
-            const hall = AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)";
-            const baseUrl = window.location.href.split('?')[0].split('#')[0];
-            const url = baseUrl;
-            const mvpUrl = `${baseUrl}?mvp=${encodeURIComponent(dateStr)}`;
-
-            if (type === 'monday') {
-                return `🔔 SIATKÓWKA - ZAPISY NA PIĄTEK (${dateStr}) 🔔\n\n` +
-                       `Siemanko! Ruszyły zapisy na ten piątek. Rozgrzewka ${warmup}, gramy ${start} - ${end}!\n` +
-                       `📍 Miejsce: ${hall}\n\n` +
-                       `👉 Zapiszcie się przez link:\n${baseUrl}\n\n` +
-                       `Limit składu to 12 osób, decyduje kolejność zgłoszeń!`;
-            } else if (type === 'mvp') {
-                return `🏆 GŁOSOWANIE NA MVP MECZU (${dateStr}) 🏆\n\n` +
-                       `Dzięki za piątkową walkę na parkiecie! 🔥🏐\n\n` +
-                       `Głosowanie jest tajne 🔒 Kto Twoim zdaniem zasłużył na MVP? Oddaj głos:\n${mvpUrl}\n\n` +
-                       `Wyniki i oficjalne podsumowanie pojawią się, gdy wszyscy zagłosują! 🌟`;
-            } else if (type === 'billing') {
-                return `💰 ROZLICZENIE SIATKÓWKI (${AppState.currentMonth}) 💰\n\n` +
-                       `Ekipa, faktura za halę za ${AppState.currentMonth} podsumowana!\n\n` +
-                       `👉 Sprawdź swoją kwotę na stronie:\n${baseUrl}\n\n` +
-                       `💸 Przelew BLIK na numer: ${blikPhone} (w tytule imię i nazwisko)`;
-            }
-
-            return `🏐 SIATKÓWKA DZISIAJ (${dateStr}) 🏐\n\n` +
-                   `⏰ Rozgrzewka: ${warmup} • Gra: ${start} - ${end} (spotykamy i przebieramy się na hali)!\n` +
-                   `📍 Miejsce: ${hall}\n` +
-                   `📍 Skład: ${count}/12 (Wolne miejsca: ${freeSlots})\n` +
-                   `💰 Koszt: ~${costPerPerson} zł / os.\n\n` +
-                   `📲 Zapisy / Losowarka Składów / Wyniki:\n${baseUrl}\n\n` +
-                   `💸 BLIK: ${blikPhone}`;
-        }
-
-        function openShareModal() {
+        // ================= SZYBKIE KOPIOWANIE LINKU DO ZAPISÓW (1-KLIK) =================
+        async function copyQuickMatchLink() {
             if (!isAdmin) {
-                showToast("Tylko Organizator może generować ogłoszenia! 🔒");
+                showToast("Tylko Organizator może kopiować link do zapisów! 🔒");
                 return;
             }
-            // Inteligentny wybór domyślnego szablonu zależnie od dnia tygodnia:
-            // Poniedziałek - Czwartek: zapisy ('monday')
-            // Piątek: zapowiedź meczu ('match')
-            // Sobota - Niedziela: głosowanie MVP ('mvp')
-            const dayOfWeek = new Date().getDay();
-            let defaultTpl = 'match';
-            if (dayOfWeek >= 1 && dayOfWeek <= 4) {
-                defaultTpl = 'monday';
-            } else if (dayOfWeek === 6 || dayOfWeek === 0) {
-                defaultTpl = 'mvp';
-            }
-            selectTemplate(defaultTpl);
-            document.getElementById('shareModal')?.classList.remove('hidden');
-        }
 
-        function closeShareModal() {
-            document.getElementById('shareModal')?.classList.add('hidden');
+            const monthData = AppState.months[AppState.currentMonth];
+            let currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) {
+                currentMatch = getPendingUpcomingMatch();
+            }
+
+            if (!currentMatch) {
+                showToast("Brak zaplanowanych meczów do udostępnienia! ⚠️");
+                return;
+            }
+
+            const dateStr = currentMatch.date || "";
+            const parts = dateStr.split('-');
+            const shortDate = parts.length === 3 ? `${parts[2]}.${parts[1]}` : dateStr;
+
+            const mainCount = getMatchPlayingSquad(currentMatch).length;
+            const limit = getMatchPlayingLimit(currentMatch);
+
+            let baseUrl = window.location.href.split('?')[0].split('#')[0];
+            try {
+                if (window.location.origin && window.location.origin !== 'null' && window.location.origin.startsWith('http')) {
+                    baseUrl = window.location.origin + window.location.pathname;
+                }
+            } catch (e) {}
+
+            const url = `${baseUrl}?match=${encodeURIComponent(currentMatch.date)}`;
+            const text = `🏐 Zapraszam na siatkówkę w piątek (${shortDate})! Skład: ${mainCount}/${limit}\n👉 ${url}`;
+
+            await copyToClipboard(text, 'Skopiowano link do zapisów! 📋');
         }
 
         // ================= SYSTEM 4 MOTYWÓW + KLASYK (POMYSŁ MIKOŁAJA) =================
@@ -11862,31 +11758,6 @@
             showToast("Zapisano godziny i ustawienia ekipy! 💾");
         }
 
-        async function copyShareTextOnly() {
-            const msg = document.getElementById('shareMessagePreview')?.value || '';
-            if (!msg) return;
-            await copyToClipboard(msg, "Skopiowano gotowe ogłoszenie! Wklej na Messengera 💬");
-            closeShareModal();
-        }
-
-        async function executeShare() {
-            const msg = document.getElementById('shareMessagePreview')?.value || '';
-            if (!msg) return;
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: "Siatkówka Piątek",
-                        text: msg
-                    });
-                    closeShareModal();
-                    return;
-                } catch(e) {
-                    if (e.name === 'AbortError') return;
-                }
-            }
-            await copyToClipboard(msg, "Skopiowano gotowe ogłoszenie! Wklej na Messengera 💬");
-            closeShareModal();
-        }
 
         // ================= WEB PUSH NOTIFICATIONS =================
         function requestPushNotificationPermission() {
