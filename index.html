@@ -2523,10 +2523,6 @@
                     <span id="playerCardPartner" class="font-semibold text-slate-200 text-right whitespace-normal break-words leading-tight">-</span>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400">Główny rywal:</span>
-                    <span id="playerCardRival" class="font-semibold text-slate-200 text-right whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
                     <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
                         <span>🔥</span> <span>Seria obecności:</span>
                     </span>
@@ -2534,7 +2530,7 @@
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
                     <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>🎯</span> <span>Win Impact:</span>
+                        <span>🎯</span> <span>Skuteczność (Win Ratio):</span>
                     </span>
                     <span id="playerCardWinImpact" class="font-semibold text-emerald-400 text-right font-mono text-xs whitespace-normal break-words leading-tight">-</span>
                 </div>
@@ -3842,13 +3838,90 @@
             return match.attendees.slice(getMatchPlayingLimit(match));
         }
 
+        function isMatchHeld(match, todayStr = getLocalDateKey()) {
+            if (!match || match.isCancelled) return false;
+            const hasAttendees = Array.isArray(match.attendees) && match.attendees.length > 0;
+            const hasScore = Boolean(match.score);
+            const isMvpDone = match.mvpClosed === true;
+            if (hasScore || isMvpDone) return true;
+            return hasAttendees && Boolean(match.date && match.date < todayStr);
+        }
+
         function isMvpVotingFinished(match) {
             if (!match || match.isCancelled) return false;
             const attendees = getMatchPlayingSquad(match);
             if (attendees.length === 0) return false;
             if (match.mvpClosed === true) return true;
+
             const votesCount = attendees.filter(p => Boolean(match.votes && match.votes[p])).length;
-            return votesCount >= attendees.length && attendees.length > 0;
+            const isMainRoundDone = (votesCount >= attendees.length && attendees.length > 0);
+            if (!isMainRoundDone) return false;
+
+            // Sprawdzenie czy aktywna jest dogrywka (runoff tie-break)
+            if (match.mvpTieBreak && Array.isArray(match.mvpTieBreak.candidates) && match.mvpTieBreak.candidates.length > 1) {
+                if (match.mvpTieBreak.closed === true) return true;
+                const eligibleVoters = attendees.filter(p => !match.mvpTieBreak.candidates.includes(p));
+                if (eligibleVoters.length === 0) return true;
+                const tbVotes = match.mvpTieBreak.votes || {};
+                const tbCount = eligibleVoters.filter(p => Boolean(tbVotes[p])).length;
+                return tbCount >= eligibleVoters.length;
+            }
+
+            if (match.date >= '2026-10-17') {
+                const votes = match.votes || {};
+                const tally = {};
+                Object.values(votes).forEach(nom => { tally[nom] = (tally[nom] || 0) + 1; });
+                let maxV = 0;
+                let leaders = [];
+                Object.entries(tally).forEach(([nom, count]) => {
+                    if (count > maxV) { maxV = count; leaders = [nom]; }
+                    else if (count === maxV && maxV > 0) { leaders.push(nom); }
+                });
+                if (leaders.length > 1 && maxV > 0) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function getMatchMvpWinner(match) {
+            if (!match || match.isCancelled) return null;
+            if (!isMvpVotingFinished(match)) return null;
+
+            // 1. Zwycięzca dogrywki, jeśli dogrywka miała miejsce
+            if (match.mvpTieBreak && Array.isArray(match.mvpTieBreak.candidates) && match.mvpTieBreak.candidates.length > 1) {
+                if (match.mvpTieBreak.adminDecidedWinner) return match.mvpTieBreak.adminDecidedWinner;
+                const tbVotes = match.mvpTieBreak.votes || {};
+                const tbTally = {};
+                match.mvpTieBreak.candidates.forEach(c => { tbTally[c] = 0; });
+                Object.entries(tbVotes).forEach(([voter, nominee]) => {
+                    if (match.mvpTieBreak.candidates.includes(nominee)) {
+                        tbTally[nominee] = (tbTally[nominee] || 0) + 1;
+                    }
+                });
+                let maxTb = -1;
+                let tbLeaders = [];
+                Object.entries(tbTally).forEach(([nom, cnt]) => {
+                    if (cnt > maxTb) { maxTb = cnt; tbLeaders = [nom]; }
+                    else if (cnt === maxTb) { tbLeaders.push(nom); }
+                });
+                if (tbLeaders.length === 1 && maxTb > 0) return tbLeaders[0];
+                return tbLeaders[0] || null;
+            }
+
+            // 2. Standardowe głosowanie
+            const votes = match.votes || {};
+            const tally = {};
+            Object.values(votes).forEach(nom => { tally[nom] = (tally[nom] || 0) + 1; });
+            let maxV = 0;
+            let leaders = [];
+            Object.entries(tally).forEach(([nom, count]) => {
+                if (count > maxV) { maxV = count; leaders = [nom]; }
+                else if (count === maxV && maxV > 0) { leaders.push(nom); }
+            });
+            if (leaders.length === 1 && maxV > 0) return leaders[0];
+            return null;
         }
 
         function setSyncStatus(mode) {
@@ -6578,26 +6651,100 @@
                 specialAwardsContainer.innerHTML = isFinished ? renderMatchSpecialAwardsSectionHtml(currentMatch) : '';
             }
 
-            // 3. Render Hero & Results based on Secret vs Finished State
-            if (isFinished) {
-                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
-                if (winnerName && winnerVotes) {
-                    if (maxVotes === 0) {
-                        winnerName.innerText = "Brak głosów";
-                        winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
-                    } else if (leaders.length === 1) {
-                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
-                        winnerVotes.innerText = `${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+            // Dogrywka MVP przy remisie od 2026-10-17
+            const isMainRoundFinished = (totalVotesCast >= attendees.length && attendees.length > 0) || currentMatch.mvpClosed === true;
+            const isTieRunoffApplicable = (currentMatch.date >= '2026-10-17') && (leaders.length > 1) && (maxVotes > 0) && isMainRoundFinished;
+            if (isTieRunoffApplicable && !currentMatch.mvpTieBreak) {
+                currentMatch.mvpTieBreak = {
+                    candidates: leaders,
+                    votes: {},
+                    closed: false
+                };
+                if (isAdmin) syncState();
+            }
+
+            const hasActiveTieBreak = Boolean(currentMatch.mvpTieBreak && Array.isArray(currentMatch.mvpTieBreak.candidates) && currentMatch.mvpTieBreak.candidates.length > 1);
+            const tbCandidates = hasActiveTieBreak ? currentMatch.mvpTieBreak.candidates : [];
+            const tbEligible = hasActiveTieBreak ? attendees.filter(p => !tbCandidates.includes(p)) : [];
+            const tbVotes = hasActiveTieBreak ? (currentMatch.mvpTieBreak.votes || {}) : {};
+            const tbCount = hasActiveTieBreak ? tbEligible.filter(p => Boolean(tbVotes[p])).length : 0;
+            const isTbFinished = hasActiveTieBreak && (currentMatch.mvpTieBreak.closed === true || (tbCount >= tbEligible.length && tbEligible.length > 0));
+
+            // Admin Bar Controls
+            if (isAdmin && attendees.length > 0) {
+                if (adminBar) adminBar.classList.remove('hidden');
+                if (toggleFinalizeBtn) {
+                    if (hasActiveTieBreak && !isTbFinished) {
+                        toggleFinalizeBtn.innerText = `👑 Zakończ dogrywkę (${tbCount}/${tbEligible.length})`;
+                        toggleFinalizeBtn.className = "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
                     } else {
-                        winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
-                        winnerVotes.innerText = `Po ${maxVotes} ${maxVotes === 1 ? 'głos' : (maxVotes < 5 ? 'głosy' : 'głosów')}`;
+                        toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : `👑 Zakończ i odkryj (${totalVotesCast}/${attendees.length})`;
+                        toggleFinalizeBtn.className = isFinished 
+                            ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95"
+                            : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
+                    }
+                }
+                if (adminStatusLabel) {
+                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE" : (hasActiveTieBreak && !isTbFinished ? `Trwa DOGRYWKA (${tbCount}/${tbEligible.length})` : `Głosowanie tajne (${totalVotesCast}/${attendees.length})`);
+                }
+            } else {
+                if (adminBar) adminBar.classList.add('hidden');
+            }
+
+            // 3. Render Hero & Results based on Secret vs Finished vs Runoff State
+            if (isFinished) {
+                const tbWinner = hasActiveTieBreak ? getMatchMvpWinner(currentMatch) : (leaders.length === 1 ? leaders[0] : null);
+                if (hasActiveTieBreak && tbWinner) {
+                    if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA (ZWYCIĘZCA DOGRYWKI ⚡) 🏆";
+                    const tbWinVotes = Object.values(tbVotes).filter(v => v === tbWinner).length;
+                    if (winnerName) winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(tbWinner, 'sm')} 👑 ${escapeHtml(tbWinner)}</span>`;
+                    if (winnerVotes) winnerVotes.innerHTML = `<span class="text-amber-300 font-bold">Wygrana po dogrywce!</span> W dogrywce: ${tbWinVotes} ${pluralizeVotes(tbWinVotes)} (remis w rundzie zasadniczej po ${maxVotes} ${pluralizeVotes(maxVotes)}).`;
+                } else {
+                    if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
+                    if (winnerName && winnerVotes) {
+                        if (maxVotes === 0) {
+                            winnerName.innerText = "Brak głosów";
+                            winnerVotes.innerText = "Nikt nie oddał głosu w tym meczu.";
+                        } else if (leaders.length === 1) {
+                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
+                            winnerVotes.innerText = `${maxVotes} ${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+                        } else {
+                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
+                            winnerVotes.innerText = `Po ${maxVotes} ${pluralizeVotes(maxVotes)}`;
+                        }
                     }
                 }
 
                 if (resultsSectionTitle) resultsSectionTitle.innerText = "Oficjalne wyniki głosowania:";
                 const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
                 if (resultsList) {
-                    resultsList.innerHTML = sortedResults.map(([name, count]) => {
+                    const runoffResultsHtml = hasActiveTieBreak ? `
+                        <div class="bg-amber-950/30 border border-amber-500/50 rounded-2xl p-3 space-y-2 mb-3">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                                    <span>⚡</span> Wynik decydującej dogrywki:
+                                </span>
+                                <span class="text-[10px] text-amber-400 font-mono font-bold">${tbCount} / ${tbEligible.length} głosów</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                ${tbCandidates.map(c => {
+                                    const cnt = Object.values(tbVotes).filter(v => v === c).length;
+                                    const isTbWinner = (tbWinner === c);
+                                    return `
+                                        <div class="bg-slate-950/90 p-2.5 rounded-xl border ${isTbWinner ? 'border-amber-400 bg-amber-950/40 ring-1 ring-amber-400/50' : 'border-slate-800'} flex items-center justify-between">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                ${getPlayerAvatarHtml(c, 'xs')}
+                                                <span class="text-xs font-bold ${isTbWinner ? 'text-amber-300 font-black' : 'text-slate-200'} whitespace-normal break-words">${escapeHtml(c)}</span>
+                                            </div>
+                                            <span class="font-mono text-xs font-black ${isTbWinner ? 'text-amber-400' : 'text-slate-400'} shrink-0">${cnt} ${pluralizeVotes(cnt)}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    ` : '';
+
+                    resultsList.innerHTML = runoffResultsHtml + sortedResults.map(([name, count]) => {
                         const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
                         const isLeader = maxVotes > 0 && count === maxVotes;
                         return `
@@ -6624,14 +6771,123 @@
                 if (whoVotedList) {
                     whoVotedList.innerHTML = attendees.map(p => {
                         const votedNominee = votes[p];
+                        const tbVotedNominee = hasActiveTieBreak ? tbVotes[p] : null;
                         return `
-                            <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
+                            <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs gap-2">
                                 <div class="flex items-center gap-2 min-w-0">
                                     ${getPlayerAvatarHtml(p, 'xs')}
                                     <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
                                 </div>
-                                <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'} shrink-0">
-                                    ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
+                                <div class="flex items-center gap-1.5 shrink-0 text-right">
+                                    <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'}">
+                                        ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
+                                    </span>
+                                    ${tbVotedNominee ? `<span class="text-[9.5px] font-bold text-amber-300 bg-amber-950/80 border border-amber-600/60 px-1.5 py-0.5 rounded">Dogrywka: ${escapeHtml(tbVotedNominee)}</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+            } else if (hasActiveTieBreak && !isTbFinished) {
+                // TRWA DOGRYWKA
+                if (winnerHeaderLabel) winnerHeaderLabel.innerText = "⚡ DOGRYWKA O TYTUŁ MVP SPOTKANIA ⚡";
+                if (winnerName) {
+                    winnerName.innerHTML = `<span class="inline-flex items-center gap-1.5 flex-wrap justify-center text-amber-300 font-black">Remis: ${tbCandidates.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' vs ')}</span>`;
+                }
+                if (winnerVotes) {
+                    winnerVotes.innerText = `W rundzie zasadniczej po ${maxVotes} ${pluralizeVotes(maxVotes)}. Głos decydujący oddają wyłącznie pozostali gracze (${tbCount} / ${tbEligible.length})!`;
+                }
+
+                // Runoff voting form
+                const activeUser = loggedPlayer || currentVoter;
+                const isCandidate = tbCandidates.includes(activeUser);
+                const hasVotedTb = Boolean(tbVotes[activeUser]);
+
+                if (votingFormFields) {
+                    if (isCandidate) {
+                        votingFormFields.innerHTML = `
+                            <div class="p-4 bg-amber-950/70 border-2 border-amber-500/60 rounded-2xl text-center space-y-2 animate-fade-in">
+                                <span class="text-3xl block">👑</span>
+                                <h4 class="text-sm font-black text-amber-300 uppercase tracking-wider">Jesteś kandydatem do nagrody MVP w dogrywce!</h4>
+                                <p class="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
+                                    Zgodnie z zasadami, w dogrywce decydujący głos oddają pozostali uczestnicy meczu. Oczekiwanie na głosy drużyny: <strong class="text-white font-bold">${tbCount} / ${tbEligible.length}</strong>.
+                                </p>
+                            </div>
+                        `;
+                    } else if (hasVotedTb) {
+                        votingFormFields.innerHTML = `
+                            <div class="p-4 bg-emerald-950/70 border-2 border-emerald-500/60 rounded-2xl text-center space-y-2 animate-fade-in">
+                                <span class="text-3xl block">✅</span>
+                                <h4 class="text-sm font-black text-emerald-300 uppercase tracking-wider">Twój decydujący głos w dogrywce został zarejestrowany!</h4>
+                                <p class="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
+                                    Twój decydujący głos oddany na: <strong class="text-amber-300 font-bold">${escapeHtml(tbVotes[activeUser])}</strong>. Czekamy na pozostałe osoby (${tbCount} / ${tbEligible.length}).
+                                </p>
+                            </div>
+                        `;
+                    } else {
+                        votingFormFields.innerHTML = `
+                            <div class="p-4 bg-slate-900 border-2 border-amber-500/60 rounded-2xl space-y-3 animate-fade-in">
+                                <div class="text-center space-y-1">
+                                    <span class="text-[10px] uppercase font-black tracking-wider text-amber-400 bg-amber-950/90 border border-amber-600/70 px-2 py-0.5 rounded-full inline-block">⚡ DOGRYWKA MVP</span>
+                                    <h4 class="text-sm font-bold text-white">Wybierz zwycięzcę MVP spotkania:</h4>
+                                    <p class="text-xs text-slate-400">Głos decydujący oddają wyłącznie zawodnicy niebędący kandydatami.</p>
+                                </div>
+                                ${!loggedPlayer ? `
+                                    <div class="space-y-1">
+                                        <label for="runoffVoterSelect" class="block text-[11px] text-slate-400 font-semibold">Kim jesteś? (Wybierz siebie):</label>
+                                        <select id="runoffVoterSelect" class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-white rounded-xl px-3 py-2.5 focus:border-amber-400 cursor-pointer">
+                                            <option value="">-- Wybierz siebie ze składu --</option>
+                                            ${tbEligible.filter(p => !tbVotes[p]).map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                ` : ''}
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                    ${tbCandidates.map(cand => `
+                                        <button type="button" onclick="submitMvpRunoffVote(${toInlineArgument(cand)})" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-slate-950 font-black py-3 px-3 rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer">
+                                            ${getPlayerAvatarHtml(cand, 'xs')}
+                                            <span>👑 Wybierz: ${escapeHtml(cand)}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                if (resultsSectionTitle) resultsSectionTitle.innerText = "Status dogrywki MVP:";
+                const percentDone = Math.round((tbCount / (tbEligible.length || 1)) * 100);
+                if (resultsList) {
+                    resultsList.innerHTML = `
+                        <div class="bg-slate-950 border border-amber-500/40 rounded-2xl p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                    <span>Trwa dogrywka</span>
+                                </span>
+                                <span class="mvp-votes-pill">${tbCount} / ${tbEligible.length} (${percentDone}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                                <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 h-2.5 rounded-full transition-all duration-500" style="width: ${percentDone}%"></div>
+                            </div>
+                            <p class="text-[10px] text-slate-400 text-center leading-relaxed">
+                                ⚡ W dogrywce biorą udział kandydaci z remisu: <strong class="text-white">${tbCandidates.join(' & ')}</strong>. Wynik dogrywki wyłoni oficjalnego MVP spotkania.
+                            </p>
+                        </div>
+                    `;
+                }
+
+                if (whoVotedTitle) whoVotedTitle.innerText = "Status głosów w dogrywce:";
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${tbCount} / ${tbEligible.length}`;
+                if (whoVotedList) {
+                    whoVotedList.innerHTML = attendees.map(p => {
+                        const isCand = tbCandidates.includes(p);
+                        const hasVoted = Boolean(tbVotes[p]);
+                        return `
+                            <div class="bg-slate-950/60 border ${isCand ? 'border-amber-500/40 bg-amber-950/15' : (hasVoted ? 'border-emerald-900/40 bg-emerald-950/10' : 'border-slate-800/60')} px-3 py-1.5 rounded-xl flex items-center justify-between text-xs gap-2">
+                                <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
+                                <span class="font-bold text-[10px] shrink-0">
+                                    ${isCand ? '<span class="text-amber-300 font-black">👑 Kandydat</span>' : (hasVoted ? '<span class="text-emerald-400">✅ Oddał głos</span>' : '<span class="text-slate-500">⏳ Czeka na głos</span>')}
                                 </span>
                             </div>
                         `;
@@ -7416,14 +7672,105 @@
             });
         }
 
+
+        function submitMvpRunoffVote(nominee) {
+            if (isMatchActionPending) return;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+            if (!currentMatch.mvpTieBreak || !Array.isArray(currentMatch.mvpTieBreak.candidates)) {
+                return alert("Dogrywka nie jest aktywna dla tego meczu.");
+            }
+
+            let voter = loggedPlayer;
+            if (!voter) {
+                voter = document.getElementById('runoffVoterSelect')?.value?.trim();
+            }
+            if (!voter) {
+                return alert("Wybierz siebie z listy, aby oddać decydujący głos w dogrywce!");
+            }
+
+            const attendees = getMatchPlayingSquad(currentMatch);
+            if (!attendees.includes(voter)) {
+                return alert("Tylko uczestnicy tego meczu mogą głosować w dogrywce!");
+            }
+            if (currentMatch.mvpTieBreak.candidates.includes(voter)) {
+                return alert("Kandydaci na MVP nie mogą głosować w dogrywce!");
+            }
+            if (!nominee) {
+                return alert("Wybierz kandydata, na którego oddajesz głos w dogrywce!");
+            }
+            if (!currentMatch.mvpTieBreak.candidates.includes(nominee)) {
+                return alert("Głos można oddać wyłącznie na jednego z kandydatów dogrywki!");
+            }
+
+            const playerPinHash = AppState.player_pins?.[voter];
+            if (playerPinHash && loggedPlayer !== voter) {
+                const pinInput = document.getElementById('mvpRunoffPinInput')?.value?.trim();
+                if (!pinInput || (!verifyPin(pinInput, playerPinHash) && !verifyAdminPin(pinInput))) {
+                    return alert("Nieprawidłowy lub brakujący kod PIN dla Twojego profilu!");
+                }
+            }
+
+            isMatchActionPending = true;
+            const targetMonth = AppState.currentMonth;
+            const targetMatchIndex = AppState.currentMatchIndex;
+
+            atomicStateTransaction((state) => {
+                const m = state.months?.[targetMonth]?.matches?.[targetMatchIndex];
+                if (!m) return false;
+                if (!m.mvpTieBreak) return false;
+                if (!m.mvpTieBreak.votes || typeof m.mvpTieBreak.votes !== 'object') {
+                    m.mvpTieBreak.votes = {};
+                }
+                m.mvpTieBreak.votes[voter] = nominee;
+
+                const squad = getMatchPlayingSquad(m);
+                const eligible = squad.filter(p => !m.mvpTieBreak.candidates.includes(p));
+                const tbVotesCount = eligible.filter(p => Boolean(m.mvpTieBreak.votes[p])).length;
+                if (tbVotesCount >= eligible.length && eligible.length > 0) {
+                    m.mvpTieBreak.closed = true;
+                    m.mvpClosed = true;
+                }
+                return state;
+            }, (success) => {
+                isMatchActionPending = false;
+                if (success) {
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 90,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#f59e0b', '#10b981', '#38bdf8']
+                        });
+                    }
+                    showToast("Twój decydujący głos w dogrywce został zapisany! 🗳️⚡");
+                    renderIntegratedMvpCard();
+                    renderMatchesTab();
+                } else {
+                    alert("Wystąpił problem z zapisem głosu w dogrywce. Spróbuj ponownie.");
+                }
+            });
+        }
+
         function toggleMvpFinalizeWithAuth() {
             requireAdminAuth(() => {
                 const monthData = AppState.months[AppState.currentMonth];
                 const currentMatch = monthData?.matches[AppState.currentMatchIndex];
                 if (!currentMatch) return;
 
+                const hasRunoff = Boolean(currentMatch.mvpTieBreak && Array.isArray(currentMatch.mvpTieBreak.candidates) && currentMatch.mvpTieBreak.candidates.length > 1);
                 const currentClosed = isMvpVotingFinished(currentMatch);
-                currentMatch.mvpClosed = !currentClosed;
+
+                if (hasRunoff && !currentMatch.mvpTieBreak.closed) {
+                    currentMatch.mvpTieBreak.closed = true;
+                    currentMatch.mvpClosed = true;
+                } else {
+                    currentMatch.mvpClosed = !currentClosed;
+                    if (currentMatch.mvpTieBreak) {
+                        currentMatch.mvpTieBreak.closed = currentMatch.mvpClosed;
+                    }
+                }
 
                 if (!currentClosed && typeof confetti === 'function') {
                     confetti({
@@ -8245,11 +8592,11 @@
                 });
             });
 
-            // Find best partner
+            // Find best partner (wymóg min. 2 wspólne mecze, aby duet był miarodajny)
             let bestPartner = null;
             let bestPartnerScore = -1;
             Object.entries(teammateStats).forEach(([name, st]) => {
-                if (st.together >= 1) {
+                if (st.together >= 2) {
                     const winPct = Math.round((st.wins / st.together) * 100);
                     const score = (st.wins * 10) + winPct;
                     if (score > bestPartnerScore) {
@@ -8407,15 +8754,9 @@
                                     else setStats[p].lost++;
                                 });
 
-                                // Kryteria stykowej sytuacji (Clutch):
-                                // (a) 5. set (tie-break): validSetIdx >= 4
-                                // (b) set na przewagi:
-                                //     zwykłe sety: min(pDark, pLight) >= 24 && Math.abs(pDark - pLight) === 2
-                                //     tie-break: min(pDark, pLight) >= 14 && Math.abs(pDark - pLight) === 2
+                                // Kryteria 5. seta (Tie-break):
                                 const isTieBreak = (validSetIdx >= 4);
-                                const isDeuceNormal = (validSetIdx < 4 && Math.min(pDark, pLight) >= 24 && Math.abs(pDark - pLight) === 2);
-                                const isDeuceTieBreak = (validSetIdx >= 4 && Math.min(pDark, pLight) >= 14 && Math.abs(pDark - pLight) === 2);
-                                const isClutch = isTieBreak || isDeuceNormal || isDeuceTieBreak;
+                                const isClutch = isTieBreak;
 
                                 if (isClutch) {
                                     dark.forEach(p => {
@@ -8588,7 +8929,7 @@
                     const cSt = clutchStats[p] || { clutchWon: 0, clutchTotal: 0 };
                     const clutchPct = cSt.clutchTotal > 0 ? Math.round((cSt.clutchWon / cSt.clutchTotal) * 100) : 0;
                     const clutchFormatted = cSt.clutchTotal > 0 ? `${clutchPct}%` : "-";
-                    const clutchSub = cSt.clutchTotal >= 2 ? `${cSt.clutchWon}/${cSt.clutchTotal} stykowych` : (cSt.clutchTotal > 0 ? `${cSt.clutchWon}/${cSt.clutchTotal} (min. 2 sety)` : "Brak stykowych setów");
+                    const clutchSub = cSt.clutchTotal >= 2 ? `${cSt.clutchWon}/${cSt.clutchTotal} tie-breaków` : (cSt.clutchTotal > 0 ? `${cSt.clutchWon}/${cSt.clutchTotal} (min. 2 tie-breaki)` : "Brak tie-breaków");
 
                     const sSt = setStats[p] || { won: 0, lost: 0 };
                     const sTotal = sSt.won + sSt.lost;
@@ -8745,7 +9086,7 @@
                                 const info = aw[c.key];
                                 const winCount = info.winners.length;
                                 const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : 'Brak nominacji';
-                                const voteStr = info.maxVotes > 0 ? `${info.maxVotes} ${pluralizeVotes(info.maxVotes)}` : '';
+                                const voteStr = info.maxVotes > 0 ? pluralizeVotes(info.maxVotes) : '';
                                 return `
                                     <div class="bg-slate-900/90 border ${winCount > 0 ? 'border-slate-800' : 'border-slate-850 opacity-60'} p-2 rounded-xl flex flex-col justify-between space-y-1">
                                         <div class="flex items-center justify-between gap-1">
@@ -9094,14 +9435,14 @@
                 subTabContentHtml = `
                     <div class="space-y-3">
                         <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-400 bg-slate-950/60 border border-slate-800/80 rounded-xl px-3 py-2">
-                            <span>Skuteczność w 5. setach (tie-breakach) oraz setach granych na przewagi</span>
-                            <span class="text-[10px] text-slate-400 font-bold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md shrink-0">Wymóg: min. 2 stykowe sety</span>
+                            <span>Skuteczność w tie-breakach (5. setach meczu)</span>
+                            <span class="text-[10px] text-slate-400 font-bold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md shrink-0">Wymóg: min. 2 tie-breaki</span>
                         </div>
                         ${list.length === 0 ? `
                             <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-6 text-center space-y-1.5">
                                 <span class="text-2xl block">🔥</span>
-                                <strong class="text-xs text-slate-300 font-bold block">Za mało rozegranych stykowych setów</strong>
-                                <p class="text-[11px] text-slate-500">Wymagane min. 2 sety rozstrzygnięte na przewagi (min. 24:24 / 14:14) lub w tie-breaku.</p>
+                                <strong class="text-xs text-slate-300 font-bold block">Za mało rozegranych tie-breaków</strong>
+                                <p class="text-[11px] text-slate-500">Wymagane min. 2 rozegrane tie-breaki (5. sety meczów 3:2 lub 2:3).</p>
                             </div>
                         ` : `
                             <div class="overflow-x-auto rounded-xl border border-slate-800">
@@ -9110,8 +9451,8 @@
                                         <tr>
                                             <th class="py-2.5 px-2 text-center w-8">#</th>
                                             <th class="py-2.5 px-2 text-left">Zawodnik</th>
-                                            <th class="py-2.5 px-2 text-center">Stykowe sety</th>
-                                            <th class="py-2.5 px-2 text-right font-extrabold text-amber-300">Clutch %</th>
+                                            <th class="py-2.5 px-2 text-center">Tie-breaki (W/L)</th>
+                                            <th class="py-2.5 px-2 text-right font-extrabold text-amber-300">Tie-break %</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-800/60 bg-slate-900/60">
@@ -9289,17 +9630,7 @@
                         outcome = "archived";
                     }
 
-                    let isMvpWinner = false;
-                    if (isMvpVotingFinished(m)) {
-                        const votes = m.votes || {};
-                        const tally = {};
-                        Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                        let maxV = 0, topNom = "";
-                        Object.entries(tally).forEach(([nom, count]) => {
-                            if (count > maxV) { maxV = count; topNom = nom; }
-                        });
-                        if (topNom === playerName && maxV > 0) isMvpWinner = true;
-                    }
+                    const isMvpWinner = (getMatchMvpWinner(m) === playerName);
 
                     let displayScore = scoreStr;
                     if (!displayScore) {
@@ -9330,8 +9661,8 @@
         }
 
         // ================= TAB 6: ROZBUDOWANY SYSTEM ODZNAK I STATYSTYK =================
-        function calculatePlayerForm(playerName) {
-            if (!playerName) return [];
+        function calculatePlayerCareerOutcomes(playerName) {
+            if (!playerName) return { all: [], recent: [], totalWins: 0, totalLosses: 0 };
             const allMatches = [];
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach(m => {
@@ -9367,7 +9698,18 @@
                 }
             });
 
-            return outcomes.slice(-5);
+            const totalWins = outcomes.filter(o => o === 'W').length;
+            const totalLosses = outcomes.filter(o => o === 'L').length;
+            return {
+                all: outcomes,
+                recent: outcomes.slice(-5),
+                totalWins,
+                totalLosses
+            };
+        }
+
+        function calculatePlayerForm(playerName) {
+            return calculatePlayerCareerOutcomes(playerName).recent;
         }
 
         function calculatePlayerBadges(playerName) {
@@ -9395,7 +9737,7 @@
 
                 matches.forEach(m => {
                     // Licz wyłącznie mecze, które już się odbyły (w przeszłości lub z wpisanym wynikiem/MVP)
-                    const isPlayedMatch = !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
+                    const isPlayedMatch = isMatchHeld(m, todayStr);
                     if (isPlayedMatch) {
                         activeMatches++;
                         totalAvailableSeasonMatches++;
@@ -9428,20 +9770,14 @@
                                 }
                             }
 
-                            if (isMvpVotingFinished(m)) {
+                            const mWinner = getMatchMvpWinner(m);
+                            if (mWinner === playerName) {
+                                mvpWins++;
                                 const votesMap = m.votes || {};
-                                const tally = {};
-                                Object.values(votesMap).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
-                                let maxV = 0, topNom = "";
-                                Object.entries(tally).forEach(([nom, count]) => {
-                                    if (count > maxV) { maxV = count; topNom = nom; }
-                                });
-                                if (topNom === playerName && maxV > 0) {
-                                    mvpWins++;
-                                    const totalVotes = Object.keys(votesMap).length;
-                                    if (totalVotes >= 4 && (maxV / totalVotes) >= 0.5) {
-                                        hasUnanimousMvp = true;
-                                    }
+                                const totalVotes = Object.keys(votesMap).length;
+                                const playerVotes = Object.values(votesMap).filter(v => v === playerName).length;
+                                if (totalVotes >= 4 && (playerVotes / totalVotes) >= 0.5) {
+                                    hasUnanimousMvp = true;
                                 }
                             }
                         }
@@ -9719,11 +10055,6 @@
             if (partnerEl) {
                 partnerEl.innerText = bestPartner ? `${bestPartner.name} (${bestPartner.winPct}% W - ${bestPartner.wins}/${bestPartner.together})` : "Brak danych";
             }
-            const rivalEl = document.getElementById('playerCardRival');
-            if (rivalEl) {
-                rivalEl.innerText = topRival ? `${topRival.name} (${pluralizeMatches(topRival.against)})` : "Brak danych";
-            }
-
             const streakEl = document.getElementById('playerCardStreak');
             if (streakEl) {
                 const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(playerName) : { current: 0, max: 0 };
@@ -9741,11 +10072,11 @@
                 const advStats = calculateAdvancedMatchStats(AppState);
                 const pAdv = advStats?.playerAdvMap?.[playerName];
                 const winImpactEl = document.getElementById('playerCardWinImpact');
-                if (winImpactEl) winImpactEl.innerText = pAdv?.winImpactFormatted && pAdv.winImpactFormatted !== "-" ? `${pAdv.winImpactFormatted} (${pAdv.winImpactSub})` : "-";
+                if (winImpactEl) winImpactEl.innerText = pAdv?.winImpactFormatted && pAdv.winImpactFormatted !== "-" ? `${pAdv.winImpactFormatted} (${pAdv.winImpact.won}W - ${pAdv.winImpact.lost}L)` : "-";
                 const kryptoEl = document.getElementById('playerCardKryptonite');
                 if (kryptoEl) kryptoEl.innerText = pAdv?.kryptoniteRival && pAdv.kryptoniteRival !== "Brak" ? `${pAdv.kryptoniteRival} (${pAdv.kryptoniteSub})` : "Brak rywala (min. 3 mecze)";
                 const clutchEl = document.getElementById('playerCardClutch');
-                if (clutchEl) clutchEl.innerText = pAdv?.clutchFormatted && pAdv.clutchFormatted !== "-" ? `${pAdv.clutchFormatted} (${pAdv.clutchSub})` : "Brak stykowych setów";
+                if (clutchEl) clutchEl.innerText = pAdv?.clutchFormatted && pAdv.clutchFormatted !== "-" ? `${pAdv.clutchFormatted} (${pAdv.clutchSub})` : "Brak tie-breaków";
                 const setsEl = document.getElementById('playerCardSets');
                 if (setsEl) setsEl.innerText = pAdv?.setsDiffFormatted && pAdv.setsDiffFormatted !== "-" ? `${pAdv.setsDiffFormatted} (${pAdv.setsSub})` : "-";
             }
@@ -9755,32 +10086,29 @@
             if (specialAwardsEl) {
                 const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
                 const pAwards = seasonAwards?.playerStats?.[playerName];
-                if (pAwards && (pAwards.totalWins > 0 || pAwards.totalVotes > 0)) {
+                if (pAwards && (pAwards.totalWins > 0 || (pAwards.titles && pAwards.titles.length > 0))) {
                     const awardTokens = [];
                     const catMeta = [
-                        { key: 'block', icon: '🧱' },
-                        { key: 'spike', icon: '🔨' },
-                        { key: 'defense', icon: '🐟' },
-                        { key: 'serve', icon: '🌪️' }
+                        { key: 'block', icon: '🧱', name: 'Czapa' },
+                        { key: 'spike', icon: '🔨', name: 'Gwóźdź' },
+                        { key: 'defense', icon: '🐟', name: 'Obrona' },
+                        { key: 'serve', icon: '🌪️', name: 'Serwis' }
                     ];
                     catMeta.forEach(c => {
                         const w = pAwards[c.key]?.wins || 0;
-                        const v = pAwards[c.key]?.votes || 0;
                         if (w > 0) {
-                            awardTokens.push(`${w}x ${c.icon} (${v} gł.)`);
-                        } else if (v > 0) {
-                            awardTokens.push(`${c.icon} (${v} gł.)`);
+                            awardTokens.push(`👑 ${c.icon} ${w}x ${c.name}`);
                         }
                     });
 
                     const titleStrs = (pAwards.titles || []).map(t => `${t.icon} ${t.title}`);
                     if (titleStrs.length > 0) {
-                        specialAwardsEl.innerHTML = `<span class="text-amber-300 font-bold">${titleStrs.join(', ')}</span> <span class="text-slate-400">(${awardTokens.join(' • ')})</span>`;
+                        specialAwardsEl.innerHTML = `<span class="text-amber-300 font-bold">${titleStrs.join(', ')}</span>${awardTokens.length ? ` <span class="text-slate-300">(${awardTokens.join(' • ')})</span>` : ''}`;
                     } else {
-                        specialAwardsEl.innerText = awardTokens.length ? awardTokens.join(' • ') : "Brak wyróżnień w tym sezonie";
+                        specialAwardsEl.innerHTML = awardTokens.length ? `<span class="text-amber-300 font-bold">${awardTokens.join(' • ')}</span>` : `<span class="text-slate-500 font-normal">Brak zdobytych koron w tym sezonie</span>`;
                     }
                 } else {
-                    specialAwardsEl.innerText = "Brak wyróżnień w tym sezonie";
+                    specialAwardsEl.innerHTML = `<span class="text-slate-500 font-normal">Brak zdobytych koron w tym sezonie</span>`;
                 }
             }
 
@@ -9871,7 +10199,7 @@
             }
 
             const todayStr = getLocalDateKey();
-            const isPlayed = m => !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
+            const isPlayed = m => isMatchHeld(m, todayStr);
 
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
@@ -9920,7 +10248,7 @@
             if (!tbody) return;
 
             const todayStr = getLocalDateKey();
-            const isPlayed = m => !m.isCancelled && (m.date < todayStr || Boolean(m.score) || m.mvpClosed === true);
+            const isPlayed = m => isMatchHeld(m, todayStr);
 
             const scores = AppState.all_players.map(p => {
                 const base = AppState.base_games[p] || 0;
@@ -9935,8 +10263,8 @@
                     }
                 });
                 const total = base + lip + sie + wrz + other;
-                const formOutcomes = calculatePlayerForm(p);
-                return { name: p, base, lip, sie, wrz: wrz + other, total, form: formOutcomes };
+                const career = calculatePlayerCareerOutcomes(p);
+                return { name: p, base, lip, sie, wrz: wrz + other, total, form: career.recent, totalWins: career.totalWins, totalLosses: career.totalLosses };
             });
 
             scores.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'pl'));
@@ -9951,18 +10279,15 @@
 
                 const isMe = (s.name === loggedPlayer);
 
-                const wins = s.form.filter(o => o === 'W').length;
-                const losses = s.form.filter(o => o === 'L').length;
-
-                const formHtml = s.form.length ? `
+                const formHtml = (s.form.length || s.totalWins > 0 || s.totalLosses > 0) ? `
                     <div class="flex flex-col items-center justify-center">
                         <div class="flex items-center gap-0.5">
                             ${s.form.map(o => `
                                 <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex items-center justify-center text-[6px] sm:text-[7px] font-black shadow-sm shrink-0" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
                             `).join('')}
                         </div>
-                        <span class="text-[9px] sm:text-[10px] font-mono font-bold mt-0.5 whitespace-nowrap">
-                            <span class="text-emerald-400">${wins}W</span> <span class="text-rose-400">${losses}L</span>
+                        <span class="text-[9px] sm:text-[10px] font-mono font-bold mt-0.5 whitespace-nowrap" title="ĹÄ…czny bilans wszystkich rozegranych spotkaĹ„: ${s.totalWins}W - ${s.totalLosses}L">
+                            <span class="text-emerald-400 font-black">${s.totalWins}W</span> <span class="text-rose-400 font-black">${s.totalLosses}L</span>
                         </span>
                     </div>
                 ` : `<span class="text-slate-500 font-mono text-[9px]">-</span>`;
@@ -10267,8 +10592,8 @@
                             <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                 <span>✨</span> Moje Wyróżnienia & Korony Meczowe
                             </span>
-                            <span class="text-[10px] text-amber-400 font-mono font-bold">
-                                ${(myAwards?.totalWins || 0)}x wygrane • ${(myAwards?.totalVotes || 0)} gł.
+                            <span class="text-[10px] text-amber-400 font-bold flex items-center gap-1">
+                                <span>👑</span> <span>${(myAwards?.totalWins || 0)}x zdobyta korona</span>
                             </span>
                         </div>
 
@@ -10284,50 +10609,33 @@
                         ` : ''}
 
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-semibold">🧱 Czapa</span>
-                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.block?.votes || 0} gł.</span>
-                                </div>
-                                <div class="mt-1">
-                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
-                                        ${(myAwards?.block?.wins || 0)}x wygrana
-                                    </strong>
-                                </div>
-                            </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-semibold">🔨 Gwóźdź</span>
-                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.spike?.votes || 0} gł.</span>
-                                </div>
-                                <div class="mt-1">
-                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
-                                        ${(myAwards?.spike?.wins || 0)}x wygrana
-                                    </strong>
-                                </div>
-                            </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-semibold">🐟 Ryba</span>
-                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.defense?.votes || 0} gł.</span>
-                                </div>
-                                <div class="mt-1">
-                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
-                                        ${(myAwards?.defense?.wins || 0)}x wygrana
-                                    </strong>
-                                </div>
-                            </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-semibold">🌪️ Serwis</span>
-                                    <span class="text-[9px] font-mono text-amber-400 font-bold">${myAwards?.serve?.votes || 0} gł.</span>
-                                </div>
-                                <div class="mt-1">
-                                    <strong class="text-white text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight">
-                                        ${(myAwards?.serve?.wins || 0)}x wygrana
-                                    </strong>
-                                </div>
-                            </div>
+                            ${[
+                                { key: 'block', name: 'Czapa', icon: '🧱' },
+                                { key: 'spike', name: 'Gwóźdź', icon: '🔨' },
+                                { key: 'defense', name: 'Obrona', icon: '🐟' },
+                                { key: 'serve', name: 'Serwis', icon: '🌪️' }
+                            ].map(item => {
+                                const w = myAwards?.[item.key]?.wins || 0;
+                                return `
+                                    <div class="bg-slate-900/90 border ${w > 0 ? 'border-amber-500/40 bg-amber-950/10' : 'border-slate-800'} rounded-xl p-2.5 flex flex-col justify-between">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+                                                <span>${item.icon}</span> <span>${item.name}</span>
+                                            </span>
+                                            ${w > 0 ? `<span class="text-[9px] font-black text-amber-300 bg-amber-950 border border-amber-700/60 px-1.5 py-0.2 rounded">👑 KORONA</span>` : ''}
+                                        </div>
+                                        <div class="mt-2">
+                                            ${w > 0 ? `
+                                                <strong class="text-amber-300 text-xs sm:text-sm font-black block whitespace-normal break-words leading-tight">
+                                                    ${w}x Wygrana
+                                                </strong>
+                                            ` : `
+                                                <span class="text-slate-500 text-xs font-semibold block">—</span>
+                                            `}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                     </div>
 
