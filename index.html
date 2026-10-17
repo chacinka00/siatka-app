@@ -361,18 +361,34 @@
             color: #4338ca !important;
             border-color: #c7d2fe !important;
         }
+        [data-theme="haaland-light"] .text-amber-200,
         [data-theme="haaland-light"] .text-amber-300,
         [data-theme="haaland-light"] .text-amber-400 {
             color: #b45309 !important;
         }
-        [data-theme="haaland-light"] .text-sky-400 {
-            color: #0284c7 !important;
+        [data-theme="haaland-light"] .text-sky-300,
+        [data-theme="haaland-light"] .text-sky-400,
+        [data-theme="haaland-light"] .text-blue-300 {
+            color: #0369a1 !important;
         }
+        [data-theme="haaland-light"] .text-rose-200,
+        [data-theme="haaland-light"] .text-rose-300,
         [data-theme="haaland-light"] .text-rose-400 {
             color: #be123c !important;
         }
+        [data-theme="haaland-light"] .text-indigo-200,
+        [data-theme="haaland-light"] .text-indigo-300,
         [data-theme="haaland-light"] .text-indigo-400 {
             color: #4338ca !important;
+        }
+        [data-theme="haaland-light"] .text-teal-300 {
+            color: #0f766e !important;
+        }
+        [data-theme="haaland-light"] button:not(.bg-emerald-500):not(.bg-amber-500):not(.bg-rose-500):not(.bg-sky-500).hover\:text-white:hover,
+        [data-theme="haaland-light"] button:not(.bg-emerald-500):not(.bg-amber-500):not(.bg-rose-500):not(.bg-sky-500).hover\:text-white:active,
+        [data-theme="haaland-light"] a.hover\:text-white:hover,
+        [data-theme="haaland-light"] span.hover\:text-white:hover {
+            color: #0f172a !important;
         }
 
         /* Tabela Hall of Fame w Haaland Light */
@@ -672,18 +688,34 @@
             color: #be123c !important;
             border-color: #fbcfe8 !important;
         }
+        [data-theme="mercurial-light"] .text-amber-200,
         [data-theme="mercurial-light"] .text-amber-300,
         [data-theme="mercurial-light"] .text-amber-400 {
             color: #b45309 !important;
         }
-        [data-theme="mercurial-light"] .text-sky-400 {
-            color: #e11d48 !important;
+        [data-theme="mercurial-light"] .text-sky-300,
+        [data-theme="mercurial-light"] .text-sky-400,
+        [data-theme="mercurial-light"] .text-blue-300 {
+            color: #0369a1 !important;
         }
+        [data-theme="mercurial-light"] .text-rose-200,
+        [data-theme="mercurial-light"] .text-rose-300,
         [data-theme="mercurial-light"] .text-rose-400 {
             color: #be123c !important;
         }
+        [data-theme="mercurial-light"] .text-indigo-200,
+        [data-theme="mercurial-light"] .text-indigo-300,
         [data-theme="mercurial-light"] .text-indigo-400 {
-            color: #be123c !important;
+            color: #4338ca !important;
+        }
+        [data-theme="mercurial-light"] .text-teal-300 {
+            color: #0f766e !important;
+        }
+        [data-theme="mercurial-light"] button:not(.bg-emerald-500):not(.bg-amber-500):not(.bg-rose-500):not(.bg-pink-500).hover\:text-white:hover,
+        [data-theme="mercurial-light"] button:not(.bg-emerald-500):not(.bg-amber-500):not(.bg-rose-500):not(.bg-pink-500).hover\:text-white:active,
+        [data-theme="mercurial-light"] a.hover\:text-white:hover,
+        [data-theme="mercurial-light"] span.hover\:text-white:hover {
+            color: #18181b !important;
         }
 
         /* Tabela Hall of Fame w Mercurial Light */
@@ -1258,10 +1290,76 @@
         }
 
         /* Stylizowane Boisko Siatkarskie */
-        .volleyball-court {
-            background: linear-gradient(180deg, #0d1627 0%, #070c18 100%);
-            border: 2px solid #38bdf8;
+        .volleyball-court,
+        [data-theme="haaland-light"] .volleyball-court,
+        [data-theme="mercurial-light"] .volleyball-court {
+            background: linear-gradient(180deg, #0d1627 0%, #070c18 100%) !important;
+            border: 2px solid #38bdf8 !important;
+            color: #ffffff !important;
             position: relative;
+        }
+        .volleyball-court [class*="bg-slate-950"],
+        [data-theme="haaland-light"] .volleyball-court [class*="bg-slate-950"],
+        [data-theme="mercurial-light"] .volleyball-court [class*="bg-slate-950"] {
+            background-color: rgba(2, 6, 23, 0.9) !important;
+            border-color: #334155 !important;
+            color: #ffffff !important;
+        }
+        .volleyball-court [class*="bg-slate-900"],
+        [data-theme="haaland-light"] .volleyball-court [class*="bg-slate-900"],
+        [data-theme="mercurial-light"] .volleyball-court [class*="bg-slate-900"] {
+            background-color: rgba(15, 23, 42, 0.9) !important;
+            border-color: rgba(245, 158, 11, 0.4) !important;
+            color: #ffffff !important;
+        }
+        .volleyball-court [class*="bg-amber-950"],
+        [data-theme="haaland-light"] .volleyball-court [class*="bg-amber-950"],
+        [data-theme="mercurial-light"] .volleyball-court [class*="bg-amber-950"] {
+            background-color: rgba(69, 26, 3, 0.85) !important;
+            border-color: rgba(217, 119, 6, 0.8) !important;
+            color: #fef08a !important;
+        }
+        .volleyball-court .text-white,
+        [data-theme="haaland-light"] .volleyball-court .text-white,
+        [data-theme="mercurial-light"] .volleyball-court .text-white {
+            color: #ffffff !important;
+        }
+        .volleyball-court .text-amber-200,
+        [data-theme="haaland-light"] .volleyball-court .text-amber-200,
+        [data-theme="mercurial-light"] .volleyball-court .text-amber-200 {
+            color: #fef08a !important;
+        }
+        .volleyball-court .text-amber-300,
+        [data-theme="haaland-light"] .volleyball-court .text-amber-300,
+        [data-theme="mercurial-light"] .volleyball-court .text-amber-300 {
+            color: #fde047 !important;
+        }
+        .volleyball-court .text-amber-400,
+        [data-theme="haaland-light"] .volleyball-court .text-amber-400,
+        [data-theme="mercurial-light"] .volleyball-court .text-amber-400 {
+            color: #fbbf24 !important;
+        }
+        .volleyball-court .text-slate-200,
+        [data-theme="haaland-light"] .volleyball-court .text-slate-200,
+        [data-theme="mercurial-light"] .volleyball-court .text-slate-200 {
+            color: #e2e8f0 !important;
+        }
+        .volleyball-court .text-slate-300,
+        [data-theme="haaland-light"] .volleyball-court .text-slate-300,
+        [data-theme="mercurial-light"] .volleyball-court .text-slate-300 {
+            color: #cbd5e1 !important;
+        }
+        .volleyball-court .text-slate-600,
+        [data-theme="haaland-light"] .volleyball-court .text-slate-600,
+        [data-theme="mercurial-light"] .volleyball-court .text-slate-600 {
+            color: #64748b !important;
+        }
+        .volleyball-court .court-net span,
+        [data-theme="haaland-light"] .volleyball-court .court-net span,
+        [data-theme="mercurial-light"] .volleyball-court .court-net span {
+            background-color: #020617 !important;
+            border-color: #475569 !important;
+            color: #e2e8f0 !important;
         }
         .court-net {
             position: absolute;
@@ -1324,6 +1422,22 @@
         [data-theme="mercurial-light"] .text-cyan-300 {
             color: #0891b2 !important;
         }
+
+        /* Clean UI Polish (iOS / Revolut style) */
+        [data-theme="haaland-light"] .border-slate-800,
+        [data-theme="haaland-light"] .border-slate-800\/80,
+        [data-theme="haaland-light"] .border-slate-800\/70,
+        [data-theme="haaland-light"] .border-slate-800\/60,
+        [data-theme="haaland-light"] .border-slate-800\/50 {
+            border-color: #e2e8f0 !important;
+        }
+        [data-theme="mercurial-light"] .border-slate-800,
+        [data-theme="mercurial-light"] .border-slate-800\/80,
+        [data-theme="mercurial-light"] .border-slate-800\/70,
+        [data-theme="mercurial-light"] .border-slate-800\/60,
+        [data-theme="mercurial-light"] .border-slate-800\/50 {
+            border-color: #fce7f3 !important;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-28">
@@ -1353,19 +1467,19 @@
                 </div>
             </div>
 
-            <!-- Row 2: User Greeting, Role Badge & Sync Status (No overlapping on mobile) -->
-            <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/50 flex-wrap">
-                <div class="flex items-center gap-1.5 min-w-0 flex-1 flex-wrap">
-                    <div id="headerUserGreeting" class="text-[11px] text-emerald-400 font-medium whitespace-normal break-words leading-tight">
+            <!-- Row 2: User Greeting, Role Badge & Sync Status (Clean single line) -->
+            <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/40 flex-nowrap">
+                <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                    <div id="headerUserGreeting" class="text-[11px] text-slate-300 font-medium truncate">
                         ⏰ 19:45 (gra 20:00 - 21:45)
                     </div>
-                    <span id="adminModeBadge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-950/90 text-amber-300 border border-amber-800/80 items-center gap-1 shrink-0 shadow-sm shadow-amber-950/50">
-                        👑 Organizator
+                    <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 items-center gap-0.5 shrink-0">
+                        👑 Admin
                     </span>
                 </div>
-                <div class="flex items-center gap-1.5 shrink-0">
+                <div class="flex items-center gap-2 shrink-0">
                     <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium hidden sm:inline">📍 Myśliborska 25</span>
-                    <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1 shrink-0">
+                    <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-sky-950/60 text-sky-400 border border-sky-800/60 flex items-center gap-1 shrink-0">
                         <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                     </span>
                 </div>
@@ -1380,14 +1494,10 @@
         <section id="tab-matches" class="space-y-3.5 animate-fade-in">
             
             <!-- Section Header -->
-            <div class="px-1">
-                <span class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
-                    Centrum Spotkania
-                </span>
-                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+            <div class="px-1 py-0.5">
+                <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
                     <span>📅</span> Terminy & Zapisy
                 </h2>
-                <p class="text-[11px] text-slate-400 mt-0.5">Wybierz piątek, zapisz się do składu i głosuj na MVP</p>
             </div>
 
             <!-- Prominent MVP Banner (Dynamic Alert for Recent Match Voting) -->
@@ -1463,14 +1573,14 @@
                             <span id="matchPlayerCount" class="text-sm sm:text-base font-black text-sky-400 font-mono">0/12</span>
                         </div>
                     </div>
-                    <!-- Quick Info Chips Row (Never overlaps on mobile) -->
-                    <div id="heroMatchDetails" class="grid grid-cols-2 gap-1.5 text-xs">
+                    <!-- Quick Info Chips Row (Lightweight inline metadata bar) -->
+                    <div id="heroMatchDetails" class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-400 pt-0.5">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
 
                 <!-- Match Sets Result Card -->
-                <div id="matchScoreDisplayCard" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2 shadow-md">
+                <div id="matchScoreDisplayCard" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2 shadow-md hidden">
                     <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
                         <div class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-xs">📊</span>
@@ -1491,37 +1601,44 @@
                     <!-- Rendered dynamically depending on whether logged in -->
                 </div>
 
-                <!-- Match Admin Bar (Only for Michał / Admin) -->
-                <div id="matchAdminBarContainer" class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/40 text-xs hidden">
-                    <div class="flex items-center gap-3 flex-wrap">
-                        <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="text-slate-400 hover:text-rose-400 font-semibold flex items-center gap-1 transition">
-                            🚫 Odwołaj mecz
-                        </button>
-                        <button type="button" id="matchCostToggleBtn" onclick="toggleMatchCostFreeWithAuth()" class="text-slate-400 hover:text-emerald-400 font-semibold flex items-center gap-1 transition" title="Zmień koszt hali dla tego meczu (np. 0 zł na PnH)">
-                            💸 Koszt: 250 zł
-                        </button>
-                        <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="text-slate-400 hover:text-amber-400 font-semibold flex items-center gap-1 transition" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
-                            🔄 Zmiany: Wył (12 os.)
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="text-amber-400/90 hover:text-amber-300 font-semibold flex items-center gap-1 transition" title="Wyczyść całą listę zapisanych graczy">
-                            🧹 Wyczyść skład
-                        </button>
-                    </div>
+                <!-- Match Admin Bar (Only for Michał / Admin, collapsible details) -->
+                <div id="matchAdminBarContainer" class="pt-2 border-t border-slate-800/40 hidden">
+                    <details class="group text-xs">
+                        <summary class="flex items-center justify-between cursor-pointer list-none text-slate-400 hover:text-amber-300 font-bold py-1 select-none transition">
+                            <span class="flex items-center gap-1.5 text-[11px] font-bold text-amber-400/90">
+                                <span>👑</span>
+                                <span>Zarządzaj tym meczem (koszt, zmiany, odwołanie)</span>
+                            </span>
+                            <span class="text-[10px] text-slate-500 group-open:rotate-180 transition-transform duration-200">▼</span>
+                        </summary>
+                        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 pt-2 pb-0.5">
+                            <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-rose-900/50 text-slate-300 hover:text-rose-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs">
+                                🚫 Odwołaj
+                            </button>
+                            <button type="button" id="matchCostToggleBtn" onclick="toggleMatchCostFreeWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-900/50 text-slate-300 hover:text-emerald-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Zmień koszt hali dla tego meczu (np. 0 zł na PnH)">
+                                💸 Hala: 250 zł
+                            </button>
+                            <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-slate-300 hover:text-amber-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
+                                🔄 Zmiany: Wył (12)
+                            </button>
+                            <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-amber-400/90 hover:text-amber-300 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Wyczyść całą listę zapisanych graczy">
+                                🧹 Wyczyść skład
+                            </button>
+                        </div>
+                    </details>
                 </div>
             </div>
 
             <!-- Przełącznik Segmentowy: Skład vs MVP (Koniec z długim przewijaniem na telefonie) -->
             <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold shadow-md">
-                <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95">
+                <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
                     <span>📋</span>
-                    <span>Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
+                    <span class="truncate">Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
                 </button>
-                <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95">
-                    <span>🏆</span>
-                    <span>Głosowanie MVP</span>
-                    <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black">👑</span>
+                <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
+                    <span>👑</span>
+                    <span class="truncate">Głosowanie MVP</span>
+                    <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black shrink-0">👑</span>
                 </button>
             </div>
 
@@ -1538,7 +1655,7 @@
                         <span id="mainSquadBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-md shrink-0">0/12</span>
                     </div>
 
-                    <div id="mainSquadList" class="space-y-1.5">
+                    <div id="mainSquadList" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl divide-y divide-slate-800/50 overflow-hidden shadow-sm">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
@@ -1558,7 +1675,7 @@
 
                     <div id="reservePlayingInfoBanner" class="hidden"></div>
 
-                    <div id="reserveSquadList" class="space-y-1.5">
+                    <div id="reserveSquadList" class="bg-slate-950/80 border border-amber-900/30 rounded-2xl divide-y divide-slate-800/50 overflow-hidden shadow-sm">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
@@ -1701,21 +1818,15 @@
         <section id="tab-teams" class="space-y-3.5 hidden animate-fade-in">
             
             <!-- Section Header -->
-            <div class="px-1 flex items-center justify-between gap-2 flex-wrap">
-                <div>
-                    <span class="text-[11px] font-extrabold text-indigo-400 uppercase tracking-wider bg-indigo-950/80 border border-indigo-800/80 px-2.5 py-0.5 rounded-full">
-                        Składy & Balansowanie
-                    </span>
-                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
-                        <span>🔀</span> Podział na 2 Zespoły
-                    </h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Podziel graczy na Drużynę Ciemną i Jasną lub wylosuj równe składy</p>
-                </div>
-                <div id="teamsAdminControls" class="flex items-center gap-2 flex-wrap hidden">
-                    <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3.5 py-2 rounded-2xl text-xs transition active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5">
-                        <span>🎲</span> Losuj składy
+            <div class="px-1 py-0.5 flex items-center justify-between gap-2">
+                <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                    <span>🔀</span> Podział na 2 Zespoły
+                </h2>
+                <div id="teamsAdminControls" class="flex items-center gap-1.5 flex-wrap hidden">
+                    <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition active:scale-95 shadow-md flex items-center gap-1">
+                        <span>🎲</span> Losuj
                     </button>
-                    <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-2xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
+                    <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-2.5 py-1.5 rounded-xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
                         🧹 Reset
                     </button>
                 </div>
@@ -1837,14 +1948,10 @@
         <section id="tab-billing" class="space-y-3.5 hidden animate-fade-in">
             
             <!-- Section Header -->
-            <div class="px-1">
-                <span class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
-                    Finanse & Rozliczenia
-                </span>
-                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+            <div class="px-1 py-0.5">
+                <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
                     <span>💰</span> Składki za Halę
                 </h2>
-                <p class="text-[11px] text-slate-400 mt-0.5">Podsumowanie kosztów wynajmu, stan wpłat grupy i numer BLIK</p>
             </div>
             
             <!-- Modern Unified Financial Dashboard -->
@@ -1871,12 +1978,12 @@
                 </div>
 
                 <!-- Financial Progress Bar -->
-                <div class="space-y-1.5 bg-slate-950/70 border border-slate-800/70 rounded-2xl p-3">
+                <div class="space-y-1.5 pt-2 border-t border-slate-800/60">
                     <div class="flex items-center justify-between text-xs">
                         <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Postęp zbiórki</span>
                         <span id="billingProgressPercent" class="font-mono font-black text-emerald-400 text-xs">0%</span>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                    <div class="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800/80">
                         <div id="billingProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
                     </div>
                     <div class="flex items-center justify-between flex-wrap text-[11px] font-mono pt-0.5 gap-2">
@@ -1903,13 +2010,13 @@
 
                 <!-- Filters with Dynamic Counts: Wszyscy / Nieopłacone / Opłacone (Równe 3 kolumny na mobile) -->
                 <div class="grid grid-cols-3 gap-1.5 text-[11px] pt-1">
-                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="py-2 px-1 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm text-center">
+                    <button type="button" id="billingFilterAll" onclick="setBillingFilter('all')" class="py-2 px-1 sm:px-2 rounded-xl font-bold bg-emerald-500 text-slate-950 transition shadow-sm text-center whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs">
                         Wszyscy
                     </button>
-                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="py-2 px-1 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition text-center leading-tight whitespace-normal break-words">
+                    <button type="button" id="billingFilterUnpaid" onclick="setBillingFilter('unpaid')" class="py-2 px-1 sm:px-2 rounded-xl font-bold bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs">
                         🔴 Do zapłaty
                     </button>
-                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="py-2 px-1 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition text-center leading-tight whitespace-normal break-words">
+                    <button type="button" id="billingFilterPaid" onclick="setBillingFilter('paid')" class="py-2 px-1 sm:px-2 rounded-xl font-bold bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs">
                         🟢 Opłacone
                     </button>
                 </div>
@@ -1926,18 +2033,32 @@
         <section id="tab-halloffame" class="space-y-3.5 hidden animate-fade-in">
             
             <!-- Section Header -->
-            <div class="px-1">
-                <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full">
-                    Ranking & Statystyki
-                </span>
-                <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
-                    <span>🏆</span> Hall of Fame & Rekordy
+            <div class="px-1 py-0.5">
+                <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                    <span>🏆</span> Ranking & Statystyki
                 </h2>
-                <p class="text-[11px] text-slate-400 mt-0.5">Oficjalny ranking frekwencji, odznaki zawodników i galeria rekordów sezonu</p>
             </div>
-            
-            <!-- Hall of Fame Table -->
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+
+            <!-- Przełącznik Segmentowy Hall of Fame (Ranking vs Rekordy vs Archiwum) -->
+            <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-3 gap-1 text-xs font-bold shadow-md">
+                <button type="button" id="hofSubtabBtn-ranking" onclick="setHallOfFameSubtab('ranking')" class="py-2 px-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <span>🏆</span>
+                    <span class="truncate">Ranking</span>
+                </button>
+                <button type="button" id="hofSubtabBtn-records" onclick="setHallOfFameSubtab('records')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <span>📊</span>
+                    <span class="truncate">Rekordy</span>
+                </button>
+                <button type="button" id="hofSubtabBtn-archive" onclick="setHallOfFameSubtab('archive')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <span>📜</span>
+                    <span class="truncate">Archiwum</span>
+                </button>
+            </div>
+
+            <!-- SUBTAB 1: RANKING -->
+            <div id="hofSubtabContainer-ranking" class="space-y-3.5">
+                <!-- Hall of Fame Table -->
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🏆</span>
                     <div>
@@ -1965,85 +2086,6 @@
                             <!-- Dynamic -->
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- Season Records Book -->
-            <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/40 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">📖</span>
-                    <h3 class="font-black text-sm text-amber-300 uppercase tracking-wider">Księga Rekordów Sezonu 2026</h3>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-2.5 text-xs">
-                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
-                        <span class="text-2xl">👑</span>
-                        <div>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase">Król MVP</span>
-                            <p id="recordKingMvp" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
-                        <span class="text-2xl">⚡</span>
-                        <div>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase">Lider Frekwencji</span>
-                            <p id="recordIronAttendance" class="font-extrabold text-emerald-400 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
-                        <span class="text-2xl">⚔️</span>
-                        <div>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase">Zacięty Mecz</span>
-                            <p id="recordMostClashMatch" class="font-extrabold text-amber-200 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
-                        <span class="text-2xl">💰</span>
-                        <div>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase">Czyste Składki</span>
-                            <p id="recordCleanPayers" class="font-extrabold text-sky-400 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Władcy Parkietu – Wyróżnienia Sezonu (Czapa, Gwóźdź, Ryba, Turbo) -->
-                <div class="pt-3 border-t border-slate-800 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>✨</span> Władcy Parkietu – Wyróżnienia Sezonu
-                        </span>
-                        <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
-                            <span class="text-xl">🧱</span>
-                            <div>
-                                <span id="recordTitleBlock" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Bloków</span>
-                                <p id="recordKingBlock" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
-                            <span class="text-xl">🔨</span>
-                            <div>
-                                <span id="recordTitleSpike" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Ataku</span>
-                                <p id="recordKingSpike" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
-                            <span class="text-xl">🐟</span>
-                            <div>
-                                <span id="recordTitleDefense" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Obron</span>
-                                <p id="recordKingDefense" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
-                            <span class="text-xl">🌪️</span>
-                            <div>
-                                <span id="recordTitleServe" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Zagrywki</span>
-                                <p id="recordKingServe" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -2132,23 +2174,109 @@
                     </div>
                 </div>
             </details>
-
-            <!-- Zaawansowane Statystyki Meczowe Sezonu -->
-            <div id="advancedStatsContainer" class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
-                <!-- Rendered dynamically by renderAdvancedStatsSection() -->
             </div>
 
-            <!-- Archiwum Rozegranych Spotkań w Sezonie -->
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <!-- SUBTAB 2: REKORDY & STATYSTYKI -->
+            <div id="hofSubtabContainer-records" class="space-y-3.5 hidden">
+                <!-- Season Records Book -->
+                <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/40 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
                     <div class="flex items-center gap-2">
-                        <span class="text-xl">📜</span>
-                        <h3 class="font-bold text-xs uppercase tracking-wider text-white">Archiwum Wszystkich Meczów</h3>
+                        <span class="text-xl">📖</span>
+                        <h3 class="font-black text-sm text-amber-300 uppercase tracking-wider">Księga Rekordów Sezonu 2026</h3>
                     </div>
-                    <span class="text-[10px] text-slate-400">Wyniki i składy</span>
+                    
+                    <div class="grid grid-cols-2 gap-2.5 text-xs">
+                        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-2xl">👑</span>
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase">Król MVP</span>
+                                <p id="recordKingMvp" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-2xl">⚡</span>
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase">Lider Frekwencji</span>
+                                <p id="recordIronAttendance" class="font-extrabold text-emerald-400 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-2xl">⚔️</span>
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase">Zacięty Mecz</span>
+                                <p id="recordMostClashMatch" class="font-extrabold text-amber-200 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-2xl flex flex-col justify-between space-y-1">
+                            <span class="text-2xl">💰</span>
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase">Czyste Składki</span>
+                                <p id="recordCleanPayers" class="font-extrabold text-sky-400 text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Władcy Parkietu – Wyróżnienia Sezonu (Czapa, Gwóźdź, Ryba, Turbo) -->
+                    <div class="pt-3 border-t border-slate-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>✨</span> Władcy Parkietu – Wyróżnienia Sezonu
+                            </span>
+                            <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                                <span class="text-xl">🧱</span>
+                                <div>
+                                    <span id="recordTitleBlock" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Bloków</span>
+                                    <p id="recordKingBlock" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                                <span class="text-xl">🔨</span>
+                                <div>
+                                    <span id="recordTitleSpike" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Ataku</span>
+                                    <p id="recordKingSpike" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                                <span class="text-xl">🐟</span>
+                                <div>
+                                    <span id="recordTitleDefense" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Obron</span>
+                                    <p id="recordKingDefense" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
+                                <span class="text-xl">🌪️</span>
+                                <div>
+                                    <span id="recordTitleServe" class="text-[10px] text-slate-400 font-bold uppercase block leading-tight">Król Zagrywki</span>
+                                    <p id="recordKingServe" class="font-extrabold text-white text-xs sm:text-sm whitespace-normal break-words leading-tight mt-0.5">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="archiveMatchesList" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
-                    <!-- Populated dynamically -->
+
+                <!-- Zaawansowane Statystyki Meczowe Sezonu -->
+                <div id="advancedStatsContainer" class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                    <!-- Rendered dynamically by renderAdvancedStatsSection() -->
+                </div>
+            </div>
+
+            <!-- SUBTAB 3: ARCHIWUM -->
+            <div id="hofSubtabContainer-archive" class="space-y-3.5 hidden">
+                <!-- Archiwum Rozegranych Spotkań w Sezonie -->
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">📜</span>
+                            <h3 class="font-bold text-xs uppercase tracking-wider text-white">Archiwum Wszystkich Meczów</h3>
+                        </div>
+                        <span class="text-[10px] text-slate-400">Wyniki i składy</span>
+                    </div>
+                    <div id="archiveMatchesList" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                        <!-- Populated dynamically -->
+                    </div>
                 </div>
             </div>
 
@@ -3754,6 +3882,55 @@
                 .replace(/'/g, '&#39;');
         }
 
+        function formatPlayerNameHtml(name) {
+            if (!name) return '';
+            const raw = String(name).trim();
+            const match = raw.match(/^(.*?)\s*(\(.*?\))$/);
+            if (match) {
+                const mainName = escapeHtml(match[1].trim());
+                const note = escapeHtml(match[2].trim());
+                return `<span class="player-name-main">${mainName}</span> <span class="player-name-note text-[10px] opacity-75 font-medium whitespace-nowrap">${note}</span>`;
+            }
+            return escapeHtml(raw);
+        }
+
+        function formatFirstAndLastInitial(firstName, lastName) {
+            if (!lastName) return firstName;
+            const ln = lastName.trim();
+            const lower = ln.toLowerCase();
+            const digraphs = ['cz', 'ch', 'sz', 'rz', 'dz'];
+            for (const d of digraphs) {
+                if (lower.startsWith(d)) {
+                    return `${firstName} ${ln.substring(0, 2)}.`;
+                }
+            }
+            return `${firstName} ${ln.charAt(0).toUpperCase()}.`;
+        }
+
+        function getCourtPlayerLabel(name) {
+            if (!name) return '';
+            const clean = String(name).trim();
+            const parenMatch = clean.match(/^(.*?)\s*\((.*?)\)$/);
+            if (parenMatch) {
+                const mainName = parenMatch[1].trim();
+                const note = parenMatch[2].trim();
+                const parts = mainName.split(/\s+/);
+                if (parts.length > 1) {
+                    return formatFirstAndLastInitial(parts[0], parts[1]);
+                }
+                if (note.toLowerCase().startsWith('od ')) {
+                    const fromParts = note.substring(3).trim().split(/\s+/);
+                    const initial = fromParts[0] ? fromParts[0].charAt(0).toUpperCase() : '';
+                    return `${parts[0]} (${initial}.)`;
+                }
+                return parts[0];
+            }
+
+            const parts = clean.split(/\s+/);
+            if (parts.length === 1) return parts[0];
+            return formatFirstAndLastInitial(parts[0], parts[1]);
+        }
+
         function toInlineArgument(value) {
             return escapeHtml(JSON.stringify(String(value ?? '')));
         }
@@ -4190,19 +4367,21 @@
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="text-[10px] font-black uppercase tracking-wider bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-md">MVP Ostatniego Meczu</span>
-                                    <span class="text-xs font-bold text-white whitespace-normal break-words leading-tight">${latest.match.date}</span>
+                                    <span class="text-xs font-bold text-white whitespace-nowrap">${latest.match.date}</span>
                                 </div>
-                                <p class="text-[11px] text-slate-300 mt-0.5 leading-snug">
-                                    Oficjalny MVP: <strong class="text-amber-300 font-bold">${escapeHtml(winnerDisplay)}</strong> (${pluralizeVotes(maxV)}).
-                                </p>
+                                <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                    <span class="text-[11px] text-slate-300">Oficjalny MVP:</span>
+                                    <strong class="text-amber-300 font-black text-xs sm:text-sm whitespace-nowrap">${escapeHtml(winnerDisplay)}</strong>
+                                    <span class="text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded whitespace-nowrap">${pluralizeVotes(maxV)}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <button type="button" onclick="jumpToRecentMvp()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap">
+                            <button type="button" onclick="jumpToRecentMvp()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-3 py-2 rounded-xl text-xs transition shadow-md shadow-amber-500/20 flex items-center gap-1 whitespace-nowrap cursor-pointer">
                                 <span>Wyniki</span>
                                 <span>➔</span>
                             </button>
-                            <button type="button" onclick="dismissRecentMvpBanner('${latest.match.date}')" title="Zamknij" class="text-amber-400/70 hover:text-white p-1 rounded-lg text-xs leading-none transition">✕</button>
+                            <button type="button" onclick="dismissRecentMvpBanner('${latest.match.date}')" title="Zamknij" class="text-amber-400/70 hover:text-white p-1 rounded-lg text-xs leading-none transition cursor-pointer">✕</button>
                         </div>
                     </div>
                 `;
@@ -4761,9 +4940,11 @@
                 valueEl.onclick = null;
             } else {
                 const isFinished = isMvpVotingFinished(currentMatch);
-                labelEl.innerText = "Mecz zakończony:";
-                valueEl.innerText = isFinished ? "🏆 WYNIKI MVP ODKRYTE" : "🔒 TAJNE GŁOSOWANIE MVP (Kliknij)";
-                valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 tracking-wider cursor-pointer underline decoration-amber-500/50 underline-offset-2";
+                labelEl.innerText = "Status:";
+                valueEl.innerHTML = isFinished 
+                    ? '<span class="whitespace-nowrap">🏆 Wyniki MVP <span class="text-[10px] text-amber-300 font-normal underline">(odkryte)</span></span>' 
+                    : '<span class="whitespace-nowrap">🔒 Głosowanie MVP <span class="text-[10px] text-amber-300 font-normal underline">(głosuj ➔)</span></span>';
+                valueEl.className = "text-xs sm:text-sm font-black font-mono text-amber-400 tracking-wider cursor-pointer";
                 valueEl.onclick = () => {
                     setMatchSubtab('mvp');
                     setTimeout(() => {
@@ -5044,19 +5225,19 @@
                 if (squadContainer) squadContainer.classList.remove('hidden');
                 if (mvpContainer) mvpContainer.classList.add('hidden');
                 if (squadBtn) {
-                    squadBtn.className = "py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95";
+                    squadBtn.className = "py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs";
                 }
                 if (mvpBtn) {
-                    mvpBtn.className = "py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95";
+                    mvpBtn.className = "py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs";
                 }
             } else {
                 if (squadContainer) squadContainer.classList.add('hidden');
                 if (mvpContainer) mvpContainer.classList.remove('hidden');
                 if (mvpBtn) {
-                    mvpBtn.className = "py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 transition active:scale-95";
+                    mvpBtn.className = "py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs";
                 }
                 if (squadBtn) {
-                    squadBtn.className = "py-2.5 px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95";
+                    squadBtn.className = "py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs";
                 }
             }
         }
@@ -5181,7 +5362,7 @@
             document.getElementById('mainSquadBadge').innerText = squadBadgeText;
             const mainSquadTitle = document.getElementById('mainSquadTitle');
             if (mainSquadTitle) {
-                mainSquadTitle.innerText = extraCount > 0 ? `Skład Meczowy (${playingLimit} os. - Gra na zmiany)` : `Skład Główny (Maks 12)`;
+                mainSquadTitle.innerText = extraCount > 0 ? "Skład Meczowy • Zmiany" : "Skład Główny";
             }
 
             const subtabSquadCount = document.getElementById('matchSubtabSquadCount');
@@ -5215,21 +5396,24 @@
             const heroDetails = document.getElementById('heroMatchDetails');
             if (heroDetails) {
                 const shortHall = hallAddress.replace(/\s*\(hala\)/i, '');
+                const costBadge = (!isCancelled && Number(costPerPerson) > 0) ? `
+                    <span class="text-slate-600 select-none">•</span>
+                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-400">
+                        <span>💸</span>
+                        <span>${costPerPerson} zł/os</span>
+                    </span>
+                ` : '';
                 heroDetails.innerHTML = `
-                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
-                        <span class="text-xs">⏰</span>
-                        <div class="min-w-0">
-                            <span class="text-[9px] uppercase font-bold text-slate-500 block leading-tight">Gra & Zbiórka</span>
-                            <span class="text-emerald-400 font-bold font-mono text-[10.5px] leading-tight block whitespace-normal">${escapeHtml(warmupTime)} | ${escapeHtml(startTime)}-${escapeHtml(gameEndTime)}</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
-                        <span class="text-xs">📍</span>
-                        <div class="min-w-0">
-                            <span class="text-[9px] uppercase font-bold text-slate-500 block leading-tight">Hala</span>
-                            <span class="text-slate-200 font-semibold text-[11px] leading-tight block whitespace-normal" title="${escapeHtml(hallAddress)}">${escapeHtml(shortHall)}</span>
-                        </div>
-                    </div>
+                    <span class="inline-flex items-center gap-1 font-medium">
+                        <span>⏰</span>
+                        <span>Zbiórka <strong class="text-slate-200 font-mono font-bold">${escapeHtml(warmupTime)}</strong> (gra ${escapeHtml(startTime)}–${escapeHtml(gameEndTime)})</span>
+                    </span>
+                    <span class="text-slate-600 select-none">•</span>
+                    <span class="inline-flex items-center gap-1 font-medium">
+                        <span>📍</span>
+                        <span class="text-slate-300" title="${escapeHtml(hallAddress)}">${escapeHtml(shortHall)}</span>
+                    </span>
+                    ${costBadge}
                 `;
             }
 
@@ -5249,14 +5433,33 @@
                 nextBtn.classList.toggle('cursor-not-allowed', !canNext);
             }
 
-            if (scoreTextEl) {
-                const editLabel = document.getElementById('editScoreBtnLabel');
+            const scoreCard = document.getElementById('matchScoreDisplayCard');
+            const editScoreBtn = document.getElementById('editMatchScoreBtn');
+            const editLabel = document.getElementById('editScoreBtnLabel');
+
+            if (scoreCard) {
                 if (currentMatch.score) {
-                    scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
+                    scoreCard.classList.remove('hidden');
+                    if (scoreTextEl) scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
                     if (editLabel) editLabel.innerText = "Edytuj wynik";
+                    if (editScoreBtn && isAdmin) editScoreBtn.classList.remove('hidden');
                 } else {
-                    scoreTextEl.innerHTML = `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
-                    if (editLabel) editLabel.innerText = "Wpisz wynik";
+                    if (isAdmin) {
+                        scoreCard.classList.remove('hidden');
+                        if (scoreTextEl) {
+                            scoreTextEl.innerHTML = `
+                                <div class="flex items-center justify-between py-0.5">
+                                    <span class="text-xs text-slate-500 italic">Brak wpisanego wyniku</span>
+                                    <button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1">
+                                        <span>📊</span> + Wpisz wynik spotkania
+                                    </button>
+                                </div>
+                            `;
+                        }
+                        if (editScoreBtn) editScoreBtn.classList.add('hidden');
+                    } else {
+                        scoreCard.classList.add('hidden');
+                    }
                 }
             }
 
@@ -5275,27 +5478,25 @@
 
             if (isCancelled) {
                 statusBadge.classList.remove('hidden');
-                cancelBtn.innerText = "✅ Przywróć mecz";
+                cancelBtn.innerText = "✅ Przywróć";
             } else {
                 statusBadge.classList.add('hidden');
-                cancelBtn.innerText = "🚫 Odwołaj mecz";
+                cancelBtn.innerText = "🚫 Odwołaj";
             }
 
             const costToggleBtn = document.getElementById('matchCostToggleBtn');
             if (costToggleBtn) {
-                costToggleBtn.innerHTML = matchConfiguredCost === 0 
-                    ? `💸 Koszt: <strong class="text-emerald-400 font-mono font-bold">0 zł (PnH)</strong> <span class="text-[10px] text-slate-400 font-normal">(przywróć ${defaultCost} zł)</span>`
-                    : `💸 Koszt: <strong class="text-slate-200 font-mono font-bold">${matchConfiguredCost} zł</strong> <span class="text-[10px] text-slate-400 font-normal">(zmień na 0 zł PnH)</span>`;
+                costToggleBtn.innerText = matchConfiguredCost === 0 
+                    ? "💸 Hala: 0 zł (PnH)"
+                    : `💸 Hala: ${matchConfiguredCost} zł`;
             }
 
             const extraPlayingBtn = document.getElementById('matchExtraPlayingToggleBtn');
             if (extraPlayingBtn) {
-                const totalAttendeesCount = attendees.length;
-                const reservesCount = Math.max(0, totalAttendeesCount - 12);
                 if (extraCount > 0) {
-                    extraPlayingBtn.innerHTML = `🔄 Zmiany: <strong class="text-amber-400 font-bold">${12 + extraCount} os. (WŁ)</strong> <span class="text-[10px] text-slate-400 font-normal">(wyłącz)</span>`;
+                    extraPlayingBtn.innerText = `🔄 Zmiany: +${extraCount} (${12 + extraCount})`;
                 } else {
-                    extraPlayingBtn.innerHTML = `🔄 Zmiany: <strong class="text-slate-400 font-normal">Wył (12 os.)</strong>${reservesCount > 0 ? ` <span class="text-[10px] text-amber-400/90 font-semibold">(włącz +${Math.min(2, reservesCount)})</span>` : ''}`;
+                    extraPlayingBtn.innerText = "🔄 Zmiany: Wył (12)";
                 }
             }
 
@@ -5428,12 +5629,18 @@
                 }
             }
 
-            // Main Squad list
+            // Main Squad list (iOS/Revolut clean divide style)
             const mainListEl = document.getElementById('mainSquadList');
             const allStreaks = typeof getAllPlayersStreaks === 'function' ? getAllPlayersStreaks() : {};
             let squadHtml = "";
-            for (let i = 0; i < playingLimit; i++) {
-                if (i < mainPlayers.length) {
+            if (mainPlayers.length === 0) {
+                squadHtml = `
+                    <div class="p-4 text-center text-xs text-slate-500 italic">
+                        Skład jest pusty. Zapisz się na mecz powyżej! 🏐
+                    </div>
+                `;
+            } else {
+                for (let i = 0; i < mainPlayers.length; i++) {
                     const p = mainPlayers[i];
                     const isExtraPlaying = (i >= 12);
                     const isGuest = !AppState.all_players.includes(p);
@@ -5446,11 +5653,11 @@
                         </span>
                     ` : '';
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950 border ${isExtraPlaying ? (isMe ? 'border-amber-500/80 bg-amber-950/30' : 'border-amber-900/50 bg-amber-950/15') : (isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800/80')} pl-2.5 pr-1 py-1.5 rounded-xl text-xs gap-2">
+                        <div class="flex items-center justify-between px-3 py-2 text-xs gap-2 hover:bg-slate-900/40 transition">
                             <div class="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1 cursor-pointer group flex-wrap" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold ${isExtraPlaying ? 'text-amber-400' : 'text-slate-500'} w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-semibold ${isMe ? (isExtraPlaying ? 'text-amber-300' : 'text-emerald-300') : 'text-slate-200'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="font-semibold ${isMe ? (isExtraPlaying ? 'text-amber-300' : 'text-emerald-300 font-bold') : 'text-slate-200'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${formatPlayerNameHtml(p)}</span>
                                 ${isExtraPlaying ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0 flex items-center gap-0.5 whitespace-nowrap" title="Gra na zmiany przy serwisie">🔄 Zmiana (serwis)</span>' : ''}
                                 ${isMe ? '<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md shrink-0 whitespace-nowrap">TY</span>' : ''}
                                 ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
@@ -5468,14 +5675,13 @@
                             </div>
                         </div>
                     `;
-                } else if (i < 12) {
+                }
+                const freeSlots = playingLimit - mainPlayers.length;
+                if (freeSlots > 0) {
                     squadHtml += `
-                        <div class="flex items-center justify-between bg-slate-950/40 border border-dashed border-slate-800/70 px-3 py-1.5 rounded-xl text-xs text-slate-600">
-                            <div class="flex items-center gap-2">
-                                <span class="font-mono font-bold text-slate-700 w-4 shrink-0">${i + 1}.</span>
-                                <div class="w-5 h-5 rounded-full border border-dashed border-slate-800 flex items-center justify-center text-[10px] text-slate-700 shrink-0 select-none">👤</div>
-                                <span class="font-medium text-slate-500 italic">+ Wolne miejsce</span>
-                            </div>
+                        <div class="px-3.5 py-2.5 text-center text-xs text-slate-400 bg-slate-950/40 font-medium flex items-center justify-center gap-1.5">
+                            <span>✨</span>
+                            <span>Wolne miejsca w składzie: <strong class="text-emerald-400 font-mono font-bold">${freeSlots}</strong> (zapisz się powyżej)</span>
                         </div>
                     `;
                 }
@@ -5536,11 +5742,11 @@
                         </span>
                     ` : '';
                     return `
-                        <div class="flex items-center justify-between bg-slate-950/60 border ${isMe ? 'border-amber-500/70 bg-amber-950/20' : 'border-amber-900/30'} pl-2.5 pr-1 py-1.5 rounded-xl text-xs gap-2">
+                        <div class="flex items-center justify-between px-3 py-2 text-xs gap-2 hover:bg-slate-900/40 transition">
                             <div class="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1 cursor-pointer group flex-wrap" onclick="openPlayerCardModal(${toInlineArgument(p)})">
                                 <span class="font-mono font-bold text-amber-500/80 w-5 shrink-0">R${idx + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
-                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="font-medium ${isMe ? 'text-amber-300 font-bold' : 'text-slate-300'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${formatPlayerNameHtml(p)}</span>
                                 ${isMe ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0 whitespace-nowrap">TY</span>' : ''}
                                 ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
@@ -6263,9 +6469,9 @@
                     if (i < dark.length) {
                         const p = dark[i];
                         darkCourtHtml += `
-                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px]">
+                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px] min-w-0">
                                 ${getPlayerAvatarHtml(p, 'md')}
-                                <span class="font-bold text-[11px] text-white text-center leading-tight whitespace-normal break-words max-w-[85px]">${escapeHtml(p.split(' ')[0])}</span>
+                                <span class="font-bold text-[11px] text-white text-center leading-tight truncate max-w-full px-1" title="${escapeHtml(p)}">${escapeHtml(getCourtPlayerLabel(p))}</span>
                             </div>
                         `;
                     } else {
@@ -6299,9 +6505,9 @@
                     if (i < light.length) {
                         const p = light[i];
                         lightCourtHtml += `
-                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px]">
+                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px] min-w-0">
                                 ${getPlayerAvatarHtml(p, 'md')}
-                                <span class="font-bold text-[11px] text-amber-200 text-center leading-tight whitespace-normal break-words max-w-[85px]">${escapeHtml(p.split(' ')[0])}</span>
+                                <span class="font-bold text-[11px] text-amber-200 text-center leading-tight truncate max-w-full px-1" title="${escapeHtml(p)}">${escapeHtml(getCourtPlayerLabel(p))}</span>
                             </div>
                         `;
                     } else {
@@ -6520,11 +6726,11 @@
                 if (resultsList) resultsList.innerHTML = `<div class="p-3 text-center text-xs text-slate-500">Głosy będą zbierane po meczu.</div>`;
                 if (whoVotedList) whoVotedList.innerHTML = attendees.map(p => `
                     <div class="bg-slate-950/60 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs">
-                        <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
+                        <span class="font-semibold text-slate-300 whitespace-normal break-words">${formatPlayerNameHtml(p)}</span>
                         <span class="text-[10px] text-slate-500 font-mono">Zapisany na mecz</span>
                     </div>
                 `).join('');
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "0 / " + attendees.length;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "Przed meczem";
                 if (adminBar) adminBar.classList.add('hidden');
                 return;
             }
@@ -6548,8 +6754,26 @@
                     votingFormNotice.classList.remove('hidden');
                     votingFormFields.classList.add('hidden');
                 }
+            } else if (loggedPlayer && votes[loggedPlayer]) {
+                // Gracz zalogowany i już oddał głos -> blokujemy ponowne głosowanie!
+                if (votingFormNotice && votingFormFields) {
+                    votingFormNotice.innerHTML = `
+                        <div class="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl text-center space-y-1.5 animate-fade-in">
+                            <span class="text-2xl block">🔒</span>
+                            <h4 class="text-xs font-black text-emerald-300 uppercase tracking-wider">Twój głos jest zapisany i zablokowany</h4>
+                            <p class="text-[11px] text-slate-300 max-w-xs mx-auto leading-relaxed">
+                                Oddałeś/aś już swój tajny głos na MVP w tym spotkaniu. Zgodnie z regulaminem raz oddany głos jest ostateczny i nie można go zmienić.
+                            </p>
+                            <p class="text-[10px] text-slate-400">
+                                Wyniki zostaną ujawnione automatycznie po zebraniu wszystkich głosów! 🏐
+                            </p>
+                        </div>
+                    `;
+                    votingFormNotice.classList.remove('hidden');
+                    votingFormFields.classList.add('hidden');
+                }
             } else {
-                // Gracz grał w meczu lub jest gościem -> pokazujemy formularz
+                // Gracz grał w meczu i jeszcze nie głosował (lub gość) -> pokazujemy formularz
                 if (votingFormNotice && votingFormFields) {
                     votingFormNotice.classList.add('hidden');
                     votingFormNotice.innerHTML = '';
@@ -6562,13 +6786,13 @@
                 if (voterSelectContainer) {
                     const hasVoted = Boolean(votes[loggedPlayer]);
                     voterSelectContainer.innerHTML = `
-                        <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
+                        <div class="bg-slate-900 border ${hasVoted ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-slate-800'} p-2.5 rounded-xl flex items-center justify-between text-xs">
                             <div class="flex items-center gap-1.5 min-w-0">
-                                <span class="text-slate-400">Głosujesz jako: <strong class="text-white">${escapeHtml(loggedPlayer)}</strong></span>
-                                <button type="button" onclick="logoutCurrentPlayerForMvp()" class="text-[10px] text-amber-400 hover:text-amber-300 underline shrink-0 cursor-pointer">(zmień)</button>
+                                <span class="text-slate-400">Głosujesz jako: <strong class="text-white">${formatPlayerNameHtml(loggedPlayer)}</strong></span>
+                                ${!hasVoted ? `<button type="button" onclick="logoutCurrentPlayerForMvp()" class="text-[10px] text-amber-400 hover:text-amber-300 underline shrink-0 cursor-pointer">(zmień)</button>` : ''}
                             </div>
                             <span class="text-[10px] font-bold ${hasVoted ? 'text-emerald-400' : 'text-amber-400'} shrink-0">
-                                ${hasVoted ? '✅ Głos oddany' : '⏳ Czekasz na głos'}
+                                ${hasVoted ? '🔒 Głos oddany' : '⏳ Czekasz na głos'}
                             </span>
                         </div>
                         <input type="hidden" id="voterSelect" value="${escapeHtml(loggedPlayer)}">
@@ -6583,7 +6807,7 @@
                         ${attendees.map(p => {
                             const hasVoted = Boolean(votes[p]);
                             const isSelected = (p === currentSelectedVal);
-                            return `<option value="${escapeHtml(p)}" ${isSelected ? 'selected' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany ✅)' : ''}</option>`;
+                            return `<option value="${escapeHtml(p)}" ${isSelected ? 'selected' : ''} ${hasVoted ? 'disabled class="text-slate-500 bg-slate-950"' : ''}>${escapeHtml(p)}${hasVoted ? ' (Głos oddany 🔒)' : ''}</option>`;
                         }).join('')}
                     </select>
                     <div id="voterPinPromptContainer" class="${(currentSelectedVal && AppState.player_pins?.[currentSelectedVal]) ? '' : 'hidden'} mt-2 p-2.5 bg-slate-900/90 border border-amber-500/40 rounded-xl space-y-1.5">
@@ -6653,10 +6877,10 @@
                 if (adminBar) adminBar.classList.remove('hidden');
                 if (toggleFinalizeBtn) {
                     if (hasActiveTieBreak && !isTbFinished) {
-                        toggleFinalizeBtn.innerText = `👑 Zakończ dogrywkę (${tbCount}/${tbEligible.length})`;
+                        toggleFinalizeBtn.innerText = "👑 Zakończ dogrywkę";
                         toggleFinalizeBtn.className = "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
                     } else {
-                        toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : `👑 Zakończ i odkryj (${totalVotesCast}/${attendees.length})`;
+                        toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : "👑 Zakończ i odkryj";
                         toggleFinalizeBtn.className = isFinished 
                             ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95"
                             : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
@@ -6712,7 +6936,7 @@
                                         <div class="bg-slate-950/90 p-2.5 rounded-xl border ${isTbWinner ? 'border-amber-400 bg-amber-950/40 ring-1 ring-amber-400/50' : 'border-slate-800'} flex items-center justify-between">
                                             <div class="flex items-center gap-2 min-w-0">
                                                 ${getPlayerAvatarHtml(c, 'xs')}
-                                                <span class="text-xs font-bold ${isTbWinner ? 'text-amber-300 font-black' : 'text-slate-200'} whitespace-normal break-words">${escapeHtml(c)}</span>
+                                                <span class="text-xs font-bold ${isTbWinner ? 'text-amber-300 font-black' : 'text-slate-200'} whitespace-normal break-words">${formatPlayerNameHtml(c)}</span>
                                             </div>
                                             <span class="font-mono text-xs font-black ${isTbWinner ? 'text-amber-400' : 'text-slate-400'} shrink-0">${pluralizeVotes(cnt)}</span>
                                         </div>
@@ -6731,7 +6955,7 @@
                                     <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} min-w-0 pr-2">
                                         <span>${isLeader ? '🌟' : '🏐'}</span>
                                         ${getPlayerAvatarHtml(name, 'xs')}
-                                        <span class="whitespace-normal break-words">${escapeHtml(name)}</span>
+                                        <span class="whitespace-normal break-words">${formatPlayerNameHtml(name)}</span>
                                     </div>
                                     <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${pluralizeVotes(count)} (${percent}%)</span>
                                 </div>
@@ -6745,7 +6969,7 @@
 
                 // Breakdown: Kto na kogo głosował
                 if (whoVotedTitle) whoVotedTitle.innerText = "Kto na kogo głosował:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `Zakończone (${totalVotesCast}/${attendees.length})`;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "Zakończone";
                 if (whoVotedList) {
                     whoVotedList.innerHTML = attendees.map(p => {
                         const votedNominee = votes[p];
@@ -6754,13 +6978,13 @@
                             <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs gap-2">
                                 <div class="flex items-center gap-2 min-w-0">
                                     ${getPlayerAvatarHtml(p, 'xs')}
-                                    <span class="font-semibold text-slate-300 whitespace-normal break-words">${escapeHtml(p)}</span>
+                                    <span class="font-semibold text-slate-300 whitespace-normal break-words">${formatPlayerNameHtml(p)}</span>
                                 </div>
                                 <div class="flex items-center gap-1.5 shrink-0 text-right">
                                     <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'}">
-                                        ${votedNominee ? `➔ 🌟 ${escapeHtml(votedNominee)}` : 'Nie głosował(a)'}
+                                        ${votedNominee ? `➔ 🌟 ${formatPlayerNameHtml(votedNominee)}` : 'Nie głosował(a)'}
                                     </span>
-                                    ${tbVotedNominee ? `<span class="text-[9.5px] font-bold text-amber-300 bg-amber-950/80 border border-amber-600/60 px-1.5 py-0.5 rounded">Dogrywka: ${escapeHtml(tbVotedNominee)}</span>` : ''}
+                                    ${tbVotedNominee ? `<span class="text-[9.5px] font-bold text-amber-300 bg-amber-950/80 border border-amber-600/60 px-1.5 py-0.5 rounded">Dogrywka: ${formatPlayerNameHtml(tbVotedNominee)}</span>` : ''}
                                 </div>
                             </div>
                         `;
@@ -6771,7 +6995,7 @@
                 // TRWA DOGRYWKA
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "⚡ DOGRYWKA O TYTUŁ MVP SPOTKANIA ⚡";
                 if (winnerName) {
-                    winnerName.innerHTML = `<span class="inline-flex items-center gap-1.5 flex-wrap justify-center text-amber-300 font-black">Remis: ${tbCandidates.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' vs ')}</span>`;
+                    winnerName.innerHTML = `<span class="inline-flex items-center gap-1.5 flex-wrap justify-center text-amber-300 font-black">Remis: ${tbCandidates.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${formatPlayerNameHtml(l)}</span>`).join(' vs ')}</span>`;
                 }
                 if (winnerVotes) {
                     winnerVotes.innerText = `W rundzie zasadniczej remis po ${pluralizeVotes(maxVotes)}. Głos decydujący oddają wyłącznie pozostali gracze (${tbCount} / ${tbEligible.length})!`;
@@ -6856,7 +7080,7 @@
                 }
 
                 if (whoVotedTitle) whoVotedTitle.innerText = "Status głosów w dogrywce:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${tbCount} / ${tbEligible.length}`;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = (tbCount >= tbEligible.length && tbEligible.length > 0) ? "Komplet głosów" : "Dogrywka w toku";
                 if (whoVotedList) {
                     whoVotedList.innerHTML = attendees.map(p => {
                         const isCand = tbCandidates.includes(p);
@@ -6905,7 +7129,7 @@
                 }
 
                 if (whoVotedTitle) whoVotedTitle.innerText = "Status głosowania obecnych:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = `${totalVotesCast} / ${attendees.length}`;
+                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = (totalVotesCast >= attendees.length && attendees.length > 0) ? "Wszyscy oddali głos" : "Głosowanie w toku";
                 if (whoVotedList) {
                     whoVotedList.innerHTML = attendees.map(p => {
                         const hasVoted = Boolean(votes[p]);
@@ -7492,6 +7716,17 @@
             const selectedPlayer = voterSelect.value.trim();
             if (pinInput) pinInput.value = '';
 
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+            const attendees = getMatchPlayingSquad(currentMatch);
+
+            if (selectedPlayer && currentMatch.votes && currentMatch.votes[selectedPlayer]) {
+                alert(`Zawodnik ${selectedPlayer} już oddał swój głos na MVP w tym meczu. Zgodnie z zasadami oddany głos jest ostateczny i nie można go zmienić!`);
+                voterSelect.value = '';
+                return;
+            }
+
             if (pinContainer) {
                 if (selectedPlayer && AppState.player_pins && AppState.player_pins[selectedPlayer]) {
                     pinContainer.classList.remove('hidden');
@@ -7499,11 +7734,6 @@
                     pinContainer.classList.add('hidden');
                 }
             }
-
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (!currentMatch) return;
-            const attendees = getMatchPlayingSquad(currentMatch);
 
             const nomineeSelect = document.getElementById('nomineeSelect');
             if (nomineeSelect) {
@@ -7550,6 +7780,11 @@
             if (!voter) return alert("Wybierz siebie z listy obecnych graczy lub zaloguj się na swój profil!");
             if (!attendees.includes(voter)) {
                 return alert("Tylko zawodnicy biorący udział w tym spotkaniu mogą oddać głos na MVP!");
+            }
+
+            // Blokada zmiany głosu: raz oddany głos na MVP jest ostateczny!
+            if (currentMatch.votes && currentMatch.votes[voter]) {
+                return alert(`Gracz ${voter} już oddał swój głos na MVP w tym spotkaniu. Zgodnie z zasadami oddany głos jest ostateczny i nie można go zmienić!`);
             }
 
             if (!nominee) return alert("Wybierz zawodnika, na którego oddajesz głos na MVP!");
@@ -7680,6 +7915,10 @@
             }
             if (!currentMatch.mvpTieBreak.candidates.includes(nominee)) {
                 return alert("Głos można oddać wyłącznie na jednego z kandydatów dogrywki!");
+            }
+
+            if (currentMatch.mvpTieBreak.votes && currentMatch.mvpTieBreak.votes[voter]) {
+                return alert(`Gracz ${voter} już oddał swój decydujący głos w dogrywce. Zgodnie z zasadami oddany głos jest ostateczny!`);
             }
 
             const playerPinHash = AppState.player_pins?.[voter];
@@ -7963,9 +8202,9 @@
                     <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-2.5 shadow-md">
                         <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                             <div class="text-right min-w-0">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    ${darkWon ? '<span class="text-xs">🏆</span>' : ''}
-                                    <span class="text-xs sm:text-sm font-black ${darkWon ? 'text-emerald-400' : 'text-slate-200'} truncate">${escapeHtml(darkName)}</span>
+                                <div class="flex items-center justify-end gap-1.5 min-w-0">
+                                    ${darkWon ? '<span class="text-xs shrink-0">🏆</span>' : ''}
+                                    <span class="text-xs sm:text-sm font-black ${darkWon ? 'text-emerald-400' : 'text-slate-200'} whitespace-normal break-words leading-tight">${escapeHtml(darkName)}</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
                                 </div>
                             </div>
@@ -7975,10 +8214,10 @@
                                 <span class="${lightWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
                             </div>
                             <div class="text-left min-w-0">
-                                <div class="flex items-center justify-start gap-1.5">
+                                <div class="flex items-center justify-start gap-1.5 min-w-0">
                                     <span class="w-2.5 h-2.5 rounded-full bg-white border border-slate-300 shrink-0"></span>
-                                    <span class="text-xs sm:text-sm font-black ${lightWon ? 'text-emerald-400' : 'text-slate-200'} truncate">${escapeHtml(lightName)}</span>
-                                    ${lightWon ? '<span class="text-xs">🏆</span>' : ''}
+                                    <span class="text-xs sm:text-sm font-black ${lightWon ? 'text-emerald-400' : 'text-slate-200'} whitespace-normal break-words leading-tight">${escapeHtml(lightName)}</span>
+                                    ${lightWon ? '<span class="text-xs shrink-0">🏆</span>' : ''}
                                 </div>
                             </div>
                         </div>
@@ -8002,23 +8241,34 @@
             let mvpHtml = '';
             if (mvpWinner) {
                 const pct = totalVotes > 0 ? Math.round((maxV / totalVotes) * 100) : 0;
-                const runnersUp = sortedNominees.slice(1, 4).map(([nom, cnt]) => `${escapeHtml(nom)} (${cnt})`).join(', ');
+                const runnersUpList = sortedNominees.slice(1);
                 mvpHtml = `
-                    <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/50 rounded-2xl p-2 sm:p-2.5 shadow-md flex items-center justify-between gap-2.5">
-                        <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(mvpWinner)});" title="Dotknij, aby zobaczyć profil gracza">
-                            ${getPlayerAvatarHtml(mvpWinner, 'sm')}
-                            <div class="min-w-0 leading-tight">
-                                <div class="flex items-center gap-1.5">
+                    <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/50 rounded-2xl p-2.5 shadow-md space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 min-w-0 cursor-pointer" onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(mvpWinner)});" title="Dotknij, aby zobaczyć profil gracza">
+                                ${getPlayerAvatarHtml(mvpWinner, 'sm')}
+                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
                                     <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">👑 MVP</span>
-                                    <span class="text-xs sm:text-sm font-black text-white hover:text-amber-300 transition truncate">${escapeHtml(mvpWinner)}</span>
+                                    <span class="text-xs sm:text-sm font-black text-white hover:text-amber-300 transition whitespace-normal break-words leading-tight">${formatPlayerNameHtml(mvpWinner)}</span>
                                 </div>
-                                ${runnersUp ? `<p class="text-[10px] text-slate-400 truncate mt-0.5">Pozostali: ${runnersUp}</p>` : ''}
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="text-xs font-mono font-black text-amber-300 bg-amber-950/80 border border-amber-600/50 px-2 py-0.5 rounded-lg whitespace-nowrap shadow-sm">
+                                    ${pluralizeVotes(maxV)} <span class="text-[9.5px] text-amber-400 font-bold">(${pct}%)</span>
+                                </span>
                             </div>
                         </div>
-                        <div class="text-right shrink-0">
-                            <span class="text-xs font-mono font-black text-amber-300">${pluralizeVotes(maxV)}</span>
-                            ${pct > 0 ? `<span class="text-[9px] text-amber-400/80 block font-bold">${pct}% głosów</span>` : ''}
-                        </div>
+                        ${runnersUpList.length > 0 ? `
+                            <div class="pt-1.5 border-t border-amber-500/20 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-300 leading-tight">
+                                <span class="text-slate-400 font-semibold mr-0.5 shrink-0">Głosy:</span>
+                                ${runnersUpList.map(([nom, cnt]) => `
+                                    <span class="bg-slate-950/80 border border-slate-800 px-1.5 py-0.5 rounded text-slate-300 inline-flex items-center gap-1 whitespace-nowrap shrink-0">
+                                        <span>${formatPlayerNameHtml(nom)}</span>
+                                        <strong class="text-amber-400 font-mono font-bold">(${cnt})</strong>
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             } else if (totalVotes > 0) {
@@ -8053,14 +8303,13 @@
                         const isGuest = !AppState.all_players.includes(p);
                         return `
                             <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(p)});" title="Dotknij, aby zobaczyć profil gracza" class="flex items-center justify-between gap-1 py-0.5 px-1 rounded-lg hover:bg-slate-800/60 cursor-pointer transition ${isPlayerMvp ? 'bg-amber-950/40 border border-amber-500/40 text-amber-200' : 'text-slate-200'}">
-                                <div class="flex items-center gap-1.5 min-w-0">
+                                <div class="flex items-center gap-1.5 min-w-0 flex-1">
                                     ${getPlayerAvatarHtml(p, 'xs')}
-                                    <span class="font-bold text-[11px] truncate leading-tight">${escapeHtml(p)}</span>
+                                    <span class="font-bold text-[10.5px] sm:text-[11px] leading-tight whitespace-normal break-words ${isPlayerMvp ? 'text-amber-300 font-black' : ''}">
+                                        ${isPlayerMvp ? '👑 ' : ''}${formatPlayerNameHtml(p)}
+                                    </span>
                                 </div>
-                                <div class="flex items-center gap-1 shrink-0">
-                                    ${isPlayerMvp ? `<span class="text-[8px] font-black bg-amber-500 text-slate-950 px-1 py-0.2 rounded leading-none">👑 MVP</span>` : ''}
-                                    ${isGuest ? `<span class="text-[8px] text-slate-500 font-medium">(gość)</span>` : ''}
-                                </div>
+                                ${isGuest ? `<span class="text-[8px] text-slate-500 font-medium shrink-0">(gość)</span>` : ''}
                             </div>
                         `;
                     }).join('');
@@ -8073,7 +8322,7 @@
                             <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px]">
                                 <div class="flex items-center gap-1 min-w-0">
                                     <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
-                                    <strong class="font-black text-slate-300 truncate">${escapeHtml(darkName)}</strong>
+                                    <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(darkName)}</strong>
                                 </div>
                                 ${darkWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
                             </div>
@@ -8087,7 +8336,7 @@
                             <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px]">
                                 <div class="flex items-center gap-1 min-w-0">
                                     <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
-                                    <strong class="font-black text-slate-300 truncate">${escapeHtml(lightName)}</strong>
+                                    <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(lightName)}</strong>
                                 </div>
                                 ${lightWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
                             </div>
@@ -8109,14 +8358,13 @@
                                 const isGuest = !AppState.all_players.includes(p);
                                 return `
                                     <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(p)});" class="flex items-center justify-between gap-1 py-0.5 px-1 rounded-lg hover:bg-slate-800/60 cursor-pointer transition ${isPlayerMvp ? 'bg-amber-950/40 border border-amber-500/40 text-amber-200' : 'text-slate-200'}">
-                                        <div class="flex items-center gap-1.5 min-w-0">
+                                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
                                             ${getPlayerAvatarHtml(p, 'xs')}
-                                            <span class="font-bold text-[11px] truncate leading-tight">${escapeHtml(p)}</span>
+                                            <span class="font-bold text-[10.5px] sm:text-[11px] leading-tight whitespace-normal break-words ${isPlayerMvp ? 'text-amber-300 font-black' : ''}">
+                                                ${isPlayerMvp ? '👑 ' : ''}${formatPlayerNameHtml(p)}
+                                            </span>
                                         </div>
-                                        <div class="flex items-center gap-1 shrink-0">
-                                            ${isPlayerMvp ? `<span class="text-[8px] font-black bg-amber-500 text-slate-950 px-1 py-0.2 rounded leading-none">👑 MVP</span>` : ''}
-                                            ${isGuest ? `<span class="text-[8px] text-slate-500 font-medium">(gość)</span>` : ''}
-                                        </div>
+                                        ${isGuest ? `<span class="text-[8px] text-slate-500 font-medium shrink-0">(gość)</span>` : ''}
                                     </div>
                                 `;
                             }).join('')}
@@ -8130,7 +8378,7 @@
                 reservesHtml = `
                     <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl px-2.5 py-1 flex items-center gap-1.5 text-[10px] text-slate-400">
                         <span class="font-bold text-slate-500 shrink-0">⏳ Rezerwa:</span>
-                        <span class="text-slate-300 truncate">${reserves.map(escapeHtml).join(', ')}</span>
+                        <span class="text-slate-300 whitespace-normal break-words">${reserves.map(escapeHtml).join(', ')}</span>
                     </div>
                 `;
             }
@@ -8392,20 +8640,20 @@
             if (fAll) {
                 fAll.innerHTML = `Wszyscy <span class="text-[10px] opacity-80">(${allCount})</span>`;
                 fAll.className = currentBillingFilter === 'all' 
-                    ? "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition shadow-sm" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition";
             }
             if (fUnpaid) {
                 fUnpaid.innerHTML = `🔴 Do zapłaty <span class="text-[10px] opacity-80">(${unpaidCount})</span>`;
                 fUnpaid.className = currentBillingFilter === 'unpaid' 
-                    ? "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-rose-500 text-white transition shadow-sm" 
-                    : "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-rose-500 text-white transition shadow-sm" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition";
             }
             if (fPaid) {
                 fPaid.innerHTML = `🟢 Opłacone <span class="text-[10px] opacity-80">(${paidCount})</span>`;
                 fPaid.className = currentBillingFilter === 'paid' 
-                    ? "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "py-2 px-1 sm:px-3 rounded-xl font-bold text-center leading-tight whitespace-normal break-words bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition shadow-sm" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition";
             }
 
             const filtered = playerNames.filter(p => {
@@ -8432,22 +8680,24 @@
                 const isPaid = (due > 0 && saldo >= -0.01);
                 const isMe = (p === loggedPlayer);
                 const isGuest = !AppState.all_players.includes(p);
+                const showRow2 = isAdmin;
 
                 return `
-                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/15 ring-1 ring-emerald-500/30' : 'border-slate-800/80'} rounded-2xl p-3 sm:p-3.5 space-y-2.5 transition shadow-sm">
+                    <div class="bg-slate-950 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/15 ring-1 ring-emerald-500/30' : 'border-slate-800/80'} rounded-2xl p-3 sm:p-3.5 ${showRow2 ? 'space-y-2.5' : ''} transition shadow-sm">
                         <!-- Row 1: Player Info & Status -->
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex items-center gap-2.5 min-w-0">
                                 ${getPlayerAvatarHtml(p, 'sm')}
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} whitespace-normal break-words">${escapeHtml(p)}</span>
+                                        <span class="font-extrabold text-xs sm:text-sm ${isMe ? 'text-emerald-300 font-black' : 'text-white'} whitespace-normal break-words">${formatPlayerNameHtml(p)}</span>
                                         ${isMe ? `<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md">TY</span>` : ''}
                                         ${isGuest ? '<span class="text-[9px] font-bold bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.5 rounded-md" title="Zawodnik gościnny lub archiwalny">Gość / Archiwum</span>' : ''}
                                         <span class="text-[10px] text-slate-400 font-mono">(${pluralizeGames(info.games)})</span>
                                     </div>
                                     <div class="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
                                         Należność: <strong class="text-slate-200 font-mono font-bold whitespace-nowrap">${due.toFixed(2)}&nbsp;zł</strong>
+                                        ${!isAdmin && paid > 0 && Math.abs(paid - due) > 0.01 ? ` <span class="text-slate-600">•</span> Wpłacono: <strong class="${saldo >= 0 ? 'text-emerald-400' : 'text-amber-300'} font-mono font-bold">${paid.toFixed(2)}&nbsp;zł</strong>` : ''}
                                     </div>
                                 </div>
                             </div>
@@ -8467,51 +8717,41 @@
                                                 Brak: ${Math.abs(saldo).toFixed(2)}&nbsp;zł
                                             </div>
                                            </div>`
-                                        : `<div class="space-y-0.5 text-right whitespace-nowrap">
-                                            <span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2 py-0.5 rounded-lg inline-flex items-center gap-1 whitespace-nowrap">
-                                                <span>🔴</span> Brak wpłaty
-                                            </span>
-                                            <div class="text-[10px] font-mono text-rose-400 font-bold whitespace-nowrap">
-                                                ${due > 0 ? `Do zapłaty: ${due.toFixed(2)}&nbsp;zł` : ''}
-                                            </div>
-                                           </div>`
+                                        : `<span class="bg-rose-950/80 text-rose-400 border border-rose-900/60 text-[10px] font-black px-2.5 py-1 rounded-xl inline-flex items-center gap-1 whitespace-nowrap shadow-sm">
+                                            <span>🔴</span> Do zapłaty
+                                           </span>`
                                       )
                                 }
                             </div>
                         </div>
 
-                        <!-- Row 2: Fixed Two-Sided Action Bar (Never wraps unexpectedly!) -->
+                        ${showRow2 ? `
+                        <!-- Row 2: Fixed Two-Sided Action Bar (Admin only) -->
                         <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-2">
-                            ${isAdmin ? `
-                                <!-- Left: Paid amount input -->
-                                <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0 whitespace-nowrap">
-                                    <span class="text-[11px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
-                                    <input type="number" step="0.01" value="${paid || 0}" 
-                                           onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
-                                           aria-label="Wpisz kwotę wpłaty dla gracza ${escapeHtml(p)}"
-                                           class="w-16 bg-transparent text-xs font-black text-emerald-400 text-right focus:outline-none font-mono">
-                                    <span class="text-[11px] text-slate-400 ml-1">zł</span>
-                                </div>
+                            <!-- Left: Paid amount input -->
+                            <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1 shrink-0 whitespace-nowrap">
+                                <span class="text-[11px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
+                                <input type="number" step="0.01" value="${paid || 0}" 
+                                       onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
+                                       aria-label="Wpisz kwotę wpłaty dla gracza ${escapeHtml(p)}"
+                                       class="w-16 bg-transparent text-xs font-black text-emerald-400 text-right focus:outline-none font-mono">
+                                <span class="text-[11px] text-slate-400 ml-1">zł</span>
+                            </div>
 
-                                <!-- Right: Action button (Całość or Zeruj) -->
-                                <div class="shrink-0">
-                                    ${!isPaid && due > 0 ? `
-                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 whitespace-nowrap">
-                                            <span>✅</span> Opłać całość
-                                        </button>
-                                    ` : `
-                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1 whitespace-nowrap" title="Wyzeruj wpłatę">
-                                            <span>↩️</span> Cofnij
-                                        </button>
-                                    `}
-                                </div>
-                            ` : `
-                                <!-- Non-admin view -->
-                                <div class="text-xs text-slate-400 whitespace-nowrap">
-                                    Wpłacono: <strong class="${saldo >= -0.05 ? 'text-emerald-400' : 'text-slate-200'} font-mono font-bold whitespace-nowrap">${paid.toFixed(2)}&nbsp;zł</strong>
-                                </div>
-                            `}
+                            <!-- Right: Action button (Całość or Zeruj) -->
+                            <div class="shrink-0">
+                                ${!isPaid && due > 0 ? `
+                                    <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1.5 whitespace-nowrap">
+                                        <span>✅</span> Opłać całość
+                                    </button>
+                                ` : `
+                                    <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1 whitespace-nowrap" title="Wyzeruj wpłatę">
+                                        <span>↩️</span> Cofnij
+                                    </button>
+                                `}
+                            </div>
                         </div>
+                        ` : ''}
                     </div>
                 `;
             }).join('');
@@ -8958,7 +9198,7 @@
                     const cSt = clutchStats[p] || { clutchWon: 0, clutchTotal: 0 };
                     const clutchPct = cSt.clutchTotal > 0 ? Math.round((cSt.clutchWon / cSt.clutchTotal) * 100) : 0;
                     const clutchFormatted = cSt.clutchTotal > 0 ? `${clutchPct}%` : "-";
-                    const clutchSub = cSt.clutchTotal >= 2 ? `${cSt.clutchWon}/${cSt.clutchTotal} TB (${clutchPct}%)` : (cSt.clutchTotal > 0 ? `${cSt.clutchWon}/${cSt.clutchTotal} (min. 2 tie-breaki)` : "Brak tie-breaków");
+                    const clutchSub = cSt.clutchTotal >= 2 ? `${cSt.clutchWon}/${cSt.clutchTotal} TB` : (cSt.clutchTotal > 0 ? `${cSt.clutchWon}/${cSt.clutchTotal} TB (min. 2)` : "Brak tie-breaków");
 
                     const sSt = setStats[p] || { won: 0, lost: 0 };
                     const sTotal = sSt.won + sSt.lost;
@@ -9122,10 +9362,10 @@
                                 return `
                                     <div class="bg-slate-950/80 border border-slate-800/80 p-1.5 rounded-xl flex flex-col justify-between">
                                         <div class="flex items-center justify-between gap-1 text-[9px] text-slate-400 font-bold">
-                                            <span class="truncate">${c.icon} ${c.title}</span>
-                                            ${voteStr ? `<span class="text-amber-400 font-mono shrink-0">${voteStr}</span>` : ''}
+                                            <span class="whitespace-nowrap">${c.icon} ${c.title}</span>
+                                            ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap">${voteStr}</span>` : ''}
                                         </div>
-                                        <div class="text-[11px] font-extrabold ${winCount > 0 ? 'text-white' : 'text-slate-500'} truncate mt-0.5 leading-tight">
+                                        <div class="text-[10px] sm:text-[11px] font-extrabold ${winCount > 0 ? 'text-white' : 'text-slate-500'} whitespace-normal break-words mt-0.5 leading-tight">
                                             ${winStr}
                                         </div>
                                     </div>
@@ -10295,20 +10535,20 @@
             // Władcy Parkietu – Wyróżnienia Sezonu
             if (typeof calculateSeasonSpecialAwards === 'function') {
                 const { leaders } = calculateSeasonSpecialAwards(AppState);
-                const updateSeasonCard = (titleId, kingId, catKey, icon) => {
+                const updateSeasonCard = (titleId, kingId, catKey) => {
                     const l = leaders?.[catKey];
                     const tEl = document.getElementById(titleId);
                     const kEl = document.getElementById(kingId);
                     if (tEl && l) tEl.innerText = l.title;
                     if (kEl && l) {
-                        kEl.innerText = l.wins > 0 ? `${l.leadersStr} (${l.wins}x ${icon} • ${l.votes} gł.)` : "Sezon w toku";
+                        kEl.innerText = l.wins > 0 ? `${l.leadersStr} (${l.wins}x • ${l.votes} gł.)` : "Sezon w toku";
                     }
                 };
 
-                updateSeasonCard('recordTitleBlock', 'recordKingBlock', 'block', '🧱');
-                updateSeasonCard('recordTitleSpike', 'recordKingSpike', 'spike', '🔨');
-                updateSeasonCard('recordTitleDefense', 'recordKingDefense', 'defense', '🐟');
-                updateSeasonCard('recordTitleServe', 'recordKingServe', 'serve', '🌪️');
+                updateSeasonCard('recordTitleBlock', 'recordKingBlock', 'block');
+                updateSeasonCard('recordTitleSpike', 'recordKingSpike', 'spike');
+                updateSeasonCard('recordTitleDefense', 'recordKingDefense', 'defense');
+                updateSeasonCard('recordTitleServe', 'recordKingServe', 'serve');
             }
 
             const todayStr = getLocalDateKey();
@@ -10356,6 +10596,27 @@
             if (cleanPayersEl) cleanPayersEl.innerText = `${pluralizePlayers(cleanCount)} ze statusem 100%`;
         }
 
+        let currentHofSubtab = 'ranking';
+        function setHallOfFameSubtab(subtab) {
+            currentHofSubtab = subtab;
+            const subtabs = ['ranking', 'records', 'archive'];
+            subtabs.forEach(t => {
+                const btn = document.getElementById(`hofSubtabBtn-${t}`);
+                const container = document.getElementById(`hofSubtabContainer-${t}`);
+                const isActive = (t === subtab);
+                if (container) {
+                    container.classList.toggle('hidden', !isActive);
+                }
+                if (btn) {
+                    if (isActive) {
+                        btn.className = "py-2 px-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                    } else {
+                        btn.className = "py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                    }
+                }
+            });
+        }
+
         function renderHallOfFame() {
             const tbody = document.getElementById('hallOfFameTableBody');
             if (!tbody) return;
@@ -10387,21 +10648,21 @@
 
             tbody.innerHTML = scores.map((s, idx) => {
                 let rank = `${idx + 1}`;
-                if (idx === 0) rank = '🥇 1';
-                else if (idx === 1) rank = '🥈 2';
-                else if (idx === 2) rank = '🥉 3';
+                if (idx === 0) rank = '🥇';
+                else if (idx === 1) rank = '🥈';
+                else if (idx === 2) rank = '🥉';
 
                 const isMe = (s.name === loggedPlayer);
 
                 const formHtml = (s.form.length || s.totalWins > 0 || s.totalLosses > 0) ? `
                     <div class="flex flex-col items-center justify-center">
-                        <div class="flex items-center gap-0.5">
+                        <div class="hidden sm:flex items-center gap-0.5">
                             ${s.form.map(o => `
                                 <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex items-center justify-center text-[6px] sm:text-[7px] font-black shadow-sm shrink-0" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
                             `).join('')}
                         </div>
-                        <span class="text-[9px] sm:text-[10px] font-mono font-bold mt-0.5 whitespace-nowrap" title="Łączny bilans wszystkich rozegranych spotkań: ${s.totalWins}W - ${s.totalLosses}L">
-                            <span class="text-emerald-400 font-black">${s.totalWins}W</span> <span class="text-rose-400 font-black">${s.totalLosses}L</span>
+                        <span class="text-[9px] sm:text-[10px] font-mono font-bold sm:mt-0.5 whitespace-nowrap bg-slate-950/80 sm:bg-transparent px-1.5 py-0.5 sm:p-0 rounded-md border border-slate-800/80 sm:border-0" title="Łączny bilans wszystkich rozegranych spotkań: ${s.totalWins}W - ${s.totalLosses}L">
+                            <span class="text-emerald-400 font-black">${s.totalWins}W</span> <span class="text-slate-600 sm:text-slate-500">-</span> <span class="text-rose-400 font-black">${s.totalLosses}L</span>
                         </span>
                     </div>
                 ` : `<span class="text-slate-500 font-mono text-[9px]">-</span>`;
@@ -10411,7 +10672,7 @@
                     <span class="inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[8.5px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0" title="Aktualna seria: ${pluralizeMatches(pStreak)} z rzędu">🔥 ${pStreak}</span>
                 ` : '';
 
-                const badgesHtml = getPlayerBadgesHtml(s.name);
+                const badgesHtml = getPlayerBadgesHtml(s.name, 3);
 
                 return `
                     <tr onclick="openPlayerCardModal(${toInlineArgument(s.name)})" title="Dotknij, aby zobaczyć profil i odznaki gracza" class="hover:bg-slate-800/60 cursor-pointer transition active:bg-slate-800 ${isMe ? 'bg-emerald-950/20' : ''}">
@@ -10421,7 +10682,7 @@
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="min-w-0 flex-1 leading-tight">
                                     <div class="flex items-center gap-1 min-w-0 flex-wrap">
-                                        <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs whitespace-normal break-words">${escapeHtml(s.name)}</span>
+                                        <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs whitespace-normal break-words">${formatPlayerNameHtml(s.name)}</span>
                                         ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.5 rounded shrink-0">TY</span>' : ''}
                                         ${streakBadge}
                                     </div>
@@ -10448,6 +10709,28 @@
             if (typeof renderAdvancedStatsSection === 'function') {
                 renderAdvancedStatsSection();
             }
+            setHallOfFameSubtab(currentHofSubtab);
+        }
+
+        let currentProfileSubtab = 'stats';
+        function setProfileSubtab(subtab) {
+            currentProfileSubtab = subtab;
+            const subtabs = ['stats', 'chronicle', 'admin'];
+            subtabs.forEach(t => {
+                const btn = document.getElementById(`profileSubtabBtn-${t}`);
+                const container = document.getElementById(`profileSubtabContainer-${t}`);
+                const isActive = (t === subtab);
+                if (container) {
+                    container.classList.toggle('hidden', !isActive);
+                }
+                if (btn) {
+                    if (isActive) {
+                        btn.className = "py-2 px-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                    } else {
+                        btn.className = "py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                    }
+                }
+            });
         }
 
         // ================= TAB 5: MÓJ PROFIL & PANEL ORGANIZATORA =================
@@ -10471,13 +10754,9 @@
                 container.innerHTML = `
                 <!-- Section Header -->
                 <div class="px-1 pb-1 max-w-md mx-auto">
-                    <span class="text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
-                        Konto Zawodnika
-                    </span>
-                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
                         <span>👤</span> Strefa Gracza
                     </h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Zaloguj się PIN-em, aby odblokować prywatną kartę i statystyki</p>
                 </div>
 
                 <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4 max-w-md mx-auto">
@@ -10556,16 +10835,16 @@
             const isSigned = attendees.includes(loggedPlayer);
             const isInMain = currentMatch ? getMatchPlayingSquad(currentMatch).includes(loggedPlayer) : false;
 
+            if (!isOrganizer && currentProfileSubtab === 'admin') {
+                currentProfileSubtab = 'stats';
+            }
+
             container.innerHTML = `
                 <!-- Section Header -->
                 <div class="px-1 pb-1">
-                    <span class="text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
-                        Konto Zawodnika
-                    </span>
-                    <h2 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
                         <span>👤</span> Mój Profil & Ustawienia
                     </h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Twoje statystyki, zdobyte odznaki, kronika spotkań i panel organizatora</p>
                 </div>
 
                 <!-- 1. Karta Główna Gracza (Player Hub) -->
@@ -10627,9 +10906,31 @@
                             <span class="text-base sm:text-lg font-black text-sky-400 font-mono">${attendancePercent}%</span>
                         </div>
                     </div>
+                </div>
 
+                <!-- Przełącznik Segmentowy (Sub-tabs Profilu) -->
+                <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid ${isOrganizer ? 'grid-cols-3' : 'grid-cols-2'} gap-1 text-xs font-bold shadow-md">
+                    <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                        <span>📊</span>
+                        <span class="truncate">Statystyki</span>
+                    </button>
+                    <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                        <span>📜</span>
+                        <span class="truncate">Kronika & Konto</span>
+                    </button>
+                    ${isOrganizer ? `
+                    <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                        <span>👑</span>
+                        <span class="truncate">Organizator</span>
+                    </button>
+                    ` : ''}
+                </div>
+
+                <!-- PODWIDOK 1: STATYSTYKI -->
+                <div id="profileSubtabContainer-stats" class="space-y-3">
+                    
                     <!-- Forma z ostatnich 5 spotkań -->
-                    <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs">
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs shadow-sm">
                         <span class="text-[11px] font-bold text-slate-300">Ostatnia forma (W/L):</span>
                         <div class="flex items-center gap-1">
                             ${formOutcomes.length ? formOutcomes.map(o => `
@@ -10638,20 +10939,20 @@
                         </div>
                     </div>
 
-                    <!-- 1B: Chemia Zespołowa & Duety -->
-                    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2 text-xs">
+                    <!-- Chemia Zespołowa & Duety -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
                         <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                             <span>🤝</span> Chemia Zespołowa & Duety
                         </span>
                         <div class="grid sm:grid-cols-2 gap-2 pt-0.5">
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2">
                                 <div class="min-w-0">
                                     <span class="text-[10px] text-slate-400 block font-semibold">🌟 Najlepszy partner:</span>
                                     <strong class="text-white text-xs block whitespace-normal break-words leading-tight">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
                                 </div>
                                 ${bestPartner ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 shrink-0 font-mono">${bestPartner.winPct}% W (${bestPartner.wins}/${bestPartner.together})</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
                             </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2">
                                 <div class="min-w-0">
                                     <span class="text-[10px] text-slate-400 block font-semibold">⚔️ Główny rywal:</span>
                                     <strong class="text-white text-xs block whitespace-normal break-words leading-tight">${topRival ? escapeHtml(topRival.name) : 'Brak danych'}</strong>
@@ -10662,7 +10963,7 @@
                     </div>
 
                     <!-- Zaawansowane Statystyki Meczowe Gracza -->
-                    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2 text-xs">
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
                         <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center justify-between">
                             <span class="flex items-center gap-1.5">
                                 <span>📊</span> Zaawansowane Statystyki Meczowe
@@ -10670,28 +10971,28 @@
                             <span class="text-[10px] text-slate-500 font-normal">Sezon 2026</span>
                         </span>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
                                 <span class="text-[10px] text-slate-400 font-semibold block">🎯 Win Impact</span>
                                 <div class="mt-1">
                                     <strong class="text-emerald-400 text-sm font-mono font-black">${pAdv?.winImpactFormatted || '-'}</strong>
                                     <span class="text-[9px] text-slate-400 block">${pAdv?.winImpactSub || 'Min. 4 mecze'}</span>
                                 </div>
                             </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
                                 <span class="text-[10px] text-slate-400 font-semibold block">🥊 Kryptonit</span>
                                 <div class="mt-1">
                                     <strong class="text-rose-400 text-xs font-bold block whitespace-normal break-words leading-tight" title="${pAdv?.kryptoniteRival || ''}">${pAdv?.kryptoniteRival || 'Brak'}</strong>
                                     <span class="text-[9px] text-slate-400 block">${pAdv?.kryptoniteSub || 'Brak rywala (min. 3 mecze)'}</span>
                                 </div>
                             </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
                                 <span class="text-[10px] text-slate-400 font-semibold block">🔥 Mistrz 5. Setów</span>
                                 <div class="mt-1">
                                     <strong class="text-amber-400 text-sm font-mono font-black">${pAdv?.clutchFormatted || '-'}</strong>
                                     <span class="text-[9px] text-slate-400 block">${pAdv?.clutchSub || 'Min. 2 tie-breaki'}</span>
                                 </div>
                             </div>
-                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
                                 <span class="text-[10px] text-slate-400 font-semibold block">📈 Bilans Setów</span>
                                 <div class="mt-1">
                                     <strong class="text-cyan-400 text-sm font-mono font-black">${pAdv?.setsDiffFormatted || '-'}</strong>
@@ -10701,8 +11002,8 @@
                         </div>
                     </div>
 
-                    <!-- 1C: Moje Wyróżnienia & Korony Meczowe -->
-                    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2.5 text-xs">
+                    <!-- Moje Wyróżnienia & Korony Meczowe -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2.5 text-xs shadow-sm">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                 <span>✨</span> Moje Wyróżnienia & Korony Meczowe
@@ -10732,7 +11033,7 @@
                             ].map(item => {
                                 const w = myAwards?.[item.key]?.wins || 0;
                                 return `
-                                    <div class="bg-slate-900/90 border ${w > 0 ? 'border-amber-500/40 bg-amber-950/10' : 'border-slate-800'} rounded-xl p-2.5 flex flex-col justify-between">
+                                    <div class="bg-slate-950/70 border ${w > 0 ? 'border-amber-500/40 bg-amber-950/10' : 'border-slate-800/80'} rounded-xl p-2.5 flex flex-col justify-between">
                                         <div class="flex items-center justify-between">
                                             <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
                                                 <span>${item.icon}</span> <span>${item.name}</span>
@@ -10755,12 +11056,12 @@
                     </div>
 
                     <!-- Gablota Odznak Gracza -->
-                    <div class="space-y-2 pt-1">
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Moje Odznaki (${badges.length}):</span>
                             <button type="button" onclick="openBadgesLegend()" class="text-[10px] text-amber-400 hover:underline">Zobacz wszystkie odznaki ➔</button>
                         </div>
-                        <div class="flex flex-wrap gap-1.5">
+                        <div class="flex flex-wrap gap-1.5 pt-0.5">
                             ${badges.length ? badges.map(b => `
                                 <span class="bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-xl text-xs flex items-center gap-1 text-slate-200">
                                     <span>${b.icon}</span>
@@ -10772,15 +11073,20 @@
                         </div>
                     </div>
 
-                    <!-- 1D: Osobista Kronika Spotkań -->
-                    <div class="space-y-2 pt-1">
+                </div>
+
+                <!-- PODWIDOK 2: KRONIKA & KONTO -->
+                <div id="profileSubtabContainer-chronicle" class="space-y-3 hidden">
+                    
+                    <!-- Osobista Kronika Spotkań -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 space-y-2 text-xs shadow-sm">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                 <span>📜</span> Moja Kronika Spotkań (${playerHistory.length}):
                             </span>
                             <span class="text-[10px] text-slate-400 font-mono">Występy na parkiecie</span>
                         </div>
-                        <div class="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                             ${playerHistory.length ? playerHistory.map(h => {
                                 let outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">⏳ Oczekuje</span>`;
                                 if (h.outcome === 'win') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800">🏆 Wygrana</span>`;
@@ -10815,38 +11121,44 @@
                         </div>
                     </div>
 
-                    <!-- Ustawienia Konta -->
-                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs flex-wrap gap-2">
-                        <button type="button" onclick="changeMyPlayerNamePrompt()" class="text-slate-400 hover:text-indigo-300 font-semibold flex items-center gap-1 transition">
-                            ✏️ Zmień swoje imię
-                        </button>
-                        <button type="button" onclick="changeMyPinPrompt()" class="text-slate-400 hover:text-emerald-300 font-semibold flex items-center gap-1 transition">
-                            🔑 Zmień swój kod PIN
-                        </button>
-                    </div>
-
-                </div>
-
-                <!-- Karta Wyboru Motywu dla zalogowanego gracza -->
-                <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-sm font-black text-white flex items-center gap-2">
-                                <span>🎨</span> Motyw Aplikacji
-                            </h3>
-                            <p class="text-[11px] text-slate-400">Wybierz swój ulubiony styl (zapisze się na telefonie)</p>
+                    <!-- Karta Wyboru Motywu dla zalogowanego gracza -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xs font-black text-white flex items-center gap-1.5 uppercase tracking-wider">
+                                    <span>🎨</span> Motyw Aplikacji
+                                </h3>
+                                <p class="text-[11px] text-slate-400">Wybierz swój ulubiony styl (zapisze się na telefonie)</p>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                4 Opcje + Klasyk
+                            </span>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                            4 Opcje + Klasyk
+                        <div id="profileThemePickerContainer" class="space-y-2">
+                            ${getThemePickerHtml()}
+                        </div>
+                    </div>
+
+                    <!-- Ustawienia Konta -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 shadow-sm space-y-2 text-xs">
+                        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>⚙️</span> Bezpieczeństwo i Konto
                         </span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <button type="button" onclick="changeMyPlayerNamePrompt()" class="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800/80 text-slate-300 hover:text-white font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-98">
+                                <span>✏️</span> Zmień swoje imię
+                            </button>
+                            <button type="button" onclick="changeMyPinPrompt()" class="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800/80 text-slate-300 hover:text-emerald-300 font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-98">
+                                <span>🔑</span> Zmień swój kod PIN
+                            </button>
+                        </div>
                     </div>
-                    <div id="profileThemePickerContainer" class="space-y-2">
-                        ${getThemePickerHtml()}
-                    </div>
+
                 </div>
 
-                <!-- 2. STREFA ORGANIZATORA (WIDOCZNA TYLKO DLA MICHAŁA CHACIŃSKIEGO) -->
+                <!-- PODWIDOK 3: STREFA ORGANIZATORA -->
                 ${isOrganizer ? `
+                <div id="profileSubtabContainer-admin" class="space-y-3 hidden">
                     <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/60 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
                         <div class="flex items-center justify-between border-b border-amber-800/60 pb-2.5">
                             <div class="flex items-center gap-2">
@@ -10857,6 +11169,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- 2A: Godziny Meczu, Hala i Ustawienia Grupy -->
                         <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
                             <div class="flex items-center justify-between">
@@ -10994,6 +11307,7 @@
                         </div>
 
                     </div>
+                </div>
                 ` : ''}
             `;
 
@@ -11001,6 +11315,8 @@
                 renderPlayerSkillsGrid();
                 renderPlayerDirectoryTags();
             }
+
+            setProfileSubtab(currentProfileSubtab);
 
             if (savedWinY > 0) {
                 window.scrollTo({ top: savedWinY, behavior: 'instant' });
