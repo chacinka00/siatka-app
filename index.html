@@ -9515,7 +9515,7 @@
                     const eligiblePlayers = Object.entries(playerStats)
                         .map(([p, data]) => ({ name: p, wins: data[cat].wins, votes: data[cat].votes }))
                         .filter(item => item.wins > 0 || item.votes > 0)
-                        .sort((a, b) => b.wins - a.wins || b.votes - a.votes || a.name.localeCompare(b.name, 'pl'));
+                        .sort((a, b) => b.wins - a.wins || a.name.localeCompare(b.name, 'pl'));
 
                     if (eligiblePlayers.length === 0 || eligiblePlayers[0].wins === 0) {
                         leaders[cat] = {
@@ -9528,8 +9528,7 @@
                         };
                     } else {
                         const topWins = eligiblePlayers[0].wins;
-                        const topVotes = eligiblePlayers[0].votes;
-                        const topContenders = eligiblePlayers.filter(p => p.wins === topWins && p.votes === topVotes);
+                        const topContenders = eligiblePlayers.filter(p => p.wins === topWins);
                         const firstLeader = topContenders[0].name;
                         const title = getGenderTitle(firstLeader, catLabels[cat].m, catLabels[cat].f);
                         const leadersStr = topContenders.map(c => c.name).join(' & ');
@@ -9538,7 +9537,7 @@
                             title,
                             leadersStr,
                             wins: topWins,
-                            votes: topVotes,
+                            votes: topContenders.reduce((sum, c) => sum + c.votes, 0),
                             isTied: topContenders.length > 1,
                             leaderList: topContenders.map(c => c.name)
                         };
@@ -10541,7 +10540,7 @@
                     const kEl = document.getElementById(kingId);
                     if (tEl && l) tEl.innerText = l.title;
                     if (kEl && l) {
-                        kEl.innerText = l.wins > 0 ? `${l.leadersStr} (${l.wins}x • ${l.votes} gł.)` : "Sezon w toku";
+                        kEl.innerText = l.wins > 0 ? `${l.leadersStr} (${l.wins}x)` : "Sezon w toku";
                     }
                 };
 
