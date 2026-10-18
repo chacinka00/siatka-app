@@ -1581,15 +1581,21 @@
 
                 <!-- Match Sets Result Card -->
                 <div id="matchScoreDisplayCard" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2 shadow-md hidden">
-                    <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2 flex-wrap">
                         <div class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-xs">📊</span>
                             <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
                         </div>
-                        <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
-                            <span>✏️</span>
-                            <span id="editScoreBtnLabel">Wpisz wynik</span>
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" id="matchReportScoreBtn" onclick="openCurrentMatchReportModal()" title="Zobacz oficjalny raport meczowy ze składami i MVP" class="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-800/80 hover:border-indigo-700 text-indigo-300 hover:text-indigo-200 font-bold px-2.5 py-1 rounded-xl text-[11px] flex items-center gap-1 transition active:scale-95 shadow-sm">
+                                <span>📑</span>
+                                <span>Raport meczowy</span>
+                            </button>
+                            <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
+                                <span>✏️</span>
+                                <span id="editScoreBtnLabel">Wpisz wynik</span>
+                            </button>
+                        </div>
                     </div>
                     <div id="scoreText" class="min-w-0">
                         <div class="text-xs text-slate-500 py-0.5">Jeszcze nie wpisano wyniku spotkania</div>
@@ -1819,43 +1825,49 @@
             
             <!-- Section Header -->
             <div class="px-1 py-0.5 flex items-center justify-between gap-2">
-                <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-1.5 shrink-0">
                     <span>🔀</span> Podział na 2 Zespoły
                 </h2>
-                <div id="teamsAdminControls" class="flex items-center gap-1.5 flex-wrap hidden">
-                    <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition active:scale-95 shadow-md flex items-center gap-1">
+                <div id="teamsAdminControls" class="flex items-center gap-1.5 shrink-0 hidden">
+                    <button type="button" onclick="generateRandomTeams()" class="bg-indigo-500 hover:bg-indigo-400 active:scale-95 text-slate-950 font-black px-2.5 py-1 rounded-xl text-[11px] transition shadow-sm flex items-center gap-1 shrink-0">
                         <span>🎲</span> Losuj
                     </button>
-                    <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-2.5 py-1.5 rounded-xl text-xs transition border border-slate-700" title="Zresetuj podział na drużyny">
+                    <button type="button" onclick="clearCurrentMatchTeams()" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-bold px-2 py-1 rounded-xl text-[11px] transition border border-slate-700 shrink-0" title="Zresetuj podział na drużyny">
                         🧹 Reset
                     </button>
                 </div>
             </div>
 
-            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+            <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-3.5 sm:p-5 shadow-xl space-y-3">
 
-                <!-- Przełącznik Widoku (Lista & Ręczny Wybór vs Boisko Graficzne) -->
-                <div class="flex items-center justify-between bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 text-xs">
-                    <span id="balanceIndicator" class="font-bold text-emerald-400 text-[11px] ml-2">Status: Gotowy</span>
-                    <div class="flex gap-1">
-                        <button type="button" id="viewModeListBtn" onclick="setTeamsViewMode('list')" class="px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]">
-                            📋 Wybór & Lista
+                <!-- Przełącznik Widoku (50/50 Segmented Control) + Zwięzły Status -->
+                <div class="space-y-1.5">
+                    <div class="grid grid-cols-2 gap-1 p-1 bg-slate-950/80 rounded-2xl border border-slate-800 text-xs">
+                        <button type="button" id="viewModeListBtn" onclick="setTeamsViewMode('list')" class="py-1.5 px-2 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px] flex items-center justify-center gap-1 shadow-sm">
+                            <span>📋</span> Wybór & Lista
                         </button>
-                        <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]">
-                            🏐 Boisko 6v6
+                        <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1">
+                            <span>🏐</span> Boisko 6v6
                         </button>
+                    </div>
+                    <div class="flex items-center justify-between px-1 text-[11px]">
+                        <span id="balanceIndicator" class="font-bold text-slate-400">Status: Wybierz składy</span>
                     </div>
                 </div>
 
-                <!-- Pula nieprzypisanych graczy z listy obecności (Szybki wybór pod kciuk) -->
-                <div id="unassignedPlayersCard" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
-                            <span>👥</span> Gracze do przydziału (<span id="unassignedCount" class="text-indigo-400 font-mono font-bold">0</span>)
-                        </h3>
-                        <span id="unassignedHelperText" class="text-[10px] text-slate-400">Dotknij ⬛ lub ⬜, aby przypisać</span>
+                <!-- Pula nieprzypisanych graczy z listy obecności -->
+                <div id="unassignedPlayersCard" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 space-y-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm shrink-0">👥</span>
+                            <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-200 whitespace-nowrap">
+                                Gracze do przydziału
+                            </h3>
+                            <span id="unassignedCount" class="font-mono text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800 shrink-0">0</span>
+                        </div>
+                        <span id="unassignedHelperText" class="text-[10px] text-slate-400 block pl-6 sm:pl-0">Dotknij ⬛ lub ⬜, aby przypisać</span>
                     </div>
-                    <div id="unassignedPlayersList" class="flex flex-wrap gap-2">
+                    <div id="unassignedPlayersList" class="flex flex-wrap gap-1.5">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
@@ -2218,11 +2230,14 @@
 
                     <!-- Władcy Parkietu – Wyróżnienia Sezonu (Czapa, Gwóźdź, Ryba, Turbo) -->
                     <div class="pt-3 border-t border-slate-800 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                                <span>✨</span> Władcy Parkietu – Wyróżnienia Sezonu
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5 min-w-0">
+                                <span>✨</span> <span class="truncate">Władcy Parkietu</span>
                             </span>
-                            <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
+                            <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm">
+                                <span>🗳️</span>
+                                <span>Głosy drużyny</span>
+                            </span>
                         </div>
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-2xl flex flex-col justify-between space-y-1">
@@ -5443,6 +5458,17 @@
                     if (scoreTextEl) scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
                     if (editLabel) editLabel.innerText = "Edytuj wynik";
                     if (editScoreBtn && isAdmin) editScoreBtn.classList.remove('hidden');
+                } else if (isMatchFinished(currentMatch)) {
+                    scoreCard.classList.remove('hidden');
+                    if (scoreTextEl) {
+                        scoreTextEl.innerHTML = `
+                            <div class="flex items-center justify-between py-0.5 text-xs text-slate-500 italic">
+                                <span>Brak wpisanego oficjalnego wyniku</span>
+                                ${isAdmin ? `<button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1"><span>📊</span> + Wpisz wynik</button>` : ''}
+                            </div>
+                        `;
+                    }
+                    if (editScoreBtn) editScoreBtn.classList.add('hidden');
                 } else {
                     if (isAdmin) {
                         scoreCard.classList.remove('hidden');
@@ -6078,14 +6104,14 @@
             const unassignedCard = document.getElementById('unassignedPlayersCard');
 
             if (mode === 'list') {
-                listBtn.className = "px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]";
-                courtBtn.className = "px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]";
+                listBtn.className = "py-1.5 px-2 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px] flex items-center justify-center gap-1 shadow-sm";
+                courtBtn.className = "py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1";
                 listView.classList.remove('hidden');
                 courtView.classList.add('hidden');
                 if (unassignedCard) unassignedCard.classList.remove('hidden');
             } else {
-                courtBtn.className = "px-3 py-1 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px]";
-                listBtn.className = "px-3 py-1 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px]";
+                courtBtn.className = "py-1.5 px-2 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px] flex items-center justify-center gap-1 shadow-sm";
+                listBtn.className = "py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1";
                 courtView.classList.remove('hidden');
                 listView.classList.add('hidden');
             }
@@ -6543,14 +6569,14 @@
                     : (dark.length === Math.floor(mainSquad.length / 2) && light.length === Math.ceil(mainSquad.length / 2) && totalAssigned === mainSquad.length);
 
                 if (totalAssigned === 0) {
-                    balanceInd.innerText = "Status: Wybierz składy ręcznie lub wylosuj 🎲";
-                    balanceInd.className = "font-bold text-slate-400 text-[11px] ml-2";
+                    balanceInd.innerText = `Status: Do przydziału (${mainSquad.length} graczy) 🎲`;
+                    balanceInd.className = "font-bold text-slate-400 text-[11px]";
                 } else if (isBalanced) {
                     balanceInd.innerText = `Status: Składy gotowe (${dark.length}v${light.length}) ✅`;
-                    balanceInd.className = "font-bold text-emerald-400 text-[11px] ml-2";
+                    balanceInd.className = "font-bold text-emerald-400 text-[11px]";
                 } else {
-                    balanceInd.innerText = `Status: Przypisano ${totalAssigned}/${mainSquad.length} zawodników (${dark.length} vs ${light.length})`;
-                    balanceInd.className = "font-bold text-amber-400 text-[11px] ml-2";
+                    balanceInd.innerText = `Status: W toku: ${totalAssigned}/${mainSquad.length} (${dark.length} vs ${light.length})`;
+                    balanceInd.className = "font-bold text-amber-400 text-[11px]";
                 }
             }
         }
@@ -8102,6 +8128,16 @@
             if (modal) modal.classList.add('hidden');
         }
 
+        function openCurrentMatchReportModal() {
+            const monthData = AppState.months?.[AppState.currentMonth];
+            const currentMatch = monthData?.matches?.[AppState.currentMatchIndex];
+            if (!currentMatch) {
+                if (typeof showToast === 'function') showToast("Nie wybrano meczu do wyświetlenia raportu!");
+                return;
+            }
+            openArchivedMatchModal(currentMatch.date, AppState.currentMonth);
+        }
+
         function openArchivedMatchModal(dateStr, monthName = null) {
             if (!dateStr) return;
             const modal = document.getElementById('archivedMatchModal');
@@ -9600,7 +9636,7 @@
                                         <tr>
                                             <th class="py-2.5 px-2 text-center w-8">#</th>
                                             <th class="py-2.5 px-2 text-left">Zawodnik</th>
-                                            <th class="py-2.5 px-2 text-center">Bilans (W - L)</th>
+                                            <th class="py-2.5 px-2 text-center whitespace-nowrap">Bilans W-L</th>
                                             <th class="py-2.5 px-2 text-right font-extrabold text-emerald-400">Win Impact</th>
                                         </tr>
                                     </thead>
@@ -9758,7 +9794,7 @@
                                         <tr>
                                             <th class="py-2.5 px-2 text-center w-8">#</th>
                                             <th class="py-2.5 px-2 text-left">Zawodnik</th>
-                                            <th class="py-2.5 px-2 text-center">Tie-breaki (W/L)</th>
+                                            <th class="py-2.5 px-2 text-center whitespace-nowrap">Tie-breaki W-L</th>
                                             <th class="py-2.5 px-2 text-right font-extrabold text-amber-300">Tie-break %</th>
                                         </tr>
                                     </thead>
@@ -9848,53 +9884,41 @@
             }
 
             container.innerHTML = `
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">📊</span>
-                        <div>
-                            <h3 class="font-bold text-xs uppercase tracking-wider text-white">Zaawansowane Statystyki Meczowe</h3>
-                            <p class="text-[10px] text-slate-400">Wyliczane automatycznie z wyników i składów</p>
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-xl shrink-0">📊</span>
+                        <div class="min-w-0">
+                            <h3 class="font-bold text-xs uppercase tracking-wider text-white truncate">Zaawansowane Statystyki Meczowe</h3>
+                            <p class="text-[10px] text-slate-400 truncate">Wyliczane automatycznie z wyników i składów</p>
                         </div>
                     </div>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2 py-0.5 rounded-full font-bold">Auto ⚡</span>
+                    <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full font-bold whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm">
+                        <span>⚡</span><span>Auto</span>
+                    </span>
                 </div>
 
-                <!-- Sub-tab Pills (Mobile Horizontal Scroll) -->
-                <div id="advancedStatsTabsScroll" class="flex items-center gap-1.5 overflow-x-auto py-1 px-0.5 scrollbar-none text-[11px] font-bold">
-                    <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
-                        🎯 Wpływ na wygraną
+                <!-- Sub-tab Bento Grid (100% visible on 1 screen without scrolling) -->
+                <div class="grid grid-cols-6 sm:grid-cols-5 gap-1 sm:gap-1.5 text-[10.5px] sm:text-xs font-bold pt-0.5">
+                    <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🎯</span> <span class="truncate">Win Impact</span>
                     </button>
-                    <button type="button" data-adv-tab="duos" onclick="switchAdvancedStatsSubTab('duos')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
-                        🤝 Duety (Synergia)
+                    <button type="button" data-adv-tab="duos" onclick="switchAdvancedStatsSubTab('duos')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🤝</span> <span class="truncate">Duety</span>
                     </button>
-                    <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
-                        🥊 Kryptonity
+                    <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🥊</span> <span class="truncate">Kryptonit</span>
                     </button>
-                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
-                        🔥 Mistrz 5. Setów
+                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 active:scale-95 ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🔥</span> <span class="truncate">Tie-breaki</span>
                     </button>
-                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="shrink-0 px-3 py-1.5 rounded-xl transition ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
-                        📈 Bilans Setów
+                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 active:scale-95 ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>📈</span> <span class="truncate">Bilans setów</span>
                     </button>
                 </div>
 
                 <!-- Sub-tab Body -->
                 ${subTabContentHtml}
             `;
-
-            const tabsScroll = document.getElementById('advancedStatsTabsScroll');
-            if (tabsScroll) {
-                if (prevScrollLeft > 0) {
-                    tabsScroll.scrollLeft = prevScrollLeft;
-                }
-                if (isTabClick) {
-                    const activePill = tabsScroll.querySelector(`[data-adv-tab="${currentAdvancedStatsTab}"]`);
-                    if (activePill) {
-                        const targetLeft = activePill.offsetLeft - (tabsScroll.clientWidth / 2) + (activePill.offsetWidth / 2);
-                        tabsScroll.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-                    }
-                }
-            }
         }
 
         function calculatePlayerMatchHistory(playerName) {
@@ -10714,7 +10738,7 @@
         let currentProfileSubtab = 'stats';
         function setProfileSubtab(subtab) {
             currentProfileSubtab = subtab;
-            const subtabs = ['stats', 'chronicle', 'admin'];
+            const subtabs = ['stats', 'chronicle', 'settings', 'admin'];
             subtabs.forEach(t => {
                 const btn = document.getElementById(`profileSubtabBtn-${t}`);
                 const container = document.getElementById(`profileSubtabContainer-${t}`);
@@ -10724,9 +10748,9 @@
                 }
                 if (btn) {
                     if (isActive) {
-                        btn.className = "py-2 px-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
                     } else {
-                        btn.className = "py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
                     }
                 }
             });
@@ -10837,6 +10861,19 @@
             if (!isOrganizer && currentProfileSubtab === 'admin') {
                 currentProfileSubtab = 'stats';
             }
+            if (isOrganizer && currentProfileSubtab === 'settings') {
+                currentProfileSubtab = 'admin';
+            }
+
+            const currentThemeId = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
+            const themeNames = {
+                'haaland-dark': { name: 'Błękit Ciemny (Haaland)', icon: '❄️🌙' },
+                'haaland-light': { name: 'Błękit Jasny (Haaland)', icon: '❄️☀️' },
+                'mercurial-dark': { name: 'Róż Ciemny (Mercurial)', icon: '👟🌙' },
+                'mercurial-light': { name: 'Róż Jasny (Mercurial)', icon: '👟☀️' },
+                'classic': { name: 'Klasyczny (Oryginał)', icon: '🏐' }
+            };
+            const activeThemeInfo = themeNames[currentThemeId] || { name: 'Błękit Ciemny (Haaland)', icon: '❄️🌙' };
 
             container.innerHTML = `
                 <!-- Section Header -->
@@ -10908,21 +10945,26 @@
                 </div>
 
                 <!-- Przełącznik Segmentowy (Sub-tabs Profilu) -->
-                <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid ${isOrganizer ? 'grid-cols-3' : 'grid-cols-2'} gap-1 text-xs font-bold shadow-md">
-                    <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-3 gap-1 text-xs font-bold shadow-md">
+                    <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>📊</span>
-                        <span class="truncate">Statystyki</span>
+                        <span class="truncate">${isOrganizer ? 'Moje Staty' : 'Statystyki'}</span>
                     </button>
-                    <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>📜</span>
-                        <span class="truncate">Kronika & Konto</span>
+                        <span class="truncate">Kronika</span>
                     </button>
                     ${isOrganizer ? `
-                    <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1.5 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>👑</span>
                         <span class="truncate">Organizator</span>
                     </button>
-                    ` : ''}
+                    ` : `
+                    <button type="button" id="profileSubtabBtn-settings" onclick="setProfileSubtab('settings')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                        <span>⚙️</span>
+                        <span class="truncate">Ustawienia</span>
+                    </button>
+                    `}
                 </div>
 
                 <!-- PODWIDOK 1: STATYSTYKI -->
@@ -11003,12 +11045,12 @@
 
                     <!-- Moje Wyróżnienia & Korony Meczowe -->
                     <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2.5 text-xs shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                                <span>✨</span> Moje Wyróżnienia & Korony Meczowe
+                        <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
+                            <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 min-w-0">
+                                <span>✨</span> <span class="truncate">Moje Wyróżnienia & Korony</span>
                             </span>
-                            <span class="text-[10px] text-amber-400 font-bold flex items-center gap-1">
-                                <span>👑</span> <span>${(myAwards?.totalWins || 0) === 1 ? '1 zdobyta korona' : ((myAwards?.totalWins || 0) >= 2 && (myAwards?.totalWins || 0) <= 4 ? `${myAwards?.totalWins} zdobyte korony` : `${myAwards?.totalWins || 0} zdobytych koron`)}</span>
+                            <span class="text-[10px] text-amber-300 font-bold bg-amber-950/80 border border-amber-800/70 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm font-mono">
+                                <span>👑</span> <span>${(myAwards?.totalWins || 0) === 1 ? '1 korona' : (((myAwards?.totalWins || 0) >= 2 && (myAwards?.totalWins || 0) <= 4) ? `${myAwards?.totalWins} korony` : `${myAwards?.totalWins || 0} koron`)}</span>
                             </span>
                         </div>
 
@@ -11074,7 +11116,7 @@
 
                 </div>
 
-                <!-- PODWIDOK 2: KRONIKA & KONTO -->
+                <!-- PODWIDOK 2: KRONIKA (HISTORIA SPOTKAŃ) -->
                 <div id="profileSubtabContainer-chronicle" class="space-y-3 hidden">
                     
                     <!-- Osobista Kronika Spotkań -->
@@ -11085,7 +11127,7 @@
                             </span>
                             <span class="text-[10px] text-slate-400 font-mono">Występy na parkiecie</span>
                         </div>
-                        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
+                        <div class="space-y-1.5 max-h-96 overflow-y-auto pr-1">
                             ${playerHistory.length ? playerHistory.map(h => {
                                 let outcomeBadge = `<span class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">⏳ Oczekuje</span>`;
                                 if (h.outcome === 'win') outcomeBadge = `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800">🏆 Wygrana</span>`;
@@ -11120,64 +11162,143 @@
                         </div>
                     </div>
 
-                    <!-- Karta Wyboru Motywu dla zalogowanego gracza -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-xs font-black text-white flex items-center gap-1.5 uppercase tracking-wider">
-                                    <span>🎨</span> Motyw Aplikacji
-                                </h3>
-                                <p class="text-[11px] text-slate-400">Wybierz swój ulubiony styl (zapisze się na telefonie)</p>
-                            </div>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                                4 Opcje + Klasyk
-                            </span>
-                        </div>
-                        <div id="profileThemePickerContainer" class="space-y-2">
-                            ${getThemePickerHtml()}
-                        </div>
-                    </div>
-
-                    <!-- Ustawienia Konta -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 shadow-sm space-y-2 text-xs">
-                        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>⚙️</span> Bezpieczeństwo i Konto
-                        </span>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                            <button type="button" onclick="changeMyPlayerNamePrompt()" class="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800/80 text-slate-300 hover:text-white font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-98">
-                                <span>✏️</span> Zmień swoje imię
-                            </button>
-                            <button type="button" onclick="changeMyPinPrompt()" class="w-full bg-slate-950 hover:bg-slate-900 border border-slate-800/80 text-slate-300 hover:text-emerald-300 font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-98">
-                                <span>🔑</span> Zmień swój kod PIN
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- PODWIDOK 3: STREFA ORGANIZATORA -->
-                ${isOrganizer ? `
-                <div id="profileSubtabContainer-admin" class="space-y-3 hidden">
-                    <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/60 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
-                        <div class="flex items-center justify-between border-b border-amber-800/60 pb-2.5">
-                            <div class="flex items-center gap-2">
-                                <span class="text-2xl">👑</span>
+                <!-- PODWIDOK 3 (ZAWODNIK): DEDYKOWANY PANEL USTAWIEŃ PROFILU -->
+                ${!isOrganizer ? `
+                <div id="profileSubtabContainer-settings" class="space-y-3.5 hidden">
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-lg shadow-sm">
+                                    ⚙️
+                                </div>
                                 <div>
-                                    <h3 class="font-black text-sm sm:text-base text-white">Strefa Organizatora</h3>
-                                    <p class="text-[10px] text-amber-300">Tylko Ty masz dostęp do tych funkcji</p>
+                                    <h3 class="font-black text-sm sm:text-base text-white">Ustawienia Profilu Zawodnika</h3>
+                                    <p class="text-[10px] text-slate-400">Wygląd, awatar, kod PIN i sesja na telefonie</p>
                                 </div>
                             </div>
+                            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+                                Profil
+                            </span>
                         </div>
 
-                        <!-- 2A: Godziny Meczu, Hala i Ustawienia Grupy -->
+                        <!-- Siatka Ustawień Zawodnika -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            
+                            <!-- 🎨 Wygląd & Motyw -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-xl shrink-0">🎨</span>
+                                        <div class="min-w-0">
+                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Wygląd & Motyw</h4>
+                                            <p class="text-[10px] text-slate-400">Styl kolorów aplikacji</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1.5 shrink-0">
+                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay">${escapeHtml(activeThemeInfo.name)}</span>
+                                    </span>
+                                </div>
+                                <button type="button" onclick="openThemePickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
+                                    <span>🎨</span> Zmień motyw aplikacji ➔
+                                </button>
+                            </div>
+
+                            <!-- 📷 Awatar / Zdjęcie -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <div class="shrink-0">
+                                            ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Awatar & Zdjęcie</h4>
+                                            <p class="text-[10px] text-slate-400">Widoczne na boisku i liście</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full shrink-0">Aktywny</span>
+                                </div>
+                                <button type="button" onclick="openAvatarPickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
+                                    <span>📷</span> Zmień awatar lub zdjęcie ➔
+                                </button>
+                            </div>
+
+                            <!-- 🔒 Bezpieczeństwo (PIN & Imię) -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-xl shrink-0">🔒</span>
+                                        <div class="min-w-0">
+                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Bezpieczeństwo & PIN</h4>
+                                            <p class="text-[10px] text-slate-400">Kod dostępu i Twoje imię</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-indigo-300 font-bold bg-indigo-950/60 border border-indigo-800/60 px-2 py-0.5 rounded-full shrink-0">4-cyfry</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="changeMyPinPrompt()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 hover:text-emerald-300 font-bold py-2 px-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95 shadow-sm">
+                                        <span>🔑</span> Zmień PIN
+                                    </button>
+                                    <button type="button" onclick="changeMyPlayerNamePrompt()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500/50 text-slate-200 font-bold py-2 px-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95 shadow-sm">
+                                        <span>✏️</span> Zmień imię
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 🚪 Sesja na telefonie -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-xl shrink-0">🚪</span>
+                                        <div class="min-w-0">
+                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Sesja Gracza</h4>
+                                            <p class="text-[10px] text-slate-400">Pamięć na tym telefonie</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-mono shrink-0">Zalogowany</span>
+                                </div>
+                                <button type="button" onclick="logoutPlayerAccount()" class="w-full bg-rose-950/30 hover:bg-rose-900/50 border border-rose-900/60 hover:border-rose-700 text-rose-300 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
+                                    <span>🚪</span> Wyloguj się z profilu
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="profileThemePickerContainer" class="hidden"></div>
+                </div>
+                ` : ''}
+
+                <!-- PODWIDOK 3 (ORGANIZATOR): CENTRUM ZARZĄDZANIA & NARZĘDZIA ORGANIZATORA -->
+                ${isOrganizer ? `
+                <div id="profileSubtabContainer-admin" class="space-y-4 hidden">
+                    
+                    <!-- 1. Dedykowany Panel Narzędzi Organizatora -->
+                    <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/60 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-amber-800/40 pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-300 flex items-center justify-center text-lg shadow-sm">
+                                    👑
+                                </div>
+                                <div>
+                                    <h3 class="font-black text-sm sm:text-base text-white">Centrum Zarządzania & Narzędzia Organizatora</h3>
+                                    <p class="text-[10px] text-amber-300">Wszystkie narzędzia administratorskie w jednym miejscu</p>
+                                </div>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full shrink-0">
+                                Admin
+                            </span>
+                        </div>
+
+                        <!-- GRUPA 1: ⚙️ Parametry spotkań & Hala -->
                         <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
                             <div class="flex items-center justify-between">
                                 <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
-                                    <span>⚙️</span> Godziny Meczu, Hala i Zbiórka
+                                    <span>⚙️</span> Parametry spotkań & Hala
                                 </h4>
-                                <span class="text-[9px] text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-800/80">Panel Organizatora</span>
+                                <span class="text-[9px] text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800/80">Konfiguracja</span>
                             </div>
-                            <p class="text-[10px] text-slate-400">Możesz w każdej chwili zmienić godziny gry (np. 19:45 - 21:45), godzinę zbiórki, adres hali czy numer BLIK – bez edycji kodu:</p>
+                            <p class="text-[10px] text-slate-400">Godziny gry, zbiórka, adres hali, koszt oraz numer telefonu do BLIK:</p>
                             <div class="bg-slate-900/90 border border-slate-800/90 rounded-xl p-2.5 space-y-1.5 text-xs text-slate-300">
                                 <div class="flex items-center justify-between">
                                     <span class="text-slate-400">⏰ Zbiórka / rozgrzewka:</span>
@@ -11205,107 +11326,201 @@
                             </button>
                         </div>
 
-                        <!-- 2B: Szybki Generator Dłużników na Messengera -->
+                        <!-- GRUPA 2: 📢 Komunikacja & Messenger -->
                         <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
-                                    <span>💸</span> Przypomnienie o Składkach (Messenger)
+                                    <span>📢</span> Komunikacja & Messenger
                                 </h4>
+                                <span class="text-[9px] text-indigo-400 font-bold bg-indigo-950/80 px-2 py-0.5 rounded-full border border-indigo-800/80">1-Klik</span>
                             </div>
-                            <p class="text-[10px] text-slate-400">Generuje gotową wiadomość z listą osób, które jeszcze nie opłaciły hali za dany miesiąc, wraz z kwotami i numerem BLIK:</p>
+                            <p class="text-[10px] text-slate-400">Gotowy tekst z listą dłużników za dany miesiąc, kwotami i numerem BLIK do wklejenia w czat ekipy:</p>
                             <button type="button" onclick="copyDebtorsListMessage()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
                                 <span>📢</span> Kopiuj listę do opłacenia na Messengera
                             </button>
                         </div>
 
-                        <!-- Dyskretne Oceny Graczy (1-5 ⭐) -->
-                        <div class="bg-slate-950 border border-indigo-900/40 rounded-2xl p-3.5 space-y-2.5">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
-                                    <span>🤫</span> Ukryte Oceny Graczy (Balans 6v6)
+                        <!-- GRUPA 3: ⭐ Oceny umiejętności (Zwijany moduł) -->
+                        <details class="group bg-slate-950 border border-indigo-900/40 rounded-2xl overflow-hidden shadow-sm">
+                            <summary class="p-3.5 flex items-center justify-between cursor-pointer list-none select-none hover:bg-slate-900/50 transition">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base">🤫</span>
+                                    <div>
+                                        <h4 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider">
+                                            Ukryte Oceny Graczy (Balans 6v6)
+                                        </h4>
+                                        <p class="text-[10px] text-slate-400">Gwiazdki 1-5★ używane do losowania równych składów</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-[9px] text-slate-400 font-medium bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Tylko Admin</span>
+                                    <span class="text-xs text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+                                </div>
+                            </summary>
+                            <div class="p-3.5 pt-0 space-y-2.5 border-t border-slate-800/60 mt-1">
+                                <div class="space-y-1.5 pt-2">
+                                    <input type="text" id="playerSkillsSearch" oninput="lastSkillsSearchQuery = this.value; renderPlayerSkillsGrid()" placeholder="🔍 Szukaj gracza do oceny..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 text-xs text-slate-100 placeholder-slate-500 rounded-xl px-3 py-1.5 focus:outline-none transition">
+                                    <div class="flex items-center justify-between text-[9px] text-slate-400 px-2 py-1 bg-slate-900/40 rounded-lg border border-slate-800/50">
+                                        <span class="text-slate-400 font-semibold">1★ Start</span>
+                                        <span class="text-slate-600">•</span>
+                                        <span class="text-slate-300 font-semibold">2★ Solid</span>
+                                        <span class="text-slate-600">•</span>
+                                        <span class="text-blue-300 font-semibold">3★ Średni</span>
+                                        <span class="text-slate-600">•</span>
+                                        <span class="text-amber-300 font-semibold">4★ Lider</span>
+                                        <span class="text-slate-600">•</span>
+                                        <span class="text-amber-400 font-bold">5★ PRO</span>
+                                    </div>
+                                </div>
+
+                                <div id="playerSkillsGrid" onscroll="if (this.scrollTop > 0) lastSkillsGridScrollTop = this.scrollTop;" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- GRUPA 4: 👥 Baza & Bezpieczeństwo -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                                    <span>👥</span> Baza Graczy & Bezpieczeństwo
                                 </h4>
-                                <span class="text-[9px] text-slate-400 font-medium bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Tylko Ty widzisz</span>
+                                <span class="text-[9px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Użytkownicy</span>
                             </div>
 
+                            <!-- 4A: Reset PIN-u Gracza -->
                             <div class="space-y-1.5">
-                                <input type="text" id="playerSkillsSearch" oninput="lastSkillsSearchQuery = this.value; renderPlayerSkillsGrid()" placeholder="🔍 Szukaj gracza do oceny..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 text-xs text-slate-100 placeholder-slate-500 rounded-xl px-3 py-1.5 focus:outline-none transition">
-                                <div class="flex items-center justify-between text-[9px] text-slate-400 px-2 py-1 bg-slate-900/40 rounded-lg border border-slate-800/50">
-                                    <span class="text-slate-400 font-semibold">1★ Start</span>
-                                    <span class="text-slate-600">•</span>
-                                    <span class="text-slate-300 font-semibold">2★ Solid</span>
-                                    <span class="text-slate-600">•</span>
-                                    <span class="text-blue-300 font-semibold">3★ Średni</span>
-                                    <span class="text-slate-600">•</span>
-                                    <span class="text-amber-300 font-semibold">4★ Lider</span>
-                                    <span class="text-slate-600">•</span>
-                                    <span class="text-amber-400 font-bold">5★ PRO</span>
+                                <label class="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+                                    <span>🔑</span> Resetuj PIN zapominalskiemu:
+                                </label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <select id="resetPinPlayerSelect" class="flex-1 min-w-0 w-full bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500">
+                                        <option value="">-- Wybierz gracza --</option>
+                                        ${AppState.all_players.filter(p => p !== ORGANIZER_NAME).map(p => `
+                                            <option value="${escapeHtml(p)}">${escapeHtml(p)}${AppState.player_pins[p] ? ' (ma PIN)' : ' (brak PIN)'}</option>
+                                        `).join('')}
+                                    </select>
+                                    <button type="button" onclick="resetSelectedPlayerPin()" class="w-full sm:w-auto shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                                        <span>🔑</span> Resetuj PIN
+                                    </button>
                                 </div>
                             </div>
 
-                            <div id="playerSkillsGrid" onscroll="if (this.scrollTop > 0) lastSkillsGridScrollTop = this.scrollTop;" class="space-y-2 max-h-80 overflow-y-auto pr-1">
-                                <!-- Populated dynamically -->
-                            </div>
-                        </div>
-
-                        <!-- Reset PIN-ów Zapominalskim -->
-                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1">
-                                    <span>🔑</span> Reset PIN-u Gracza
-                                </h4>
-                            </div>
-                            <p class="text-[10px] text-slate-400">Jeśli ktoś zapomniał PIN-u, możesz go zresetować, aby mógł ustalić nowy:</p>
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <select id="resetPinPlayerSelect" class="flex-1 min-w-0 w-full bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500">
-                                    <option value="">-- Wybierz gracza --</option>
-                                    ${AppState.all_players.filter(p => p !== ORGANIZER_NAME).map(p => `
-                                        <option value="${escapeHtml(p)}">${escapeHtml(p)}${AppState.player_pins[p] ? ' (ma PIN)' : ' (brak PIN)'}</option>
-                                    `).join('')}
-                                </select>
-                                <button type="button" onclick="resetSelectedPlayerPin()" class="w-full sm:w-auto shrink-0 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                                    <span>🔑</span> Resetuj PIN
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Baza Graczy -->
-                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
-                            <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1">
-                                <span>👥</span> Baza Graczy (+ Dodaj nowego)
-                            </h4>
-                            <div class="flex gap-2">
-                                <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
-                                <button type="button" onclick="addNewPlayerToDirectory()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition active:scale-95">
-                                    Dodaj
-                                </button>
-                            </div>
-                            <div id="playerDirectoryTags" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1">
-                                <!-- Populated dynamically -->
-                            </div>
-                        </div>
-
-                        <!-- Kopia Zapasowa & Reset -->
-                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
-                            <h4 class="font-extrabold text-xs text-white uppercase tracking-wider">⚙️ Kopia Zapasowa (JSON)</h4>
-                            <div class="flex flex-wrap gap-2 text-xs">
-                                <button type="button" onclick="exportDataJSON()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition">
-                                    📥 Pobierz kopię
-                                </button>
-                                <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition cursor-pointer">
-                                    📤 Wgraj kopię
-                                    <input type="file" onchange="importDataJSON(event)" accept=".json" class="hidden">
+                            <!-- 4B: Zarządzanie bazą graczy -->
+                            <div class="space-y-2 pt-1 border-t border-slate-800/60">
+                                <label class="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+                                    <span>👤</span> Dodaj nowego zawodnika do bazy:
                                 </label>
-                                <button type="button" onclick="resetToInitialDataWithAuth()" class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-900/50 px-3 py-1.5 rounded-xl font-semibold transition">
-                                    🔄 Reset bazy
+                                <div class="flex gap-2">
+                                    <input id="newPlayerNameInput" type="text" placeholder="Imię i nazwisko..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <button type="button" onclick="addNewPlayerToDirectory()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition active:scale-95">
+                                        Dodaj
+                                    </button>
+                                </div>
+                                <div id="playerDirectoryTags" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- 4C: Kopia Zapasowa & Bezpieczeństwo Danych -->
+                            <div class="space-y-2 pt-1 border-t border-slate-800/60">
+                                <label class="text-[11px] font-bold text-slate-300 flex items-center gap-1">
+                                    <span>💾</span> Kopia zapasowa bazy danych:
+                                </label>
+                                <div class="flex flex-wrap gap-2 text-xs">
+                                    <button type="button" onclick="exportDataJSON()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition active:scale-95">
+                                        📥 Pobierz kopię (.json)
+                                    </button>
+                                    <label class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-semibold transition cursor-pointer active:scale-95">
+                                        📤 Wgraj kopię
+                                        <input type="file" onchange="importDataJSON(event)" accept=".json" class="hidden">
+                                    </label>
+                                    <button type="button" onclick="resetToInitialDataWithAuth()" class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-900/50 px-3 py-1.5 rounded-xl font-semibold transition active:scale-95">
+                                        🔄 Reset bazy
+                                    </button>
+                                </div>
+                                <button type="button" onclick="checkEmergencyLocalStorageBackup()" class="w-full bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/60 text-amber-300 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-1 active:scale-95">
+                                    <span>🛡️</span>
+                                    <span>Sprawdź / Przywróć kopię z pamięci telefonu</span>
                                 </button>
                             </div>
-                            <button type="button" onclick="checkEmergencyLocalStorageBackup()" class="w-full bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/60 text-amber-300 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-2">
-                                <span>🛡️</span>
-                                <span>Sprawdź / Przywróć kopię z pamięci telefonu</span>
-                            </button>
-                        </div>
 
+                        </div>
                     </div>
+
+                    <!-- 2. Ustawienia Profilu Organizatora (Michał) -->
+                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">⚙️</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-white uppercase tracking-wider">Moje Ustawienia Profilu (${escapeHtml(loggedPlayer)})</h4>
+                                    <p class="text-[10px] text-slate-400">Osobiste ustawienia Twojego konta</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            
+                            <!-- Motyw -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                                        <span>🎨</span> Motyw
+                                    </span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 shrink-0">
+                                        ${activeThemeInfo.icon} <span id="profileCurrentThemeDisplayAdmin">${escapeHtml(activeThemeInfo.name)}</span>
+                                    </span>
+                                </div>
+                                <button type="button" onclick="openThemePickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
+                                    Zmień motyw ➔
+                                </button>
+                            </div>
+
+                            <!-- Awatar -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                                        <span>📷</span> Mój Awatar
+                                    </span>
+                                    <div class="shrink-0">
+                                        ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
+                                    </div>
+                                </div>
+                                <button type="button" onclick="openAvatarPickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
+                                    Zmień zdjęcie / awatar ➔
+                                </button>
+                            </div>
+
+                            <!-- PIN -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                                        <span>🔒</span> Bezpieczeństwo
+                                    </span>
+                                    <span class="text-[10px] text-indigo-300 font-bold">4-cyfry</span>
+                                </div>
+                                <button type="button" onclick="changeMyPinPrompt()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
+                                    Zmień swój PIN 🔑
+                                </button>
+                            </div>
+
+                            <!-- Sesja -->
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                                        <span>🚪</span> Sesja
+                                    </span>
+                                    <span class="text-[10px] text-slate-400">Telefon</span>
+                                </div>
+                                <button type="button" onclick="logoutPlayerAccount()" class="w-full bg-rose-950/30 hover:bg-rose-900/50 border border-rose-900/60 text-rose-300 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
+                                    Wyloguj profil 🚪
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="profileThemePickerContainer" class="hidden"></div>
+
                 </div>
                 ` : ''}
             `;
@@ -12317,6 +12532,10 @@
                 showToast(`Zastosowano motyw: ${names[themeKey] || themeKey}`);
             }
             renderThemePickerOptions();
+            const badge = document.getElementById('profileCurrentThemeDisplay');
+            if (badge) badge.innerText = names[themeKey] || themeKey;
+            const badgeAdmin = document.getElementById('profileCurrentThemeDisplayAdmin');
+            if (badgeAdmin) badgeAdmin.innerText = names[themeKey] || themeKey;
         }
 
         function applyAppTheme(themeKey) {
