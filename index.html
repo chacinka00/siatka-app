@@ -2658,7 +2658,13 @@
 
             <!-- Form & Chemistry -->
             <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                        <span>⚖️</span> <span>Bilans meczów:</span>
+                    </span>
+                    <span id="playerCardMatchRecord" class="font-bold text-slate-200 text-right font-mono text-xs">-</span>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
                     <span class="text-[11px] font-bold text-slate-400">Ostatnia forma (W/L):</span>
                     <div id="playerCardForm" class="flex items-center gap-1"></div>
                 </div>
@@ -9885,11 +9891,11 @@
 
             container.innerHTML = `
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 gap-2">
-                    <div class="flex items-center gap-2 min-w-0">
+                    <div class="flex items-center gap-2">
                         <span class="text-xl shrink-0">📊</span>
-                        <div class="min-w-0">
-                            <h3 class="font-bold text-xs uppercase tracking-wider text-white truncate">Zaawansowane Statystyki Meczowe</h3>
-                            <p class="text-[10px] text-slate-400 truncate">Wyliczane automatycznie z wyników i składów</p>
+                        <div>
+                            <h3 class="font-bold text-xs uppercase tracking-wider text-white whitespace-nowrap">Zaawansowane Statystyki</h3>
+                            <p class="text-[10px] text-slate-400 leading-tight">Wyliczane automatycznie z wyników i składów</p>
                         </div>
                     </div>
                     <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full font-bold whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm">
@@ -10015,10 +10021,17 @@
                 if (scoreStr && teams) {
                     const darkMembers = teams.dark || [];
                     const lightMembers = teams.light || [];
-                    const matchRes = scoreStr.match(/\s(\d+)\s*:\s*(\d+)\s/);
-                    if (matchRes) {
-                        const setsA = parseInt(matchRes[1], 10);
-                        const setsB = parseInt(matchRes[2], 10);
+                    const matchWithSets = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+/);
+                    const matchSimple = scoreStr.match(/\s(\d+)\s*:\s*(\d+)\s/) || scoreStr.match(/(?:^|\s)(\d+)\s*:\s*(\d+)(?:\s|$)/);
+                    let setsA = null, setsB = null;
+                    if (matchWithSets) {
+                        setsA = parseInt(matchWithSets[2].trim(), 10);
+                        setsB = parseInt(matchWithSets[3].trim(), 10);
+                    } else if (matchSimple) {
+                        setsA = parseInt(matchSimple[1].trim(), 10);
+                        setsB = parseInt(matchSimple[2].trim(), 10);
+                    }
+                    if (setsA !== null && setsB !== null && !isNaN(setsA) && !isNaN(setsB)) {
                         if (darkMembers.includes(playerName)) {
                             if (setsA > setsB) outcomes.push('W');
                             else if (setsB > setsA) outcomes.push('L');
@@ -10387,7 +10400,8 @@
 
             const isOrg = (playerName === ORGANIZER_NAME);
             const { badges, totalGames, mvpWins, attendancePercent } = calculatePlayerBadges(playerName);
-            const formOutcomes = calculatePlayerForm(playerName);
+            const career = calculatePlayerCareerOutcomes(playerName);
+            const formOutcomes = career.recent;
             const { bestPartner, topRival } = calculatePlayerChemistry(playerName);
 
             const avatarEl = document.getElementById('playerCardAvatarContainer');
@@ -10415,6 +10429,17 @@
 
             const attEl = document.getElementById('playerCardAttendance');
             if (attEl) attEl.innerText = `${attendancePercent}%`;
+
+            const recordEl = document.getElementById('playerCardMatchRecord');
+            if (recordEl) {
+                const totalScored = career.totalWins + career.totalLosses;
+                if (totalScored > 0) {
+                    const pct = Math.round((career.totalWins / totalScored) * 100);
+                    recordEl.innerHTML = `<span class="text-emerald-400 font-extrabold">${career.totalWins}W</span> <span class="text-slate-500 mx-1">–</span> <span class="text-rose-400 font-extrabold">${career.totalLosses}L</span> <span class="text-amber-300 font-extrabold ml-1.5 text-[10.5px] bg-amber-950/80 border border-amber-800/60 px-1.5 py-0.5 rounded-md font-mono">(${pct}%)</span>`;
+                } else {
+                    recordEl.innerHTML = `<span class="text-slate-500 font-medium text-[11px]">Brak rozegranych meczów</span>`;
+                }
+            }
 
             const formEl = document.getElementById('playerCardForm');
             if (formEl) {
@@ -10840,7 +10865,10 @@
 
             // Zalogowany użytkownik:
             const { badges, totalGames, mvpWins, attendedMatches, attendancePercent } = calculatePlayerBadges(loggedPlayer);
-            const formOutcomes = calculatePlayerForm(loggedPlayer);
+            const myCareer = calculatePlayerCareerOutcomes(loggedPlayer);
+            const formOutcomes = myCareer.recent;
+            const myTotalScored = myCareer.totalWins + myCareer.totalLosses;
+            const myWinPct = myTotalScored > 0 ? Math.round((myCareer.totalWins / myTotalScored) * 100) : 0;
             const { bestPartner, topRival } = calculatePlayerChemistry(loggedPlayer);
             const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats(AppState) : null;
             const pAdv = advStats?.playerAdvMap?.[loggedPlayer];
@@ -10970,13 +10998,28 @@
                 <!-- PODWIDOK 1: STATYSTYKI -->
                 <div id="profileSubtabContainer-stats" class="space-y-3">
                     
-                    <!-- Forma z ostatnich 5 spotkań -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs shadow-sm">
-                        <span class="text-[11px] font-bold text-slate-300">Ostatnia forma (W/L):</span>
-                        <div class="flex items-center gap-1">
-                            ${formOutcomes.length ? formOutcomes.map(o => `
-                                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
-                            `).join('') : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                    <!-- Bilans meczów & Ostatnia forma -->
+                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
+                        <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+                                <span>⚖️</span> <span>Bilans meczów:</span>
+                            </span>
+                            <div class="font-mono text-xs font-bold text-slate-200">
+                                ${myTotalScored > 0 ? `
+                                    <span class="text-emerald-400 font-extrabold">${myCareer.totalWins}W</span>
+                                    <span class="text-slate-500 mx-1">–</span>
+                                    <span class="text-rose-400 font-extrabold">${myCareer.totalLosses}L</span>
+                                    <span class="text-amber-300 font-extrabold ml-1.5 text-[11px] bg-amber-950/80 border border-amber-800/60 px-1.5 py-0.5 rounded-md">(${myWinPct}%)</span>
+                                ` : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/60">
+                            <span class="text-[11px] font-bold text-slate-400">Ostatnia forma (W/L):</span>
+                            <div class="flex items-center gap-1">
+                                ${formOutcomes.length ? formOutcomes.map(o => `
+                                    <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
+                                `).join('') : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                            </div>
                         </div>
                     </div>
 
