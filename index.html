@@ -2085,13 +2085,13 @@
                             <tr>
                                 <th class="py-2.5 px-1.5 text-center w-7 sm:w-8">#</th>
                                 <th class="py-2.5 px-2 text-left">Zawodnik & Odznaki</th>
-                                <th class="py-2.5 px-1 text-center w-20 sm:w-24">Bilans</th>
+                                <th class="py-2.5 px-1 text-center w-16 sm:w-24">Bilans</th>
                                 <th class="hidden sm:table-cell py-2.5 px-1.5 text-center" title="Baza rozegranych gier">Baza</th>
                                 <th class="hidden sm:table-cell py-2.5 px-1.5 text-center" title="Lipiec 2026">Lip</th>
                                 <th class="hidden sm:table-cell py-2.5 px-1.5 text-center" title="Sierpień 2026">Sie</th>
                                 <th class="hidden sm:table-cell py-2.5 px-1.5 text-center" title="Wrzesień 2026">Wrz</th>
                                 <th class="hidden sm:table-cell py-2.5 px-1.5 text-center text-cyan-300 font-black" title="Październik 2026">Paź</th>
-                                <th class="py-2.5 px-2 text-right font-extrabold text-emerald-400 w-12 sm:w-16">Mecze</th>
+                                <th class="py-2.5 px-1.5 text-right font-extrabold text-emerald-400 w-10 sm:w-16">Mecze</th>
                             </tr>
                         </thead>
                         <tbody id="hallOfFameTableBody" class="divide-y divide-slate-800/60 bg-slate-900/60">
@@ -4233,7 +4233,8 @@
             Object.keys(AppState.months || {}).forEach(mName => {
                 const matches = AppState.months[mName]?.matches || [];
                 matches.forEach((m, idx) => {
-                    if (!m.isCancelled && m.date <= todayStr && (m.attendees || []).length > 0) {
+                    const isPlayed = isMatchHeld(m, todayStr) || isMatchFinished(m) || Boolean(m.score) || (m.votes && Object.keys(m.votes).length > 0);
+                    if (!m.isCancelled && isPlayed && (m.attendees || []).length > 0) {
                         if (!latest || m.date > latest.match.date) {
                             latest = {
                                 monthName: mName,
@@ -10730,7 +10731,7 @@
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="min-w-0 flex-1 leading-tight">
                                     <div class="flex items-center gap-1.5 min-w-0">
-                                        <span class="${isMe ? 'text-emerald-300 font-bold' : 'text-slate-100 font-semibold'} text-xs truncate max-w-[130px] sm:max-w-none">${formatPlayerNameHtml(s.name)}</span>
+                                        <span class="${isMe ? 'text-emerald-300 font-bold' : 'text-slate-100 font-semibold'} text-xs whitespace-nowrap">${formatPlayerNameHtml(s.name)}</span>
                                         ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.5 rounded shrink-0 leading-none">TY</span>' : ''}
                                         ${streakBadge}
                                     </div>
@@ -10742,13 +10743,13 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="py-2.5 px-1 text-center shrink-0 w-20 sm:w-24">${formHtml}</td>
+                        <td class="py-2.5 px-1 text-center shrink-0 w-16 sm:w-24">${formHtml}</td>
                         <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-400">${s.base > 0 ? s.base : '<span class="text-slate-600 font-normal">-</span>'}</td>
                         <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.lip > 0 ? s.lip : '<span class="text-slate-600 font-normal">-</span>'}</td>
                         <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.sie > 0 ? s.sie : '<span class="text-slate-600 font-normal">-</span>'}</td>
                         <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono text-slate-300">${s.wrz > 0 ? s.wrz : '<span class="text-slate-600 font-normal">-</span>'}</td>
                         <td class="hidden sm:table-cell py-2.5 px-1.5 text-center font-mono font-bold text-cyan-300">${s.paz > 0 ? s.paz : '<span class="text-slate-600 font-normal">-</span>'}</td>
-                        <td class="py-2.5 px-2 text-right font-mono font-extrabold text-emerald-400 text-xs sm:text-sm shrink-0 w-12 sm:w-16">${s.total}</td>
+                        <td class="py-2.5 px-1.5 text-right font-mono font-extrabold text-emerald-400 text-xs sm:text-sm shrink-0 w-10 sm:w-16">${s.total}</td>
                     </tr>
                 `;
             }).join('');
