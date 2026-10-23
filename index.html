@@ -10170,10 +10170,10 @@
                 const visible = badges.slice(0, maxCount);
                 const remaining = badges.slice(maxCount);
                 const allTooltip = badges.map(b => `${b.icon} ${b.title}`).join('\n');
-                return visible.map(b => `<span title="${escapeHtml(b.title)}" class="text-xs cursor-help select-none inline-block hover:scale-125 transition transform">${b.icon}</span>`).join(' ') +
-                    ` <span title="${escapeHtml(allTooltip)}" class="text-[10px] font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 px-1 py-0.5 rounded cursor-help border border-slate-700 select-none inline-flex items-center leading-none">+${remaining.length}</span>`;
+                return visible.map(b => `<span onclick="event.stopPropagation(); showToast('${escapeHtml(b.icon)} ${escapeHtml(b.title)}');" title="${escapeHtml(b.title)}" class="text-xs cursor-pointer select-none inline-flex items-center justify-center hover:scale-125 active:scale-90 transition transform">${b.icon}</span>`).join(' ') +
+                    ` <span onclick="event.stopPropagation(); openPlayerCardModal(${toInlineArgument(playerName)});" title="${escapeHtml(allTooltip)}" class="text-[10px] font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 px-1 py-0.5 rounded cursor-pointer border border-slate-700 select-none inline-flex items-center leading-none">+${remaining.length}</span>`;
             }
-            return badges.map(b => `<span title="${escapeHtml(b.title)}" class="text-xs cursor-help select-none inline-block hover:scale-125 transition transform">${b.icon}</span>`).join(' ');
+            return badges.map(b => `<span onclick="event.stopPropagation(); showToast('${escapeHtml(b.icon)} ${escapeHtml(b.title)}');" title="${escapeHtml(b.title)}" class="text-xs cursor-pointer select-none inline-flex items-center justify-center hover:scale-125 active:scale-90 transition transform">${b.icon}</span>`).join(' ');
         }
 
         function pluralizeMatches(count) {
@@ -10720,7 +10720,7 @@
                     <span class="inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[8.5px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0" title="Aktualna seria: ${pluralizeMatches(pStreak)} z rzędu">🔥 ${pStreak}</span>
                 ` : '';
 
-                const badgesHtml = getPlayerBadgesHtml(s.name, 3);
+                const badgesHtml = getPlayerBadgesHtml(s.name);
 
                 return `
                     <tr onclick="openPlayerCardModal(${toInlineArgument(s.name)})" title="Dotknij, aby zobaczyć profil i odznaki gracza" class="hover:bg-slate-800/60 cursor-pointer transition active:bg-slate-800 ${isMe ? 'bg-emerald-950/20' : ''}">
@@ -10729,13 +10729,13 @@
                             <div class="flex items-center gap-2 min-w-0">
                                 ${getPlayerAvatarHtml(s.name, 'xs')}
                                 <div class="min-w-0 flex-1 leading-tight">
-                                    <div class="flex items-center gap-1 min-w-0 flex-wrap">
-                                        <span class="${isMe ? 'text-emerald-300 font-bold' : ''} text-xs whitespace-normal break-words">${formatPlayerNameHtml(s.name)}</span>
-                                        ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.5 rounded shrink-0">TY</span>' : ''}
+                                    <div class="flex items-center gap-1.5 min-w-0">
+                                        <span class="${isMe ? 'text-emerald-300 font-bold' : 'text-slate-100 font-semibold'} text-xs truncate max-w-[130px] sm:max-w-none">${formatPlayerNameHtml(s.name)}</span>
+                                        ${isMe ? '<span class="text-[8.5px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1 py-0.5 rounded shrink-0 leading-none">TY</span>' : ''}
                                         ${streakBadge}
                                     </div>
                                     ${badgesHtml ? `
-                                        <div class="flex items-center gap-0.5 text-[10px] mt-0.5 flex-wrap opacity-90">
+                                        <div class="flex items-center gap-1 text-[11px] mt-0.5 whitespace-nowrap overflow-x-auto no-scrollbar opacity-95">
                                             ${badgesHtml}
                                         </div>
                                     ` : ''}
