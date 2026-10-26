@@ -11065,6 +11065,41 @@
             });
         }
 
+        function formatPodiumPlayerNameHtml(fullName, isFirst = false) {
+            if (!fullName) return '';
+            const clean = String(fullName).trim();
+            const parenMatch = clean.match(/^(.*?)\s*(\(.*?\))$/);
+            let mainName = clean;
+            let note = '';
+            if (parenMatch) {
+                mainName = parenMatch[1].trim();
+                note = parenMatch[2].trim();
+            }
+            const parts = mainName.split(/\s+/);
+            const firstName = parts[0] || '';
+            const lastName = parts.slice(1).join(' ');
+
+            const firstColor = isFirst ? 'text-amber-200' : 'text-white';
+            const lastColor = isFirst ? 'text-amber-300/90' : 'text-slate-200';
+
+            if (lastName) {
+                return `
+                    <div class="min-h-[34px] sm:min-h-[38px] flex flex-col items-center justify-center leading-tight text-center px-0.5 my-1 w-full" title="${escapeHtml(clean)}">
+                        <span class="font-black ${firstColor} text-[11px] sm:text-xs leading-none whitespace-normal break-words">${escapeHtml(firstName)}</span>
+                        <span class="font-bold ${lastColor} text-[10px] sm:text-[11px] leading-tight whitespace-normal break-words mt-0.5">${escapeHtml(lastName)}</span>
+                        ${note ? `<span class="text-[8px] sm:text-[9px] text-slate-400 leading-none whitespace-normal break-words mt-0.5">${escapeHtml(note)}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="min-h-[34px] sm:min-h-[38px] flex flex-col items-center justify-center leading-tight text-center px-0.5 my-1 w-full" title="${escapeHtml(clean)}">
+                    <span class="font-black ${firstColor} text-[11px] sm:text-xs leading-tight whitespace-normal break-words">${escapeHtml(firstName)}</span>
+                    ${note ? `<span class="text-[8px] sm:text-[9px] text-slate-400 leading-none whitespace-normal break-words mt-0.5">${escapeHtml(note)}</span>` : ''}
+                </div>
+            `;
+        }
+
         function renderHallOfFame() {
             const tbody = document.getElementById('hallOfFameTableBody');
             if (!tbody) return;
@@ -11102,7 +11137,7 @@
                     
                     podiumEl.innerHTML = `
                         <!-- 2. Miejsce (Srebro) -->
-                        <div onclick="openPlayerCardModal(${toInlineArgument(second.name)})" class="cursor-pointer group bg-gradient-to-b from-slate-800/40 via-slate-900/80 to-slate-950 border border-slate-700/60 hover:border-slate-500 rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-md">
+                        <div onclick="openPlayerCardModal(${toInlineArgument(second.name)})" class="cursor-pointer group bg-gradient-to-b from-slate-800/40 via-slate-900/80 to-slate-950 border border-slate-700/60 hover:border-slate-500 rounded-2xl p-1.5 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-md">
                             <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-700/60 border border-slate-500/50 text-[8.5px] sm:text-[9.5px] font-black text-slate-200 mb-1 tracking-wider uppercase">
                                 🥈 2. Miejsce
                             </span>
@@ -11111,15 +11146,15 @@
                                     ${getPlayerAvatarHtml(second.name, 'sm')}
                                 </div>
                             </div>
-                            <div class="w-full mt-1 min-w-0">
-                                <div class="font-bold text-white text-[11px] sm:text-xs truncate" title="${escapeHtml(second.name)}">${escapeHtml(second.name)}</div>
+                            <div class="w-full min-w-0">
+                                ${formatPodiumPlayerNameHtml(second.name, false)}
                                 <div class="text-slate-300 font-black text-xs sm:text-sm mt-0.5">${second.total} <span class="text-[9px] font-normal text-slate-400">meczów</span></div>
                                 <div class="text-[8.5px] sm:text-[9.5px] font-mono text-slate-400 mt-0.5"><span class="text-emerald-400 font-bold">${second.totalWins}W</span> - <span class="text-rose-400 font-bold">${second.totalLosses}L</span></div>
                             </div>
                         </div>
 
                         <!-- 1. Miejsce (Złoto - wyniesione w górę) -->
-                        <div onclick="openPlayerCardModal(${toInlineArgument(first.name)})" class="cursor-pointer group bg-gradient-to-b from-amber-500/20 via-slate-900/90 to-slate-950 border border-amber-500/60 hover:border-amber-400 rounded-2xl p-2.5 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-xl shadow-amber-500/10 -translate-y-1.5 sm:-translate-y-2">
+                        <div onclick="openPlayerCardModal(${toInlineArgument(first.name)})" class="cursor-pointer group bg-gradient-to-b from-amber-500/20 via-slate-900/90 to-slate-950 border border-amber-500/60 hover:border-amber-400 rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-xl shadow-amber-500/10 -translate-y-1.5 sm:-translate-y-2">
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/70 text-[9px] sm:text-[10px] font-black text-amber-300 mb-1 tracking-wider uppercase shadow-sm">
                                 👑 Lider
                             </span>
@@ -11129,15 +11164,15 @@
                                 </div>
                                 <span class="absolute -top-1.5 -right-1.5 text-xs drop-shadow">🥇</span>
                             </div>
-                            <div class="w-full mt-1 min-w-0">
-                                <div class="font-black text-amber-200 text-xs sm:text-sm truncate" title="${escapeHtml(first.name)}">${escapeHtml(first.name)}</div>
+                            <div class="w-full min-w-0">
+                                ${formatPodiumPlayerNameHtml(first.name, true)}
                                 <div class="text-amber-400 font-black text-sm sm:text-base mt-0.5">${first.total} <span class="text-[9.5px] font-normal text-slate-300">meczów</span></div>
                                 <div class="text-[9px] sm:text-[10px] font-mono text-slate-300 mt-0.5"><span class="text-emerald-400 font-bold">${first.totalWins}W</span> - <span class="text-rose-400 font-bold">${first.totalLosses}L</span></div>
                             </div>
                         </div>
 
                         <!-- 3. Miejsce (Brąz) -->
-                        <div onclick="openPlayerCardModal(${toInlineArgument(third.name)})" class="cursor-pointer group bg-gradient-to-b from-amber-900/25 via-slate-900/80 to-slate-950 border border-amber-800/60 hover:border-amber-700 rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-md">
+                        <div onclick="openPlayerCardModal(${toInlineArgument(third.name)})" class="cursor-pointer group bg-gradient-to-b from-amber-900/25 via-slate-900/80 to-slate-950 border border-amber-800/60 hover:border-amber-700 rounded-2xl p-1.5 sm:p-3 text-center flex flex-col items-center justify-between transition-all duration-200 active:scale-95 shadow-md">
                             <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-900/40 border border-amber-700/50 text-[8.5px] sm:text-[9.5px] font-black text-amber-400 mb-1 tracking-wider uppercase">
                                 🥉 3. Miejsce
                             </span>
@@ -11146,8 +11181,8 @@
                                     ${getPlayerAvatarHtml(third.name, 'sm')}
                                 </div>
                             </div>
-                            <div class="w-full mt-1 min-w-0">
-                                <div class="font-bold text-white text-[11px] sm:text-xs truncate" title="${escapeHtml(third.name)}">${escapeHtml(third.name)}</div>
+                            <div class="w-full min-w-0">
+                                ${formatPodiumPlayerNameHtml(third.name, false)}
                                 <div class="text-amber-300 font-black text-xs sm:text-sm mt-0.5">${third.total} <span class="text-[9px] font-normal text-slate-400">meczów</span></div>
                                 <div class="text-[8.5px] sm:text-[9.5px] font-mono text-slate-400 mt-0.5"><span class="text-emerald-400 font-bold">${third.totalWins}W</span> - <span class="text-rose-400 font-bold">${third.totalLosses}L</span></div>
                             </div>
