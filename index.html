@@ -2656,70 +2656,102 @@
                 </div>
             </div>
 
-            <!-- Form & Chemistry -->
-            <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs">
+            <!-- Form & Chemistry (Bento Grid) -->
+            <!-- 1. Pasek Formy i Bilansu (Połączony, bez duplikatów) -->
+            <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 shadow-sm text-xs">
                 <div class="flex items-center justify-between gap-2 flex-wrap">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
-                        <span>⚖️</span> <span>Bilans meczów:</span>
-                    </span>
-                    <span id="playerCardMatchRecord" class="font-bold text-slate-200 text-right font-mono text-xs">-</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs">⚖️</span>
+                        <span class="text-xs font-bold text-slate-300">Bilans spotkań:</span>
+                    </div>
+                    <div id="playerCardMatchRecord" class="flex items-center gap-1.5 font-mono text-xs font-bold text-slate-200">
+                        -
+                    </div>
                 </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2">
-                    <span class="text-[11px] font-bold text-slate-400">Ostatnia forma (W/L):</span>
-                    <div id="playerCardForm" class="flex items-center gap-1"></div>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400">Najlepszy duet:</span>
-                    <span id="playerCardPartner" class="font-semibold text-slate-200 text-right whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>🔥</span> <span>Seria obecności:</span>
-                    </span>
-                    <span id="playerCardStreak" class="font-semibold text-amber-300 text-right whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>🎯</span> <span>Skuteczność (Win Ratio):</span>
-                    </span>
-                    <span id="playerCardWinImpact" class="font-semibold text-emerald-400 text-right font-mono text-xs whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>🥊</span> <span>Kryptonit:</span>
-                    </span>
-                    <span id="playerCardKryptonite" class="font-semibold text-rose-400 text-right text-xs whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>🔥</span> <span>Mistrz 5. setów:</span>
-                    </span>
-                    <span id="playerCardClutch" class="font-semibold text-amber-300 text-right font-mono text-xs whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>📈</span> <span>Bilans setów:</span>
-                    </span>
-                    <span id="playerCardSets" class="font-semibold text-cyan-400 text-right font-mono text-xs whitespace-normal break-words leading-tight">-</span>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-800/70 pt-2 flex-wrap gap-1">
-                    <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-                        <span>✨</span> <span>Wyróżnienia:</span>
-                    </span>
-                    <span id="playerCardSpecialAwards" class="font-semibold text-amber-300 text-right text-xs whitespace-normal break-words leading-tight">-</span>
+                <div class="flex items-center justify-between border-t border-slate-800/60 pt-2 gap-2 flex-wrap">
+                    <span class="text-[11px] font-bold text-slate-400">Ostatnie 5 meczów:</span>
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <div id="playerCardForm" class="flex items-center gap-1"></div>
+                        <span id="playerCardStreak" class="text-[10px] font-extrabold text-amber-300 bg-amber-950/50 border border-amber-800/50 px-1.5 py-0.5 rounded ml-1"></span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Badges Section -->
-            <div class="space-y-2">
+            <!-- 2. Kafelki Bento Grid (2x2 - Czysto, bez nawiasozy!) -->
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <!-- Duet -->
+                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                        <span class="flex items-center gap-1"><span>🤝</span> Najlepszy Duet</span>
+                        <span id="playerCardPartnerWin" class="text-emerald-400 font-mono">-</span>
+                    </div>
+                    <div class="mt-1.5">
+                        <strong id="playerCardPartnerName" class="text-white text-xs block leading-tight truncate">Brak danych</strong>
+                        <span id="playerCardPartnerSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
+                    </div>
+                </div>
+
+                <!-- Kryptonit -->
+                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                        <span class="flex items-center gap-1"><span>🥊</span> Koszmar (Rywal)</span>
+                        <span id="playerCardKryptoniteWin" class="text-rose-400 font-mono">-</span>
+                    </div>
+                    <div class="mt-1.5">
+                        <strong id="playerCardKryptoniteName" class="text-white text-xs block leading-tight truncate">Brak rywala</strong>
+                        <span id="playerCardKryptoniteSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
+                    </div>
+                </div>
+
+                <!-- Tie-breaki -->
+                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                        <span class="flex items-center gap-1"><span>⚔️</span> Mistrz 5. Setów</span>
+                        <span id="playerCardClutchWin" class="text-amber-400 font-mono">-</span>
+                    </div>
+                    <div class="mt-1.5">
+                        <strong id="playerCardClutchName" class="text-white text-xs block leading-tight font-mono">-</strong>
+                        <span id="playerCardClutchSub" class="text-[10px] text-slate-500 mt-0.5 block">-</span>
+                    </div>
+                </div>
+
+                <!-- Bilans Setów -->
+                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                        <span class="flex items-center gap-1"><span>📈</span> Bilans Setów</span>
+                        <span id="playerCardSetsDiff" class="text-cyan-400 font-mono">-</span>
+                    </div>
+                    <div class="mt-1.5">
+                        <strong id="playerCardSetsName" class="text-white text-xs block leading-tight font-mono">-</strong>
+                        <span id="playerCardSetsSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Wyróżnienie Sezonu (Złota pigułka) -->
+            <div id="playerCardSpecialAwardsCard" class="hidden bg-gradient-to-r from-amber-500/10 via-amber-950/30 to-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-xs shadow-sm">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="text-base shrink-0">👑</span>
+                    <div class="min-w-0">
+                        <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
+                        <strong id="playerCardSpecialAwards" class="text-amber-200 text-xs truncate block">-</strong>
+                    </div>
+                </div>
+                <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
+                    Top 1
+                </span>
+            </div>
+
+            <!-- 4. Zdobyte Odznaki (Odchudzona siatka 2-kolumnowa z tap-to-toast) -->
+            <div class="space-y-2 pt-1">
                 <div class="flex items-center justify-between">
                     <h4 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-1">
                         <span>🏅</span> Zdobyte Odznaki (<span id="playerCardBadgeCount">0</span>)
                     </h4>
-                    <span class="text-[10px] text-slate-500 font-semibold">Pełne opisy</span>
+                    <span class="text-[10px] text-slate-500 font-semibold">Dotknij odznaki, by poznać opis</span>
                 </div>
-                <div id="playerCardBadgesList" class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-                    <!-- Badges cards injected here -->
+                <div id="playerCardBadgesList" class="grid grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1">
+                    <!-- Badges injected dynamically -->
                 </div>
             </div>
 
@@ -6883,7 +6915,7 @@
 
             const specialAwardsContainer = document.getElementById('mvpSpecialAwardsContainer');
             if (specialAwardsContainer) {
-                specialAwardsContainer.innerHTML = isFinished ? renderMatchSpecialAwardsSectionHtml(currentMatch) : '';
+                specialAwardsContainer.innerHTML = isFinished ? renderMatchSpecialAwardsSectionHtml(currentMatch, false, activeMvpCategory, false) : '';
             }
 
             // Dogrywka MVP przy remisie od 2026-10-17
@@ -6929,13 +6961,24 @@
             // 3. Render Hero & Results based on Secret vs Finished vs Runoff State
             if (isFinished) {
                 const tbWinner = hasActiveTieBreak ? getMatchMvpWinner(currentMatch) : (leaders.length === 1 ? leaders[0] : null);
+                const isMvpActive = (activeMvpCategory === 'mvp');
+                const mvpBadgeHtml = isMvpActive ? ` <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 rounded ml-1 shrink-0">Wybrana kategoria ▼</span>` : '';
+
+                const mvpWinnerContainer = document.getElementById('mvpWinnerContainer');
+                if (mvpWinnerContainer) {
+                    mvpWinnerContainer.onclick = () => setMvpActiveCategory('mvp');
+                    mvpWinnerContainer.className = isMvpActive 
+                        ? "cursor-pointer bg-gradient-to-b from-amber-500/15 via-slate-950 to-slate-950 border-2 border-amber-500/70 rounded-2xl p-3.5 text-center space-y-1 relative overflow-hidden ring-2 ring-amber-400/40 shadow-lg shadow-amber-500/10 transition"
+                        : "cursor-pointer bg-slate-950/80 hover:bg-slate-900 border border-slate-800 rounded-2xl p-3.5 text-center space-y-1 relative overflow-hidden transition";
+                }
+
                 if (hasActiveTieBreak && tbWinner) {
-                    if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA (ZWYCIĘZCA DOGRYWKI ⚡) 🏆";
+                    if (winnerHeaderLabel) winnerHeaderLabel.innerHTML = `OFICJALNY MVP SPOTKANIA (ZWYCIĘZCA DOGRYWKI ⚡) 🏆${mvpBadgeHtml}`;
                     const tbWinVotes = Object.values(tbVotes).filter(v => v === tbWinner).length;
                     if (winnerName) winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(tbWinner, 'sm')} 👑 ${escapeHtml(tbWinner)}</span>`;
                     if (winnerVotes) winnerVotes.innerHTML = `<span class="text-amber-300 font-bold">Wygrana po dogrywce!</span> W dogrywce: ${pluralizeVotes(tbWinVotes)} (remis w rundzie zasadniczej: ${pluralizeVotes(maxVotes)}).`;
                 } else {
-                    if (winnerHeaderLabel) winnerHeaderLabel.innerText = "OFICJALNY MVP SPOTKANIA 🏆";
+                    if (winnerHeaderLabel) winnerHeaderLabel.innerHTML = `OFICJALNY MVP SPOTKANIA 🏆${mvpBadgeHtml}`;
                     if (winnerName && winnerVotes) {
                         if (maxVotes === 0) {
                             winnerName.innerText = "Brak głosów";
@@ -6950,8 +6993,7 @@
                     }
                 }
 
-                if (resultsSectionTitle) resultsSectionTitle.innerText = "Oficjalne wyniki głosowania:";
-                const sortedResults = Object.entries(tally).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+                if (resultsSectionTitle) resultsSectionTitle.innerText = "Szczegółowe rozbicie głosów:";
                 if (resultsList) {
                     const runoffResultsHtml = hasActiveTieBreak ? `
                         <div class="bg-amber-950/30 border border-amber-500/50 rounded-2xl p-3 space-y-2 mb-3">
@@ -6979,50 +7021,11 @@
                         </div>
                     ` : '';
 
-                    resultsList.innerHTML = runoffResultsHtml + sortedResults.map(([name, count]) => {
-                        const percent = totalVotesCast > 0 ? Math.round((count / totalVotesCast) * 100) : 0;
-                        const isLeader = maxVotes > 0 && count === maxVotes;
-                        return `
-                            <div class="bg-slate-950 border ${isLeader ? 'border-amber-500/60 bg-amber-950/20' : 'border-slate-800'} rounded-xl p-2.5 space-y-1.5">
-                                <div class="flex items-center justify-between text-xs">
-                                    <div class="flex items-center gap-1.5 font-bold ${isLeader ? 'text-amber-300' : 'text-slate-200'} min-w-0 pr-2">
-                                        <span>${isLeader ? '🌟' : '🏐'}</span>
-                                        ${getPlayerAvatarHtml(name, 'xs')}
-                                        <span class="whitespace-normal break-words">${formatPlayerNameHtml(name)}</span>
-                                    </div>
-                                    <span class="font-mono font-bold ${isLeader ? 'text-amber-400' : 'text-slate-400'} shrink-0">${pluralizeVotes(count)} (${percent}%)</span>
-                                </div>
-                                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-amber-500 to-amber-300 h-1.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
+                    resultsList.innerHTML = runoffResultsHtml + renderMatchVotingBreakdownHtml(currentMatch, activeMvpCategory, isMvpVotersViewMode, false);
                 }
 
-                // Breakdown: Kto na kogo głosował
-                if (whoVotedTitle) whoVotedTitle.innerText = "Kto na kogo głosował:";
-                if (whoVotedProgressRatio) whoVotedProgressRatio.innerText = "Zakończone";
-                if (whoVotedList) {
-                    whoVotedList.innerHTML = attendees.map(p => {
-                        const votedNominee = votes[p];
-                        const tbVotedNominee = hasActiveTieBreak ? tbVotes[p] : null;
-                        return `
-                            <div class="bg-slate-950/80 border border-slate-800/60 px-3 py-1.5 rounded-xl flex items-center justify-between text-xs gap-2">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    ${getPlayerAvatarHtml(p, 'xs')}
-                                    <span class="font-semibold text-slate-300 whitespace-normal break-words">${formatPlayerNameHtml(p)}</span>
-                                </div>
-                                <div class="flex items-center gap-1.5 shrink-0 text-right">
-                                    <span class="font-bold text-[11px] ${votedNominee ? 'text-amber-400' : 'text-slate-500'}">
-                                        ${votedNominee ? `➔ 🌟 ${formatPlayerNameHtml(votedNominee)}` : 'Nie głosował(a)'}
-                                    </span>
-                                    ${tbVotedNominee ? `<span class="text-[9.5px] font-bold text-amber-300 bg-amber-950/80 border border-amber-600/60 px-1.5 py-0.5 rounded">Dogrywka: ${formatPlayerNameHtml(tbVotedNominee)}</span>` : ''}
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
+                const whoVotedSection = document.getElementById('whoVotedTitle')?.closest('div.pt-3');
+                if (whoVotedSection) whoVotedSection.classList.add('hidden');
 
             } else if (hasActiveTieBreak && !isTbFinished) {
                 // TRWA DOGRYWKA
@@ -8284,15 +8287,17 @@
             let mvpHtml = '';
             if (mvpWinner) {
                 const pct = totalVotes > 0 ? Math.round((maxV / totalVotes) * 100) : 0;
-                const runnersUpList = sortedNominees.slice(1);
+                const isArchivedMvpActive = (archivedActiveCategory === 'mvp');
+                const badgeActiveHtml = isArchivedMvpActive ? ` <span class="text-[8.5px] font-black uppercase text-amber-300 bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 rounded ml-1 shrink-0">Wybrana kategoria ▼</span>` : '';
                 mvpHtml = `
-                    <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/50 rounded-2xl p-2.5 shadow-md space-y-1.5">
+                    <div onclick="setArchivedActiveCategory('mvp', '${escapeHtml(targetMatch.date)}')" class="cursor-pointer ${isArchivedMvpActive ? 'bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-400 ring-1 ring-amber-400/50' : 'bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/50 hover:border-amber-400'} rounded-2xl p-2.5 shadow-md space-y-1.5 transition">
                         <div class="flex items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 min-w-0 cursor-pointer" onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(mvpWinner)});" title="Dotknij, aby zobaczyć profil gracza">
+                            <div class="flex items-center gap-2 min-w-0">
                                 ${getPlayerAvatarHtml(mvpWinner, 'sm')}
                                 <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
                                     <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">👑 MVP</span>
                                     <span class="text-xs sm:text-sm font-black text-white hover:text-amber-300 transition whitespace-normal break-words leading-tight">${formatPlayerNameHtml(mvpWinner)}</span>
+                                    ${badgeActiveHtml}
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
@@ -8301,17 +8306,6 @@
                                 </span>
                             </div>
                         </div>
-                        ${runnersUpList.length > 0 ? `
-                            <div class="pt-1.5 border-t border-amber-500/20 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-300 leading-tight">
-                                <span class="text-slate-400 font-semibold mr-0.5 shrink-0">Głosy:</span>
-                                ${runnersUpList.map(([nom, cnt]) => `
-                                    <span class="bg-slate-950/80 border border-slate-800 px-1.5 py-0.5 rounded text-slate-300 inline-flex items-center gap-1 whitespace-nowrap shrink-0">
-                                        <span>${formatPlayerNameHtml(nom)}</span>
-                                        <strong class="text-amber-400 font-mono font-bold">(${cnt})</strong>
-                                    </span>
-                                `).join('')}
-                            </div>
-                        ` : ''}
                     </div>
                 `;
             } else if (totalVotes > 0) {
@@ -8335,7 +8329,7 @@
                 `;
             }
 
-            const specialAwardsHtml = isFinished ? renderMatchSpecialAwardsSectionHtml(targetMatch, true) : '';
+            const specialAwardsHtml = isFinished ? renderMatchSpecialAwardsSectionHtml(targetMatch, true, archivedActiveCategory, true) : '';
 
             let teamsHtml = '';
             if (teams && (darkRoster.length > 0 || lightRoster.length > 0)) {
@@ -8452,6 +8446,9 @@
 
                 <!-- Wyróżnienia Meczowe -->
                 ${specialAwardsHtml}
+
+                <!-- Szufladowe Rozbicie Głosów w Archiwum -->
+                ${isFinished ? renderMatchVotingBreakdownHtml(targetMatch, archivedActiveCategory, archivedIsVotersViewMode, true) : ''}
 
                 <!-- Składy Drużyn -->
                 ${teamsHtml}
@@ -9368,7 +9365,205 @@
             return result;
         }
 
-        function renderMatchSpecialAwardsSectionHtml(match, compact = false) {
+        let activeMvpCategory = 'mvp';
+        let isMvpVotersViewMode = false;
+        let archivedActiveCategory = 'mvp';
+        let archivedIsVotersViewMode = false;
+
+        function setMvpActiveCategory(cat) {
+            activeMvpCategory = cat;
+            isMvpVotersViewMode = false;
+            renderIntegratedMvpCard();
+        }
+
+        function toggleMvpVotersViewMode() {
+            isMvpVotersViewMode = !isMvpVotersViewMode;
+            renderIntegratedMvpCard();
+        }
+
+        function setArchivedActiveCategory(cat, dateStr, monthName = null) {
+            archivedActiveCategory = cat;
+            archivedIsVotersViewMode = false;
+            openArchivedMatchModal(dateStr, monthName);
+        }
+
+        function toggleArchivedVotersViewMode(dateStr, monthName = null) {
+            archivedIsVotersViewMode = !archivedIsVotersViewMode;
+            openArchivedMatchModal(dateStr, monthName);
+        }
+
+        function renderMatchVotingBreakdownHtml(match, activeCat = 'mvp', isVotersMode = false, isArchived = false) {
+            if (!match || !isMvpVotingFinished(match)) return '';
+            const attendees = getMatchPlayingSquad(match);
+            const votes = match.votes || {};
+            const specVotes = match.specialVotes || {};
+
+            const isArekApp = (typeof isFemalePlayer === 'function');
+            const femaleAttendees = isArekApp ? attendees.filter(p => isFemalePlayer(p)) : [];
+            const hasFemaleMvp = isArekApp && femaleAttendees.length >= 2 && Boolean(match.votesWomen);
+
+            const cats = [
+                { key: 'mvp', title: isArekApp ? 'MTV Spotkania' : 'MVP Spotkania', icon: '🏆', short: isArekApp ? 'MTV' : 'MVP' },
+                ...(hasFemaleMvp ? [{ key: 'mvpWomen', title: 'MTV Kobiet', icon: '🌸', short: 'Kobiet' }] : []),
+                { key: 'block', title: 'Czapa Meczu (Blok)', icon: '🧱', short: 'Czapa' },
+                { key: 'spike', title: 'Gwóźdź Meczu (Atak)', icon: '🔨', short: 'Gwóźdź' },
+                { key: 'defense', title: 'Obrona Życia (Obrona)', icon: '🐟', short: 'Obrona' },
+                { key: 'serve', title: 'Serwis Turbo (Zagrywka)', icon: '🌪️', short: 'Serwis' }
+            ];
+
+            const currentCatMeta = cats.find(c => c.key === activeCat) || cats[0];
+            const toggleFn = isArchived 
+                ? `toggleArchivedVotersViewMode('${escapeHtml(match.date)}')` 
+                : `toggleMvpVotersViewMode()`;
+
+            const gridColsClass = cats.length === 6 ? 'grid-cols-6' : 'grid-cols-5';
+
+            const tabsHtml = `
+                <div class="grid ${gridColsClass} gap-1 p-0.5 bg-slate-900 border border-slate-800/80 rounded-xl text-center">
+                    ${cats.map(c => {
+                        const isActive = (c.key === currentCatMeta.key);
+                        const onclickStr = isArchived 
+                            ? `setArchivedActiveCategory('${c.key}', '${escapeHtml(match.date)}')` 
+                            : `setMvpActiveCategory('${c.key}')`;
+                        return `
+                            <button type="button" onclick="${onclickStr}" class="py-1 px-0.5 rounded-lg text-[9.5px] sm:text-[10px] font-black transition cursor-pointer ${isActive ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-white'}">
+                                <span class="block text-xs">${c.icon}</span> ${c.short}
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            if (isVotersMode) {
+                const votersListHtml = attendees.map(player => {
+                    const mvpChoice = votes[player] || '—';
+                    const s = specVotes[player] || {};
+                    const womenChoice = hasFemaleMvp ? (match.votesWomen?.[player] || '—') : null;
+                    return `
+                        <div class="bg-slate-900/90 border border-slate-800/80 rounded-xl px-2.5 py-1.5 text-xs space-y-1">
+                            <div class="flex items-center justify-between border-b border-slate-800/60 pb-1">
+                                <strong class="text-white font-bold text-[11px]">${formatPlayerNameHtml(player)}</strong>
+                                <span class="text-[9.5px] text-amber-400 font-mono font-bold">Wybór ➔ 🏆 ${formatPlayerNameHtml(mvpChoice)}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[9.5px] text-slate-400">
+                                ${womenChoice ? `<div class="truncate col-span-2 text-pink-300 font-semibold">🌸 MTV Kobiet: <span class="text-white">${formatPlayerNameHtml(womenChoice)}</span></div>` : ''}
+                                <div class="truncate">🧱 Czapa: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.block || '—')}</span></div>
+                                <div class="truncate">🔨 Gwóźdź: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.spike || '—')}</span></div>
+                                <div class="truncate">🐟 Obrona: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.defense || '—')}</span></div>
+                                <div class="truncate">🌪️ Serwis: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.serve || '—')}</span></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-3 space-y-2.5 shadow-inner text-xs">
+                        ${tabsHtml}
+                        <div class="flex items-center justify-between text-xs border-b border-slate-800/70 pb-1.5 pt-0.5">
+                            <span class="font-bold text-slate-300 flex items-center gap-1.5">
+                                <span>👥</span> Karty wyborów graczy (${attendees.length})
+                            </span>
+                            <button type="button" onclick="${toggleFn}" class="text-[9.5px] font-bold text-amber-300 hover:text-amber-200 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md transition shrink-0 active:scale-95 cursor-pointer">
+                                📊 Pokaż ranking kategorii
+                            </button>
+                        </div>
+                        <div class="space-y-1 max-h-64 overflow-y-auto pr-1 animate-fade-in">
+                            ${votersListHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const tallies = {};
+            const votersMap = {};
+
+            if (currentCatMeta.key === 'mvp') {
+                Object.entries(votes).forEach(([voter, nominee]) => {
+                    if (!nominee) return;
+                    tallies[nominee] = (tallies[nominee] || 0) + 1;
+                    if (!votersMap[nominee]) votersMap[nominee] = [];
+                    votersMap[nominee].push(voter);
+                });
+            } else if (currentCatMeta.key === 'mvpWomen') {
+                const vW = match.votesWomen || {};
+                Object.entries(vW).forEach(([voter, nominee]) => {
+                    if (!nominee) return;
+                    tallies[nominee] = (tallies[nominee] || 0) + 1;
+                    if (!votersMap[nominee]) votersMap[nominee] = [];
+                    votersMap[nominee].push(voter);
+                });
+            } else {
+                const catKey = currentCatMeta.key;
+                Object.entries(specVotes).forEach(([voter, vObj]) => {
+                    const nominee = vObj?.[catKey];
+                    if (!nominee) return;
+                    tallies[nominee] = (tallies[nominee] || 0) + 1;
+                    if (!votersMap[nominee]) votersMap[nominee] = [];
+                    votersMap[nominee].push(voter);
+                });
+            }
+
+            const catTotalVotes = Object.values(tallies).reduce((a, b) => a + b, 0);
+            const sorted = Object.entries(tallies).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pl'));
+            const maxV = sorted.length ? sorted[0][1] : 0;
+
+            const rankingItemsHtml = sorted.length ? sorted.map(([name, count], index) => {
+                const isWinner = (count === maxV && maxV > 0);
+                const pct = catTotalVotes > 0 ? Math.round((count / catTotalVotes) * 100) : 0;
+                const voters = votersMap[name] || [];
+                const voteWord = (typeof pluralizeVotes === 'function') ? pluralizeVotes(count) : `${count} głosów`;
+
+                return `
+                    <div class="py-1.5 border-b border-slate-800/60 last:border-0 space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-1.5 min-w-0 pr-2">
+                                <span class="text-xs shrink-0">${isWinner ? '👑' : `${index + 1}.`}</span>
+                                ${(typeof getPlayerAvatarHtml === 'function') ? getPlayerAvatarHtml(name, 'xs') : ''}
+                                <span class="font-bold ${isWinner ? 'text-amber-300 font-black' : 'text-slate-200'} truncate">
+                                    ${formatPlayerNameHtml(name)}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-1 font-mono text-[11px] shrink-0">
+                                <span class="font-black ${isWinner ? 'text-amber-400' : 'text-slate-300'}">${voteWord}</span>
+                                <span class="text-slate-500 text-[10px] font-semibold">(${pct}%)</span>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-1 overflow-hidden border border-slate-800/60">
+                            <div class="${isWinner ? 'bg-gradient-to-r from-amber-500 to-amber-300' : 'bg-slate-600'} h-1 rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+                        </div>
+                        <div class="text-[9.5px] leading-tight flex items-baseline gap-1 text-slate-400">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider text-[8.5px] shrink-0">Głosy:</span>
+                            <span class="text-slate-300 font-medium whitespace-normal break-words">${voters.map(v => formatPlayerNameHtml(v)).join(', ')}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('') : `
+                <div class="py-3 text-center text-slate-500 text-[11px] italic">
+                    Brak zarejestrowanych głosów w tej kategorii.
+                </div>
+            `;
+
+            return `
+                <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-3 space-y-2 shadow-inner text-xs">
+                    ${tabsHtml}
+                    <div class="flex items-center justify-between text-xs border-b border-slate-800/70 pb-1.5 pt-0.5">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="text-sm">${currentCatMeta.icon}</span>
+                            <strong class="text-amber-300 font-black text-xs truncate">${currentCatMeta.title}</strong>
+                            <span class="text-[10px] font-mono text-slate-400 font-bold">(${catTotalVotes} głosów)</span>
+                        </div>
+                        <button type="button" onclick="${toggleFn}" class="text-[9.5px] font-bold text-slate-300 hover:text-amber-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md transition shrink-0 active:scale-95 cursor-pointer">
+                            👥 Kto jak głosował ze składu
+                        </button>
+                    </div>
+                    <div class="space-y-1 animate-fade-in max-h-64 overflow-y-auto pr-1">
+                        ${rankingItemsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMatchSpecialAwardsSectionHtml(match, compact = false, activeCat = '', isArchived = false) {
             if (!match) return '';
             const aw = getMatchSpecialAwardWinners(match);
             const catMeta = [
@@ -9394,7 +9589,7 @@
                             <span class="text-[9.5px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
                                 <span>✨</span> Wyróżnienia Meczowe
                             </span>
-                            <span class="text-[8.5px] text-slate-400 font-semibold bg-slate-950 border border-slate-800 px-1.5 py-0.2 rounded">Głosy drużyny 🗳️</span>
+                            <span class="text-[8.5px] text-slate-400 font-semibold bg-slate-950 border border-slate-800 px-1.5 py-0.2 rounded">Dotknij kafelka, by poznać głosy</span>
                         </div>
                         <div class="grid grid-cols-2 gap-1.5">
                             ${catMeta.map(c => {
@@ -9402,8 +9597,12 @@
                                 const winCount = info.winners.length;
                                 const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : '—';
                                 const voteStr = info.maxVotes > 0 ? pluralizeVotes(info.maxVotes) : '';
+                                const isActive = (activeCat === c.key);
+                                const onclickStr = isArchived 
+                                    ? `setArchivedActiveCategory('${c.key}', '${escapeHtml(match.date)}')` 
+                                    : `setMvpActiveCategory('${c.key}')`;
                                 return `
-                                    <div class="bg-slate-950/80 border border-slate-800/80 p-1.5 rounded-xl flex flex-col justify-between">
+                                    <div onclick="${onclickStr}" class="award-card cursor-pointer ${isActive ? 'bg-amber-950/40 border-amber-400 ring-1 ring-amber-400/50' : 'bg-slate-950/80 hover:bg-slate-800/80 border-slate-800/80'} border p-1.5 rounded-xl flex flex-col justify-between transition active:scale-95 shadow-sm">
                                         <div class="flex items-center justify-between gap-1 text-[9px] text-slate-400 font-bold">
                                             <span class="whitespace-nowrap">${c.icon} ${c.title}</span>
                                             ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap">${voteStr}</span>` : ''}
@@ -9425,7 +9624,7 @@
                         <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
                             <span>✨</span> Wyróżnienia Meczowe
                         </span>
-                        <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Głosy drużyny 🗳️</span>
+                        <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full">Dotknij kafelka, by poznać głosy</span>
                     </div>
                     ${!hasAny ? `
                         <div class="p-2 text-center text-slate-500 text-[11px] italic">
@@ -9438,8 +9637,12 @@
                                 const winCount = info.winners.length;
                                 const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : 'Brak nominacji';
                                 const voteStr = info.maxVotes > 0 ? pluralizeVotes(info.maxVotes) : '';
+                                const isActive = (activeCat === c.key);
+                                const onclickStr = isArchived 
+                                    ? `setArchivedActiveCategory('${c.key}', '${escapeHtml(match.date)}')` 
+                                    : `setMvpActiveCategory('${c.key}')`;
                                 return `
-                                    <div class="bg-slate-900/90 border ${winCount > 0 ? 'border-slate-800' : 'border-slate-850 opacity-60'} p-2 rounded-xl flex flex-col justify-between space-y-1">
+                                    <div onclick="${onclickStr}" class="award-card cursor-pointer ${isActive ? 'bg-amber-950/30 border-2 border-amber-400/80 ring-1 ring-amber-400/30 shadow-sm' : 'bg-slate-900/90 hover:bg-slate-800/80 border border-slate-800'} p-2 rounded-xl flex flex-col justify-between space-y-1 transition active:scale-95">
                                         <div class="flex items-center justify-between gap-1">
                                             <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
                                                 <span>${c.icon}</span> <span class="leading-tight">${c.title}</span>
@@ -10453,37 +10656,84 @@
                 }
             }
 
-            const partnerEl = document.getElementById('playerCardPartner');
-            if (partnerEl) {
-                partnerEl.innerText = bestPartner ? `${bestPartner.name} (${bestPartner.winPct}% W - ${bestPartner.wins}/${bestPartner.together})` : "Brak danych";
-            }
             const streakEl = document.getElementById('playerCardStreak');
             if (streakEl) {
                 const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(playerName) : { current: 0, max: 0 };
                 if (pStreak.current >= 2) {
-                    streakEl.innerHTML = `<span class="text-amber-400 font-extrabold">${pluralizeMatches(pStreak.current)} z rzędu</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
-                } else if (pStreak.max > 0) {
-                    streakEl.innerHTML = `<span class="text-slate-300 font-semibold">${pluralizeMatches(pStreak.current)}</span> <span class="text-slate-400 font-normal text-[10px]">(Rekord: ${pStreak.max})</span>`;
+                    streakEl.innerHTML = `🔥 ${pluralizeMatches(pStreak.current)} z rzędu`;
+                    streakEl.classList.remove('hidden');
                 } else {
-                    streakEl.innerHTML = `<span class="text-slate-500 font-medium">Brak serii</span>`;
+                    streakEl.innerHTML = '';
+                    streakEl.classList.add('hidden');
                 }
             }
 
-            // Zaawansowane Statystyki Meczowe w Karcie Gracza
-            if (typeof calculateAdvancedMatchStats === 'function') {
-                const advStats = calculateAdvancedMatchStats(AppState);
-                const pAdv = advStats?.playerAdvMap?.[playerName];
-                const winImpactEl = document.getElementById('playerCardWinImpact');
-                if (winImpactEl) winImpactEl.innerText = pAdv?.winImpactFormatted && pAdv.winImpactFormatted !== "-" ? `${pAdv.winImpactFormatted} (${pAdv.winImpact.won}W - ${pAdv.winImpact.lost}L)` : "-";
-                const kryptoEl = document.getElementById('playerCardKryptonite');
-                if (kryptoEl) kryptoEl.innerText = pAdv?.kryptoniteRival && pAdv.kryptoniteRival !== "Brak" ? `${pAdv.kryptoniteRival} (${pAdv.kryptoniteSub})` : "Brak rywala (min. 3 mecze)";
-                const clutchEl = document.getElementById('playerCardClutch');
-                if (clutchEl) clutchEl.innerText = pAdv?.clutchFormatted && pAdv.clutchFormatted !== "-" ? `${pAdv.clutchFormatted} (${pAdv.clutchSub})` : "Brak tie-breaków";
-                const setsEl = document.getElementById('playerCardSets');
-                if (setsEl) setsEl.innerText = pAdv?.setsDiffFormatted && pAdv.setsDiffFormatted !== "-" ? `${pAdv.setsDiffFormatted} (${pAdv.setsSub})` : "-";
+            // Duet (Best Partner)
+            const partnerWinEl = document.getElementById('playerCardPartnerWin');
+            const partnerNameEl = document.getElementById('playerCardPartnerName');
+            const partnerSubEl = document.getElementById('playerCardPartnerSub');
+            if (bestPartner) {
+                if (partnerWinEl) partnerWinEl.innerText = `${bestPartner.winPct}% W`;
+                if (partnerNameEl) partnerNameEl.innerText = bestPartner.name;
+                if (partnerSubEl) partnerSubEl.innerText = `${bestPartner.wins} ${bestPartner.wins === 1 ? 'wygrana' : (bestPartner.wins >= 2 && bestPartner.wins <= 4 ? 'wygrane' : 'wygranych')} w ${bestPartner.together} meczach`;
+            } else {
+                if (partnerWinEl) partnerWinEl.innerText = "-";
+                if (partnerNameEl) partnerNameEl.innerText = "Brak danych";
+                if (partnerSubEl) partnerSubEl.innerText = "Min. 2 mecze";
             }
 
-            // Wyróżnienia Meczowe w Karcie Gracza
+            // Zaawansowane Statystyki Meczowe w Karcie Gracza (Bento Grid)
+            const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats(AppState) : null;
+            const pAdv = advStats?.playerAdvMap?.[playerName];
+
+            // Koszmar (Kryptonite)
+            const kryptoWinEl = document.getElementById('playerCardKryptoniteWin');
+            const kryptoNameEl = document.getElementById('playerCardKryptoniteName');
+            const kryptoSubEl = document.getElementById('playerCardKryptoniteSub');
+            if (pAdv?.kryptonite) {
+                const k = pAdv.kryptonite;
+                if (kryptoWinEl) kryptoWinEl.innerText = `${k.lossPct}% L`;
+                if (kryptoNameEl) kryptoNameEl.innerText = k.rival;
+                if (kryptoSubEl) kryptoSubEl.innerText = `${k.losses} ${k.losses === 1 ? 'porażka' : (k.losses >= 2 && k.losses <= 4 ? 'porażki' : 'porażek')} w ${k.against} meczach`;
+            } else {
+                if (kryptoWinEl) kryptoWinEl.innerText = "-";
+                if (kryptoNameEl) kryptoNameEl.innerText = "Brak rywala";
+                if (kryptoSubEl) kryptoSubEl.innerText = "Min. 3 mecze";
+            }
+
+            // Mistrz 5. Setów (Clutch)
+            const clutchWinEl = document.getElementById('playerCardClutchWin');
+            const clutchNameEl = document.getElementById('playerCardClutchName');
+            const clutchSubEl = document.getElementById('playerCardClutchSub');
+            if (pAdv?.clutch && pAdv.clutch.clutchTotal > 0) {
+                const c = pAdv.clutch;
+                if (clutchWinEl) clutchWinEl.innerText = `${c.clutchPct}% TB`;
+                if (clutchNameEl) clutchNameEl.innerText = `${c.clutchWon}W – ${c.clutchTotal - c.clutchWon}L`;
+                const tieBreakWord = c.clutchWon === 1 ? 'tie-break' : (c.clutchWon >= 2 && c.clutchWon <= 4 ? 'tie-breaki' : 'tie-breaków');
+                if (clutchSubEl) clutchSubEl.innerText = `${c.clutchWon} wygrany${c.clutchWon === 1 ? '' : (c.clutchWon >= 2 && c.clutchWon <= 4 ? 'ch' : 'ch')} ${tieBreakWord}`;
+            } else {
+                if (clutchWinEl) clutchWinEl.innerText = "-";
+                if (clutchNameEl) clutchNameEl.innerText = "0W – 0L";
+                if (clutchSubEl) clutchSubEl.innerText = "Brak tie-breaków";
+            }
+
+            // Bilans Setów
+            const setsDiffEl = document.getElementById('playerCardSetsDiff');
+            const setsNameEl = document.getElementById('playerCardSetsName');
+            const setsSubEl = document.getElementById('playerCardSetsSub');
+            if (pAdv?.setBalance && pAdv.setBalance.total > 0) {
+                const s = pAdv.setBalance;
+                if (setsDiffEl) setsDiffEl.innerText = `${s.diff > 0 ? '+' : ''}${s.diff}`;
+                if (setsNameEl) setsNameEl.innerText = `${s.won}W – ${s.lost}L`;
+                if (setsSubEl) setsSubEl.innerText = `${s.setPct}% wygranych setów`;
+            } else {
+                if (setsDiffEl) setsDiffEl.innerText = "-";
+                if (setsNameEl) setsNameEl.innerText = "0W – 0L";
+                if (setsSubEl) setsSubEl.innerText = "Brak rozegranych setów";
+            }
+
+            // Wyróżnienia Sezonu (Złota pigułka)
+            const specialAwardsCard = document.getElementById('playerCardSpecialAwardsCard');
             const specialAwardsEl = document.getElementById('playerCardSpecialAwards');
             if (specialAwardsEl) {
                 const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
@@ -10499,21 +10749,29 @@
                     catMeta.forEach(c => {
                         const w = pAwards[c.key]?.wins || 0;
                         if (w > 0) {
-                            awardTokens.push(`👑 ${c.icon} ${w}x ${c.name}`);
+                            awardTokens.push(`${w}x ${c.name} ${c.icon}`);
                         }
                     });
 
                     const titleStrs = (pAwards.titles || []).map(t => `${t.icon} ${t.title}`);
+                    let text = "";
                     if (titleStrs.length > 0) {
-                        specialAwardsEl.innerHTML = `<span class="text-amber-300 font-bold">${titleStrs.join(', ')}</span>${awardTokens.length ? ` <span class="text-slate-300">(${awardTokens.join(' • ')})</span>` : ''}`;
+                        text = `${titleStrs.join(', ')}${awardTokens.length ? ` (${awardTokens.join(' • ')})` : ''}`;
+                    } else if (awardTokens.length) {
+                        text = awardTokens.join(' • ');
+                    }
+                    if (text) {
+                        specialAwardsEl.innerText = text;
+                        if (specialAwardsCard) specialAwardsCard.classList.remove('hidden');
                     } else {
-                        specialAwardsEl.innerHTML = awardTokens.length ? `<span class="text-amber-300 font-bold">${awardTokens.join(' • ')}</span>` : `<span class="text-slate-500 font-normal">Brak zdobytych koron w tym sezonie</span>`;
+                        if (specialAwardsCard) specialAwardsCard.classList.add('hidden');
                     }
                 } else {
-                    specialAwardsEl.innerHTML = `<span class="text-slate-500 font-normal">Brak zdobytych koron w tym sezonie</span>`;
+                    if (specialAwardsCard) specialAwardsCard.classList.add('hidden');
                 }
             }
 
+            // Odznaki (2-kolumnowa siatka z tap-to-toast)
             const badgeCountEl = document.getElementById('playerCardBadgeCount');
             if (badgeCountEl) badgeCountEl.innerText = badges.length;
 
@@ -10521,7 +10779,7 @@
             if (badgesListEl) {
                 if (!badges.length) {
                     badgesListEl.innerHTML = `
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 text-center text-xs text-slate-500">
+                        <div class="col-span-2 bg-slate-950 border border-slate-800/80 rounded-2xl p-3 text-center text-xs text-slate-500">
                             Ten zawodnik zbiera jeszcze swoje pierwsze osiągnięcia w sezonie! 🚀
                         </div>
                     `;
@@ -10530,14 +10788,14 @@
                         const colonIdx = b.title.indexOf(':');
                         const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : b.title;
                         const badgeDesc = colonIdx !== -1 ? b.title.slice(colonIdx + 1).trim() : '';
+                        const safeFullTitle = escapeHtml(b.title).replace(/'/g, "\\'");
                         return `
-                            <div class="bg-slate-950 border border-slate-800/90 rounded-2xl p-2.5 flex items-start gap-2.5 shadow-sm">
-                                <span class="text-xl shrink-0 mt-0.5">${b.icon}</span>
+                            <div onclick="if(typeof showToast==='function') showToast('${safeFullTitle}')" class="bg-slate-950/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl p-2 flex items-center gap-2 cursor-pointer transition active:scale-95 shadow-sm">
+                                <span class="text-lg shrink-0">${b.icon}</span>
                                 <div class="min-w-0 flex-1">
-                                    <strong class="block text-white text-xs font-bold">${escapeHtml(badgeName)}</strong>
-                                    <p class="text-[11px] text-slate-400 leading-tight mt-0.5">${escapeHtml(badgeDesc)}</p>
+                                    <strong class="text-[11px] font-bold text-white block truncate leading-tight">${escapeHtml(badgeName)}</strong>
+                                    <span class="text-[9px] text-slate-400 truncate block">${escapeHtml(badgeDesc || badgeName)}</span>
                                 </div>
-                                <span class="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.5 rounded-md shrink-0">Zdobyta ✓</span>
                             </div>
                         `;
                     }).join('');
@@ -10877,6 +11135,30 @@
             const myAwards = seasonAwards?.playerStats?.[loggedPlayer];
             const playerHistory = calculatePlayerMatchHistory(loggedPlayer);
             const isOrganizer = (loggedPlayer === ORGANIZER_NAME) || isAdmin;
+            const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(loggedPlayer) : { current: 0, max: 0 };
+            const streakText = pStreak.current >= 2 ? `🔥 ${pluralizeMatches(pStreak.current)} z rzędu` : '';
+
+            let specialAwardsText = "";
+            if (myAwards && (myAwards.totalWins > 0 || (myAwards.titles && myAwards.titles.length > 0))) {
+                const awardTokens = [];
+                const catMeta = [
+                    { key: 'block', icon: '🧱', name: 'Czapa' },
+                    { key: 'spike', icon: '🔨', name: 'Gwóźdź' },
+                    { key: 'defense', icon: '🐟', name: 'Obrona' },
+                    { key: 'serve', icon: '🌪️', name: 'Serwis' }
+                ];
+                catMeta.forEach(c => {
+                    const w = myAwards[c.key]?.wins || 0;
+                    if (w > 0) awardTokens.push(`${w}x ${c.name} ${c.icon}`);
+                });
+                const titleStrs = (myAwards.titles || []).map(t => `${t.icon} ${t.title}`);
+                if (titleStrs.length > 0) {
+                    specialAwardsText = `${titleStrs.join(', ')}${awardTokens.length ? ` (${awardTokens.join(' • ')})` : ''}`;
+                } else if (awardTokens.length) {
+                    specialAwardsText = awardTokens.join(' • ');
+                }
+            }
+
             const latestPlayed = getLatestPlayedMatchInfo();
             const latestAttendees = latestPlayed ? getMatchPlayingSquad(latestPlayed.match) : [];
             const needsMvpVote = latestPlayed && !isMvpVotingFinished(latestPlayed.match) && latestAttendees.includes(loggedPlayer) && !latestPlayed.match.votes?.[loggedPlayer];
@@ -10996,164 +11278,132 @@
                     `}
                 </div>
 
-                <!-- PODWIDOK 1: STATYSTYKI -->
+                <!-- PODWIDOK 1: STATYSTYKI (ODCHUDZONY BENTO GRID) -->
                 <div id="profileSubtabContainer-stats" class="space-y-3">
                     
-                    <!-- Bilans meczów & Ostatnia forma -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
+                    <!-- 1. Pasek Formy i Bilansu (Połączony, bez duplikatów) -->
+                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 shadow-sm text-xs">
                         <div class="flex items-center justify-between gap-2 flex-wrap">
-                            <span class="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
-                                <span>⚖️</span> <span>Bilans meczów:</span>
-                            </span>
-                            <div class="font-mono text-xs font-bold text-slate-200">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs">⚖️</span>
+                                <span class="text-xs font-bold text-slate-300">Bilans spotkań:</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 font-mono text-xs font-bold text-slate-200">
                                 ${myTotalScored > 0 ? `
                                     <span class="text-emerald-400 font-extrabold">${myCareer.totalWins}W</span>
                                     <span class="text-slate-500 mx-1">–</span>
                                     <span class="text-rose-400 font-extrabold">${myCareer.totalLosses}L</span>
-                                    <span class="text-amber-300 font-extrabold ml-1.5 text-[11px] bg-amber-950/80 border border-amber-800/60 px-1.5 py-0.5 rounded-md">(${myWinPct}%)</span>
-                                ` : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                                    <span class="text-amber-300 font-extrabold ml-1.5 text-[10.5px] bg-amber-950/80 border border-amber-800/60 px-1.5 py-0.5 rounded-md font-mono">(${myWinPct}%)</span>
+                                ` : '<span class="text-slate-500 font-medium text-[11px]">Brak rozegranych meczów</span>'}
                             </div>
                         </div>
-                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/60">
-                            <span class="text-[11px] font-bold text-slate-400">Ostatnia forma (W/L):</span>
-                            <div class="flex items-center gap-1">
-                                ${formOutcomes.length ? formOutcomes.map(o => `
-                                    <span class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
-                                `).join('') : '<span class="text-slate-500 text-[10px]">Brak rozegranych meczów</span>'}
+                        <div class="flex items-center justify-between border-t border-slate-800/60 pt-2 gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-400">Ostatnie 5 meczów:</span>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <div class="flex items-center gap-1">
+                                    ${formOutcomes.length ? formOutcomes.map(o => `
+                                        <span class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black shadow-sm" style="background-color: ${o === 'W' ? '#10b981' : '#ef4444'} !important; color: ${o === 'W' ? '#022c22' : '#ffffff'} !important;">${o}</span>
+                                    `).join('') : '<span class="text-slate-500 text-[11px]">-</span>'}
+                                </div>
+                                ${streakText ? `<span class="text-[10px] font-extrabold text-amber-300 bg-amber-950/50 border border-amber-800/50 px-1.5 py-0.5 rounded ml-1">${streakText}</span>` : ''}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Chemia Zespołowa & Duety -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
-                        <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>🤝</span> Chemia Zespołowa & Duety
+                    <!-- 2. Kafelki Bento Grid (2x2 - Czysto, bez nawiasozy!) -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <!-- Duet -->
+                        <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                <span class="flex items-center gap-1"><span>🤝</span> Najlepszy Duet</span>
+                                <span class="text-emerald-400 font-mono">${bestPartner ? `${bestPartner.winPct}% W` : '-'}</span>
+                            </div>
+                            <div class="mt-1.5">
+                                <strong class="text-white text-xs block leading-tight truncate">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
+                                <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${bestPartner ? `${bestPartner.wins} ${bestPartner.wins === 1 ? 'wygrana' : (bestPartner.wins >= 2 && bestPartner.wins <= 4 ? 'wygrane' : 'wygranych')} w ${bestPartner.together} meczach` : 'Min. 2 mecze'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Kryptonit -->
+                        <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                <span class="flex items-center gap-1"><span>🥊</span> Koszmar (Rywal)</span>
+                                <span class="text-rose-400 font-mono">${pAdv?.kryptonite ? `${pAdv.kryptonite.lossPct}% L` : '-'}</span>
+                            </div>
+                            <div class="mt-1.5">
+                                <strong class="text-white text-xs block leading-tight truncate">${pAdv?.kryptonite ? escapeHtml(pAdv.kryptonite.rival) : 'Brak rywala'}</strong>
+                                <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${pAdv?.kryptonite ? `${pAdv.kryptonite.losses} ${pAdv.kryptonite.losses === 1 ? 'porażka' : (pAdv.kryptonite.losses >= 2 && pAdv.kryptonite.losses <= 4 ? 'porażki' : 'porażek')} w ${pAdv.kryptonite.against} meczach` : 'Min. 3 mecze'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Tie-breaki -->
+                        <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                <span class="flex items-center gap-1"><span>⚔️</span> Mistrz 5. Setów</span>
+                                <span class="text-amber-400 font-mono">${(pAdv?.clutch && pAdv.clutch.clutchTotal > 0) ? `${pAdv.clutch.clutchPct}% TB` : '-'}</span>
+                            </div>
+                            <div class="mt-1.5">
+                                <strong class="text-white text-xs block leading-tight font-mono">${(pAdv?.clutch && pAdv.clutch.clutchTotal > 0) ? `${pAdv.clutch.clutchWon}W – ${pAdv.clutch.clutchTotal - pAdv.clutch.clutchWon}L` : '0W – 0L'}</strong>
+                                <span class="text-[10px] text-slate-500 mt-0.5 block">${(pAdv?.clutch && pAdv.clutch.clutchTotal > 0) ? `${pAdv.clutch.clutchWon} wygrany${pAdv.clutch.clutchWon === 1 ? ' tie-break' : 'ch tie-breaków'}` : 'Brak tie-breaków'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Bilans Setów -->
+                        <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                <span class="flex items-center gap-1"><span>📈</span> Bilans Setów</span>
+                                <span class="text-cyan-400 font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.diff > 0 ? '+' : ''}${pAdv.setBalance.diff}` : '-'}</span>
+                            </div>
+                            <div class="mt-1.5">
+                                <strong class="text-white text-xs block leading-tight font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.won}W – ${pAdv.setBalance.lost}L` : '0W – 0L'}</strong>
+                                <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.setPct}% wygranych setów` : 'Brak rozegranych setów'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Wyróżnienie Sezonu (Złota pigułka) -->
+                    ${specialAwardsText ? `
+                    <div class="bg-gradient-to-r from-amber-500/10 via-amber-950/30 to-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-xs shadow-sm">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-base shrink-0">👑</span>
+                            <div class="min-w-0">
+                                <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
+                                <strong class="text-amber-200 text-xs truncate block">${specialAwardsText}</strong>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
+                            Top 1
                         </span>
-                        <div class="grid sm:grid-cols-2 gap-2 pt-0.5">
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <span class="text-[10px] text-slate-400 block font-semibold">🌟 Najlepszy partner:</span>
-                                    <strong class="text-white text-xs block whitespace-normal break-words leading-tight">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
-                                </div>
-                                ${bestPartner ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 shrink-0 font-mono">${bestPartner.winPct}% W (${bestPartner.wins}/${bestPartner.together})</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
-                            </div>
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2">
-                                <div class="min-w-0">
-                                    <span class="text-[10px] text-slate-400 block font-semibold">⚔️ Główny rywal:</span>
-                                    <strong class="text-white text-xs block whitespace-normal break-words leading-tight">${topRival ? escapeHtml(topRival.name) : 'Brak danych'}</strong>
-                                </div>
-                                ${topRival ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-950 text-amber-300 border border-amber-800 shrink-0 font-mono">${pluralizeMatches(topRival.against)}</span>` : `<span class="text-slate-500 text-[10px]">-</span>`}
-                            </div>
-                        </div>
                     </div>
+                    ` : ''}
 
-                    <!-- Zaawansowane Statystyki Meczowe Gracza -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
-                        <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center justify-between">
-                            <span class="flex items-center gap-1.5">
-                                <span>📊</span> Zaawansowane Statystyki Meczowe
+                    <!-- 4. Zdobyte Odznaki (Odchudzona siatka 2-kolumnowa z tap-to-toast) -->
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">
+                                <span>🏅</span> Zdobyte Odznaki (${badges.length})
                             </span>
-                            <span class="text-[10px] text-slate-500 font-normal">Sezon 2026</span>
-                        </span>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
-                                <span class="text-[10px] text-slate-400 font-semibold block">🎯 Win Impact</span>
-                                <div class="mt-1">
-                                    <strong class="text-emerald-400 text-sm font-mono font-black">${pAdv?.winImpactFormatted || '-'}</strong>
-                                    <span class="text-[9px] text-slate-400 block">${pAdv?.winImpactSub || 'Min. 4 mecze'}</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
-                                <span class="text-[10px] text-slate-400 font-semibold block">🥊 Kryptonit</span>
-                                <div class="mt-1">
-                                    <strong class="text-rose-400 text-xs font-bold block whitespace-normal break-words leading-tight" title="${pAdv?.kryptoniteRival || ''}">${pAdv?.kryptoniteRival || 'Brak'}</strong>
-                                    <span class="text-[9px] text-slate-400 block">${pAdv?.kryptoniteSub || 'Brak rywala (min. 3 mecze)'}</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
-                                <span class="text-[10px] text-slate-400 font-semibold block">🔥 Mistrz 5. Setów</span>
-                                <div class="mt-1">
-                                    <strong class="text-amber-400 text-sm font-mono font-black">${pAdv?.clutchFormatted || '-'}</strong>
-                                    <span class="text-[9px] text-slate-400 block">${pAdv?.clutchSub || 'Min. 2 tie-breaki'}</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2.5 flex flex-col justify-between">
-                                <span class="text-[10px] text-slate-400 font-semibold block">📈 Bilans Setów</span>
-                                <div class="mt-1">
-                                    <strong class="text-cyan-400 text-sm font-mono font-black">${pAdv?.setsDiffFormatted || '-'}</strong>
-                                    <span class="text-[9px] text-slate-400 block">${pAdv?.setsSub || '0-0'}</span>
-                                </div>
-                            </div>
+                            <span class="text-[10px] text-slate-500 font-semibold">Dotknij odznaki, by poznać opis</span>
                         </div>
-                    </div>
-
-                    <!-- Moje Wyróżnienia & Korony Meczowe -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2.5 text-xs shadow-sm">
-                        <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
-                            <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 min-w-0">
-                                <span>✨</span> <span class="truncate">Moje Wyróżnienia & Korony</span>
-                            </span>
-                            <span class="text-[10px] text-amber-300 font-bold bg-amber-950/80 border border-amber-800/70 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm font-mono">
-                                <span>👑</span> <span>${(myAwards?.totalWins || 0) === 1 ? '1 korona' : (((myAwards?.totalWins || 0) >= 2 && (myAwards?.totalWins || 0) <= 4) ? `${myAwards?.totalWins} korony` : `${myAwards?.totalWins || 0} koron`)}</span>
-                            </span>
-                        </div>
-
-                        ${myAwards?.titles?.length ? `
-                            <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-900 border border-amber-500/40 rounded-xl p-2.5 flex items-center gap-2 flex-wrap">
-                                <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1">👑 Tytuł sezonu:</span>
-                                ${myAwards.titles.map(t => `
-                                    <span class="bg-slate-950/90 border border-amber-500/50 text-amber-200 font-bold px-2 py-0.5 rounded-lg text-xs flex items-center gap-1 shadow-sm">
-                                        <span>${t.icon}</span> <span>${escapeHtml(t.title)}</span>
-                                    </span>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
-                            ${[
-                                { key: 'block', name: 'Czapa', icon: '🧱' },
-                                { key: 'spike', name: 'Gwóźdź', icon: '🔨' },
-                                { key: 'defense', name: 'Obrona', icon: '🐟' },
-                                { key: 'serve', name: 'Serwis', icon: '🌪️' }
-                            ].map(item => {
-                                const w = myAwards?.[item.key]?.wins || 0;
+                        <div class="grid grid-cols-2 gap-1.5">
+                            ${badges.length ? badges.map(b => {
+                                const colonIdx = b.title.indexOf(':');
+                                const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : b.title;
+                                const badgeDesc = colonIdx !== -1 ? b.title.slice(colonIdx + 1).trim() : '';
+                                const safeFullTitle = escapeHtml(b.title).replace(/'/g, "\\'");
                                 return `
-                                    <div class="bg-slate-950/70 border ${w > 0 ? 'border-amber-500/40 bg-amber-950/10' : 'border-slate-800/80'} rounded-xl p-2.5 flex flex-col justify-between">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
-                                                <span>${item.icon}</span> <span>${item.name}</span>
-                                            </span>
-                                            ${w > 0 ? `<span class="text-[9px] font-black text-amber-300 bg-amber-950 border border-amber-700/60 px-1.5 py-0.2 rounded">👑 KORONA</span>` : ''}
-                                        </div>
-                                        <div class="mt-2">
-                                            ${w > 0 ? `
-                                                <strong class="text-amber-300 text-xs sm:text-sm font-black block whitespace-normal break-words leading-tight">
-                                                    ${w}x Wygrana
-                                                </strong>
-                                            ` : `
-                                                <span class="text-slate-500 text-xs font-semibold block">—</span>
-                                            `}
+                                    <div onclick="if(typeof showToast==='function') showToast('${safeFullTitle}')" class="bg-slate-950/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl p-2 flex items-center gap-2 cursor-pointer transition active:scale-95 shadow-sm">
+                                        <span class="text-lg shrink-0">${b.icon}</span>
+                                        <div class="min-w-0 flex-1">
+                                            <strong class="text-[11px] font-bold text-white block truncate leading-tight">${escapeHtml(badgeName)}</strong>
+                                            <span class="text-[9px] text-slate-400 truncate block">${escapeHtml(badgeDesc || badgeName)}</span>
                                         </div>
                                     </div>
                                 `;
-                            }).join('')}
-                        </div>
-                    </div>
-
-                    <!-- Gablota Odznak Gracza -->
-                    <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 text-xs shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Moje Odznaki (${badges.length}):</span>
-                            <button type="button" onclick="openBadgesLegend()" class="text-[10px] text-amber-400 hover:underline">Zobacz wszystkie odznaki ➔</button>
-                        </div>
-                        <div class="flex flex-wrap gap-1.5 pt-0.5">
-                            ${badges.length ? badges.map(b => `
-                                <span class="bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-xl text-xs flex items-center gap-1 text-slate-200">
-                                    <span>${b.icon}</span>
-                                    <span class="text-[11px] font-semibold">${escapeHtml(b.title.split(':')[0])}</span>
-                                </span>
-                            `).join('') : `
-                                <span class="text-xs text-slate-500 italic">Graj w piątki, aby zdobywać trofea i odznaki!</span>
+                            }).join('') : `
+                                <div class="col-span-2 bg-slate-950 border border-slate-800/80 rounded-2xl p-3 text-center text-xs text-slate-500">
+                                    Graj w piątki, aby zdobywać trofea i odznaki! 🚀
+                                </div>
                             `}
                         </div>
                     </div>
@@ -11208,18 +11458,18 @@
 
                 </div>
 
-                <!-- PODWIDOK 3 (ZAWODNIK): DEDYKOWANY PANEL USTAWIEŃ PROFILU -->
+                <!-- PODWIDOK 3 (ZAWODNIK): DEDYKOWANY PANEL USTAWIEŃ PROFILU (BENTO ACTION CARDS) -->
                 ${!isOrganizer ? `
-                <div id="profileSubtabContainer-settings" class="space-y-3.5 hidden">
-                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-9 h-9 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-lg shadow-sm">
+                <div id="profileSubtabContainer-settings" class="space-y-3 hidden">
+                    <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center text-sm shadow-sm">
                                     ⚙️
                                 </div>
                                 <div>
-                                    <h3 class="font-black text-sm sm:text-base text-white">Ustawienia Profilu Zawodnika</h3>
-                                    <p class="text-[10px] text-slate-400">Wygląd, awatar, kod PIN i sesja na telefonie</p>
+                                    <h3 class="font-black text-sm text-white leading-tight">Ustawienia Profilu Zawodnika</h3>
+                                    <p class="text-[10px] text-slate-400">Wygląd, kod PIN, awatar i sesja</p>
                                 </div>
                             </div>
                             <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
@@ -11227,84 +11477,74 @@
                             </span>
                         </div>
 
-                        <!-- Siatka Ustawień Zawodnika -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Siatka Ustawień Zawodnika Bento (Czyste kafelki 2-kolumnowe) -->
+                        <div class="grid grid-cols-2 gap-2 text-xs">
                             
                             <!-- 🎨 Wygląd & Motyw -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-xl shrink-0">🎨</span>
-                                        <div class="min-w-0">
-                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Wygląd & Motyw</h4>
-                                            <p class="text-[10px] text-slate-400">Styl kolorów aplikacji</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1.5 shrink-0">
-                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay">${escapeHtml(activeThemeInfo.name)}</span>
-                                    </span>
+                            <div onclick="openThemePickerModal()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>🎨</span> Motyw</span>
+                                    <span class="text-slate-500 group-hover:text-amber-400 transition">➔</span>
                                 </div>
-                                <button type="button" onclick="openThemePickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
-                                    <span>🎨</span> Zmień motyw aplikacji ➔
-                                </button>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight flex items-center gap-1">
+                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay">${escapeHtml(activeThemeInfo.name)}</span>
+                                    </strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
+                                </div>
                             </div>
 
                             <!-- 📷 Awatar / Zdjęcie -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2.5 min-w-0">
-                                        <div class="shrink-0">
-                                            ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
-                                        </div>
-                                        <div class="min-w-0">
-                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Awatar & Zdjęcie</h4>
-                                            <p class="text-[10px] text-slate-400">Widoczne na boisku i liście</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full shrink-0">Aktywny</span>
+                            <div onclick="openAvatarPickerModal()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>📷</span> Awatar</span>
+                                    <span class="text-emerald-400 font-mono text-[9px] bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.2 rounded-full">Aktywny</span>
                                 </div>
-                                <button type="button" onclick="openAvatarPickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
-                                    <span>📷</span> Zmień awatar lub zdjęcie ➔
-                                </button>
-                            </div>
-
-                            <!-- 🔒 Bezpieczeństwo (PIN & Imię) -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-xl shrink-0">🔒</span>
-                                        <div class="min-w-0">
-                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Bezpieczeństwo & PIN</h4>
-                                            <p class="text-[10px] text-slate-400">Kod dostępu i Twoje imię</p>
-                                        </div>
+                                <div class="mt-1.5 flex items-center gap-2">
+                                    <div class="shrink-0">
+                                        ${getPlayerAvatarHtml(loggedPlayer, 'xs')}
                                     </div>
-                                    <span class="text-[10px] text-indigo-300 font-bold bg-indigo-950/60 border border-indigo-800/60 px-2 py-0.5 rounded-full shrink-0">4-cyfry</span>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="changeMyPinPrompt()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 hover:text-emerald-300 font-bold py-2 px-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95 shadow-sm">
-                                        <span>🔑</span> Zmień PIN
-                                    </button>
-                                    <button type="button" onclick="changeMyPlayerNamePrompt()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500/50 text-slate-200 font-bold py-2 px-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95 shadow-sm">
-                                        <span>✏️</span> Zmień imię
-                                    </button>
+                                    <div class="min-w-0">
+                                        <strong class="text-white text-xs block truncate leading-tight">Zmień zdjęcie</strong>
+                                        <span class="text-[9.5px] text-slate-500 block truncate">Widok na boisku</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- 🚪 Sesja na telefonie -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 flex flex-col justify-between gap-3 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-xl shrink-0">🚪</span>
-                                        <div class="min-w-0">
-                                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Sesja Gracza</h4>
-                                            <p class="text-[10px] text-slate-400">Pamięć na tym telefonie</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-[10px] text-slate-400 font-mono shrink-0">Zalogowany</span>
+                            <!-- 🔒 Kod PIN -->
+                            <div onclick="changeMyPinPrompt()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>🔑</span> Kod PIN</span>
+                                    <span class="text-indigo-300 font-mono text-[9px] bg-indigo-950/60 border border-indigo-800/60 px-1.5 py-0.2 rounded-full">4-cyfry</span>
                                 </div>
-                                <button type="button" onclick="logoutPlayerAccount()" class="w-full bg-rose-950/30 hover:bg-rose-900/50 border border-rose-900/60 hover:border-rose-700 text-rose-300 font-bold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 active:scale-95 shadow-sm">
-                                    <span>🚪</span> Wyloguj się z profilu
-                                </button>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight">Zmień kod PIN</strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Ochrona Twojego profilu</span>
+                                </div>
+                            </div>
+
+                            <!-- ✏️ Twoje Imię -->
+                            <div onclick="changeMyPlayerNamePrompt()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>✏️</span> Twoje Imię</span>
+                                    <span class="text-slate-500 group-hover:text-indigo-300 transition">➔</span>
+                                </div>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight">${escapeHtml(loggedPlayer)}</strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Zmień podpis na liście</span>
+                                </div>
+                            </div>
+
+                            <!-- 🚪 Sesja Gracza -->
+                            <div onclick="logoutPlayerAccount()" class="bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900/50 hover:border-rose-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group col-span-2">
+                                <div class="flex items-center justify-between text-rose-300 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-rose-200"><span>🚪</span> Sesja na telefonie</span>
+                                    <span class="text-rose-400 group-hover:underline text-[9.5px]">Wyloguj ➔</span>
+                                </div>
+                                <div class="mt-1 flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400">Pamięć profilu na tym urządzeniu</span>
+                                    <span class="text-[9px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full">Zalogowany</span>
+                                </div>
                             </div>
 
                         </div>
@@ -11503,62 +11743,62 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Bento Kafelki Ustawień Organizatora -->
+                        <div class="grid grid-cols-2 gap-2 text-xs">
                             
                             <!-- Motyw -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                                        <span>🎨</span> Motyw
-                                    </span>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 shrink-0">
-                                        ${activeThemeInfo.icon} <span id="profileCurrentThemeDisplayAdmin">${escapeHtml(activeThemeInfo.name)}</span>
-                                    </span>
+                            <div onclick="openThemePickerModal()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>🎨</span> Motyw</span>
+                                    <span class="text-slate-500 group-hover:text-amber-400 transition">➔</span>
                                 </div>
-                                <button type="button" onclick="openThemePickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
-                                    Zmień motyw ➔
-                                </button>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight flex items-center gap-1">
+                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplayAdmin">${escapeHtml(activeThemeInfo.name)}</span>
+                                    </strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
+                                </div>
                             </div>
 
                             <!-- Awatar -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                                        <span>📷</span> Mój Awatar
-                                    </span>
+                            <div onclick="openAvatarPickerModal()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>📷</span> Mój Awatar</span>
+                                    <span class="text-emerald-400 font-mono text-[9px] bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.2 rounded-full">Aktywny</span>
+                                </div>
+                                <div class="mt-1.5 flex items-center gap-2">
                                     <div class="shrink-0">
-                                        ${getPlayerAvatarHtml(loggedPlayer, 'sm')}
+                                        ${getPlayerAvatarHtml(loggedPlayer, 'xs')}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <strong class="text-white text-xs block truncate leading-tight">Zmień zdjęcie</strong>
+                                        <span class="text-[9.5px] text-slate-500 block truncate">Widok na boisku</span>
                                     </div>
                                 </div>
-                                <button type="button" onclick="openAvatarPickerModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
-                                    Zmień zdjęcie / awatar ➔
-                                </button>
                             </div>
 
                             <!-- PIN -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                                        <span>🔒</span> Bezpieczeństwo
-                                    </span>
-                                    <span class="text-[10px] text-indigo-300 font-bold">4-cyfry</span>
+                            <div onclick="changeMyPinPrompt()" class="bg-slate-950/80 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-white"><span>🔒</span> Mój PIN</span>
+                                    <span class="text-indigo-300 font-mono text-[9px] bg-indigo-950/60 border border-indigo-800/60 px-1.5 py-0.2 rounded-full">4-cyfry</span>
                                 </div>
-                                <button type="button" onclick="changeMyPinPrompt()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-slate-200 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
-                                    Zmień swój PIN 🔑
-                                </button>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight">Zmień kod PIN</strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Bezpieczeństwo konta</span>
+                                </div>
                             </div>
 
                             <!-- Sesja -->
-                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between gap-2.5 shadow-sm">
-                                <div class="flex items-center justify-between gap-2">
-                                    <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                                        <span>🚪</span> Sesja
-                                    </span>
-                                    <span class="text-[10px] text-slate-400">Telefon</span>
+                            <div onclick="logoutPlayerAccount()" class="bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900/50 hover:border-rose-700 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition active:scale-95 shadow-sm group">
+                                <div class="flex items-center justify-between text-rose-300 text-[10px] font-bold">
+                                    <span class="flex items-center gap-1.5 text-rose-200"><span>🚪</span> Sesja</span>
+                                    <span class="text-rose-400 group-hover:underline text-[9.5px]">Wyloguj ➔</span>
                                 </div>
-                                <button type="button" onclick="logoutPlayerAccount()" class="w-full bg-rose-950/30 hover:bg-rose-900/50 border border-rose-900/60 text-rose-300 font-bold py-1.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
-                                    Wyloguj profil 🚪
-                                </button>
+                                <div class="mt-2 space-y-0.5">
+                                    <strong class="text-white text-xs block truncate leading-tight">Wyloguj konto</strong>
+                                    <span class="text-[9.5px] text-slate-500 block truncate">Pamięć na telefonie</span>
+                                </div>
                             </div>
 
                         </div>
