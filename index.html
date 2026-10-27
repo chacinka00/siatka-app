@@ -2790,7 +2790,7 @@
                     <span class="text-base shrink-0">👑</span>
                     <div class="min-w-0">
                         <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
-                        <strong id="playerCardSpecialAwards" class="text-amber-200 text-xs truncate block">-</strong>
+                        <strong id="playerCardSpecialAwards" class="text-amber-200 text-xs whitespace-normal break-words leading-tight block">-</strong>
                     </div>
                 </div>
                 <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
@@ -8523,17 +8523,35 @@
                                 ${catMeta.map(c => {
                                     const info = aw[c.key];
                                     const winCount = info.winners.length;
-                                    const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : '<span class="text-slate-600 font-normal">—</span>';
                                     const voteStr = info.maxVotes > 0 ? pluralizeVotes(info.maxVotes) : '';
+
+                                    let winnersHtml = '<div class="text-[10px] text-slate-600 font-normal mt-1 leading-tight">—</div>';
+                                    if (winCount === 1) {
+                                        winnersHtml = `
+                                            <div class="text-[10.5px] sm:text-[11px] font-black text-white mt-1 leading-tight truncate" title="${escapeHtml(info.winners[0])}">
+                                                ${escapeHtml(info.winners[0])}
+                                            </div>
+                                        `;
+                                    } else if (winCount > 1) {
+                                        winnersHtml = `
+                                            <div class="flex flex-col gap-0.5 mt-1">
+                                                ${info.winners.map(w => `
+                                                    <div class="text-[9.5px] sm:text-[10px] font-black text-white leading-tight flex items-center gap-1 min-w-0" title="${escapeHtml(w)}">
+                                                        <span class="w-1 h-1 rounded-full bg-amber-400 shrink-0"></span>
+                                                        <span class="truncate">${escapeHtml(w)}</span>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        `;
+                                    }
+
                                     return `
-                                        <div class="bg-slate-900/90 border border-slate-800/80 p-2 rounded-xl flex flex-col justify-between shadow-sm">
+                                        <div class="bg-slate-900/90 border border-slate-800/80 p-2 rounded-xl flex flex-col justify-between min-h-[46px] shadow-sm">
                                             <div class="flex items-center justify-between gap-1 text-[9px] text-slate-400 font-bold">
                                                 <span class="whitespace-nowrap">${c.icon} ${c.title}</span>
-                                                ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap text-[8.5px]">${voteStr}</span>` : ''}
+                                                ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap text-[8.5px]">${voteStr}${winCount > 1 ? ' (remis)' : ''}</span>` : ''}
                                             </div>
-                                            <div class="text-[10.5px] sm:text-[11px] font-black ${winCount > 0 ? 'text-white' : 'text-slate-600'} truncate mt-0.5" title="${winCount > 0 ? info.winners.join(', ') : ''}">
-                                                ${winStr}
-                                            </div>
+                                            ${winnersHtml}
                                         </div>
                                     `;
                                 }).join('')}
@@ -9885,23 +9903,41 @@
                             ${catMeta.map(c => {
                                 const info = aw[c.key];
                                 const winCount = info.winners.length;
-                                const winStr = winCount > 0 ? info.winners.map(w => escapeHtml(w)).join(' & ') : 'Brak nominacji';
                                 const voteStr = info.maxVotes > 0 ? pluralizeVotes(info.maxVotes) : '';
                                 const isActive = (activeCat === c.key);
                                 const onclickStr = isArchived 
                                     ? `setArchivedActiveCategory('${c.key}', '${escapeHtml(match.date)}')` 
                                     : `setMvpActiveCategory('${c.key}')`;
+
+                                let winnersHtml = '<div class="text-xs font-black text-slate-500 leading-tight">Brak nominacji</div>';
+                                if (winCount === 1) {
+                                    winnersHtml = `
+                                        <div class="text-xs font-black text-white whitespace-normal break-words leading-tight" title="${escapeHtml(info.winners[0])}">
+                                            ${escapeHtml(info.winners[0])}
+                                        </div>
+                                    `;
+                                } else if (winCount > 1) {
+                                    winnersHtml = `
+                                        <div class="flex flex-col gap-0.5">
+                                            ${info.winners.map(w => `
+                                                <div class="text-[10px] sm:text-[11px] font-black text-white leading-tight flex items-center gap-1 min-w-0" title="${escapeHtml(w)}">
+                                                    <span class="w-1 h-1 rounded-full bg-amber-400 shrink-0"></span>
+                                                    <span class="truncate">${escapeHtml(w)}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    `;
+                                }
+
                                 return `
-                                    <div onclick="${onclickStr}" class="award-card cursor-pointer ${isActive ? 'bg-amber-950/30 border-2 border-amber-400/80 ring-1 ring-amber-400/30 shadow-sm' : 'bg-slate-900/90 hover:bg-slate-800/80 border border-slate-800'} p-2 rounded-xl flex flex-col justify-between space-y-1 transition active:scale-95">
+                                    <div onclick="${onclickStr}" class="award-card cursor-pointer ${isActive ? 'bg-amber-950/30 border-2 border-amber-400/80 ring-1 ring-amber-400/30 shadow-sm' : 'bg-slate-900/90 hover:bg-slate-800/80 border border-slate-800'} p-2 rounded-xl flex flex-col justify-between min-h-[50px] space-y-1 transition active:scale-95">
                                         <div class="flex items-center justify-between gap-1">
                                             <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
                                                 <span>${c.icon}</span> <span class="leading-tight">${c.title}</span>
                                             </span>
-                                            ${voteStr ? `<span class="text-[9px] font-mono font-bold text-amber-400 shrink-0">${voteStr}</span>` : ''}
+                                            ${voteStr ? `<span class="text-[9px] font-mono font-bold text-amber-400 shrink-0">${voteStr}${winCount > 1 ? ' (remis)' : ''}</span>` : ''}
                                         </div>
-                                        <div class="text-xs font-black ${winCount > 0 ? 'text-white' : 'text-slate-500'} whitespace-normal break-words leading-tight">
-                                            ${winStr}
-                                        </div>
+                                        ${winnersHtml}
                                     </div>
                                 `;
                             }).join('')}
@@ -11714,7 +11750,7 @@
                             <span class="text-base shrink-0">👑</span>
                             <div class="min-w-0">
                                 <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
-                                <strong class="text-amber-200 text-xs truncate block">${specialAwardsText}</strong>
+                                <strong class="text-amber-200 text-xs whitespace-normal break-words leading-tight block">${specialAwardsText}</strong>
                             </div>
                         </div>
                         <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
