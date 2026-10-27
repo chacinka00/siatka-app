@@ -4115,13 +4115,13 @@
             return true;
         }
 
-        function getMatchMvpWinner(match) {
-            if (!match || match.isCancelled) return null;
-            if (!isMvpVotingFinished(match)) return null;
+        function getMatchMvpWinners(match) {
+            if (!match || match.isCancelled) return [];
+            if (!isMvpVotingFinished(match)) return [];
 
             // 1. Zwycięzca dogrywki, jeśli dogrywka miała miejsce
             if (match.mvpTieBreak && Array.isArray(match.mvpTieBreak.candidates) && match.mvpTieBreak.candidates.length > 1) {
-                if (match.mvpTieBreak.adminDecidedWinner) return match.mvpTieBreak.adminDecidedWinner;
+                if (match.mvpTieBreak.adminDecidedWinner) return [match.mvpTieBreak.adminDecidedWinner];
                 const tbVotes = match.mvpTieBreak.votes || {};
                 const tbTally = {};
                 match.mvpTieBreak.candidates.forEach(c => { tbTally[c] = 0; });
@@ -4136,8 +4136,8 @@
                     if (cnt > maxTb) { maxTb = cnt; tbLeaders = [nom]; }
                     else if (cnt === maxTb) { tbLeaders.push(nom); }
                 });
-                if (tbLeaders.length === 1 && maxTb > 0) return tbLeaders[0];
-                return tbLeaders[0] || null;
+                if (tbLeaders.length === 1 && maxTb > 0) return [tbLeaders[0]];
+                return tbLeaders.length ? [tbLeaders[0]] : [];
             }
 
             // 2. Standardowe głosowanie
@@ -4150,7 +4150,20 @@
                 if (count > maxV) { maxV = count; leaders = [nom]; }
                 else if (count === maxV && maxV > 0) { leaders.push(nom); }
             });
-            if (leaders.length === 1 && maxV > 0) return leaders[0];
+            if (maxV === 0 || leaders.length === 0) return [];
+
+            // Od 2026-10-17 obowiązuje dogrywka (runoff) – jeśli brak dogrywki lub jest remis w toku, brak pojedynczego zwycięzcy
+            if (match.date >= '2026-10-17') {
+                return leaders.length === 1 ? [leaders[0]] : [];
+            }
+            // Przed 2026-10-17: jeśli był remis w głosowaniu zasadniczym, obaj liderzy zostają MVP ex aequo
+            return leaders;
+        }
+
+        function getMatchMvpWinner(match) {
+            const winners = getMatchMvpWinners(match);
+            if (winners.length === 1) return winners[0];
+            if (winners.length > 1) return winners.join(' & ');
             return null;
         }
 
@@ -7002,15 +7015,27 @@
                     if (hasActiveTieBreak && !isTbFinished) {
                         toggleFinalizeBtn.innerText = "👑 Zakończ dogrywkę";
                         toggleFinalizeBtn.className = "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
+                    } else if (!isFinished) {
+                        toggleFinalizeBtn.innerText = `👑 Zakończ i odkryj (${totalVotesCast}/${attendees.length})`;
+                        toggleFinalizeBtn.className = "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
+                    } else if (totalVotesCast < attendees.length) {
+                        toggleFinalizeBtn.innerText = "🔓 Wznów tajne głosowanie";
+                        toggleFinalizeBtn.className = "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95";
                     } else {
-                        toggleFinalizeBtn.innerText = isFinished ? "🔓 Otwórz głosowanie" : "👑 Zakończ i odkryj";
-                        toggleFinalizeBtn.className = isFinished 
-                            ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95"
-                            : "bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 shadow-md shadow-amber-500/20";
+                        toggleFinalizeBtn.innerText = "🔄 Zresetuj głosy (awaria)";
+                        toggleFinalizeBtn.className = "bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/80 font-bold px-2.5 py-1 rounded-xl text-[10px] transition shrink-0 active:scale-95 shadow-sm";
                     }
                 }
                 if (adminStatusLabel) {
-                    adminStatusLabel.innerText = isFinished ? "Wyniki są ODKRYTE" : (hasActiveTieBreak && !isTbFinished ? `Trwa DOGRYWKA (${tbCount}/${tbEligible.length})` : `Głosowanie tajne (${totalVotesCast}/${attendees.length})`);
+                    if (hasActiveTieBreak && !isTbFinished) {
+                        adminStatusLabel.innerText = `Trwa DOGRYWKA (${tbCount}/${tbEligible.length})`;
+                    } else if (!isFinished) {
+                        adminStatusLabel.innerText = `Głosowanie tajne (${totalVotesCast}/${attendees.length})`;
+                    } else if (totalVotesCast < attendees.length) {
+                        adminStatusLabel.innerText = `Zamknięte przed czasem (${totalVotesCast}/${attendees.length})`;
+                    } else {
+                        adminStatusLabel.innerText = `Komplet głosów (${totalVotesCast}/${attendees.length}) ✅`;
+                    }
                 }
             } else {
                 if (adminBar) adminBar.classList.add('hidden');
@@ -7020,7 +7045,7 @@
             if (isFinished) {
                 const tbWinner = hasActiveTieBreak ? getMatchMvpWinner(currentMatch) : (leaders.length === 1 ? leaders[0] : null);
                 const isMvpActive = (activeMvpCategory === 'mvp');
-                const mvpBadgeHtml = isMvpActive ? ` <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 rounded ml-1 shrink-0">Wybrana kategoria ▼</span>` : '';
+                const mvpBadgeHtml = '';
 
                 const mvpWinnerContainer = document.getElementById('mvpWinnerContainer');
                 if (mvpWinnerContainer) {
@@ -7031,12 +7056,17 @@
                 }
 
                 if (hasActiveTieBreak && tbWinner) {
-                    if (winnerHeaderLabel) winnerHeaderLabel.innerHTML = `OFICJALNY MVP SPOTKANIA (ZWYCIĘZCA DOGRYWKI ⚡) 🏆${mvpBadgeHtml}`;
+                    if (winnerHeaderLabel) winnerHeaderLabel.innerHTML = `OFICJALNY MVP SPOTKANIA (ZWYCIĘZCA DOGRYWKI ⚡) 🏆`;
                     const tbWinVotes = Object.values(tbVotes).filter(v => v === tbWinner).length;
                     if (winnerName) winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(tbWinner, 'sm')} 👑 ${escapeHtml(tbWinner)}</span>`;
                     if (winnerVotes) winnerVotes.innerHTML = `<span class="text-amber-300 font-bold">Wygrana po dogrywce!</span> W dogrywce: ${pluralizeVotes(tbWinVotes)} (remis w rundzie zasadniczej: ${pluralizeVotes(maxVotes)}).`;
                 } else {
-                    if (winnerHeaderLabel) winnerHeaderLabel.innerHTML = `OFICJALNY MVP SPOTKANIA 🏆${mvpBadgeHtml}`;
+                    const isExAequoPreTieBreak = (currentMatch.date < '2026-10-17') && (leaders.length > 1) && (maxVotes > 0);
+                    if (winnerHeaderLabel) {
+                        winnerHeaderLabel.innerHTML = isExAequoPreTieBreak 
+                            ? `OFICJALNI MVP SPOTKANIA (EX AEQUO) 🏆` 
+                            : `OFICJALNY MVP SPOTKANIA 🏆`;
+                    }
                     if (winnerName && winnerVotes) {
                         if (maxVotes === 0) {
                             winnerName.innerText = "Brak głosów";
@@ -7044,6 +7074,9 @@
                         } else if (leaders.length === 1) {
                             winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
                             winnerVotes.innerText = `${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+                        } else if (isExAequoPreTieBreak) {
+                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
+                            winnerVotes.innerText = `MVP Ex aequo: po ${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
                         } else {
                             winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
                             winnerVotes.innerText = `Remis: po ${pluralizeVotes(maxVotes)}`;
@@ -8079,32 +8112,53 @@
                 const currentMatch = monthData?.matches[AppState.currentMatchIndex];
                 if (!currentMatch) return;
 
+                const attendees = getMatchPlayingSquad(currentMatch);
+                const totalVotesCast = attendees.filter(p => Boolean(currentMatch.votes && currentMatch.votes[p])).length;
                 const hasRunoff = Boolean(currentMatch.mvpTieBreak && Array.isArray(currentMatch.mvpTieBreak.candidates) && currentMatch.mvpTieBreak.candidates.length > 1);
-                const currentClosed = isMvpVotingFinished(currentMatch);
+                const isFinished = isMvpVotingFinished(currentMatch);
 
+                // 1. Zakończenie trwającej dogrywki
                 if (hasRunoff && !currentMatch.mvpTieBreak.closed) {
                     currentMatch.mvpTieBreak.closed = true;
                     currentMatch.mvpClosed = true;
-                } else {
-                    currentMatch.mvpClosed = !currentClosed;
-                    if (currentMatch.mvpTieBreak) {
-                        currentMatch.mvpTieBreak.closed = currentMatch.mvpClosed;
+                    showToast("Zakończono dogrywkę MVP! 👑");
+                } 
+                // 2. Jeśli głosowanie było w toku (< attendees.length), admin zamyka je przed czasem
+                else if (!isFinished) {
+                    currentMatch.mvpClosed = true;
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 120,
+                            spread: 80,
+                            origin: { y: 0.6 },
+                            colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
+                        });
                     }
-                }
-
-                if (!currentClosed && typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 120,
-                        spread: 80,
-                        origin: { y: 0.6 },
-                        colors: ['#f59e0b', '#10b981', '#fbbf24', '#38bdf8']
-                    });
+                    showToast("Odkryto wyniki MVP dla wszystkich! 👑");
+                } 
+                // 3. Jeśli głosowanie było przedwcześnie zamknięte przez admina, ale brakuje głosów (< attendees.length), wznawiamy
+                else if (totalVotesCast < attendees.length) {
+                    currentMatch.mvpClosed = false;
+                    if (currentMatch.mvpTieBreak) {
+                        currentMatch.mvpTieBreak.closed = false;
+                    }
+                    showToast("Wznowiono tajne głosowanie MVP! 🗳️");
+                } 
+                // 4. Jeśli wszyscy oddali głosy (komplet) i admin klika przycisk awaryjny (reset)
+                else {
+                    const confirmReset = confirm("⚠️ Czy na pewno chcesz całkowicie zresetować głosy na ten mecz i otworzyć głosowanie od nowa?");
+                    if (!confirmReset) return;
+                    currentMatch.votes = {};
+                    if (currentMatch.specialVotes) currentMatch.specialVotes = {};
+                    if (currentMatch.votesWomen) currentMatch.votesWomen = {};
+                    if (currentMatch.mvpTieBreak) delete currentMatch.mvpTieBreak;
+                    currentMatch.mvpClosed = false;
+                    showToast("Zresetowano wszystkie głosy tego meczu! 🗳️");
                 }
 
                 syncState();
                 renderIntegratedMvpCard();
                 renderMatchesTab();
-                showToast(currentMatch.mvpClosed ? "Odkryto wyniki MVP dla wszystkich! 👑" : "Głosowanie zostało otwarte ponownie. 🔓");
             });
         }
 
@@ -8253,10 +8307,10 @@
             const tally = {};
             Object.values(votes).forEach(nom => tally[nom] = (tally[nom] || 0) + 1);
             const sortedNominees = Object.entries(tally).sort((a, b) => b[1] - a[1]);
-            const topNom = sortedNominees.length > 0 ? sortedNominees[0][0] : "";
             const maxV = sortedNominees.length > 0 ? sortedNominees[0][1] : 0;
             const totalVotes = Object.keys(votes).length;
-            const mvpWinner = (isFinished && topNom && maxV > 0) ? topNom : null;
+            const mvpWinners = isFinished ? getMatchMvpWinners(targetMatch) : [];
+            const mvpWinner = mvpWinners.length === 1 ? mvpWinners[0] : (mvpWinners.length > 1 ? mvpWinners.join(' & ') : null);
 
             const teams = targetMatch.teams || null;
             const darkName = teams?.darkName || "Drużyna Ciemna";
@@ -8352,16 +8406,25 @@
             }
 
             let mvpHtml = '';
-            if (mvpWinner) {
+            if (mvpWinners.length > 0) {
+                const isExAequo = mvpWinners.length > 1;
                 const pct = totalVotes > 0 ? Math.round((maxV / totalVotes) * 100) : 0;
+                const winnersListHtml = mvpWinners.map(w => `
+                    <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(w)});" class="flex items-center gap-1.5 cursor-pointer hover:text-amber-300 transition py-0.5">
+                        ${getPlayerAvatarHtml(w, 'sm')}
+                        <span class="text-xs sm:text-sm font-black text-white hover:text-amber-300 transition whitespace-normal break-words leading-tight">${formatPlayerNameHtml(w)}</span>
+                    </div>
+                `).join('<span class="text-amber-400 font-bold px-1 text-xs shrink-0">&</span>');
+
                 mvpHtml = `
-                    <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(mvpWinner)});" title="Dotknij, aby zobaczyć profil gracza" class="cursor-pointer bg-gradient-to-r from-amber-500/20 via-amber-950/30 to-slate-900 border border-amber-500/50 hover:border-amber-400 rounded-2xl p-2.5 shadow-md transition active:scale-95">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 min-w-0">
-                                ${getPlayerAvatarHtml(mvpWinner, 'sm')}
-                                <div class="flex items-center gap-1.5 min-w-0 flex-wrap">
-                                    <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">👑 MVP</span>
-                                    <span class="text-xs sm:text-sm font-black text-white hover:text-amber-300 transition whitespace-normal break-words leading-tight">${formatPlayerNameHtml(mvpWinner)}</span>
+                    <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/30 to-slate-900 border border-amber-500/50 hover:border-amber-400 rounded-2xl p-2.5 shadow-md">
+                        <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <div class="flex items-center gap-2 min-w-0 flex-wrap">
+                                <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">
+                                    👑 MVP ${isExAequo ? '(Ex aequo)' : ''}
+                                </span>
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    ${winnersListHtml}
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
@@ -8441,7 +8504,7 @@
                 const renderTeamRosterCompact = (roster) => {
                     if (!roster.length) return `<div class="text-[10px] text-slate-500 italic py-1 text-center">Brak graczy</div>`;
                     return roster.map(p => {
-                        const isPlayerMvp = (mvpWinner && p === mvpWinner);
+                        const isPlayerMvp = mvpWinners.includes(p);
                         const isGuest = !AppState.all_players.includes(p);
                         return `
                             <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(p)});" title="Dotknij, aby zobaczyć profil gracza" class="flex items-center justify-between gap-1 py-0.5 px-1 rounded-lg hover:bg-slate-800/60 cursor-pointer transition ${isPlayerMvp ? 'bg-amber-950/40 border border-amber-500/40 text-amber-200' : 'text-slate-200'}">
@@ -8496,7 +8559,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-1">
                             ${mainSquad.map(p => {
-                                const isPlayerMvp = (mvpWinner && p === mvpWinner);
+                                const isPlayerMvp = mvpWinners.includes(p);
                                 const isGuest = !AppState.all_players.includes(p);
                                 return `
                                     <div onclick="closeArchivedMatchModal(); openPlayerCardModal(${toInlineArgument(p)});" class="flex items-center justify-between gap-1 py-0.5 px-1 rounded-lg hover:bg-slate-800/60 cursor-pointer transition ${isPlayerMvp ? 'bg-amber-950/40 border border-amber-500/40 text-amber-200' : 'text-slate-200'}">
@@ -10313,7 +10376,7 @@
                         outcome = "archived";
                     }
 
-                    const isMvpWinner = (getMatchMvpWinner(m) === playerName);
+                    const isMvpWinner = getMatchMvpWinners(m).includes(playerName);
 
                     let displayScore = scoreStr;
                     if (!displayScore) {
@@ -10460,8 +10523,8 @@
                                 }
                             }
 
-                            const mWinner = getMatchMvpWinner(m);
-                            if (mWinner === playerName) {
+                            const mWinners = getMatchMvpWinners(m);
+                            if (mWinners.includes(playerName)) {
                                 mvpWins++;
                                 const votesMap = m.votes || {};
                                 const totalVotes = Object.keys(votesMap).length;
