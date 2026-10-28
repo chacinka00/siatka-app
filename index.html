@@ -5532,17 +5532,17 @@
 
             const subtabMvpBadge = document.getElementById('matchSubtabMvpBadge');
             if (subtabMvpBadge) {
-                if (isCancelled) {
+                if (isCancelled || mainPlayers.length === 0) {
                     subtabMvpBadge.classList.add('hidden');
                 } else {
                     const isFinished = isMvpVotingFinished(currentMatch);
-                    const votesCount = Object.keys(currentMatch.votes || {}).length;
+                    const validVotesCount = mainPlayers.filter(p => Boolean(currentMatch.votes && currentMatch.votes[p])).length;
                     if (isFinished) {
                         subtabMvpBadge.classList.remove('hidden');
                         subtabMvpBadge.innerText = "👑";
-                    } else if (votesCount > 0) {
+                    } else if (validVotesCount > 0) {
                         subtabMvpBadge.classList.remove('hidden');
-                        subtabMvpBadge.innerText = `${votesCount}/12`;
+                        subtabMvpBadge.innerText = `${validVotesCount}/${mainPlayers.length}`;
                     } else {
                         subtabMvpBadge.classList.add('hidden');
                     }
