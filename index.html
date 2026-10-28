@@ -8358,9 +8358,9 @@
                 filtersContainer.innerHTML = monthPills.map(p => {
                     const isActive = (currentArchiveMonthFilter === p.id);
                     return `
-                        <button type="button" onclick="setArchiveMonthFilter(${toInlineArgument(p.id)})" class="py-1.5 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition active:scale-95 flex items-center gap-1.5 shrink-0 ${isActive ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'}">
+                        <button type="button" onclick="setArchiveMonthFilter(${toInlineArgument(p.id)})" class="py-1.5 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition active:scale-95 flex items-center gap-2 shrink-0 ${isActive ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-800 font-bold'}">
                             <span>${escapeHtml(p.label)}</span>
-                            <span class="text-[10px] font-mono px-1.5 py-0.2 rounded-full ${isActive ? 'bg-slate-950/20 text-slate-950 font-black' : 'bg-slate-900 text-slate-400 font-semibold'}">${p.count}</span>
+                            <span class="text-[11px] font-mono font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-slate-950 text-emerald-400 shadow-sm' : 'bg-slate-800/90 text-emerald-400 border border-slate-700/80 shadow-sm'}">${p.count}</span>
                         </button>
                     `;
                 }).join('');
@@ -8416,12 +8416,14 @@
                     catMeta.forEach(c => {
                         const info = specialAwards[c.key];
                         if (info && info.winners && info.winners.length > 0) {
+                            const isTie = info.winners.length > 1;
                             const wNames = info.winners.join(' & ');
                             specialChips.push(`
-                                <span class="inline-flex items-center gap-1 bg-slate-950/80 border border-slate-800 px-2 py-0.5 rounded-lg text-[10px] text-slate-300 shadow-sm shrink-0">
+                                <span class="inline-flex items-center gap-1.5 bg-slate-950/90 border border-slate-800/90 px-2.5 py-1 rounded-xl text-[10.5px] sm:text-xs text-slate-300 shadow-sm shrink-0 whitespace-nowrap">
                                     <span>${c.icon}</span>
                                     <span class="text-slate-400 font-semibold">${c.label}:</span>
-                                    <span class="font-bold text-white max-w-[110px] sm:max-w-[140px] truncate">${escapeHtml(wNames)}</span>
+                                    <span class="font-bold text-white">${escapeHtml(wNames)}</span>
+                                    ${isTie ? '<span class="text-[9.5px] text-amber-400 font-semibold font-mono">(remis)</span>' : ''}
                                 </span>
                             `);
                         }
@@ -8438,11 +8440,11 @@
                     const isExAequo = mvpWinners.length > 1;
                     mvpBannerHtml = `
                         <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-950 border border-amber-500/30 rounded-2xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm">
-                            <div class="flex items-center gap-2 min-w-0">
+                            <div class="flex items-center gap-2 min-w-0 flex-1">
                                 <span class="text-base shrink-0">👑</span>
-                                <div class="min-w-0">
+                                <div class="min-w-0 flex-1">
                                     <span class="text-[9px] text-amber-300 font-black uppercase tracking-wider block leading-tight">MVP Spotkania ${isExAequo ? '(Ex aequo)' : ''}</span>
-                                    <span class="text-xs sm:text-sm font-black text-white truncate block leading-tight mt-0.5">${escapeHtml(mvpWinners.join(' & '))}</span>
+                                    <span class="text-xs sm:text-sm font-black text-white whitespace-normal break-words block leading-tight mt-0.5">${escapeHtml(mvpWinners.join(' & '))}</span>
                                 </div>
                             </div>
                             ${maxV > 0 ? `
@@ -8751,7 +8753,7 @@
                                     let winnersHtml = '<div class="text-[10px] text-slate-600 font-normal mt-1 leading-tight">—</div>';
                                     if (winCount === 1) {
                                         winnersHtml = `
-                                            <div class="text-[10.5px] sm:text-[11px] font-black text-white mt-1 leading-tight truncate" title="${escapeHtml(info.winners[0])}">
+                                            <div class="text-[10.5px] sm:text-[11px] font-black text-white mt-1 leading-tight whitespace-normal break-words" title="${escapeHtml(info.winners[0])}">
                                                 ${escapeHtml(info.winners[0])}
                                             </div>
                                         `;
@@ -8761,7 +8763,7 @@
                                                 ${info.winners.map(w => `
                                                     <div class="text-[9.5px] sm:text-[10px] font-black text-white leading-tight flex items-center gap-1 min-w-0" title="${escapeHtml(w)}">
                                                         <span class="w-1 h-1 rounded-full bg-amber-400 shrink-0"></span>
-                                                        <span class="truncate">${escapeHtml(w)}</span>
+                                                        <span class="whitespace-normal break-words">${escapeHtml(w)}</span>
                                                     </div>
                                                 `).join('')}
                                             </div>
