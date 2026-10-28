@@ -1407,11 +1407,12 @@
             width: 100%;
         }
 
-        .scrollbar-none {
+        .scrollbar-none, .no-scrollbar {
             scrollbar-width: none;
             -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
         }
-        .scrollbar-none::-webkit-scrollbar {
+        .scrollbar-none::-webkit-scrollbar, .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
 
@@ -2351,8 +2352,8 @@
                                 📜
                             </div>
                             <div class="min-w-0">
-                                <h3 class="font-black text-xs sm:text-sm uppercase tracking-wider text-white truncate">Kronika Meczów Sezonu 2026</h3>
-                                <p class="text-[10px] text-slate-400 truncate">Oficjalne wyniki, składy i statuetki MVP</p>
+                                <h3 class="font-black text-xs sm:text-sm uppercase tracking-wider text-white whitespace-normal break-words leading-tight">Kronika Spotkań</h3>
+                                <p class="text-[10px] text-slate-400 whitespace-normal break-words leading-tight mt-0.5">Oficjalne wyniki, składy i statuetki MVP</p>
                             </div>
                         </div>
                         <span id="archiveTotalBadge" class="text-[10px] sm:text-xs font-mono font-black text-emerald-300 bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 shadow-sm">
@@ -2367,7 +2368,7 @@
 
                     <!-- Filtry Miesięcy (Pills) -->
                     <div class="pt-1">
-                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="archiveMonthFilters">
+                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-none py-0.5" id="archiveMonthFilters">
                             <!-- Populated dynamically -->
                         </div>
                     </div>
@@ -8297,12 +8298,19 @@
                 currentArchiveMonthFilter = 'all';
             }
 
-            // Calculate season metrics
             const totalMatches = historyMatches.length;
+            const filteredMatches = currentArchiveMonthFilter === 'all'
+                ? historyMatches
+                : historyMatches.filter(m => m.monthName === currentArchiveMonthFilter);
+
+            const isFiltered = (currentArchiveMonthFilter !== 'all');
+            const displayMatchesCount = filteredMatches.length;
+
+            // Calculate metrics for the active view (filtered by selected month or full season)
             let tieBreaksCount = 0;
             let totalSquadAttendees = 0;
 
-            historyMatches.forEach(m => {
+            filteredMatches.forEach(m => {
                 const squad = getMatchPlayingSquad(m);
                 totalSquadAttendees += squad.length;
 
@@ -8312,30 +8320,30 @@
                 }
             });
 
-            const avgAttendance = totalMatches > 0 ? (totalSquadAttendees / totalMatches).toFixed(1) : '0';
-            const tieBreaksPct = totalMatches > 0 ? Math.round((tieBreaksCount / totalMatches) * 100) : 0;
+            const avgAttendance = displayMatchesCount > 0 ? (totalSquadAttendees / displayMatchesCount).toFixed(1) : '0';
+            const tieBreaksPct = displayMatchesCount > 0 ? Math.round((tieBreaksCount / displayMatchesCount) * 100) : 0;
 
-            // Render Total Badge
+            // Render Total Badge (shows count for active view)
             const totalBadge = document.getElementById('archiveTotalBadge');
             if (totalBadge) {
-                totalBadge.innerText = totalMatches > 0 ? pluralizeMatches(totalMatches) : '0 meczów';
+                totalBadge.innerText = displayMatchesCount > 0 ? pluralizeMatches(displayMatchesCount) : '0 meczów';
             }
 
-            // Render Bento Grid (3 cards)
+            // Render Bento Grid (3 cards - dynamically reflecting selected month)
             const bentoContainer = document.getElementById('archiveStatsBento');
             if (bentoContainer) {
                 bentoContainer.innerHTML = `
-                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm">
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm transition">
                         <span class="text-base sm:text-lg block">🏐</span>
-                        <div class="font-mono font-black text-white text-sm sm:text-base leading-tight">${totalMatches}</div>
-                        <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Rozegrano</span>
+                        <div class="font-mono font-black text-white text-sm sm:text-base leading-tight">${displayMatchesCount}</div>
+                        <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block uppercase tracking-wider">${isFiltered ? 'W tym msc' : 'Rozegrano'}</span>
                     </div>
-                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm">
-                        <span class="text-base sm:text-lg block">🔥</span>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm transition">
+                        <span class="text-base sm:text-lg block">⚔️</span>
                         <div class="font-mono font-black text-amber-300 text-sm sm:text-base leading-tight">${tieBreaksCount}</div>
-                        <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block uppercase tracking-wider" title="${tieBreaksPct}% wszystkich meczów">Tie-breaki (${tieBreaksPct}%)</span>
+                        <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block uppercase tracking-wider" title="${tieBreaksPct}% meczów w wybranym okresie">Tie-breaki (${tieBreaksPct}%)</span>
                     </div>
-                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm">
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5 sm:p-3 text-center space-y-0.5 shadow-sm transition">
                         <span class="text-base sm:text-lg block">👥</span>
                         <div class="font-mono font-black text-emerald-400 text-sm sm:text-base leading-tight">${avgAttendance}</div>
                         <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Śr. graczy</span>
@@ -8374,10 +8382,6 @@
                 </div>`;
                 return;
             }
-
-            const filteredMatches = currentArchiveMonthFilter === 'all'
-                ? historyMatches
-                : historyMatches.filter(m => m.monthName === currentArchiveMonthFilter);
 
             if (!filteredMatches.length) {
                 container.innerHTML = `<div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-8 text-center text-xs text-slate-500 shadow-xl space-y-2">
