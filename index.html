@@ -6916,16 +6916,19 @@
 
             // 1. Sprawdzenie czy mecz jeszcze się nie odbył (brak wpisanego wyniku lub przed końcem gry)
             if (!isMatchFinished(currentMatch)) {
+                const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+                const isToday = (currentMatch.date === todayStr);
+                const timeInfo = isToday ? `dzisiaj po godz. ${endTimeStr}` : `po rozegraniu meczu`;
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "STATUS MECZU";
                 if (winnerName) winnerName.innerText = "Mecz jeszcze się nie odbył";
-                if (winnerVotes) winnerVotes.innerText = `Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku). 🏐`;
+                if (winnerVotes) winnerVotes.innerText = `Głosowanie na MVP zostanie odblokowane ${timeInfo} (lub po wpisaniu wyniku). 🏐`;
                 if (votingFormNotice && votingFormFields) {
                     votingFormNotice.innerHTML = `
                         <div class="py-2 space-y-2 text-center">
                             <span class="text-3xl block">⏳</span>
-                            <h4 class="font-bold text-xs text-amber-300">Głosowanie MVP oczekuje na mecz</h4>
+                            <h4 class="font-bold text-xs text-amber-300">Głosowanie MVP oczekuje na zakończenie meczu</h4>
                             <p class="text-[11px] text-slate-400 max-w-xs mx-auto leading-relaxed">
-                                Spotkanie zaplanowane na <strong class="text-white">${currentMatch.date}</strong> jeszcze się nie odbyło. Głosowanie na najlepszego gracza zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku spotkania)! 🏐
+                                Spotkanie zaplanowane na <strong class="text-white">${currentMatch.date}</strong> ${isToday ? `odbywa się dzisiaj. Głosowanie zostanie odblokowane po zakończeniu gry (o godz. <strong class="text-amber-400 font-mono">${endTimeStr}</strong>)` : `jeszcze się nie odbyło. Głosowanie zostanie odblokowane po meczu`} (lub po wpisaniu wyniku spotkania)! 🏐
                             </p>
                         </div>
                     `;
@@ -7481,6 +7484,9 @@
             }
 
             if (!isMatchFinished(match)) {
+                const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+                const todayStr = getLocalDateKey();
+                const isToday = (match.date === todayStr);
                 contentArea.innerHTML = `
                     <div class="space-y-4 py-2 text-center animate-fade-in">
                         <div class="bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/40 p-4 rounded-2xl space-y-2">
@@ -7488,7 +7494,7 @@
                             <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-300">Głosowanie oczekuje</span>
                             <div class="text-base font-black text-white">Mecz jeszcze się nie odbył</div>
                             <p class="text-xs text-slate-400">
-                                Głosowanie na najlepszego gracza z dnia <strong class="text-white">${match.date}</strong> zostanie odblokowane po rozegraniu spotkania (lub po wpisaniu wyniku)! 🏐
+                                Spotkanie z dnia <strong class="text-white">${match.date}</strong> ${isToday ? `odbywa się dzisiaj. Głosowanie na MVP zostanie odblokowane po zakończeniu gry (o godz. <strong class="text-amber-400 font-mono">${endTimeStr}</strong>)` : `jeszcze się nie odbyło. Głosowanie zostanie odblokowane po meczu`} (lub po wpisaniu wyniku spotkania)! 🏐
                             </p>
                         </div>
                         <button type="button" onclick="exitDedicatedMvpToApp(); window.close();" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition border border-slate-700">
@@ -7800,7 +7806,8 @@
 
             const attendees = getMatchPlayingSquad(info.match);
             if (!isMatchFinished(info.match)) {
-                return alert("Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku)!");
+                const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+                return alert(`Głosowanie na MVP zostanie odblokowane po zakończeniu meczu (o godz. ${endTimeStr}) lub po wpisaniu wyniku! 🏐`);
             }
 
             if (loggedPlayer && !attendees.includes(loggedPlayer)) {
@@ -7975,7 +7982,8 @@
 
             const attendees = getMatchPlayingSquad(currentMatch);
             if (!isMatchFinished(currentMatch)) {
-                return alert("Głosowanie na MVP zostanie odblokowane po rozegraniu meczu (lub po wpisaniu wyniku)!");
+                const endTimeStr = AppState.settings?.gameEndTime || "21:45";
+                return alert(`Głosowanie na MVP zostanie odblokowane po zakończeniu meczu (o godz. ${endTimeStr}) lub po wpisaniu wyniku! 🏐`);
             }
 
             if (loggedPlayer && !attendees.includes(loggedPlayer)) {
