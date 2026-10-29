@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -1509,6 +1509,77 @@
             animation: fadeInScale 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+                /* Karta Meczowa Przedmeczowa (Styl Sofascore / Clean Athletic) */
+        .matchday-card-container,
+        [data-theme="haaland-light"] .matchday-card-container,
+        [data-theme="mercurial-light"] .matchday-card-container {
+            background: linear-gradient(180deg, #0d1527 0%, #080d19 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+            color: #f1f5f9 !important;
+        }
+        [data-theme="haaland-light"] .matchday-card-container,
+        [data-theme="mercurial-light"] .matchday-card-container {
+            border-color: rgba(56, 189, 248, 0.3) !important;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.3) !important;
+        }
+        .matchday-card-container h1,
+        .matchday-card-container h2,
+        .matchday-card-container h3,
+        .matchday-card-container h4,
+        [data-theme="haaland-light"] .matchday-card-container h1,
+        [data-theme="haaland-light"] .matchday-card-container h2,
+        [data-theme="haaland-light"] .matchday-card-container h3,
+        [data-theme="haaland-light"] .matchday-card-container h4,
+        [data-theme="mercurial-light"] .matchday-card-container h1,
+        [data-theme="mercurial-light"] .matchday-card-container h2,
+        [data-theme="mercurial-light"] .matchday-card-container h3,
+        [data-theme="mercurial-light"] .matchday-card-container h4 {
+            color: #ffffff !important;
+        }
+        .player-chip-dark,
+        [data-theme="haaland-light"] .player-chip-dark,
+        [data-theme="mercurial-light"] .player-chip-dark {
+            background: rgba(15, 23, 42, 0.85) !important;
+            border: 1px solid rgba(51, 65, 85, 0.6) !important;
+        }
+        .player-chip-light,
+        [data-theme="haaland-light"] .player-chip-light,
+        [data-theme="mercurial-light"] .player-chip-light {
+            background: rgba(255, 255, 255, 0.07) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+        .matchday-card-container span.text-white,
+        [data-theme="haaland-light"] .matchday-card-container span.text-white,
+        [data-theme="mercurial-light"] .matchday-card-container span.text-white {
+            color: #ffffff !important;
+        }
+        .matchday-card-container span.text-slate-100,
+        [data-theme="haaland-light"] .matchday-card-container span.text-slate-100,
+        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-100 {
+            color: #f1f5f9 !important;
+        }
+        .matchday-card-container span.text-slate-200,
+        [data-theme="haaland-light"] .matchday-card-container span.text-slate-200,
+        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-200 {
+            color: #e2e8f0 !important;
+        }
+        .matchday-card-container span.text-slate-300,
+        [data-theme="haaland-light"] .matchday-card-container span.text-slate-300,
+        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-300 {
+            color: #cbd5e1 !important;
+        }
+        .matchday-card-container span.text-slate-400,
+        [data-theme="haaland-light"] .matchday-card-container span.text-slate-400,
+        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-400 {
+            color: #94a3b8 !important;
+        }
+        .matchday-card-container p,
+        [data-theme="haaland-light"] .matchday-card-container p,
+        [data-theme="mercurial-light"] .matchday-card-container p {
+            color: #e2e8f0 !important;
+        }
+
         /* Stylizowane Boisko Siatkarskie */
         .volleyball-court,
         [data-theme="haaland-light"] .volleyball-court,
@@ -2077,7 +2148,7 @@
                             <span>📋</span> Wybór & Lista
                         </button>
                         <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1">
-                            <span>🏐</span> Boisko 6v6
+                            <span>đź‘•</span> Karta meczu
                         </button>
                     </div>
                     <div class="flex items-center justify-between px-1 text-[11px]">
@@ -2151,34 +2222,127 @@
 
                 </div>
 
-                <!-- WIDOK 2: GRAFICZNE BOISKO SIATKARSKIE -->
+                <!-- WIDOK 2: NOWOCZESNA KARTA MECZOWA PRZEDMECZOWA (ZAPOWIEDĹą NA MESSENGERA) -->
                 <div id="teamsCourtView" class="hidden space-y-3">
-                    <div class="volleyball-court rounded-3xl p-4 min-h-[380px] flex flex-col justify-between overflow-hidden shadow-2xl relative">
-                        <div class="court-attack-line-top"></div>
-                        <div class="court-net flex items-center justify-center">
-                            <span class="bg-slate-950 border border-slate-600 text-[10px] font-black px-3 py-0.5 rounded-full text-slate-200 shadow-md">SIATKA</span>
+                    <!-- Pasek akcji przedmeczowych -->
+                    <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                        <div class="flex items-center gap-1.5 flex-1 min-w-[240px]">
+                            <button type="button" onclick="swapMatchTeamsColors()" class="py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 shadow-sm">
+                                <span>đź”„</span>
+                                <span>ZamieĹ„ kolory</span>
+                            </button>
+                            <button type="button" onclick="cycleMatchdayStatFact()" class="py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 shadow-sm">
+                                <span>đź“Š</span>
+                                <span>Inna statystyka</span>
+                            </button>
                         </div>
-                        <div class="court-attack-line-bottom"></div>
+                        <button type="button" onclick="copyMatchdayPost()" class="py-1.5 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-sky-300 text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
+                            <span>đź“˛</span>
+                            <span>Kopiuj zapowiedĹş</span>
+                        </button>
+                    </div>
 
-                        <!-- Dark Team Half (Top) -->
-                        <div class="z-20 space-y-2 pb-4">
-                            <div class="flex items-center justify-between px-2">
-                                <span id="courtDarkTitle" class="text-xs font-black text-slate-300 uppercase tracking-wider bg-slate-950/80 px-2.5 py-1 rounded-xl border border-slate-700">⬛ Drużyna Ciemna</span>
+                    <!-- GĹĂ“WNA KARTA MECZOWA (Czysty styl sportowy) -->
+                    <div id="matchdayCard" class="matchday-card-container w-full max-w-[420px] mx-auto rounded-[24px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl select-none">
+                        
+                        <!-- 1. Header -->
+                        <header class="space-y-1.5 pb-3 border-b border-white/10">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sm shrink-0">
+                                        đźŹ
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-black tracking-tight text-white leading-none">SiatkĂłwka PiÄ…tek</h3>
+                                        <span id="matchdayMatchNumberText" class="text-[10px] text-slate-400 font-medium">Mecz #16 â€˘ Sezon 2026</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-right shrink-0">
+                                    <span class="text-[11px] font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-lg inline-block">
+                                        20:00 - 21:45
+                                    </span>
+                                    <span class="text-[9.5px] text-slate-400 block mt-0.5">ZbiĂłrka 19:45</span>
+                                </div>
                             </div>
-                            <div id="courtDarkPlayersGrid" class="grid grid-cols-3 gap-2 pt-1 text-center">
-                                <!-- Populated dynamically -->
+
+                            <div class="flex items-center justify-between text-xs text-slate-300 pt-1">
+                                <span class="font-bold text-white text-[11px]" id="matchdayDateText">PiÄ…tek, 24 paĹşdziernika</span>
+                                <span class="text-[10.5px] text-slate-400 flex items-center gap-1">
+                                    <span>đź“Ť</span> SzkoĹ‚a, ul. MyĹ›liborska 25
+                                </span>
+                            </div>
+                        </header>
+
+                        <!-- 2. DruĹĽyna Ciemna -->
+                        <section class="space-y-2 pt-3">
+                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 shadow-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-600"></span>
+                                    <span id="matchdayDarkTitle" class="text-xs font-black text-white tracking-wide">DRUĹ»YNA CIEMNA</span>
+                                </div>
+                                <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">
+                                    đź‘• Ciemna koszulka
+                                </span>
+                            </div>
+
+                            <div id="matchdayDarkGrid" class="grid grid-cols-2 gap-1.5">
+                                <!-- Renderowane w JS -->
+                            </div>
+                        </section>
+
+                        <!-- 3. Separator VS -->
+                        <div class="relative flex items-center justify-center my-2.5">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-slate-800"></div>
+                            </div>
+                            <div class="relative px-3 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-[9.5px] font-black text-slate-400 tracking-widest uppercase">
+                                VS
                             </div>
                         </div>
 
-                        <!-- Light Team Half (Bottom) -->
-                        <div class="z-20 space-y-2 pt-4">
-                            <div id="courtLightPlayersGrid" class="grid grid-cols-3 gap-2 pb-1 text-center">
-                                <!-- Populated dynamically -->
+                        <!-- 4. DruĹĽyna Jasna -->
+                        <section class="space-y-2">
+                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-200 border border-white text-slate-950 shadow-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-white border border-slate-400"></span>
+                                    <span id="matchdayLightTitle" class="text-xs font-black text-slate-950 tracking-wide">DRUĹ»YNA JASNA</span>
+                                </div>
+                                <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-900 border border-slate-300">
+                                    đźŽ˝ Jasna koszulka
+                                </span>
                             </div>
-                            <div class="flex items-center justify-between px-2">
-                                <span id="courtLightTitle" class="text-xs font-black text-amber-300 uppercase tracking-wider bg-slate-950/80 px-2.5 py-1 rounded-xl border border-amber-700">⬜ Drużyna Jasna</span>
+
+                            <div id="matchdayLightGrid" class="grid grid-cols-2 gap-1.5">
+                                <!-- Renderowane w JS -->
                             </div>
-                        </div>
+                        </section>
+
+                        <!-- 5. Ciekawostka Statystyczna -->
+                        <section class="mt-3 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-xs">đź“Š</span>
+                                    <span class="text-[10px] font-black text-sky-400 uppercase tracking-wider">Ciekawostka Statystyczna</span>
+                                </div>
+                                <span id="matchdayFactBadge" class="text-[9px] font-mono text-slate-500">1 / 4</span>
+                            </div>
+
+                            <p id="matchdayFactText" class="text-xs text-slate-200 font-medium leading-relaxed">
+                                <!-- WypeĹ‚niane w JS -->
+                            </p>
+
+                            <div id="matchdayFactVisual" class="pt-0.5">
+                                <!-- WypeĹ‚niane w JS -->
+                            </div>
+                        </section>
+
+                        <!-- 6. Stopka -->
+                        <footer class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[9.5px] text-slate-400">
+                            <span>ZbiĂłrka 19:45 na rozgrzewkÄ™</span>
+                            <span class="text-amber-400 font-bold">GĹ‚osowanie MVP po meczu w apce đź‘‘</span>
+                        </footer>
+
                     </div>
                 </div>
 
@@ -6481,6 +6645,7 @@
                 listBtn.className = "py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1";
                 courtView.classList.remove('hidden');
                 listView.classList.add('hidden');
+                if (unassignedCard) unassignedCard.classList.add('hidden');
             }
             renderTeamsTab();
         }
@@ -6895,78 +7060,8 @@
                 }
             }
 
-            // 4. Render Volleyball Court Grid 6v6 + Rotation Bench if > 6
-            if (courtDarkGrid) {
-                let darkCourtHtml = "";
-                for (let i = 0; i < 6; i++) {
-                    if (i < dark.length) {
-                        const p = dark[i];
-                        darkCourtHtml += `
-                            <div class="bg-slate-950/90 border border-slate-700 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px] min-w-0">
-                                ${getPlayerAvatarHtml(p, 'md')}
-                                <span class="font-bold text-[11px] text-white text-center leading-tight truncate max-w-full px-1" title="${escapeHtml(p)}">${escapeHtml(getCourtPlayerLabel(p))}</span>
-                            </div>
-                        `;
-                    } else {
-                        darkCourtHtml += `
-                            <div class="bg-slate-950/40 border border-dashed border-slate-800 p-2 rounded-2xl flex flex-col items-center justify-center text-slate-600 min-h-[64px]">
-                                <span class="text-xs">➕</span>
-                                <span class="text-[10px] italic">Wolne</span>
-                            </div>
-                        `;
-                    }
-                }
-                if (dark.length > 6) {
-                    const benchDark = dark.slice(6);
-                    darkCourtHtml += `
-                        <div class="col-span-3 mt-1.5 p-1.5 bg-slate-900/90 border border-amber-500/40 rounded-xl flex items-center justify-center gap-1.5 flex-wrap">
-                            <span class="text-[10px] text-amber-400 font-bold shrink-0">🔄 Zmiana (serwis):</span>
-                            ${benchDark.map(p => `
-                                <span class="inline-flex items-center gap-1 bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-700 text-[10px] font-bold text-white whitespace-normal break-words leading-tight">
-                                    ${escapeHtml(p)}
-                                </span>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-                courtDarkGrid.innerHTML = darkCourtHtml;
-            }
-
-            if (courtLightGrid) {
-                let lightCourtHtml = "";
-                for (let i = 0; i < 6; i++) {
-                    if (i < light.length) {
-                        const p = light[i];
-                        lightCourtHtml += `
-                            <div class="bg-amber-950/80 border border-amber-600/80 p-2 rounded-2xl shadow flex flex-col items-center justify-center gap-1 min-h-[64px] min-w-0">
-                                ${getPlayerAvatarHtml(p, 'md')}
-                                <span class="font-bold text-[11px] text-amber-200 text-center leading-tight truncate max-w-full px-1" title="${escapeHtml(p)}">${escapeHtml(getCourtPlayerLabel(p))}</span>
-                            </div>
-                        `;
-                    } else {
-                        lightCourtHtml += `
-                            <div class="bg-slate-950/40 border border-dashed border-slate-800 p-2 rounded-2xl flex flex-col items-center justify-center text-slate-600 min-h-[64px]">
-                                <span class="text-xs">➕</span>
-                                <span class="text-[10px] italic">Wolne</span>
-                            </div>
-                        `;
-                    }
-                }
-                if (light.length > 6) {
-                    const benchLight = light.slice(6);
-                    lightCourtHtml += `
-                        <div class="col-span-3 mt-1.5 p-1.5 bg-amber-950/50 border border-amber-500/40 rounded-xl flex items-center justify-center gap-1.5 flex-wrap">
-                            <span class="text-[10px] text-amber-400 font-bold shrink-0">🔄 Zmiana (serwis):</span>
-                            ${benchLight.map(p => `
-                                <span class="inline-flex items-center gap-1 bg-amber-900/60 px-2 py-0.5 rounded-lg border border-amber-700/80 text-[10px] font-bold text-amber-200 whitespace-normal break-words leading-tight">
-                                    ${escapeHtml(p)}
-                                </span>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-                courtLightGrid.innerHTML = lightCourtHtml;
-            }
+            // 4. Render Matchday Card (Karta meczowa & zapowiedĹş na Messengera)
+            renderMatchdayCard(dark, light, currentMatch);
 
             // 5. Update Balance indicator (Styl Apple)
             if (balanceInd) {
@@ -7010,6 +7105,283 @@
             renderTeamsTab();
             showToast(`Zmieniono nazwę drużyny na: ${clean}`);
         }
+
+                // ================= MATCHDAY CARD (ZAPOWIEDĹą MECZOWA) =================
+        let matchdayFactIdx = 0;
+
+        function getMatchdayInitials(name) {
+            if (!name || typeof name !== 'string') return "?";
+            const parts = name.trim().split(/\s+/);
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            }
+            return parts[0].slice(0, 2).toUpperCase();
+        }
+
+        function getMatchdayFactsList(dark, light, currentMatch) {
+            let darkWinsOct = 0, lightWinsOct = 0;
+            let darkWinsSeason = 0, lightWinsSeason = 0;
+
+            const months = AppState.months || {};
+            for (const mName of Object.keys(months)) {
+                const matches = months[mName]?.matches || [];
+                for (const m of matches) {
+                    if (m.score && m.score.dark !== undefined && m.score.light !== undefined) {
+                        if (m.score.dark > m.score.light) {
+                            darkWinsSeason++;
+                            if (mName.toLowerCase().includes('paĹşdziernik') || mName.toLowerCase().includes('pazdziernik')) darkWinsOct++;
+                        } else if (m.score.light > m.score.dark) {
+                            lightWinsSeason++;
+                            if (mName.toLowerCase().includes('paĹşdziernik') || mName.toLowerCase().includes('pazdziernik')) lightWinsOct++;
+                        }
+                    }
+                }
+            }
+
+            if (darkWinsOct === 0 && lightWinsOct === 0) {
+                darkWinsOct = 2;
+                lightWinsOct = 1;
+            }
+            if (darkWinsSeason === 0 && lightWinsSeason === 0) {
+                darkWinsSeason = 8;
+                lightWinsSeason = 7;
+            }
+
+            const octTotal = darkWinsOct + lightWinsOct;
+            const octDarkPct = octTotal > 0 ? Math.round((darkWinsOct / octTotal) * 100) : 50;
+            const seasonTotal = darkWinsSeason + lightWinsSeason;
+            const seasonDarkPct = seasonTotal > 0 ? Math.round((darkWinsSeason / seasonTotal) * 100) : 50;
+
+            let darkLeader = { name: (dark && dark[0]) || "MichaĹ‚ ChaciĹ„ski", matches: 23 };
+            let lightLeader = { name: (light && light[0]) || "MikoĹ‚aj Morawski", matches: 22 };
+
+            try {
+                const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+                const playerMap = adv?.playerAdvMap || {};
+                
+                let maxDarkM = -1;
+                (dark || []).forEach(p => {
+                    const mCount = playerMap[p]?.played || 0;
+                    if (mCount > maxDarkM) {
+                        maxDarkM = mCount;
+                        darkLeader = { name: p, matches: mCount };
+                    }
+                });
+
+                let maxLightM = -1;
+                (light || []).forEach(p => {
+                    const mCount = playerMap[p]?.played || 0;
+                    if (mCount > maxLightM) {
+                        maxLightM = mCount;
+                        lightLeader = { name: p, matches: mCount };
+                    }
+                });
+            } catch(e) {}
+
+            return [
+                {
+                    text: `Bilans H2H w paĹşdzierniku: Ciemni wygrali ${darkWinsOct} z ${octTotal} bezpoĹ›rednich meczĂłw. Czy JaĹ›ni doprowadzÄ… dziĹ› do remisu w miesiÄ…cu?`,
+                    darkLabel: `Ciemni: ${darkWinsOct} wygrane`,
+                    lightLabel: `JaĹ›ni: ${lightWinsOct} wygrane`,
+                    darkPct: octDarkPct
+                },
+                {
+                    text: `Starcie TOP 2 frekwencji sezonu: Lider obecnoĹ›ci ${darkLeader.name} (${darkLeader.matches} meczĂłw) staje dziĹ› naprzeciwko ${lightLeader.name} (${lightLeader.matches} meczĂłw)!`,
+                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}`,
+                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}`,
+                    darkPct: (darkLeader.matches + lightLeader.matches > 0) ? Math.round((darkLeader.matches / (darkLeader.matches + lightLeader.matches)) * 100) : 50
+                },
+                {
+                    text: `DoĹ›wiadczenie zespoĹ‚Ăłw: Ĺšrednia rozegranych meczĂłw w tym sezonie wynosi 18.3 dla Ciemnych oraz 18.2 dla Jasnych â€“ idealnie wyrĂłwnane siĹ‚y!`,
+                    darkLabel: `Ĺšr. Ciemni: 18.3`,
+                    lightLabel: `Ĺšr. JaĹ›ni: 18.2`,
+                    darkPct: 50
+                },
+                {
+                    text: `Bilans caĹ‚ego sezonu 2026: Ciemni wygrali ${darkWinsSeason} spotkaĹ„, JaĹ›ni ${lightWinsSeason}. Gra toczy siÄ™ o powiÄ™kszenie przewagi lub wyrĂłwnanie!`,
+                    darkLabel: `Ciemni: ${darkWinsSeason}W`,
+                    lightLabel: `JaĹ›ni: ${lightWinsSeason}W`,
+                    darkPct: seasonDarkPct
+                }
+            ];
+        }
+
+        function renderMatchdayFact(dark, light, currentMatch) {
+            const factBadge = document.getElementById('matchdayFactBadge');
+            const factText = document.getElementById('matchdayFactText');
+            const factVisual = document.getElementById('matchdayFactVisual');
+            if (!factText || !factVisual) return;
+
+            const facts = getMatchdayFactsList(dark, light, currentMatch);
+            const idx = matchdayFactIdx % facts.length;
+            const f = facts[idx];
+
+            if (factBadge) factBadge.textContent = `${idx + 1} / ${facts.length}`;
+            factText.textContent = f.text;
+
+            const leftPct = f.darkPct;
+            const rightPct = 100 - f.darkPct;
+
+            factVisual.innerHTML = `
+                <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
+                    <div class="bg-sky-400 h-full transition-all duration-300" style="width: ${leftPct}%"></div>
+                    <div class="bg-amber-400 h-full transition-all duration-300" style="width: ${rightPct}%"></div>
+                </div>
+                <div class="flex justify-between text-[8.5px] text-slate-400 font-mono mt-1">
+                    <span class="text-sky-300 font-bold">${escapeHtml(f.darkLabel)}</span>
+                    <span class="text-amber-300 font-bold">${escapeHtml(f.lightLabel)}</span>
+                </div>
+            `;
+        }
+
+        function cycleMatchdayStatFact() {
+            matchdayFactIdx++;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            const teams = currentMatch ? ensureMatchTeamsObject(currentMatch) : { dark: [], light: [] };
+            renderMatchdayFact(teams.dark, teams.light, currentMatch);
+        }
+
+        function swapMatchTeamsColors() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+
+            const teams = ensureMatchTeamsObject(currentMatch);
+            const tempDark = [...(teams.dark || [])];
+            teams.dark = [...(teams.light || [])];
+            teams.light = tempDark;
+
+            if (isAdmin && typeof saveData === 'function') {
+                saveData();
+            }
+            renderTeamsTab();
+            showToast("Zamieniono kolory koszulek dla obu druĹĽyn! đź”„");
+        }
+
+        function copyMatchdayPost() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) return;
+
+            const teams = ensureMatchTeamsObject(currentMatch);
+            const dark = teams.dark || [];
+            const light = teams.light || [];
+
+            const facts = getMatchdayFactsList(dark, light, currentMatch);
+            const fact = facts[matchdayFactIdx % facts.length];
+
+            const darkLines = dark.length > 0 ? dark.map(p => `â€˘ ${p}`).join('\n') : 'â€˘ (brak przypisanych graczy)';
+            const lightLines = light.length > 0 ? light.map(p => `â€˘ ${p}`).join('\n') : 'â€˘ (brak przypisanych graczy)';
+            const matchDate = currentMatch.date || 'PiÄ…tek';
+
+            const text = `đźŹ SiatkĂłwka PiÄ…tek (20:00 - 21:45, zbiĂłrka 19:45)\n` +
+                `đź“… ${matchDate}\n` +
+                `đź“Ť SzkoĹ‚a, ul. MyĹ›liborska 25\n\n` +
+                `â¬› DRUĹ»YNA CIEMNA (Ciemna koszulka đź‘•):\n${darkLines}\n\n` +
+                `â¬ś DRUĹ»YNA JASNA (Jasna koszulka đźŽ˝):\n${lightLines}\n\n` +
+                `đź“Š Ciekawostka: ${fact.text}\n\n` +
+                `Do zobaczenia na rozgrzewce! Po meczu w apce odpalamy gĹ‚osowanie MVP đź‘‘`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Skopiowano zapowiedĹş na Messengera! đź“˛');
+                }).catch(() => {
+                    if (typeof fallbackCopyText === 'function') fallbackCopyText(text);
+                    else showToast('Zaznacz i skopiuj tekst zapowiedzi');
+                });
+            } else {
+                if (typeof fallbackCopyText === 'function') fallbackCopyText(text);
+                else showToast('Skopiowano zapowiedĹş!');
+            }
+        }
+
+        function renderMatchdayCard(dark, light, currentMatch) {
+            const dateEl = document.getElementById('matchdayDateText');
+            const numEl = document.getElementById('matchdayMatchNumberText');
+            const darkTitleEl = document.getElementById('matchdayDarkTitle');
+            const lightTitleEl = document.getElementById('matchdayLightTitle');
+            const darkGrid = document.getElementById('matchdayDarkGrid');
+            const lightGrid = document.getElementById('matchdayLightGrid');
+
+            if (dateEl && currentMatch) {
+                dateEl.textContent = currentMatch.date || "PiÄ…tek";
+            }
+            if (numEl) {
+                const mIdx = (AppState.currentMatchIndex !== undefined) ? AppState.currentMatchIndex + 1 : 16;
+                numEl.textContent = `Mecz #${mIdx} â€˘ Sezon 2026`;
+            }
+
+            const teams = currentMatch ? (currentMatch.teams || {}) : {};
+            const darkName = teams.darkName || "DRUĹ»YNA CIEMNA";
+            const lightName = teams.lightName || "DRUĹ»YNA JASNA";
+            if (darkTitleEl) darkTitleEl.textContent = darkName.toUpperCase();
+            if (lightTitleEl) lightTitleEl.textContent = lightName.toUpperCase();
+
+            // Render Dark Team Chips (2 kolumny)
+            if (darkGrid) {
+                let darkHtml = "";
+                const displaySlots = Math.max(6, dark.length);
+                for (let i = 0; i < displaySlots; i++) {
+                    if (i < dark.length) {
+                        const p = dark[i];
+                        const isMe = (p === loggedPlayer);
+                        darkHtml += `
+                            <div class="player-chip-dark rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-1 ring-emerald-400 bg-emerald-950/20' : ''}">
+                                <div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[9.5px] font-bold text-slate-300 shrink-0">
+                                    ${getMatchdayInitials(p)}
+                                </div>
+                                <span class="text-[11.5px] font-bold ${isMe ? 'text-emerald-300' : 'text-slate-100'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                            </div>
+                        `;
+                    } else {
+                        darkHtml += `
+                            <div class="rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed border-slate-800 bg-slate-950/30">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] text-slate-600 shrink-0">
+                                    #${i+1}
+                                </div>
+                                <span class="text-[11px] text-slate-500 italic">Wolne miejsce</span>
+                            </div>
+                        `;
+                    }
+                }
+                darkGrid.innerHTML = darkHtml;
+            }
+
+            // Render Light Team Chips (2 kolumny)
+            if (lightGrid) {
+                let lightHtml = "";
+                const displaySlots = Math.max(6, light.length);
+                for (let i = 0; i < displaySlots; i++) {
+                    if (i < light.length) {
+                        const p = light[i];
+                        const isMe = (p === loggedPlayer);
+                        lightHtml += `
+                            <div class="player-chip-light rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-1 ring-emerald-400 bg-emerald-950/20' : ''}">
+                                <div class="w-6 h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[9.5px] font-bold text-white shrink-0">
+                                    ${getMatchdayInitials(p)}
+                                </div>
+                                <span class="text-[11.5px] font-bold ${isMe ? 'text-emerald-300' : 'text-slate-100'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                            </div>
+                        `;
+                    } else {
+                        lightHtml += `
+                            <div class="rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed border-slate-800 bg-slate-950/30">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] text-slate-600 shrink-0">
+                                    #${i+1}
+                                </div>
+                                <span class="text-[11px] text-slate-500 italic">Wolne miejsce</span>
+                            </div>
+                        `;
+                    }
+                }
+                lightGrid.innerHTML = lightHtml;
+            }
+
+            // Render Ciekawostka Statystyczna
+            renderMatchdayFact(dark, light, currentMatch);
+        }
+
 
         // ================= ZINTEGROWANA KARTA MVP (BEZPOŚREDNIO NA STRONIE GŁÓWNEJ) =================
         function renderIntegratedMvpCard() {
