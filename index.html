@@ -190,7 +190,7 @@
         /* Wyłączenie ciemnych gradientów Tailwind na wszystkich kontenerach i kartach */
         [data-theme="haaland-light"] div[class*="from-slate-"],
         [data-theme="haaland-light"] section[class*="from-slate-"],
-        [data-theme="haaland-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-amber"]):not([class*="from-emerald"]):not([class*="from-indigo"]) {
+        [data-theme="haaland-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-emerald"]):not([class*="from-indigo"]):not(.match-card-mvp-banner):not(.match-modal-mvp-banner):not(.match-modal-women-mvp-banner) {
             background-image: none !important;
         }
 
@@ -517,7 +517,7 @@
         /* Wyłączenie ciemnych gradientów Tailwind na wszystkich kontenerach i kartach */
         [data-theme="mercurial-light"] div[class*="from-slate-"],
         [data-theme="mercurial-light"] section[class*="from-slate-"],
-        [data-theme="mercurial-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-amber"]):not([class*="from-emerald"]):not([class*="from-indigo"]) {
+        [data-theme="mercurial-light"] [class*="bg-gradient-to"]:not(button):not(.tab-active):not([class*="from-emerald"]):not([class*="from-indigo"]):not(.match-card-mvp-banner):not(.match-modal-mvp-banner):not(.match-modal-women-mvp-banner) {
             background-image: none !important;
         }
 
@@ -842,6 +842,226 @@
             color: #ffffff !important;
             border-color: #be123c !important;
             box-shadow: 0 1px 3px rgba(225, 29, 72, 0.35) !important;
+        }
+
+        /* ================= KARTA ZWYCIĘZCY MVP I WYRÓŻNIENIA W JASNYCH MOTYWACH ================= */
+        [data-theme="haaland-light"] #mvpWinnerContainer,
+        [data-theme="mercurial-light"] #mvpWinnerContainer {
+            background-color: #fef3c7 !important;
+            background-image: linear-gradient(180deg, #fffdf5 0%, #fef3c7 60%, #fde68a 100%) !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 4px 18px -2px rgba(245, 158, 11, 0.22) !important;
+        }
+        [data-theme="haaland-light"] #mvpWinnerContainer #mvpWinnerHeaderLabel,
+        [data-theme="mercurial-light"] #mvpWinnerContainer #mvpWinnerHeaderLabel {
+            color: #b45309 !important;
+            font-weight: 800 !important;
+        }
+        [data-theme="haaland-light"] #mvpWinnerContainer #mvpWinnerName,
+        [data-theme="haaland-light"] #mvpWinnerContainer #mvpWinnerName *,
+        [data-theme="mercurial-light"] #mvpWinnerContainer #mvpWinnerName,
+        [data-theme="mercurial-light"] #mvpWinnerContainer #mvpWinnerName * {
+            color: #78350f !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #mvpWinnerContainer #mvpWinnerVotes,
+        [data-theme="haaland-light"] #mvpWinnerContainer #mvpWinnerVotes *,
+        [data-theme="mercurial-light"] #mvpWinnerContainer #mvpWinnerVotes,
+        [data-theme="mercurial-light"] #mvpWinnerContainer #mvpWinnerVotes * {
+            color: #92400e !important;
+            font-weight: 700 !important;
+        }
+        [data-theme="haaland-light"] .award-card,
+        [data-theme="mercurial-light"] .award-card {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+        }
+        [data-theme="haaland-light"] .award-card[class*="border-amber"],
+        [data-theme="mercurial-light"] .award-card[class*="border-amber"],
+        [data-theme="haaland-light"] .award-card.ring-amber-400\/50,
+        [data-theme="mercurial-light"] .award-card.ring-amber-400\/50,
+        [data-theme="haaland-light"] .award-card.border-amber-400,
+        [data-theme="mercurial-light"] .award-card.border-amber-400 {
+            background-color: #fef3c7 !important;
+            border-color: #f59e0b !important;
+        }
+
+        /* ================= PODIUM TOP 3 W HALL OF FAME W JASNYCH MOTYWACH ================= */
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(1),
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(1) {
+            /* 2. Miejsce (Srebro) */
+            background-color: #ffffff !important;
+            background-image: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 4px 15px -2px rgba(100, 116, 139, 0.12) !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2),
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) {
+            /* 1. Miejsce / Lider (Złoto) */
+            background-color: #fef3c7 !important;
+            background-image: linear-gradient(180deg, #fffdf5 0%, #fef3c7 60%, #fde68a 100%) !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.28) !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-200,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-200,
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-300\/90,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-300\/90 {
+            color: #78350f !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-400,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-amber-400 {
+            color: #b45309 !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-slate-300,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) .text-slate-300 {
+            color: #92400e !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(2) .ring-amber-400,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(2) .ring-amber-400 {
+            background-color: #ffffff !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(3),
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(3) {
+            /* 3. Miejsce (Brąz) */
+            background-color: #ffffff !important;
+            background-image: linear-gradient(180deg, #ffffff 0%, #ffedd5 100%) !important;
+            border-color: #fdba74 !important;
+            box-shadow: 0 4px 15px -2px rgba(217, 119, 6, 0.12) !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(3) .text-amber-300,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(3) .text-amber-300 {
+            color: #c2410c !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer > div:nth-child(3) .ring-amber-700\/80,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer > div:nth-child(3) .ring-amber-700\/80 {
+            background-color: #ffffff !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer span.bg-amber-500\/20,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer span.bg-amber-500\/20 {
+            background-color: #fde68a !important;
+            border-color: #f59e0b !important;
+            color: #92400e !important;
+        }
+        [data-theme="haaland-light"] #hallOfFamePodiumContainer span.bg-amber-900\/40,
+        [data-theme="mercurial-light"] #hallOfFamePodiumContainer span.bg-amber-900\/40 {
+            background-color: #ffedd5 !important;
+            border-color: #fdba74 !important;
+            color: #c2410c !important;
+        }
+
+        /* ================= KARTA KRÓLA MVP W KSIĘDZE REKORDÓW W JASNYCH MOTYWACH ================= */
+        [data-theme="haaland-light"] #recordKingMvpCard,
+        [data-theme="mercurial-light"] #recordKingMvpCard {
+            background-color: #fef3c7 !important;
+            background-image: linear-gradient(135deg, #fffdf5 0%, #fef3c7 60%, #fde68a 100%) !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 4px 18px -2px rgba(245, 158, 11, 0.22) !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard #recordKingMvp,
+        [data-theme="mercurial-light"] #recordKingMvpCard #recordKingMvp {
+            color: #78350f !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard #recordKingMvpBadge,
+        [data-theme="mercurial-light"] #recordKingMvpCard #recordKingMvpBadge {
+            background-color: #ffffff !important;
+            border-color: #f59e0b !important;
+            color: #92400e !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard span.text-amber-300\/90,
+        [data-theme="mercurial-light"] #recordKingMvpCard span.text-amber-300\/90 {
+            color: #92400e !important;
+            font-weight: 800 !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard span.text-slate-400,
+        [data-theme="mercurial-light"] #recordKingMvpCard span.text-slate-400 {
+            color: #b45309 !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard .border-amber-950\/80,
+        [data-theme="mercurial-light"] #recordKingMvpCard .border-amber-950\/80 {
+            border-color: #fde68a !important;
+        }
+        [data-theme="haaland-light"] #recordKingMvpCard .bg-amber-500\/10,
+        [data-theme="mercurial-light"] #recordKingMvpCard .bg-amber-500\/10 {
+            background-color: #fde68a !important;
+            border-color: #f59e0b !important;
+        }
+
+        /* ================= PASEK MVP NA LIŚCIE MECZÓW I W MODALU RAPORTU ================= */
+        [data-theme="haaland-light"] .match-card-mvp-banner,
+        [data-theme="mercurial-light"] .match-card-mvp-banner,
+        [data-theme="haaland-light"] .match-modal-mvp-banner,
+        [data-theme="mercurial-light"] .match-modal-mvp-banner,
+        [data-theme="haaland-light"] .profile-vote-alert-banner,
+        [data-theme="mercurial-light"] .profile-vote-alert-banner,
+        [data-theme="haaland-light"] #playerCardSpecialAwardsCard,
+        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard {
+            background-color: #fef3c7 !important;
+            background-image: linear-gradient(90deg, #fffdf5 0%, #fef3c7 65%, #fde68a 100%) !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 2px 10px -1px rgba(245, 158, 11, 0.2) !important;
+        }
+        [data-theme="haaland-light"] .match-card-mvp-banner span.text-amber-300,
+        [data-theme="mercurial-light"] .match-card-mvp-banner span.text-amber-300,
+        [data-theme="haaland-light"] .match-modal-mvp-banner span.text-amber-300,
+        [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-amber-300,
+        [data-theme="haaland-light"] #playerCardSpecialAwardsCard span.text-amber-300,
+        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard span.text-amber-300 {
+            color: #92400e !important;
+            font-weight: 800 !important;
+        }
+        [data-theme="haaland-light"] .match-card-mvp-banner span.text-white,
+        [data-theme="mercurial-light"] .match-card-mvp-banner span.text-white,
+        [data-theme="haaland-light"] .match-modal-mvp-banner span.text-white,
+        [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-white,
+        [data-theme="haaland-light"] .profile-vote-alert-banner p.text-white,
+        [data-theme="mercurial-light"] .profile-vote-alert-banner p.text-white,
+        [data-theme="haaland-light"] #playerCardSpecialAwardsCard span.text-white,
+        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard span.text-white {
+            color: #78350f !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] .match-card-mvp-banner span.bg-amber-950\/90,
+        [data-theme="mercurial-light"] .match-card-mvp-banner span.bg-amber-950\/90,
+        [data-theme="haaland-light"] .match-modal-mvp-banner span.bg-amber-950\/80,
+        [data-theme="mercurial-light"] .match-modal-mvp-banner span.bg-amber-950\/80 {
+            background-color: #ffffff !important;
+            border-color: #f59e0b !important;
+            color: #92400e !important;
+        }
+        [data-theme="haaland-light"] .match-card-mvp-banner span.text-amber-400\/80,
+        [data-theme="mercurial-light"] .match-card-mvp-banner span.text-amber-400\/80,
+        [data-theme="haaland-light"] .match-modal-mvp-banner span.text-amber-400,
+        [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-amber-400 {
+            color: #b45309 !important;
+        }
+        [data-theme="haaland-light"] .profile-vote-alert-banner p.text-amber-200\/90,
+        [data-theme="mercurial-light"] .profile-vote-alert-banner p.text-amber-200\/90 {
+            color: #b45309 !important;
+        }
+
+        /* Pasek MTV Kobiet (wersja Arka) */
+        [data-theme="haaland-light"] .match-modal-women-mvp-banner,
+        [data-theme="mercurial-light"] .match-modal-women-mvp-banner {
+            background-color: #fff1f2 !important;
+            background-image: linear-gradient(90deg, #fff5f7 0%, #ffe4e6 65%, #fecdd3 100%) !important;
+            border-color: #fb7185 !important;
+            box-shadow: 0 2px 10px -1px rgba(244, 63, 94, 0.2) !important;
+        }
+        [data-theme="haaland-light"] .match-modal-women-mvp-banner span.text-white,
+        [data-theme="mercurial-light"] .match-modal-women-mvp-banner span.text-white {
+            color: #881337 !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] .match-modal-women-mvp-banner span.bg-pink-950\/80,
+        [data-theme="mercurial-light"] .match-modal-women-mvp-banner span.bg-pink-950\/80 {
+            background-color: #ffffff !important;
+            border-color: #fb7185 !important;
+            color: #9f1239 !important;
         }
 
         /* ================= KARTA MOJA SKŁADKA W KAŻDYM MOTYWIE ================= */
@@ -2220,7 +2440,7 @@
                     <!-- Bento Grid Rekordów Sezonu -->
                     <div class="space-y-2.5">
                         <!-- Hero Card: Król MVP (Full width, Royal look) -->
-                        <div class="bg-gradient-to-r from-amber-950/40 via-slate-950 to-amber-950/20 border border-amber-500/30 rounded-2xl p-3 sm:p-4 shadow-md transition hover:border-amber-500/50">
+                        <div id="recordKingMvpCard" class="bg-gradient-to-r from-amber-950/40 via-slate-950 to-amber-950/20 border border-amber-500/30 rounded-2xl p-3 sm:p-4 shadow-md transition hover:border-amber-500/50">
                             <div class="flex items-center justify-between gap-2">
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-base shadow-sm">
@@ -2569,9 +2789,9 @@
     </div>
 
 
-    <!-- Theme Picker Modal (Pomysł Mikołaja - 4 motywy + Klasyk) -->
-    <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center ios-safe-modal-overlay hidden overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto my-auto">
+    <!-- Theme Picker Modal (Kompaktowy na każdy telefon) -->
+    <div id="themePickerModal" role="dialog" aria-modal="true" aria-labelledby="themePickerModalTitle" onclick="if(event.target === this) closeThemePickerModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 ios-safe-modal-overlay hidden overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 max-w-sm w-full space-y-3.5 shadow-2xl animate-fade-in max-h-[90dvh] overflow-y-auto my-auto">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🎨</span>
@@ -2589,7 +2809,7 @@
             </div>
 
             <div class="pt-1">
-                <button type="button" onclick="closeThemePickerModal()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold py-2.5 rounded-2xl text-xs transition">
+                <button type="button" onclick="closeThemePickerModal()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-bold py-2.5 rounded-2xl text-xs transition cursor-pointer">
                     Gotowe
                 </button>
             </div>
@@ -8451,7 +8671,7 @@
                 if (mvpWinners.length > 0) {
                     const isExAequo = mvpWinners.length > 1;
                     mvpBannerHtml = `
-                        <div class="bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-950 border border-amber-500/30 rounded-2xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm">
+                        <div class="match-card-mvp-banner bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-950 border border-amber-500/30 rounded-2xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm">
                             <div class="flex items-center gap-2 min-w-0 flex-1">
                                 <span class="text-base shrink-0">👑</span>
                                 <div class="min-w-0 flex-1">
@@ -8698,7 +8918,7 @@
                 `).join('<span class="text-amber-400 font-bold px-1 text-xs shrink-0">&</span>');
 
                 mvpHtml = `
-                    <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/30 to-slate-900 border border-amber-500/50 hover:border-amber-400 rounded-2xl p-2.5 shadow-md">
+                    <div class="match-modal-mvp-banner bg-gradient-to-r from-amber-500/20 via-amber-950/30 to-slate-900 border border-amber-500/50 hover:border-amber-400 rounded-2xl p-2.5 shadow-md">
                         <div class="flex items-center justify-between gap-2 flex-wrap">
                             <div class="flex items-center gap-2 min-w-0 flex-wrap">
                                 <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">
@@ -11805,13 +12025,13 @@
 
             const currentThemeId = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
             const themeNames = {
-                'haaland-dark': { name: 'Błękit Ciemny (Haaland)', icon: '❄️🌙' },
-                'haaland-light': { name: 'Błękit Jasny (Haaland)', icon: '❄️☀️' },
-                'mercurial-dark': { name: 'Róż Ciemny (Mercurial)', icon: '👟🌙' },
-                'mercurial-light': { name: 'Róż Jasny (Mercurial)', icon: '👟☀️' },
-                'classic': { name: 'Klasyczny (Oryginał)', icon: '🏐' }
+                'haaland-dark': { name: 'Błękit Ciemny', icon: '🌙' },
+                'haaland-light': { name: 'Błękit Jasny', icon: '☀️' },
+                'mercurial-dark': { name: 'Róż Ciemny', icon: '🌙' },
+                'mercurial-light': { name: 'Róż Jasny', icon: '☀️' },
+                'classic': { name: 'Klasyczny', icon: '🏐' }
             };
-            const activeThemeInfo = themeNames[currentThemeId] || { name: 'Błękit Ciemny (Haaland)', icon: '❄️🌙' };
+            const activeThemeInfo = themeNames[currentThemeId] || { name: 'Błękit Ciemny', icon: '🌙' };
 
             container.innerHTML = `
                 <!-- Section Header -->
@@ -11850,7 +12070,7 @@
                     </div>
 
                     ${needsMvpVote ? `
-                        <div class="bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse flex-wrap">
+                        <div class="profile-vote-alert-banner bg-gradient-to-r from-amber-500/20 via-amber-950/40 to-slate-900 border-2 border-amber-500/60 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 shadow-lg shadow-amber-500/10 animate-pulse flex-wrap">
                             <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                 <span class="text-2xl shrink-0">🗳️</span>
                                 <div class="min-w-0">
@@ -13432,21 +13652,36 @@
         function setAppTheme(themeKey) {
             localStorage.setItem('siatka_app_theme', themeKey);
             applyAppTheme(themeKey);
-            const names = {
-                'haaland-dark': '❄️🌙 Błękit Ciemny (Haaland)',
-                'haaland-light': '❄️☀️ Błękit Jasny (Haaland)',
-                'mercurial-dark': '👟🌙 Róż Ciemny (Mercurial)',
-                'mercurial-light': '👟☀️ Róż Jasny (Mercurial)',
-                'classic': '🏐 Klasyczny (Oryginał)'
+            const themeInfoMap = {
+                'haaland-dark': { name: 'Błękit Ciemny', icon: '🌙' },
+                'haaland-light': { name: 'Błękit Jasny', icon: '☀️' },
+                'mercurial-dark': { name: 'Róż Ciemny', icon: '🌙' },
+                'mercurial-light': { name: 'Róż Jasny', icon: '☀️' },
+                'classic': { name: 'Klasyczny', icon: '🏐' }
             };
+            const info = themeInfoMap[themeKey] || { name: themeKey, icon: '🎨' };
             if (typeof showToast === 'function') {
-                showToast(`Zastosowano motyw: ${names[themeKey] || themeKey}`);
+                showToast(`Zastosowano motyw: ${info.icon} ${info.name}`);
             }
             renderThemePickerOptions();
             const badge = document.getElementById('profileCurrentThemeDisplay');
-            if (badge) badge.innerText = names[themeKey] || themeKey;
+            if (badge) {
+                const parent = badge.parentElement;
+                if (parent) {
+                    parent.innerHTML = `<span>${info.icon}</span> <span id="profileCurrentThemeDisplay">${escapeHtml(info.name)}</span>`;
+                } else {
+                    badge.innerText = info.name;
+                }
+            }
             const badgeAdmin = document.getElementById('profileCurrentThemeDisplayAdmin');
-            if (badgeAdmin) badgeAdmin.innerText = names[themeKey] || themeKey;
+            if (badgeAdmin) {
+                const parent = badgeAdmin.parentElement;
+                if (parent) {
+                    parent.innerHTML = `<span>${info.icon}</span> <span id="profileCurrentThemeDisplayAdmin">${escapeHtml(info.name)}</span>`;
+                } else {
+                    badgeAdmin.innerText = info.name;
+                }
+            }
         }
 
         function applyAppTheme(themeKey) {
@@ -13480,8 +13715,7 @@
                 {
                     key: 'haaland-dark',
                     name: 'Błękit Ciemny',
-                    tag: 'Haaland',
-                    icon: '❄️🌙',
+                    icon: '🌙',
                     typeBadge: 'Ciemny',
                     accentColor: '#38bdf8',
                     accentTextColor: '#0c1322',
@@ -13490,8 +13724,7 @@
                 {
                     key: 'haaland-light',
                     name: 'Błękit Jasny',
-                    tag: 'Haaland',
-                    icon: '❄️☀️',
+                    icon: '☀️',
                     typeBadge: 'Jasny',
                     accentColor: '#0284c7',
                     accentTextColor: '#ffffff',
@@ -13500,8 +13733,7 @@
                 {
                     key: 'mercurial-dark',
                     name: 'Róż Ciemny',
-                    tag: 'Mercurial',
-                    icon: '👟🌙',
+                    icon: '🌙',
                     typeBadge: 'Ciemny',
                     accentColor: '#ff1783',
                     accentTextColor: '#08080c',
@@ -13510,8 +13742,7 @@
                 {
                     key: 'mercurial-light',
                     name: 'Róż Jasny',
-                    tag: 'Mercurial',
-                    icon: '👟☀️',
+                    icon: '☀️',
                     typeBadge: 'Jasny',
                     accentColor: '#e11d48',
                     accentTextColor: '#ffffff',
@@ -13519,46 +13750,38 @@
                 },
                 {
                     key: 'classic',
-                    name: 'Klasyczny (Oryginał)',
-                    tag: 'Granat & Szmaragd',
+                    name: 'Klasyczny',
                     icon: '🏐',
-                    typeBadge: 'Klasyk',
+                    typeBadge: 'Ciemny',
                     accentColor: '#10b981',
                     accentTextColor: '#022c22',
-                    bgPreview: 'background: linear-gradient(135deg, #070a12 0%, #11192c 100%);',
-                    colSpan: 'col-span-2'
+                    bgPreview: 'background: linear-gradient(135deg, #070a12 0%, #11192c 100%);'
                 }
             ];
 
             const cards = themes.map(t => {
                 const isCurrent = (t.key === currentTheme);
                 return `
-                    <div onclick="setAppTheme('${t.key}')" class="p-2.5 rounded-2xl border transition cursor-pointer flex flex-col justify-between gap-2 active:scale-[0.98] ${t.colSpan || ''} ${isCurrent ? 'ring-2 ring-emerald-400 bg-slate-800/80 border-emerald-400 shadow-md' : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'}">
-                        <!-- Mini wzór wyglądu -->
-                        <div class="h-7 rounded-xl px-2 flex items-center justify-between border border-white/10 shadow-inner" style="${t.bgPreview}">
-                            <span class="text-xs leading-none">${t.icon}</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full" style="background-color: ${t.accentColor}; box-shadow: 0 0 5px ${t.accentColor};"></span>
-                                <span class="text-[8px] font-black px-1.5 py-0.5 rounded-full" style="background-color: ${t.accentColor}; color: ${t.accentTextColor};">${t.typeBadge}</span>
+                    <div onclick="setAppTheme('${t.key}')" class="p-2 sm:p-2.5 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 active:scale-[0.98] ${isCurrent ? 'ring-2 ring-emerald-400 bg-slate-800/90 border-emerald-400 shadow-md' : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/60'}">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-white/10 shadow-inner" style="${t.bgPreview}">
+                                <span class="text-sm leading-none">${t.icon}</span>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="block font-black text-xs text-white leading-tight truncate">${t.name}</span>
+                                <span class="block text-[9.5px] text-slate-400 leading-tight mt-0.5">${t.typeBadge}</span>
                             </div>
                         </div>
-                        <!-- Tytuł i przycisk stanu -->
-                        <div class="flex items-center justify-between gap-1 pt-0.5 min-w-0 flex-wrap">
-                            <div class="min-w-0 flex-1">
-                                <span class="block font-black text-xs text-white leading-tight whitespace-normal break-words">${t.name}</span>
-                                <span class="block text-[9.5px] text-slate-400 leading-tight whitespace-normal break-words mt-0.5">${t.tag}</span>
-                            </div>
-                            <div class="shrink-0">
-                                ${isCurrent 
-                                    ? '<span class="text-[9px] bg-emerald-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md shadow-sm whitespace-nowrap">✓ Aktywny</span>' 
-                                    : '<span class="text-[9px] text-slate-500 font-bold px-1.5 py-0.5 rounded-md border border-slate-800 hover:border-slate-700 whitespace-nowrap">Wybierz</span>'}
-                            </div>
+                        <div class="shrink-0">
+                            ${isCurrent 
+                                ? '<span class="text-[9px] bg-emerald-500 text-slate-950 font-black px-2 py-0.5 rounded-lg shadow-sm whitespace-nowrap">✓ Aktywny</span>' 
+                                : '<span class="text-[9px] text-slate-400 font-semibold px-2 py-0.5 rounded-lg border border-slate-800 hover:border-slate-700 whitespace-nowrap">Wybierz</span>'}
                         </div>
                     </div>
                 `;
             }).join('');
 
-            return `<div class="grid grid-cols-2 gap-2.5">${cards}</div>`;
+            return `<div class="space-y-2">${cards}</div>`;
         }
 
         function renderThemePickerOptions() {
