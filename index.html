@@ -1639,35 +1639,58 @@
         /* Base styles for matchday cards and chips (also protects html2canvas export from font clipping) */
         .player-chip-dark,
         .player-chip-light {
-            min-height: 40px !important;
+            min-height: 44px !important;
             display: flex !important;
             align-items: center !important;
         }
-        .player-chip-dark .player-name,
-        .player-chip-light .player-name {
-            line-height: 1.4 !important;
-            display: inline-block !important;
-            vertical-align: middle !important;
-            padding-bottom: 2px !important;
+        .player-chip-dark .player-first-name {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: 11.5px !important;
+            line-height: 1.2 !important;
+        }
+        .player-chip-dark .player-last-name {
+            color: #93c5fd !important;
+            font-weight: 700 !important;
+            font-size: 10px !important;
+            line-height: 1.2 !important;
+        }
+        .player-chip-light .player-first-name {
+            color: #090d16 !important;
+            font-weight: 900 !important;
+            font-size: 11.5px !important;
+            line-height: 1.2 !important;
+        }
+        .player-chip-light .player-last-name {
+            color: #334155 !important;
+            font-weight: 700 !important;
+            font-size: 10px !important;
+            line-height: 1.2 !important;
         }
         .matchday-dark-badge,
         .matchday-light-badge {
             display: inline-flex !important;
             align-items: center !important;
             line-height: 1.35 !important;
-            padding-top: 2px !important;
+            padding-top: 3px !important;
             padding-bottom: 3px !important;
         }
         #teamsCourtView .player-chip-dark,
         [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark,
         [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark {
-            background-color: #020617 !important;
-            border: 1px solid #334155 !important;
+            background-color: #090e1a !important;
+            border: 1px solid #1e293b !important;
         }
-        #teamsCourtView .player-chip-dark .player-name,
-        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark .player-name,
-        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark .player-name {
-            color: #f8fafc !important;
+        #teamsCourtView .player-chip-dark .player-first-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark .player-first-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark .player-first-name {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+        #teamsCourtView .player-chip-dark .player-last-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark .player-last-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark .player-last-name {
+            color: #93c5fd !important;
             font-weight: 700 !important;
         }
         #teamsCourtView .player-chip-dark .player-avatar,
@@ -1726,10 +1749,16 @@
             border: 1px solid #cbd5e1 !important;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
         }
-        #teamsCourtView .player-chip-light .player-name,
-        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light .player-name,
-        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light .player-name {
-            color: #0f172a !important;
+        #teamsCourtView .player-chip-light .player-first-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light .player-first-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light .player-first-name {
+            color: #090d16 !important;
+            font-weight: 900 !important;
+        }
+        #teamsCourtView .player-chip-light .player-last-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light .player-last-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light .player-last-name {
+            color: #334155 !important;
             font-weight: 700 !important;
         }
         #teamsCourtView .player-chip-light .player-avatar,
@@ -1749,77 +1778,85 @@
         }
 
         /* Stat Box (Dark Card) */
-        #teamsCourtView .matchday-stat-box,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-box,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-box {
-            background-color: #020617 !important;
-            border: 1px solid #1e293b !important;
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-box,
+        html.dark #teamsCourtView .matchday-stat-box {
+            background: linear-gradient(180deg, #0d1527 0%, #060913 100%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
         }
-        #teamsCourtView #matchdayFactCategory,
         [data-theme="haaland-dark"] #teamsCourtView #matchdayFactCategory,
-        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactCategory {
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactCategory,
+        html.dark #teamsCourtView #matchdayFactCategory {
             color: #38bdf8 !important;
             font-weight: 900 !important;
         }
-        #teamsCourtView #matchdayFactBadge,
         [data-theme="haaland-dark"] #teamsCourtView #matchdayFactBadge,
-        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactBadge {
-            color: #64748b !important;
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactBadge,
+        html.dark #teamsCourtView #matchdayFactBadge {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #7dd3fc !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
         }
-        #teamsCourtView #matchdayFactText,
         [data-theme="haaland-dark"] #teamsCourtView #matchdayFactText,
-        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactText {
-            color: #f1f5f9 !important;
-            font-weight: 500 !important;
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactText,
+        html.dark #teamsCourtView #matchdayFactText {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            font-size: 12.5px !important;
+            line-height: 1.4 !important;
         }
-        #teamsCourtView .matchday-progress-bg,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-bg,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-bg {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-bg,
+        html.dark #teamsCourtView .matchday-progress-bg {
             background-color: #1e293b !important;
         }
-        #teamsCourtView .matchday-progress-sky,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-sky,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-sky {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-sky,
+        html.dark #teamsCourtView .matchday-progress-sky {
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8) !important;
             background-color: #38bdf8 !important;
         }
-        #teamsCourtView .matchday-progress-amber,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-amber,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-amber {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-amber,
+        html.dark #teamsCourtView .matchday-progress-amber {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24) !important;
             background-color: #fbbf24 !important;
         }
-        #teamsCourtView .matchday-progress-emerald,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-emerald,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-emerald {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-emerald,
+        html.dark #teamsCourtView .matchday-progress-emerald {
+            background: linear-gradient(90deg, #10b981, #34d399) !important;
             background-color: #34d399 !important;
         }
-        #teamsCourtView .matchday-progress-slate,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-slate,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-slate {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-slate,
+        html.dark #teamsCourtView .matchday-progress-slate {
             background-color: #475569 !important;
         }
-        #teamsCourtView .matchday-stat-left-sky,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-left-sky,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-sky {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-sky,
+        html.dark #teamsCourtView .matchday-stat-left-sky {
             color: #7dd3fc !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
         }
-        #teamsCourtView .matchday-stat-right-amber,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-right-amber,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-amber {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-amber,
+        html.dark #teamsCourtView .matchday-stat-right-amber {
             color: #fde047 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
         }
-        #teamsCourtView .matchday-stat-left-emerald,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-left-emerald,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-emerald {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-emerald,
+        html.dark #teamsCourtView .matchday-stat-left-emerald {
             color: #6ee7b7 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
         }
-        #teamsCourtView .matchday-stat-right-slate,
         [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-right-slate,
-        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-slate {
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-slate,
+        html.dark #teamsCourtView .matchday-stat-right-slate {
             color: #94a3b8 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
         }
 
         /* Stopka (Dark Card) */
@@ -1923,9 +1960,14 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
         }
 
-        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark .player-name,
-        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark .player-name {
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark .player-first-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark .player-first-name {
             color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark .player-last-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark .player-last-name {
+            color: #93c5fd !important;
             font-weight: 700 !important;
         }
 
@@ -1983,9 +2025,14 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
         }
 
-        [data-theme="haaland-light"] #teamsCourtView .player-chip-light .player-name,
-        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light .player-name {
-            color: #0f172a !important;
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light .player-first-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light .player-first-name {
+            color: #090d16 !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light .player-last-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light .player-last-name {
+            color: #334155 !important;
             font-weight: 700 !important;
         }
 
@@ -2006,94 +2053,144 @@
 
         /* Stat Box (Light Card) */
         [data-theme="haaland-light"] #teamsCourtView .matchday-stat-box,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-box {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-box,
+        html.light #teamsCourtView .matchday-stat-box {
+            background: #f8fafc !important;
             background-color: #f8fafc !important;
+            background-image: none !important;
             border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-box > div:first-child,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-box > div:first-child,
+        html.light #teamsCourtView .matchday-stat-box > div:first-child {
+            border-bottom: 1px solid #e2e8f0 !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView #matchdayFactCategory,
-        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactCategory {
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactCategory,
+        html.light #teamsCourtView #matchdayFactCategory {
             color: #0284c7 !important;
             font-weight: 900 !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView #matchdayFactBadge,
-        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactBadge {
-            color: #64748b !important;
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactBadge,
+        html.light #teamsCourtView #matchdayFactBadge {
+            background: #e0f2fe !important;
+            background-color: #e0f2fe !important;
+            color: #0369a1 !important;
+            border: 1px solid #bae6fd !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView #matchdayFactText,
-        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactText {
-            color: #1e293b !important;
-            font-weight: 600 !important;
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactText,
+        html.light #teamsCourtView #matchdayFactText {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+            font-size: 12.5px !important;
+            line-height: 1.4 !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-progress-bg,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-bg {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-bg,
+        html.light #teamsCourtView .matchday-progress-bg {
+            background: #e2e8f0 !important;
             background-color: #e2e8f0 !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08) !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-progress-sky,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-sky {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-sky,
+        html.light #teamsCourtView .matchday-progress-sky {
+            background: #0ea5e9 !important;
             background-color: #0ea5e9 !important;
+            background-image: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-progress-amber,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-amber {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-amber,
+        html.light #teamsCourtView .matchday-progress-amber {
+            background: #f59e0b !important;
             background-color: #f59e0b !important;
+            background-image: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-progress-emerald,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-emerald {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-emerald,
+        html.light #teamsCourtView .matchday-progress-emerald {
+            background: #10b981 !important;
             background-color: #10b981 !important;
+            background-image: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-progress-slate,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-slate {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-slate,
+        html.light #teamsCourtView .matchday-progress-slate {
+            background: #94a3b8 !important;
             background-color: #94a3b8 !important;
+            background-image: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-stat-left-sky,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-sky {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-sky,
+        html.light #teamsCourtView .matchday-stat-left-sky {
             color: #0284c7 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
+            text-shadow: none !important;
+            filter: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-stat-right-amber,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-amber {
-            color: #d97706 !important;
-            font-weight: 700 !important;
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-amber,
+        html.light #teamsCourtView .matchday-stat-right-amber {
+            color: #b45309 !important;
+            font-weight: 900 !important;
+            text-shadow: none !important;
+            filter: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-stat-left-emerald,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-emerald {
-            color: #059669 !important;
-            font-weight: 700 !important;
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-emerald,
+        html.light #teamsCourtView .matchday-stat-left-emerald {
+            color: #047857 !important;
+            font-weight: 900 !important;
+            text-shadow: none !important;
+            filter: none !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-stat-right-slate,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-slate {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-slate,
+        html.light #teamsCourtView .matchday-stat-right-slate {
             color: #475569 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
+            text-shadow: none !important;
+            filter: none !important;
         }
 
         /* Stopka (Light Card) */
         [data-theme="haaland-light"] #teamsCourtView .matchday-footer,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer {
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer,
+        html.light #teamsCourtView .matchday-footer {
             background: transparent !important;
             background-color: transparent !important;
-            border-top: 1px solid #f1f5f9 !important;
+            border-top: 1px solid #e2e8f0 !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-footer-left,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-left {
-            color: #64748b !important;
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-left,
+        html.light #teamsCourtView .matchday-footer-left {
+            color: #475569 !important;
+            font-weight: 700 !important;
         }
 
         [data-theme="haaland-light"] #teamsCourtView .matchday-footer-right,
-        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-right {
-            color: #d97706 !important;
-            font-weight: 700 !important;
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-right,
+        html.light #teamsCourtView .matchday-footer-right {
+            color: #b45309 !important;
+            font-weight: 800 !important;
         }
 
         /* Stylizowane Boisko Siatkarskie */
@@ -2751,14 +2848,10 @@
                 <!-- WIDOK 2: NOWOCZESNA KARTA MECZOWA PRZEDMECZOWA (ZAPOWIEDŹ NA MESSENGERA) -->
                 <div id="teamsCourtView" class="hidden space-y-3">
                     <!-- Pasek akcji karty meczowej -->
-                    <div class="flex items-center justify-between gap-1.5 flex-wrap">
-                        <button type="button" onclick="cycleMatchdayStatFact()" class="matchday-action-btn py-1.5 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
+                    <div class="flex items-center justify-end gap-1.5">
+                        <button type="button" onclick="cycleMatchdayStatFact()" class="matchday-action-btn py-1.5 px-3.5 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
                             <span>📊</span>
                             <span>Inna statystyka</span>
-                        </button>
-                        <button type="button" onclick="downloadMatchdayImage()" class="matchday-copy-btn py-1.5 px-3.5 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Pobierz grafikę jako plik PNG">
-                            <span>📥</span>
-                            <span>Pobierz</span>
                         </button>
                     </div>
 
@@ -2774,7 +2867,7 @@
                                     </div>
                                     <div>
                                         <h3 class="text-sm font-black tracking-tight leading-none matchday-title">Siatkówka Piątek</h3>
-                                        <span id="matchdayMatchNumberText" class="text-[10px] font-medium matchday-subtitle">Mecz #16 • Sezon 2026</span>
+                                        <span id="matchdayMatchNumberText" class="text-[10px] font-medium matchday-subtitle">Mecz #17 • Sezon 2026</span>
                                     </div>
                                 </div>
 
@@ -2801,7 +2894,7 @@
                                     <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-500"></span>
                                     <span id="matchdayDarkTitle" class="text-xs font-black tracking-wide">DRUŻYNA CIEMNA</span>
                                 </div>
-                                <span class="matchday-dark-badge text-[9.5px] font-bold px-2 py-0.5 rounded-md border">
+                                <span class="matchday-dark-badge text-[10.5px] font-black px-2.5 py-1 rounded-lg border shadow-sm">
                                     👕 Ciemna koszulka
                                 </span>
                             </div>
@@ -2828,7 +2921,7 @@
                                     <span class="w-3 h-3 rounded-full bg-white border border-slate-400"></span>
                                     <span id="matchdayLightTitle" class="text-xs font-black tracking-wide">DRUŻYNA JASNA</span>
                                 </div>
-                                <span class="matchday-light-badge text-[9.5px] font-bold px-2 py-0.5 rounded-md border font-mono">
+                                <span class="matchday-light-badge text-[10.5px] font-black px-2.5 py-1 rounded-lg border shadow-sm">
                                     🎽 Jasna koszulka
                                 </span>
                             </div>
@@ -2839,16 +2932,16 @@
                         </div>
 
                         <!-- 5. Ciekawostka Statystyczna -->
-                        <div class="matchday-stat-box mt-3 p-3 rounded-2xl border space-y-1.5">
-                            <div class="flex items-center justify-between">
+                        <div class="matchday-stat-box mt-3 p-3.5 rounded-2xl border space-y-2">
+                            <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-xs">📊</span>
-                                    <span id="matchdayFactCategory" class="text-[10px] font-black uppercase tracking-wider">CIEKAWOSTKA STATYSTYCZNA</span>
+                                    <span class="text-sm">📊</span>
+                                    <span id="matchdayFactCategory" class="text-[11px] font-black uppercase tracking-wider text-sky-400">CIEKAWOSTKA STATYSTYCZNA</span>
                                 </div>
-                                <span id="matchdayFactBadge" class="text-[9px] font-mono">1 / 4</span>
+                                <span id="matchdayFactBadge" class="text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">1 / 4</span>
                             </div>
 
-                            <p id="matchdayFactText" class="text-xs font-medium leading-relaxed">
+                            <p id="matchdayFactText" class="text-[12.5px] font-bold text-slate-100 leading-snug">
                                 <!-- Wypełniane w JS -->
                             </p>
 
@@ -2858,9 +2951,13 @@
                         </div>
 
                         <!-- 6. Stopka -->
-                        <div class="matchday-footer mt-2.5 pt-2 border-t matchday-divider flex items-center justify-between text-[9.5px]">
-                            <span class="matchday-footer-left">Zbiórka 19:45 na rozgrzewkę</span>
-                            <span class="matchday-footer-right">Głosowanie MVP po meczu w apce 👑</span>
+                        <div class="matchday-footer mt-2.5 pt-2 border-t matchday-divider flex items-center justify-between text-[10.5px]">
+                            <span class="matchday-footer-left text-slate-300 font-bold flex items-center gap-1">
+                                <span>⏰</span><span>Zbiórka 19:45 na rozgrzewkę</span>
+                            </span>
+                            <span class="matchday-footer-right text-amber-300 font-extrabold flex items-center gap-1">
+                                <span>👑</span><span>Głosowanie MVP po meczu w apce</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -7868,24 +7965,24 @@
 
             if (f.theme === 'duo') {
                 factVisual.innerHTML = `
-                    <div class="h-2 w-full rounded-full overflow-hidden flex matchday-progress-bg">
-                        <div class="matchday-progress-emerald h-full transition-all duration-300" style="width: ${leftPct}%"></div>
-                        <div class="matchday-progress-slate h-full transition-all duration-300" style="width: ${rightPct}%"></div>
+                    <div class="matchday-progress-bg h-2.5 w-full rounded-full overflow-hidden flex bg-slate-800 border border-slate-700/80 shadow-inner">
+                        <div class="matchday-progress-emerald bg-gradient-to-r from-emerald-500 to-emerald-400 h-full transition-all duration-300" style="width: ${leftPct}%"></div>
+                        <div class="matchday-progress-slate bg-slate-600 h-full transition-all duration-300" style="width: ${rightPct}%"></div>
                     </div>
-                    <div class="flex justify-between text-[8.5px] font-mono mt-1">
-                        <span class="matchday-stat-left-emerald">${escapeHtml(f.darkLabel)}</span>
-                        <span class="matchday-stat-right-slate">${escapeHtml(f.lightLabel)}</span>
+                    <div class="flex justify-between items-center text-[11px] font-black font-mono mt-1.5">
+                        <span class="matchday-stat-left-emerald text-emerald-400 drop-shadow-sm">${escapeHtml(f.darkLabel)}</span>
+                        <span class="matchday-stat-right-slate text-slate-300">${escapeHtml(f.lightLabel)}</span>
                     </div>
                 `;
             } else {
                 factVisual.innerHTML = `
-                    <div class="h-2 w-full rounded-full overflow-hidden flex matchday-progress-bg">
-                        <div class="matchday-progress-sky h-full transition-all duration-300" style="width: ${leftPct}%"></div>
-                        <div class="matchday-progress-amber h-full transition-all duration-300" style="width: ${rightPct}%"></div>
+                    <div class="matchday-progress-bg h-2.5 w-full rounded-full overflow-hidden flex bg-slate-800 border border-slate-700/80 shadow-inner">
+                        <div class="matchday-progress-sky bg-gradient-to-r from-sky-500 to-sky-400 h-full transition-all duration-300" style="width: ${leftPct}%"></div>
+                        <div class="matchday-progress-amber bg-gradient-to-r from-amber-400 to-amber-500 h-full transition-all duration-300" style="width: ${rightPct}%"></div>
                     </div>
-                    <div class="flex justify-between text-[8.5px] font-mono mt-1">
-                        <span class="matchday-stat-left-sky">${escapeHtml(f.darkLabel)}</span>
-                        <span class="matchday-stat-right-amber">${escapeHtml(f.lightLabel)}</span>
+                    <div class="flex justify-between items-center text-[11px] font-black font-mono mt-1.5">
+                        <span class="matchday-stat-left-sky text-sky-300 drop-shadow-sm">${escapeHtml(f.darkLabel)}</span>
+                        <span class="matchday-stat-right-amber text-amber-300 drop-shadow-sm">${escapeHtml(f.lightLabel)}</span>
                     </div>
                 `;
             }
@@ -7977,25 +8074,19 @@
                         }
                         clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
                             chip.style.overflow = 'visible';
-                            chip.style.minHeight = '38px';
+                            chip.style.minHeight = '44px';
                             chip.style.display = 'flex';
                             chip.style.alignItems = 'center';
                         });
-                        clonedDoc.querySelectorAll('.player-name').forEach(nameEl => {
-                            nameEl.style.overflow = 'visible';
-                            nameEl.style.textOverflow = 'clip';
-                            nameEl.style.whiteSpace = 'nowrap';
-                            nameEl.style.lineHeight = '1.4';
-                            nameEl.style.display = 'inline-block';
-                            nameEl.style.paddingBottom = '3px';
-                            if (nameEl.textContent.trim().length > 15) {
-                                nameEl.style.fontSize = '10.5px';
-                            }
+                        clonedDoc.querySelectorAll('.player-name-container, .player-first-name, .player-last-name').forEach(el => {
+                            el.style.overflow = 'visible';
+                            el.style.whiteSpace = 'nowrap';
+                            el.style.lineHeight = '1.25';
                         });
                         clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
                             badge.style.overflow = 'visible';
-                            badge.style.lineHeight = '1.4';
-                            badge.style.paddingTop = '2px';
+                            badge.style.lineHeight = '1.35';
+                            badge.style.paddingTop = '3px';
                             badge.style.paddingBottom = '3px';
                             badge.style.display = 'inline-flex';
                             badge.style.alignItems = 'center';
@@ -8063,25 +8154,19 @@
                         }
                         clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
                             chip.style.overflow = 'visible';
-                            chip.style.minHeight = '38px';
+                            chip.style.minHeight = '44px';
                             chip.style.display = 'flex';
                             chip.style.alignItems = 'center';
                         });
-                        clonedDoc.querySelectorAll('.player-name').forEach(nameEl => {
-                            nameEl.style.overflow = 'visible';
-                            nameEl.style.textOverflow = 'clip';
-                            nameEl.style.whiteSpace = 'nowrap';
-                            nameEl.style.lineHeight = '1.4';
-                            nameEl.style.display = 'inline-block';
-                            nameEl.style.paddingBottom = '3px';
-                            if (nameEl.textContent.trim().length > 15) {
-                                nameEl.style.fontSize = '10.5px';
-                            }
+                        clonedDoc.querySelectorAll('.player-name-container, .player-first-name, .player-last-name').forEach(el => {
+                            el.style.overflow = 'visible';
+                            el.style.whiteSpace = 'nowrap';
+                            el.style.lineHeight = '1.25';
                         });
                         clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
                             badge.style.overflow = 'visible';
-                            badge.style.lineHeight = '1.4';
-                            badge.style.paddingTop = '2px';
+                            badge.style.lineHeight = '1.35';
+                            badge.style.paddingTop = '3px';
                             badge.style.paddingBottom = '3px';
                             badge.style.display = 'inline-flex';
                             badge.style.alignItems = 'center';
@@ -8103,6 +8188,42 @@
             }
         }
 
+        function getSeasonMatchNumber(targetMatch) {
+            if (!targetMatch || !targetMatch.date) return null;
+            const sortedMonths = (typeof getSortedMonths === 'function') 
+                ? getSortedMonths() 
+                : Object.keys(AppState.months || {});
+            
+            let allMatches = [];
+            sortedMonths.forEach(mName => {
+                const matches = AppState.months[mName]?.matches || [];
+                matches.forEach(m => {
+                    if (m && m.date && !m.isCancelled) {
+                        allMatches.push(m);
+                    }
+                });
+            });
+
+            allMatches.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+            const idx = allMatches.findIndex(m => m.date === targetMatch.date);
+            return (idx !== -1) ? (idx + 1) : null;
+        }
+
+        function formatMatchdayPlayerName(name) {
+            if (!name) return { first: "", last: "", isTwoLine: false };
+            const parts = name.trim().split(/\s+/);
+            if (parts.length === 1) {
+                return { first: parts[0], last: "", isTwoLine: false };
+            }
+            if (parts.length === 2) {
+                return { first: parts[0], last: parts[1], isTwoLine: true };
+            }
+            const last = parts[parts.length - 1];
+            const first = parts.slice(0, parts.length - 1).join(" ");
+            return { first, last, isTwoLine: true };
+        }
+
         function renderMatchdayCard(dark, light, currentMatch) {
             const dateEl = document.getElementById('matchdayDateText');
             const numEl = document.getElementById('matchdayMatchNumberText');
@@ -8115,8 +8236,10 @@
                 dateEl.textContent = currentMatch.date || "Piątek";
             }
             if (numEl) {
-                const mIdx = (AppState.currentMatchIndex !== undefined) ? AppState.currentMatchIndex + 1 : 16;
-                numEl.textContent = `Mecz #${mIdx} • Sezon 2026`;
+                const seasonNum = getSeasonMatchNumber(currentMatch);
+                const displayNum = seasonNum || ((AppState.currentMatchIndex !== undefined) ? AppState.currentMatchIndex + 1 : 16);
+                const year = (currentMatch && currentMatch.date) ? currentMatch.date.split('-')[0] : '2026';
+                numEl.textContent = `Mecz #${displayNum} • Sezon ${year}`;
             }
 
             const teams = currentMatch ? (currentMatch.teams || {}) : {};
@@ -8133,21 +8256,33 @@
                     if (i < dark.length) {
                         const p = dark[i];
                         const isMe = (p === loggedPlayer);
+                        const nameInfo = formatMatchdayPlayerName(p);
+                        const nameContent = nameInfo.isTwoLine ? `
+                            <div class="player-name-container min-w-0 flex-1 flex flex-col justify-center leading-tight py-0.5">
+                                <span class="player-first-name font-black text-[11.5px] leading-tight text-white tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-last-name font-bold text-[10px] leading-tight text-sky-200/90 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
+                            </div>
+                        ` : `
+                            <div class="player-name-container min-w-0 flex-1 flex items-center leading-tight py-0.5">
+                                <span class="player-first-name font-black text-[12px] leading-tight text-white tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                            </div>
+                        `;
+
                         darkHtml += `
-                            <div class="player-chip-dark rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-400' : ''}">
-                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
+                            <div class="player-chip-dark rounded-xl px-2.5 py-1.5 min-h-[44px] flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-400' : ''}">
+                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="player-name text-[11.5px] font-bold leading-normal truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                ${nameContent}
                             </div>
                         `;
                     } else {
                         darkHtml += `
-                            <div class="player-chip-dark-empty rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed">
-                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] shrink-0">
+                            <div class="player-chip-dark-empty rounded-xl px-2.5 py-1.5 min-h-[44px] flex items-center gap-2 border border-dashed border-slate-700/60 bg-slate-950/40">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] font-mono text-slate-500 shrink-0">
                                     #${i+1}
                                 </div>
-                                <span class="text-[11px] italic">Wolne miejsce</span>
+                                <span class="text-[10.5px] italic text-slate-500">Wolne miejsce</span>
                             </div>
                         `;
                     }
@@ -8163,21 +8298,33 @@
                     if (i < light.length) {
                         const p = light[i];
                         const isMe = (p === loggedPlayer);
+                        const nameInfo = formatMatchdayPlayerName(p);
+                        const nameContent = nameInfo.isTwoLine ? `
+                            <div class="player-name-container min-w-0 flex-1 flex flex-col justify-center leading-tight py-0.5">
+                                <span class="player-first-name font-black text-[11.5px] leading-tight text-slate-950 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-last-name font-bold text-[10px] leading-tight text-slate-700 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
+                            </div>
+                        ` : `
+                            <div class="player-name-container min-w-0 flex-1 flex items-center leading-tight py-0.5">
+                                <span class="player-first-name font-black text-[12px] leading-tight text-slate-950 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                            </div>
+                        `;
+
                         lightHtml += `
-                            <div class="player-chip-light rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-500' : ''}">
-                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
+                            <div class="player-chip-light rounded-xl px-2.5 py-1.5 min-h-[44px] flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-500' : ''}">
+                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="player-name text-[11.5px] font-bold leading-normal truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                ${nameContent}
                             </div>
                         `;
                     } else {
                         lightHtml += `
-                            <div class="player-chip-light-empty rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed">
-                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-400 flex items-center justify-center text-[9px] shrink-0">
+                            <div class="player-chip-light-empty rounded-xl px-2.5 py-1.5 min-h-[44px] flex items-center gap-2 border border-dashed border-slate-300 bg-white/70">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-400 flex items-center justify-center text-[9px] font-mono text-slate-400 shrink-0">
                                     #${i+1}
                                 </div>
-                                <span class="text-[11px] italic">Wolne miejsce</span>
+                                <span class="text-[10.5px] italic text-slate-400">Wolne miejsce</span>
                             </div>
                         `;
                     }
