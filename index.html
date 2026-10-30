@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -1509,75 +1509,566 @@
             animation: fadeInScale 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-                /* Karta Meczowa Przedmeczowa (Styl Sofascore / Clean Athletic) */
-        .matchday-card-container,
-        [data-theme="haaland-light"] .matchday-card-container,
-        [data-theme="mercurial-light"] .matchday-card-container {
-            background: linear-gradient(180deg, #0d1527 0%, #080d19 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+        /* ================= KARTA MECZOWA PRZEDMECZOWA (PEŁNA INTEGRACJA Z MOTYWAMI) ================= */
+        /* 1. PRZYCISKI AKCJI */
+        #tab-teams .matchday-action-btn,
+        #tab-teams .team-swap-btn {
+            background-color: #0f172a !important;
             color: #f1f5f9 !important;
+            border: 1px solid #334155 !important;
         }
-        [data-theme="haaland-light"] .matchday-card-container,
-        [data-theme="mercurial-light"] .matchday-card-container {
-            border-color: rgba(56, 189, 248, 0.3) !important;
-            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.3) !important;
-        }
-        .matchday-card-container h1,
-        .matchday-card-container h2,
-        .matchday-card-container h3,
-        .matchday-card-container h4,
-        [data-theme="haaland-light"] .matchday-card-container h1,
-        [data-theme="haaland-light"] .matchday-card-container h2,
-        [data-theme="haaland-light"] .matchday-card-container h3,
-        [data-theme="haaland-light"] .matchday-card-container h4,
-        [data-theme="mercurial-light"] .matchday-card-container h1,
-        [data-theme="mercurial-light"] .matchday-card-container h2,
-        [data-theme="mercurial-light"] .matchday-card-container h3,
-        [data-theme="mercurial-light"] .matchday-card-container h4 {
+        #tab-teams .matchday-action-btn:hover,
+        #tab-teams .team-swap-btn:hover {
+            background-color: #1e293b !important;
             color: #ffffff !important;
         }
-        .player-chip-dark,
-        [data-theme="haaland-light"] .player-chip-dark,
-        [data-theme="mercurial-light"] .player-chip-dark {
-            background: rgba(15, 23, 42, 0.85) !important;
-            border: 1px solid rgba(51, 65, 85, 0.6) !important;
+        #tab-teams .matchday-copy-btn {
+            background-color: rgba(14, 165, 233, 0.18) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.5) !important;
         }
-        .player-chip-light,
-        [data-theme="haaland-light"] .player-chip-light,
-        [data-theme="mercurial-light"] .player-chip-light {
-            background: rgba(255, 255, 255, 0.07) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        }
-        .matchday-card-container span.text-white,
-        [data-theme="haaland-light"] .matchday-card-container span.text-white,
-        [data-theme="mercurial-light"] .matchday-card-container span.text-white {
+        #tab-teams .matchday-copy-btn:hover {
+            background-color: rgba(14, 165, 233, 0.3) !important;
             color: #ffffff !important;
         }
-        .matchday-card-container span.text-slate-100,
-        [data-theme="haaland-light"] .matchday-card-container span.text-slate-100,
-        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-100 {
+
+        /* Przyciski w motywach jasnych */
+        [data-theme="haaland-light"] #tab-teams .matchday-action-btn,
+        [data-theme="haaland-light"] #tab-teams .team-swap-btn,
+        [data-theme="mercurial-light"] #tab-teams .matchday-action-btn,
+        [data-theme="mercurial-light"] #tab-teams .team-swap-btn {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+        }
+        [data-theme="haaland-light"] #tab-teams .matchday-action-btn:hover,
+        [data-theme="haaland-light"] #tab-teams .team-swap-btn:hover,
+        [data-theme="mercurial-light"] #tab-teams .matchday-action-btn:hover,
+        [data-theme="mercurial-light"] #tab-teams .team-swap-btn:hover {
+            background-color: #f8fafc !important;
+            color: #0284c7 !important;
+            border-color: #94a3b8 !important;
+        }
+        [data-theme="haaland-light"] #tab-teams .matchday-copy-btn,
+        [data-theme="mercurial-light"] #tab-teams .matchday-copy-btn {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+            border: 1px solid #0284c7 !important;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25) !important;
+        }
+        [data-theme="haaland-light"] #tab-teams .matchday-copy-btn:hover,
+        [data-theme="mercurial-light"] #tab-teams .matchday-copy-btn:hover {
+            background-color: #0369a1 !important;
+            color: #ffffff !important;
+        }
+
+        /* ========================================================================= */
+        /* A. MOTYW CIEMNY KARTY (Haaland Dark / Mercurial Dark / Classic) */
+        /* ========================================================================= */
+        #teamsCourtView .matchday-card-container,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-card-container,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-card-container {
+            background: linear-gradient(180deg, #0d1527 0%, #060913 100%) !important;
+            background-color: #060913 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
             color: #f1f5f9 !important;
         }
-        .matchday-card-container span.text-slate-200,
-        [data-theme="haaland-light"] .matchday-card-container span.text-slate-200,
-        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-200 {
-            color: #e2e8f0 !important;
+
+        #teamsCourtView .matchday-header,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-header,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-header {
+            background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
         }
-        .matchday-card-container span.text-slate-300,
-        [data-theme="haaland-light"] .matchday-card-container span.text-slate-300,
-        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-300 {
-            color: #cbd5e1 !important;
+        #teamsCourtView .matchday-title,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-title,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-title {
+            color: #ffffff !important;
+            font-weight: 900 !important;
         }
-        .matchday-card-container span.text-slate-400,
-        [data-theme="haaland-light"] .matchday-card-container span.text-slate-400,
-        [data-theme="mercurial-light"] .matchday-card-container span.text-slate-400 {
+        #teamsCourtView .matchday-subtitle,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-subtitle,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-subtitle {
             color: #94a3b8 !important;
         }
-        .matchday-card-container p,
-        [data-theme="haaland-light"] .matchday-card-container p,
-        [data-theme="mercurial-light"] .matchday-card-container p {
-            color: #e2e8f0 !important;
+        #teamsCourtView .matchday-date,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-date,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-date {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .matchday-location,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-location,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-location {
+            color: #cbd5e1 !important;
+        }
+        #teamsCourtView .matchday-time-badge,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-time-badge,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-time-badge {
+            background-color: rgba(6, 78, 59, 0.85) !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(16, 185, 129, 0.45) !important;
+        }
+
+        /* Drużyna Ciemna (Dark Card) */
+        #teamsCourtView .matchday-dark-header,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-dark-header,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-dark-header {
+            background: linear-gradient(90deg, #020617 0%, #0f172a 100%) !important;
+            border: 1px solid #334155 !important;
+        }
+        #teamsCourtView #matchdayDarkTitle,
+        [data-theme="haaland-dark"] #teamsCourtView #matchdayDarkTitle,
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayDarkTitle {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+        #teamsCourtView .matchday-dark-badge,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-dark-badge,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-dark-badge {
+            background-color: #020617 !important;
+            color: #cbd5e1 !important;
+            border: 1px solid #475569 !important;
+        }
+        #teamsCourtView .player-chip-dark,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark {
+            background-color: #020617 !important;
+            border: 1px solid #334155 !important;
+        }
+        #teamsCourtView .player-chip-dark .player-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark .player-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark .player-name {
+            color: #f8fafc !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .player-chip-dark .player-avatar,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark .player-avatar,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark .player-avatar {
+            background-color: #0f172a !important;
+            border: 1px solid #334155 !important;
+            color: #cbd5e1 !important;
+        }
+        #teamsCourtView .player-chip-dark-empty,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark-empty,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-dark-empty {
+            background-color: rgba(2, 6, 23, 0.4) !important;
+            border: 1px dashed #334155 !important;
+            color: #64748b !important;
+        }
+
+        /* VS Separator (Dark Card) */
+        #teamsCourtView .matchday-vs-badge,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-vs-badge,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-vs-badge {
+            background-color: #0f172a !important;
+            color: #94a3b8 !important;
+            border: 1px solid #334155 !important;
+        }
+        #teamsCourtView .matchday-divider,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-divider,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-divider {
+            border-color: #1e293b !important;
+        }
+
+        /* Drużyna Jasna (Dark Card) */
+        #teamsCourtView .matchday-light-header,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-light-header,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-light-header {
+            background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 100%) !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        #teamsCourtView #matchdayLightTitle,
+        [data-theme="haaland-dark"] #teamsCourtView #matchdayLightTitle,
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayLightTitle {
+            color: #0f172a !important;
+            font-weight: 900 !important;
+        }
+        #teamsCourtView .matchday-light-badge,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-light-badge,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-light-badge {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        #teamsCourtView .player-chip-light,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
+        }
+        #teamsCourtView .player-chip-light .player-name,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light .player-name,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light .player-name {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .player-chip-light .player-avatar,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light .player-avatar,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light .player-avatar {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .player-chip-light-empty,
+        [data-theme="haaland-dark"] #teamsCourtView .player-chip-light-empty,
+        [data-theme="mercurial-dark"] #teamsCourtView .player-chip-light-empty {
+            background-color: rgba(255, 255, 255, 0.75) !important;
+            border: 1px dashed #cbd5e1 !important;
+            color: #475569 !important;
+        }
+
+        /* Stat Box (Dark Card) */
+        #teamsCourtView .matchday-stat-box,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-box,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-box {
+            background-color: #020617 !important;
+            border: 1px solid #1e293b !important;
+        }
+        #teamsCourtView #matchdayFactCategory,
+        [data-theme="haaland-dark"] #teamsCourtView #matchdayFactCategory,
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactCategory {
+            color: #38bdf8 !important;
+            font-weight: 900 !important;
+        }
+        #teamsCourtView #matchdayFactBadge,
+        [data-theme="haaland-dark"] #teamsCourtView #matchdayFactBadge,
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactBadge {
+            color: #64748b !important;
+        }
+        #teamsCourtView #matchdayFactText,
+        [data-theme="haaland-dark"] #teamsCourtView #matchdayFactText,
+        [data-theme="mercurial-dark"] #teamsCourtView #matchdayFactText {
+            color: #f1f5f9 !important;
+            font-weight: 500 !important;
+        }
+        #teamsCourtView .matchday-progress-bg,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-bg,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-bg {
+            background-color: #1e293b !important;
+        }
+        #teamsCourtView .matchday-progress-sky,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-sky,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-sky {
+            background-color: #38bdf8 !important;
+        }
+        #teamsCourtView .matchday-progress-amber,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-amber,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-amber {
+            background-color: #fbbf24 !important;
+        }
+        #teamsCourtView .matchday-progress-emerald,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-emerald,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-emerald {
+            background-color: #34d399 !important;
+        }
+        #teamsCourtView .matchday-progress-slate,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-progress-slate,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-progress-slate {
+            background-color: #475569 !important;
+        }
+        #teamsCourtView .matchday-stat-left-sky,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-left-sky,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-sky {
+            color: #7dd3fc !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .matchday-stat-right-amber,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-right-amber,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-amber {
+            color: #fde047 !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .matchday-stat-left-emerald,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-left-emerald,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-left-emerald {
+            color: #6ee7b7 !important;
+            font-weight: 700 !important;
+        }
+        #teamsCourtView .matchday-stat-right-slate,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-stat-right-slate,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-stat-right-slate {
+            color: #94a3b8 !important;
+            font-weight: 700 !important;
+        }
+
+        /* Stopka (Dark Card) */
+        #teamsCourtView .matchday-footer,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-footer,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-footer {
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+        #teamsCourtView .matchday-footer-left,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-footer-left,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-footer-left {
+            color: #94a3b8 !important;
+        }
+        #teamsCourtView .matchday-footer-right,
+        [data-theme="haaland-dark"] #teamsCourtView .matchday-footer-right,
+        [data-theme="mercurial-dark"] #teamsCourtView .matchday-footer-right {
+            color: #fbbf24 !important;
+            font-weight: 700 !important;
+        }
+
+        /* ========================================================================= */
+        /* B. MOTYW JASNY KARTY (Haaland Light / Mercurial Light) */
+        /* ========================================================================= */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-card-container,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-card-container {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04) !important;
+            color: #0f172a !important;
+        }
+
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-card-container {
+            border-color: #fbcfe8 !important;
+            box-shadow: 0 10px 30px -5px rgba(225, 29, 72, 0.08), 0 0 0 1px rgba(225, 29, 72, 0.04) !important;
+        }
+
+        /* Header (Light Card) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-header,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-header {
+            background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-title,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-title {
+            color: #0f172a !important;
+            font-weight: 900 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-subtitle,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-subtitle {
+            color: #64748b !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-date,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-date {
+            color: #0f172a !important;
+            font-weight: 800 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-location,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-location {
+            color: #64748b !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-time-badge,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-time-badge {
+            background-color: #ecfdf5 !important;
+            color: #059669 !important;
+            border: 1px solid #a7f3d0 !important;
+        }
+
+        /* Drużyna Ciemna (Light Card - Czyste czarne kafelki na jasnym tle) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-dark-header,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-dark-header {
+            background: linear-gradient(90deg, #090d16 0%, #1e293b 100%) !important;
+            border: 1px solid #0f172a !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView #matchdayDarkTitle,
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayDarkTitle {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-dark-badge,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-dark-badge {
+            background-color: #000000 !important;
+            color: #cbd5e1 !important;
+            border: 1px solid #334155 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark {
+            background-color: #090d16 !important;
+            border: 1px solid #1e293b !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark .player-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark .player-name {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark .player-avatar,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark .player-avatar {
+            background-color: #1e293b !important;
+            border: 1px solid #334155 !important;
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-dark-empty,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-dark-empty {
+            background-color: #f8fafc !important;
+            border: 1px dashed #cbd5e1 !important;
+            color: #94a3b8 !important;
+        }
+
+        /* VS Separator (Light Card) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-vs-badge,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-vs-badge {
+            background-color: #f1f5f9 !important;
+            color: #64748b !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-divider,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-divider {
+            border-color: #e2e8f0 !important;
+        }
+
+        /* Drużyna Jasna (Light Card - Eleganckie białe kafelki) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-light-header,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-light-header {
+            background: #f8fafc !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView #matchdayLightTitle,
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayLightTitle {
+            color: #0f172a !important;
+            font-weight: 900 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-light-badge,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-light-badge {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light .player-name,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light .player-name {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light .player-avatar,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light .player-avatar {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .player-chip-light-empty,
+        [data-theme="mercurial-light"] #teamsCourtView .player-chip-light-empty {
+            background-color: #ffffff !important;
+            border: 1px dashed #e2e8f0 !important;
+            color: #94a3b8 !important;
+        }
+
+        /* Stat Box (Light Card) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-box,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-box {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView #matchdayFactCategory,
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactCategory {
+            color: #0284c7 !important;
+            font-weight: 900 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView #matchdayFactBadge,
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactBadge {
+            color: #64748b !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView #matchdayFactText,
+        [data-theme="mercurial-light"] #teamsCourtView #matchdayFactText {
+            color: #1e293b !important;
+            font-weight: 600 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-progress-bg,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-bg {
+            background-color: #e2e8f0 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-progress-sky,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-sky {
+            background-color: #0ea5e9 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-progress-amber,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-amber {
+            background-color: #f59e0b !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-progress-emerald,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-emerald {
+            background-color: #10b981 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-progress-slate,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-progress-slate {
+            background-color: #94a3b8 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-left-sky,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-sky {
+            color: #0284c7 !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-right-amber,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-amber {
+            color: #d97706 !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-left-emerald,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-left-emerald {
+            color: #059669 !important;
+            font-weight: 700 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-stat-right-slate,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-stat-right-slate {
+            color: #475569 !important;
+            font-weight: 700 !important;
+        }
+
+        /* Stopka (Light Card) */
+        [data-theme="haaland-light"] #teamsCourtView .matchday-footer,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer {
+            background: transparent !important;
+            background-color: transparent !important;
+            border-top: 1px solid #f1f5f9 !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-footer-left,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-left {
+            color: #64748b !important;
+        }
+
+        [data-theme="haaland-light"] #teamsCourtView .matchday-footer-right,
+        [data-theme="mercurial-light"] #teamsCourtView .matchday-footer-right {
+            color: #d97706 !important;
+            font-weight: 700 !important;
         }
 
         /* Stylizowane Boisko Siatkarskie */
@@ -2148,7 +2639,7 @@
                             <span>📋</span> Wybór & Lista
                         </button>
                         <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1">
-                            <span>đź‘•</span> Karta meczu
+                            <span>👕</span> Karta meczu
                         </button>
                     </div>
                     <div class="flex items-center justify-between px-1 text-[11px]">
@@ -2175,6 +2666,16 @@
 
                 <!-- WIDOK 1: LISTY DRUŻYN Z MOŻLIWOŚCIĄ RĘCZNEGO PRZYPISYWANIA I PRZENOSZENIA -->
                 <div id="teamsListView" class="grid sm:grid-cols-2 gap-4 pt-1">
+<!-- Pasek akcji wyboru składu: Zamiana kolorów drużyn -->
+                    <div id="teamSwapActionRow" class="sm:col-span-2 flex items-center justify-between px-1 flex-wrap gap-2 pb-0.5">
+                        <span class="text-[11px] font-bold text-slate-400">Podział na Ciemnych i Jasnych</span>
+                        <button type="button" onclick="swapMatchTeamsColors()" class="team-swap-btn py-1 px-2.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Zamień kolory koszulek dla obu drużyn">
+                            <span>🔄</span>
+                            <span>Zamień kolory drużyn</span>
+                        </button>
+                    </div>
+
+                    
                     
                     <!-- Team Dark -->
                     <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md flex flex-col justify-between">
@@ -2222,129 +2723,142 @@
 
                 </div>
 
-                <!-- WIDOK 2: NOWOCZESNA KARTA MECZOWA PRZEDMECZOWA (ZAPOWIEDĹą NA MESSENGERA) -->
+                <!-- WIDOK 2: NOWOCZESNA KARTA MECZOWA PRZEDMECZOWA (ZAPOWIEDŹ NA MESSENGERA) -->
                 <div id="teamsCourtView" class="hidden space-y-3">
-                    <!-- Pasek akcji przedmeczowych -->
+                    <!-- Pasek akcji karty meczowej -->
                     <div class="flex items-center justify-between gap-1.5 flex-wrap">
-                        <div class="flex items-center gap-1.5 flex-1 min-w-[240px]">
-                            <button type="button" onclick="swapMatchTeamsColors()" class="py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 shadow-sm">
-                                <span>đź”„</span>
-                                <span>ZamieĹ„ kolory</span>
+                        <button type="button" onclick="cycleMatchdayStatFact()" class="matchday-action-btn py-1.5 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
+                            <span>📊</span>
+                            <span>Inna statystyka</span>
+                        </button>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="copyMatchdayImage()" class="matchday-copy-btn py-1.5 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Kopiuj dociętą grafikę karty do schowka (Ctrl+V na Messengera)">
+                                <span>📸</span>
+                                <span>Kopiuj grafikę</span>
                             </button>
-                            <button type="button" onclick="cycleMatchdayStatFact()" class="py-1.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 shadow-sm">
-                                <span>đź“Š</span>
-                                <span>Inna statystyka</span>
+                            <button type="button" onclick="downloadMatchdayImage()" class="matchday-action-btn py-1.5 px-2.5 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Pobierz grafikę jako plik PNG">
+                                <span>📥</span>
+                                <span>Pobierz</span>
                             </button>
                         </div>
-                        <button type="button" onclick="copyMatchdayPost()" class="py-1.5 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-sky-300 text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm">
-                            <span>đź“˛</span>
-                            <span>Kopiuj zapowiedĹş</span>
-                        </button>
                     </div>
 
-                    <!-- GĹĂ“WNA KARTA MECZOWA (Czysty styl sportowy) -->
+                    <!-- GŁÓWNA KARTA MECZOWA (Czysty styl sportowy) -->
                     <div id="matchdayCard" class="matchday-card-container w-full max-w-[420px] mx-auto rounded-[24px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl select-none">
                         
-                        <!-- 1. Header -->
-                        <header class="space-y-1.5 pb-3 border-b border-white/10">
+                        <!-- 1. Header (używa div.matchday-header, aby uniknąć resetu tła tagu header) -->
+                        <div class="matchday-header space-y-1.5 pb-3 border-b matchday-divider">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-7 h-7 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sm shrink-0">
-                                        đźŹ
+                                    <div class="w-7 h-7 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sm shrink-0">
+                                        🏐
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-black tracking-tight text-white leading-none">SiatkĂłwka PiÄ…tek</h3>
-                                        <span id="matchdayMatchNumberText" class="text-[10px] text-slate-400 font-medium">Mecz #16 â€˘ Sezon 2026</span>
+                                        <h3 class="text-sm font-black tracking-tight leading-none matchday-title">Siatkówka Piątek</h3>
+                                        <span id="matchdayMatchNumberText" class="text-[10px] font-medium matchday-subtitle">Mecz #16 • Sezon 2026</span>
                                     </div>
                                 </div>
 
                                 <div class="text-right shrink-0">
-                                    <span class="text-[11px] font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-lg inline-block">
+                                    <span class="text-[11px] font-mono font-black matchday-time-badge px-2 py-0.5 rounded-lg inline-block">
                                         20:00 - 21:45
                                     </span>
-                                    <span class="text-[9.5px] text-slate-400 block mt-0.5">ZbiĂłrka 19:45</span>
+                                    <span class="text-[9.5px] matchday-subtitle block mt-0.5">Zbiórka 19:45</span>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between text-xs text-slate-300 pt-1">
-                                <span class="font-bold text-white text-[11px]" id="matchdayDateText">PiÄ…tek, 24 paĹşdziernika</span>
-                                <span class="text-[10.5px] text-slate-400 flex items-center gap-1">
-                                    <span>đź“Ť</span> SzkoĹ‚a, ul. MyĹ›liborska 25
+                            <div class="flex items-center justify-between text-xs pt-1">
+                                <span class="font-bold text-[11px] matchday-date" id="matchdayDateText">Piątek, 24 października</span>
+                                <span class="text-[10.5px] matchday-location flex items-center gap-1">
+                                    <span>📍</span> Szkoła, ul. Myśliborska 25
                                 </span>
                             </div>
-                        </header>
+                        </div>
 
-                        <!-- 2. DruĹĽyna Ciemna -->
-                        <section class="space-y-2 pt-3">
-                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 shadow-sm">
+                        <!-- 2. Drużyna Ciemna -->
+                        <div class="space-y-2 pt-3">
+                            <div class="matchday-dark-header flex items-center justify-between px-3 py-1.5 rounded-xl border shadow-sm">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-600"></span>
-                                    <span id="matchdayDarkTitle" class="text-xs font-black text-white tracking-wide">DRUĹ»YNA CIEMNA</span>
+                                    <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-500"></span>
+                                    <span id="matchdayDarkTitle" class="text-xs font-black tracking-wide">DRUŻYNA CIEMNA</span>
                                 </div>
-                                <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">
-                                    đź‘• Ciemna koszulka
+                                <span class="matchday-dark-badge text-[9.5px] font-bold px-2 py-0.5 rounded-md border">
+                                    👕 Ciemna koszulka
                                 </span>
                             </div>
 
                             <div id="matchdayDarkGrid" class="grid grid-cols-2 gap-1.5">
                                 <!-- Renderowane w JS -->
                             </div>
-                        </section>
+                        </div>
 
                         <!-- 3. Separator VS -->
                         <div class="relative flex items-center justify-center my-2.5">
                             <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-slate-800"></div>
+                                <div class="w-full border-t matchday-divider"></div>
                             </div>
-                            <div class="relative px-3 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-[9.5px] font-black text-slate-400 tracking-widest uppercase">
+                            <div class="matchday-vs-badge relative px-3 py-0.5 rounded-full border text-[9.5px] font-black tracking-widest uppercase">
                                 VS
                             </div>
                         </div>
 
-                        <!-- 4. DruĹĽyna Jasna -->
-                        <section class="space-y-2">
-                            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl bg-slate-200 border border-white text-slate-950 shadow-sm">
+                        <!-- 4. Drużyna Jasna -->
+                        <div class="space-y-2">
+                            <div class="matchday-light-header flex items-center justify-between px-3 py-1.5 rounded-xl border shadow-sm">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-white border border-slate-400"></span>
-                                    <span id="matchdayLightTitle" class="text-xs font-black text-slate-950 tracking-wide">DRUĹ»YNA JASNA</span>
+                                    <span id="matchdayLightTitle" class="text-xs font-black tracking-wide">DRUŻYNA JASNA</span>
                                 </div>
-                                <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-900 border border-slate-300">
-                                    đźŽ˝ Jasna koszulka
+                                <span class="matchday-light-badge text-[9.5px] font-bold px-2 py-0.5 rounded-md border font-mono">
+                                    🎽 Jasna koszulka
                                 </span>
                             </div>
 
                             <div id="matchdayLightGrid" class="grid grid-cols-2 gap-1.5">
                                 <!-- Renderowane w JS -->
                             </div>
-                        </section>
+                        </div>
 
                         <!-- 5. Ciekawostka Statystyczna -->
-                        <section class="mt-3 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+                        <div class="matchday-stat-box mt-3 p-3 rounded-2xl border space-y-1.5">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-xs">đź“Š</span>
-                                    <span class="text-[10px] font-black text-sky-400 uppercase tracking-wider">Ciekawostka Statystyczna</span>
+                                    <span class="text-xs">📊</span>
+                                    <span id="matchdayFactCategory" class="text-[10px] font-black uppercase tracking-wider">CIEKAWOSTKA STATYSTYCZNA</span>
                                 </div>
-                                <span id="matchdayFactBadge" class="text-[9px] font-mono text-slate-500">1 / 4</span>
+                                <span id="matchdayFactBadge" class="text-[9px] font-mono">1 / 4</span>
                             </div>
 
-                            <p id="matchdayFactText" class="text-xs text-slate-200 font-medium leading-relaxed">
-                                <!-- WypeĹ‚niane w JS -->
+                            <p id="matchdayFactText" class="text-xs font-medium leading-relaxed">
+                                <!-- Wypełniane w JS -->
                             </p>
 
                             <div id="matchdayFactVisual" class="pt-0.5">
-                                <!-- WypeĹ‚niane w JS -->
+                                <!-- Wypełniane w JS -->
                             </div>
-                        </section>
+                        </div>
 
                         <!-- 6. Stopka -->
-                        <footer class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[9.5px] text-slate-400">
-                            <span>ZbiĂłrka 19:45 na rozgrzewkÄ™</span>
-                            <span class="text-amber-400 font-bold">GĹ‚osowanie MVP po meczu w apce đź‘‘</span>
-                        </footer>
-
+                        <div class="matchday-footer mt-2.5 pt-2 border-t matchday-divider flex items-center justify-between text-[9.5px]">
+                            <span class="matchday-footer-left">Zbiórka 19:45 na rozgrzewkę</span>
+                            <span class="matchday-footer-right">Głosowanie MVP po meczu w apce 👑</span>
+                        </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </div>
         </section>
@@ -4953,6 +5467,10 @@
 
         function handleUrlNavigationParams() {
             const urlParams = new URLSearchParams(window.location.search);
+            const targetTheme = urlParams.get('theme');
+            if (targetTheme && ['haaland-dark', 'haaland-light', 'mercurial-dark', 'mercurial-light', 'classic'].includes(targetTheme)) {
+                applyAppTheme(targetTheme);
+            }
             const targetTab = urlParams.get('tab');
             const targetSubtab = urlParams.get('subtab');
             const targetMatchDate = urlParams.get('match') || urlParams.get('mvp') || urlParams.get('vote') || urlParams.get('glosuj');
@@ -5000,6 +5518,9 @@
                 }, 120);
             } else if (targetTab && ['matches', 'teams', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
                 switchTab(targetTab);
+                if (targetTab === 'teams' && urlParams.get('view') === 'court') {
+                    setTimeout(() => { if (typeof setTeamsViewMode === 'function') setTeamsViewMode('court'); }, 150);
+                }
             }
         }
 
@@ -7106,7 +7627,7 @@
             showToast(`Zmieniono nazwę drużyny na: ${clean}`);
         }
 
-                // ================= MATCHDAY CARD (ZAPOWIEDĹą MECZOWA) =================
+                // ================= MATCHDAY CARD (ZAPOWIEDŹ MECZOWA) =================
         let matchdayFactIdx = 0;
 
         function getMatchdayInitials(name) {
@@ -7119,94 +7640,129 @@
         }
 
         function getMatchdayFactsList(dark, light, currentMatch) {
-            let darkWinsOct = 0, lightWinsOct = 0;
+            let darkWinsMonth = 0, lightWinsMonth = 0;
             let darkWinsSeason = 0, lightWinsSeason = 0;
 
+            const currentMonthName = AppState.currentMonth || "Październik";
             const months = AppState.months || {};
+
             for (const mName of Object.keys(months)) {
                 const matches = months[mName]?.matches || [];
                 for (const m of matches) {
-                    if (m.score && m.score.dark !== undefined && m.score.light !== undefined) {
-                        if (m.score.dark > m.score.light) {
+                    if (!m || m.isCancelled || !m.score) continue;
+                    let darkWon = false, lightWon = false, isScoreValid = false;
+
+                    if (typeof m.score === 'object' && m.score.dark !== undefined && m.score.light !== undefined) {
+                        isScoreValid = true;
+                        if (m.score.dark > m.score.light) darkWon = true;
+                        else if (m.score.light > m.score.dark) lightWon = true;
+                    } else if (typeof m.score === 'string') {
+                        const matchScoreMatch = m.score.match(/\s(\d+)\s*:\s*(\d+)\s/);
+                        if (matchScoreMatch) {
+                            const sA = parseInt(matchScoreMatch[1], 10);
+                            const sB = parseInt(matchScoreMatch[2], 10);
+                            if (!isNaN(sA) && !isNaN(sB) && sA !== sB) {
+                                isScoreValid = true;
+                                if (sA > sB) darkWon = true;
+                                else if (sB > sA) lightWon = true;
+                            }
+                        }
+                    }
+
+                    if (isScoreValid) {
+                        if (darkWon) {
                             darkWinsSeason++;
-                            if (mName.toLowerCase().includes('paĹşdziernik') || mName.toLowerCase().includes('pazdziernik')) darkWinsOct++;
-                        } else if (m.score.light > m.score.dark) {
+                            if (mName.toLowerCase().includes(currentMonthName.toLowerCase())) darkWinsMonth++;
+                        } else if (lightWon) {
                             lightWinsSeason++;
-                            if (mName.toLowerCase().includes('paĹşdziernik') || mName.toLowerCase().includes('pazdziernik')) lightWinsOct++;
+                            if (mName.toLowerCase().includes(currentMonthName.toLowerCase())) lightWinsMonth++;
                         }
                     }
                 }
             }
 
-            if (darkWinsOct === 0 && lightWinsOct === 0) {
-                darkWinsOct = 2;
-                lightWinsOct = 1;
-            }
-            if (darkWinsSeason === 0 && lightWinsSeason === 0) {
-                darkWinsSeason = 8;
-                lightWinsSeason = 7;
-            }
+            const monthTotal = darkWinsMonth + lightWinsMonth || 1;
+            const monthDarkPct = Math.round((darkWinsMonth / monthTotal) * 100);
 
-            const octTotal = darkWinsOct + lightWinsOct;
-            const octDarkPct = octTotal > 0 ? Math.round((darkWinsOct / octTotal) * 100) : 50;
-            const seasonTotal = darkWinsSeason + lightWinsSeason;
-            const seasonDarkPct = seasonTotal > 0 ? Math.round((darkWinsSeason / seasonTotal) * 100) : 50;
+            const seasonTotal = darkWinsSeason + lightWinsSeason || 1;
+            const seasonDarkPct = Math.round((darkWinsSeason / seasonTotal) * 100);
 
-            let darkLeader = { name: (dark && dark[0]) || "MichaĹ‚ ChaciĹ„ski", matches: 23 };
-            let lightLeader = { name: (light && light[0]) || "MikoĹ‚aj Morawski", matches: 22 };
-
+            let allTimeLeaderboard = [];
             try {
-                const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
-                const playerMap = adv?.playerAdvMap || {};
-                
-                let maxDarkM = -1;
-                (dark || []).forEach(p => {
-                    const mCount = playerMap[p]?.played || 0;
-                    if (mCount > maxDarkM) {
-                        maxDarkM = mCount;
-                        darkLeader = { name: p, matches: mCount };
-                    }
-                });
-
-                let maxLightM = -1;
-                (light || []).forEach(p => {
-                    const mCount = playerMap[p]?.played || 0;
-                    if (mCount > maxLightM) {
-                        maxLightM = mCount;
-                        lightLeader = { name: p, matches: mCount };
-                    }
-                });
+                if (typeof calculateAllTimeLeaderboard === 'function') {
+                    allTimeLeaderboard = calculateAllTimeLeaderboard() || [];
+                }
             } catch(e) {}
+
+            function getLeader(teamPlayers) {
+                if (!teamPlayers || teamPlayers.length === 0) return { name: 'Zawodnicy', matches: 0 };
+                let best = { name: teamPlayers[0], matches: 0 };
+                teamPlayers.forEach(p => {
+                    const row = allTimeLeaderboard.find(r => r.name === p);
+                    const mCount = row ? (row.matches || 0) : 0;
+                    if (mCount > best.matches) {
+                        best = { name: p, matches: mCount };
+                    }
+                });
+                return best;
+            }
+
+            const darkLeader = getLeader(dark);
+            const lightLeader = getLeader(light);
+
+            let topDuo = { p1: dark[0] || 'Zawodnik A', p2: dark[1] || 'Zawodnik B', together: 0, wins: 0, winPct: 50 };
+            try {
+                const duos = typeof calculateBestDuos === 'function' ? (calculateBestDuos() || []) : [];
+                for (const d of duos) {
+                    const inDark = (dark || []).includes(d.p1) && (dark || []).includes(d.p2);
+                    const inLight = (light || []).includes(d.p1) && (light || []).includes(d.p2);
+                    if ((inDark || inLight) && d.together >= 2) {
+                        topDuo = { p1: d.p1, p2: d.p2, together: d.together, wins: d.wins, winPct: d.winPct };
+                        break;
+                    }
+                }
+            } catch(e) {}
+
+            const duoLosses = Math.max(0, topDuo.together - topDuo.wins);
 
             return [
                 {
-                    text: `Bilans H2H w paĹşdzierniku: Ciemni wygrali ${darkWinsOct} z ${octTotal} bezpoĹ›rednich meczĂłw. Czy JaĹ›ni doprowadzÄ… dziĹ› do remisu w miesiÄ…cu?`,
-                    darkLabel: `Ciemni: ${darkWinsOct} wygrane`,
-                    lightLabel: `JaĹ›ni: ${lightWinsOct} wygrane`,
-                    darkPct: octDarkPct
+                    category: `STAWKA W ${currentMonthName.toUpperCase()}`,
+                    text: `Bilans w tym miesiącu: Ciemni wygrali ${darkWinsMonth} z ${monthTotal} meczów (${monthDarkPct}%). Czy Jaśni doprowadzą dziś do remisu w miesiącu?`,
+                    darkLabel: `Ciemni: ${darkWinsMonth}W (${monthDarkPct}%)`,
+                    lightLabel: `Jaśni: ${lightWinsMonth}W (${100 - monthDarkPct}%)`,
+                    pct: monthDarkPct,
+                    theme: 'month'
                 },
                 {
-                    text: `Starcie TOP 2 frekwencji sezonu: Lider obecnoĹ›ci ${darkLeader.name} (${darkLeader.matches} meczĂłw) staje dziĹ› naprzeciwko ${lightLeader.name} (${lightLeader.matches} meczĂłw)!`,
-                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}`,
-                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}`,
-                    darkPct: (darkLeader.matches + lightLeader.matches > 0) ? Math.round((darkLeader.matches / (darkLeader.matches + lightLeader.matches)) * 100) : 50
+                    category: `STARCIE LIDERÓW OBECNOŚCI`,
+                    text: `Pojedynek filarów ligi: ${darkLeader.name} (${darkLeader.matches} meczów) staje dziś naprzeciwko ${lightLeader.name} (${lightLeader.matches} meczów)!`,
+                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}M`,
+                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}M`,
+                    pct: (darkLeader.matches + lightLeader.matches > 0) ? Math.round((darkLeader.matches / (darkLeader.matches + lightLeader.matches)) * 100) : 50,
+                    theme: 'leaders'
                 },
                 {
-                    text: `DoĹ›wiadczenie zespoĹ‚Ăłw: Ĺšrednia rozegranych meczĂłw w tym sezonie wynosi 18.3 dla Ciemnych oraz 18.2 dla Jasnych â€“ idealnie wyrĂłwnane siĹ‚y!`,
-                    darkLabel: `Ĺšr. Ciemni: 18.3`,
-                    lightLabel: `Ĺšr. JaĹ›ni: 18.2`,
-                    darkPct: 50
+                    category: `CHEMIA W ZESPOLE (DUET)`,
+                    text: `Najbardziej zgrany duet w składzie: ${topDuo.p1} i ${topDuo.p2} rozegrali razem już ${topDuo.together} spotkań, notując ${topDuo.winPct}% zwycięstw!`,
+                    darkLabel: `Wygrane: ${topDuo.wins} (${topDuo.winPct}%)`,
+                    lightLabel: `Porażki: ${duoLosses}`,
+                    pct: topDuo.winPct,
+                    theme: 'duo'
                 },
                 {
-                    text: `Bilans caĹ‚ego sezonu 2026: Ciemni wygrali ${darkWinsSeason} spotkaĹ„, JaĹ›ni ${lightWinsSeason}. Gra toczy siÄ™ o powiÄ™kszenie przewagi lub wyrĂłwnanie!`,
+                    category: `BILANS CAŁEGO SEZONU 2026`,
+                    text: `W całym sezonie 2026: Ciemni mają ${darkWinsSeason} wygranych (${seasonDarkPct}%), Jaśni ${lightWinsSeason} wygranych (${100 - seasonDarkPct}%). Wyrównana rywalizacja!`,
                     darkLabel: `Ciemni: ${darkWinsSeason}W`,
-                    lightLabel: `JaĹ›ni: ${lightWinsSeason}W`,
-                    darkPct: seasonDarkPct
+                    lightLabel: `Jaśni: ${lightWinsSeason}W`,
+                    pct: seasonDarkPct,
+                    theme: 'season'
                 }
             ];
         }
 
         function renderMatchdayFact(dark, light, currentMatch) {
+            const factCat = document.getElementById('matchdayFactCategory');
             const factBadge = document.getElementById('matchdayFactBadge');
             const factText = document.getElementById('matchdayFactText');
             const factVisual = document.getElementById('matchdayFactVisual');
@@ -7216,22 +7772,36 @@
             const idx = matchdayFactIdx % facts.length;
             const f = facts[idx];
 
+            if (factCat) factCat.textContent = f.category;
             if (factBadge) factBadge.textContent = `${idx + 1} / ${facts.length}`;
             factText.textContent = f.text;
 
-            const leftPct = f.darkPct;
-            const rightPct = 100 - f.darkPct;
+            const leftPct = f.pct;
+            const rightPct = 100 - f.pct;
 
-            factVisual.innerHTML = `
-                <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
-                    <div class="bg-sky-400 h-full transition-all duration-300" style="width: ${leftPct}%"></div>
-                    <div class="bg-amber-400 h-full transition-all duration-300" style="width: ${rightPct}%"></div>
-                </div>
-                <div class="flex justify-between text-[8.5px] text-slate-400 font-mono mt-1">
-                    <span class="text-sky-300 font-bold">${escapeHtml(f.darkLabel)}</span>
-                    <span class="text-amber-300 font-bold">${escapeHtml(f.lightLabel)}</span>
-                </div>
-            `;
+            if (f.theme === 'duo') {
+                factVisual.innerHTML = `
+                    <div class="h-2 w-full rounded-full overflow-hidden flex matchday-progress-bg">
+                        <div class="matchday-progress-emerald h-full transition-all duration-300" style="width: ${leftPct}%"></div>
+                        <div class="matchday-progress-slate h-full transition-all duration-300" style="width: ${rightPct}%"></div>
+                    </div>
+                    <div class="flex justify-between text-[8.5px] font-mono mt-1">
+                        <span class="matchday-stat-left-emerald">${escapeHtml(f.darkLabel)}</span>
+                        <span class="matchday-stat-right-slate">${escapeHtml(f.lightLabel)}</span>
+                    </div>
+                `;
+            } else {
+                factVisual.innerHTML = `
+                    <div class="h-2 w-full rounded-full overflow-hidden flex matchday-progress-bg">
+                        <div class="matchday-progress-sky h-full transition-all duration-300" style="width: ${leftPct}%"></div>
+                        <div class="matchday-progress-amber h-full transition-all duration-300" style="width: ${rightPct}%"></div>
+                    </div>
+                    <div class="flex justify-between text-[8.5px] font-mono mt-1">
+                        <span class="matchday-stat-left-sky">${escapeHtml(f.darkLabel)}</span>
+                        <span class="matchday-stat-right-amber">${escapeHtml(f.lightLabel)}</span>
+                    </div>
+                `;
+            }
         }
 
         function cycleMatchdayStatFact() {
@@ -7256,43 +7826,123 @@
                 saveData();
             }
             renderTeamsTab();
-            showToast("Zamieniono kolory koszulek dla obu druĹĽyn! đź”„");
+            showToast("Zamieniono kolory drużyn! 🔄");
         }
 
-        function copyMatchdayPost() {
-            const monthData = AppState.months[AppState.currentMonth];
-            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            if (!currentMatch) return;
+        function downloadMatchdayBlob(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const today = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = `karta-meczowa-${today}.png`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
 
-            const teams = ensureMatchTeamsObject(currentMatch);
-            const dark = teams.dark || [];
-            const light = teams.light || [];
-
-            const facts = getMatchdayFactsList(dark, light, currentMatch);
-            const fact = facts[matchdayFactIdx % facts.length];
-
-            const darkLines = dark.length > 0 ? dark.map(p => `â€˘ ${p}`).join('\n') : 'â€˘ (brak przypisanych graczy)';
-            const lightLines = light.length > 0 ? light.map(p => `â€˘ ${p}`).join('\n') : 'â€˘ (brak przypisanych graczy)';
-            const matchDate = currentMatch.date || 'PiÄ…tek';
-
-            const text = `đźŹ SiatkĂłwka PiÄ…tek (20:00 - 21:45, zbiĂłrka 19:45)\n` +
-                `đź“… ${matchDate}\n` +
-                `đź“Ť SzkoĹ‚a, ul. MyĹ›liborska 25\n\n` +
-                `â¬› DRUĹ»YNA CIEMNA (Ciemna koszulka đź‘•):\n${darkLines}\n\n` +
-                `â¬ś DRUĹ»YNA JASNA (Jasna koszulka đźŽ˝):\n${lightLines}\n\n` +
-                `đź“Š Ciekawostka: ${fact.text}\n\n` +
-                `Do zobaczenia na rozgrzewce! Po meczu w apce odpalamy gĹ‚osowanie MVP đź‘‘`;
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('Skopiowano zapowiedĹş na Messengera! đź“˛');
-                }).catch(() => {
-                    if (typeof fallbackCopyText === 'function') fallbackCopyText(text);
-                    else showToast('Zaznacz i skopiuj tekst zapowiedzi');
+        async function ensureHtml2CanvasLoaded() {
+            if (typeof html2canvas !== 'undefined') return true;
+            try {
+                await new Promise((resolve, reject) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+                    s.onload = resolve;
+                    s.onerror = reject;
+                    document.head.appendChild(s);
                 });
-            } else {
-                if (typeof fallbackCopyText === 'function') fallbackCopyText(text);
-                else showToast('Skopiowano zapowiedĹş!');
+                return true;
+            } catch (e) {
+                console.error("Failed to load html2canvas:", e);
+                return false;
+            }
+        }
+
+        async function copyMatchdayImage() {
+            const card = document.getElementById('matchdayCard');
+            if (!card) return;
+
+            const loaded = await ensureHtml2CanvasLoaded();
+            if (!loaded) {
+                showToast("Błąd ładowania generatora grafiki.");
+                return;
+            }
+
+            showToast("Przygotowuję dociętą grafikę... 📸");
+
+            try {
+                const canvas = await html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null,
+                    logging: false
+                });
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        showToast("Nie udało się utworzyć obrazu.");
+                        return;
+                    }
+
+                    let copied = false;
+                    if (navigator.clipboard && window.ClipboardItem && navigator.clipboard.write) {
+                        try {
+                            await navigator.clipboard.write([
+                                new ClipboardItem({ 'image/png': blob })
+                            ]);
+                            copied = true;
+                            showToast("Skopiowano grafikę do schowka! 📸 (Wklej Ctrl+V na Messengera)");
+                        } catch (err) {
+                            console.warn("ClipboardItem write failed, fallback to download:", err);
+                        }
+                    }
+
+                    if (!copied) {
+                        downloadMatchdayBlob(blob);
+                        showToast("Pobrano dociętą grafikę karty meczowej! 🖼️");
+                    }
+                }, 'image/png');
+            } catch (err) {
+                console.error("Błąd renderowania karty do grafiki:", err);
+                showToast("Wystąpił błąd podczas generowania grafiki.");
+            }
+        }
+
+        async function downloadMatchdayImage() {
+            const card = document.getElementById('matchdayCard');
+            if (!card) return;
+
+            const loaded = await ensureHtml2CanvasLoaded();
+            if (!loaded) {
+                showToast("Błąd ładowania generatora grafiki.");
+                return;
+            }
+
+            showToast("Generuję plik graficzny... 🖼️");
+
+            try {
+                const canvas = await html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null,
+                    logging: false
+                });
+
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        showToast("Nie udało się utworzyć pliku.");
+                        return;
+                    }
+                    downloadMatchdayBlob(blob);
+                    showToast("Pobrano grafikę karty meczowej! 🖼️");
+                }, 'image/png');
+            } catch (err) {
+                console.error("Błąd pobierania grafiki:", err);
+                showToast("Wystąpił błąd podczas pobierania grafiki.");
             }
         }
 
@@ -7305,20 +7955,20 @@
             const lightGrid = document.getElementById('matchdayLightGrid');
 
             if (dateEl && currentMatch) {
-                dateEl.textContent = currentMatch.date || "PiÄ…tek";
+                dateEl.textContent = currentMatch.date || "Piątek";
             }
             if (numEl) {
                 const mIdx = (AppState.currentMatchIndex !== undefined) ? AppState.currentMatchIndex + 1 : 16;
-                numEl.textContent = `Mecz #${mIdx} â€˘ Sezon 2026`;
+                numEl.textContent = `Mecz #${mIdx} • Sezon 2026`;
             }
 
             const teams = currentMatch ? (currentMatch.teams || {}) : {};
-            const darkName = teams.darkName || "DRUĹ»YNA CIEMNA";
-            const lightName = teams.lightName || "DRUĹ»YNA JASNA";
+            const darkName = teams.darkName || "DRUŻYNA CIEMNA";
+            const lightName = teams.lightName || "DRUŻYNA JASNA";
             if (darkTitleEl) darkTitleEl.textContent = darkName.toUpperCase();
             if (lightTitleEl) lightTitleEl.textContent = lightName.toUpperCase();
 
-            // Render Dark Team Chips (2 kolumny)
+            // Render Dark Team Chips (2 kolumny) - CIEMNE kafelki z białym tekstem
             if (darkGrid) {
                 let darkHtml = "";
                 const displaySlots = Math.max(6, dark.length);
@@ -7327,20 +7977,20 @@
                         const p = dark[i];
                         const isMe = (p === loggedPlayer);
                         darkHtml += `
-                            <div class="player-chip-dark rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-1 ring-emerald-400 bg-emerald-950/20' : ''}">
-                                <div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[9.5px] font-bold text-slate-300 shrink-0">
+                            <div class="player-chip-dark rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-400' : ''}">
+                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="text-[11.5px] font-bold ${isMe ? 'text-emerald-300' : 'text-slate-100'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="player-name text-[11.5px] truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
                             </div>
                         `;
                     } else {
                         darkHtml += `
-                            <div class="rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed border-slate-800 bg-slate-950/30">
-                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] text-slate-600 shrink-0">
+                            <div class="player-chip-dark-empty rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] shrink-0">
                                     #${i+1}
                                 </div>
-                                <span class="text-[11px] text-slate-500 italic">Wolne miejsce</span>
+                                <span class="text-[11px] italic">Wolne miejsce</span>
                             </div>
                         `;
                     }
@@ -7348,7 +7998,7 @@
                 darkGrid.innerHTML = darkHtml;
             }
 
-            // Render Light Team Chips (2 kolumny)
+            // Render Light Team Chips (2 kolumny) - BIAŁE kafelki z ciemnym tekstem
             if (lightGrid) {
                 let lightHtml = "";
                 const displaySlots = Math.max(6, light.length);
@@ -7357,20 +8007,20 @@
                         const p = light[i];
                         const isMe = (p === loggedPlayer);
                         lightHtml += `
-                            <div class="player-chip-light rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-1 ring-emerald-400 bg-emerald-950/20' : ''}">
-                                <div class="w-6 h-6 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[9.5px] font-bold text-white shrink-0">
+                            <div class="player-chip-light rounded-xl px-2.5 py-2 flex items-center gap-2 ${isMe ? 'ring-2 ring-sky-500' : ''}">
+                                <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="text-[11.5px] font-bold ${isMe ? 'text-emerald-300' : 'text-slate-100'} truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="player-name text-[11.5px] truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
                             </div>
                         `;
                     } else {
                         lightHtml += `
-                            <div class="rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed border-slate-800 bg-slate-950/30">
-                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-700 flex items-center justify-center text-[9px] text-slate-600 shrink-0">
+                            <div class="player-chip-light-empty rounded-xl px-2.5 py-2 flex items-center gap-2 border border-dashed">
+                                <div class="w-6 h-6 rounded-full border border-dashed border-slate-400 flex items-center justify-center text-[9px] shrink-0">
                                     #${i+1}
                                 </div>
-                                <span class="text-[11px] text-slate-500 italic">Wolne miejsce</span>
+                                <span class="text-[11px] italic">Wolne miejsce</span>
                             </div>
                         `;
                     }
@@ -7381,7 +8031,6 @@
             // Render Ciekawostka Statystyczna
             renderMatchdayFact(dark, light, currentMatch);
         }
-
 
         // ================= ZINTEGROWANA KARTA MVP (BEZPOŚREDNIO NA STRONIE GŁÓWNEJ) =================
         function renderIntegratedMvpCard() {
@@ -13233,6 +13882,11 @@
 
         function checkWelcomeGate() {
             const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('guest') || urlParams.get('guest') === '1') {
+                sessionStorage.setItem('siatka_guest_mode', 'true');
+                closeWelcomeGateModal();
+                return;
+            }
             const isMvpLink = urlParams.has('mvp') || urlParams.has('vote') || urlParams.has('glosuj');
             if (isMvpLink) {
                 // Link MVP otwiera dedykowany, odizolowany panel głosowania.
