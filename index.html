@@ -32,6 +32,9 @@
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
+    <!-- html2canvas -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
     <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -1632,6 +1635,28 @@
             background-color: #020617 !important;
             color: #cbd5e1 !important;
             border: 1px solid #475569 !important;
+        }
+        /* Base styles for matchday cards and chips (also protects html2canvas export from font clipping) */
+        .player-chip-dark,
+        .player-chip-light {
+            min-height: 40px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .player-chip-dark .player-name,
+        .player-chip-light .player-name {
+            line-height: 1.4 !important;
+            display: inline-block !important;
+            vertical-align: middle !important;
+            padding-bottom: 2px !important;
+        }
+        .matchday-dark-badge,
+        .matchday-light-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            line-height: 1.35 !important;
+            padding-top: 2px !important;
+            padding-bottom: 3px !important;
         }
         #teamsCourtView .player-chip-dark,
         [data-theme="haaland-dark"] #teamsCourtView .player-chip-dark,
@@ -7935,12 +7960,47 @@
             showToast("Przygotowuję dociętą grafikę... 📸");
 
             try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
                 const canvas = await html2canvas(card, {
                     scale: 2,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: null,
-                    logging: false
+                    logging: false,
+                    onclone: (clonedDoc) => {
+                        const clonedCard = clonedDoc.getElementById('matchdayCard');
+                        if (clonedCard) {
+                            clonedCard.style.overflow = 'visible';
+                        }
+                        clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
+                            chip.style.overflow = 'visible';
+                            chip.style.minHeight = '38px';
+                            chip.style.display = 'flex';
+                            chip.style.alignItems = 'center';
+                        });
+                        clonedDoc.querySelectorAll('.player-name').forEach(nameEl => {
+                            nameEl.style.overflow = 'visible';
+                            nameEl.style.textOverflow = 'clip';
+                            nameEl.style.whiteSpace = 'nowrap';
+                            nameEl.style.lineHeight = '1.4';
+                            nameEl.style.display = 'inline-block';
+                            nameEl.style.paddingBottom = '3px';
+                            if (nameEl.textContent.trim().length > 15) {
+                                nameEl.style.fontSize = '10.5px';
+                            }
+                        });
+                        clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
+                            badge.style.overflow = 'visible';
+                            badge.style.lineHeight = '1.4';
+                            badge.style.paddingTop = '2px';
+                            badge.style.paddingBottom = '3px';
+                            badge.style.display = 'inline-flex';
+                            badge.style.alignItems = 'center';
+                        });
+                    }
                 });
 
                 canvas.toBlob(async (blob) => {
@@ -7986,12 +8046,47 @@
             showToast("Generuję plik graficzny... 🖼️");
 
             try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
                 const canvas = await html2canvas(card, {
                     scale: 2,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: null,
-                    logging: false
+                    logging: false,
+                    onclone: (clonedDoc) => {
+                        const clonedCard = clonedDoc.getElementById('matchdayCard');
+                        if (clonedCard) {
+                            clonedCard.style.overflow = 'visible';
+                        }
+                        clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
+                            chip.style.overflow = 'visible';
+                            chip.style.minHeight = '38px';
+                            chip.style.display = 'flex';
+                            chip.style.alignItems = 'center';
+                        });
+                        clonedDoc.querySelectorAll('.player-name').forEach(nameEl => {
+                            nameEl.style.overflow = 'visible';
+                            nameEl.style.textOverflow = 'clip';
+                            nameEl.style.whiteSpace = 'nowrap';
+                            nameEl.style.lineHeight = '1.4';
+                            nameEl.style.display = 'inline-block';
+                            nameEl.style.paddingBottom = '3px';
+                            if (nameEl.textContent.trim().length > 15) {
+                                nameEl.style.fontSize = '10.5px';
+                            }
+                        });
+                        clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
+                            badge.style.overflow = 'visible';
+                            badge.style.lineHeight = '1.4';
+                            badge.style.paddingTop = '2px';
+                            badge.style.paddingBottom = '3px';
+                            badge.style.display = 'inline-flex';
+                            badge.style.alignItems = 'center';
+                        });
+                    }
                 });
 
                 canvas.toBlob((blob) => {
@@ -8043,7 +8138,7 @@
                                 <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="player-name text-[11.5px] truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="player-name text-[11.5px] font-bold leading-normal truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
                             </div>
                         `;
                     } else {
@@ -8073,7 +8168,7 @@
                                 <div class="player-avatar w-6 h-6 rounded-full flex items-center justify-center text-[9.5px] font-bold shrink-0">
                                     ${getMatchdayInitials(p)}
                                 </div>
-                                <span class="player-name text-[11.5px] truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+                                <span class="player-name text-[11.5px] font-bold leading-normal truncate" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
                             </div>
                         `;
                     } else {
