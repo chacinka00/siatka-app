@@ -2731,16 +2731,10 @@
                             <span>📊</span>
                             <span>Inna statystyka</span>
                         </button>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" onclick="copyMatchdayImage()" class="matchday-copy-btn py-1.5 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Kopiuj dociętą grafikę karty do schowka (Ctrl+V na Messengera)">
-                                <span>📸</span>
-                                <span>Kopiuj grafikę</span>
-                            </button>
-                            <button type="button" onclick="downloadMatchdayImage()" class="matchday-action-btn py-1.5 px-2.5 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Pobierz grafikę jako plik PNG">
-                                <span>📥</span>
-                                <span>Pobierz</span>
-                            </button>
-                        </div>
+                        <button type="button" onclick="downloadMatchdayImage()" class="matchday-copy-btn py-1.5 px-3.5 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm" title="Pobierz grafikę jako plik PNG">
+                            <span>📥</span>
+                            <span>Pobierz</span>
+                        </button>
                     </div>
 
                     <!-- GŁÓWNA KARTA MECZOWA (Czysty styl sportowy) -->
@@ -7687,19 +7681,32 @@
             const seasonTotal = darkWinsSeason + lightWinsSeason || 1;
             const seasonDarkPct = Math.round((darkWinsSeason / seasonTotal) * 100);
 
-            let allTimeLeaderboard = [];
-            try {
-                if (typeof calculateAllTimeLeaderboard === 'function') {
-                    allTimeLeaderboard = calculateAllTimeLeaderboard() || [];
-                }
-            } catch(e) {}
+            // Obliczamy faktyczną liczbę rozegranych meczów w sezonie dla każdego gracza
+            const todayStr = (typeof getLocalDateKey === 'function') ? getLocalDateKey() : new Date().toISOString().slice(0, 10);
+            function getPlayerTotalMatches(p) {
+                if (!p) return 0;
+                const base = (AppState.base_games && AppState.base_games[p]) || 0;
+                let played = 0;
+                Object.keys(months).forEach(mName => {
+                    const mList = months[mName]?.matches || [];
+                    mList.forEach(m => {
+                        if (!m || m.isCancelled) return;
+                        const isHeld = (typeof isMatchHeld === 'function') ? isMatchHeld(m, todayStr) : (Boolean(m.score) || (m.date && m.date <= todayStr));
+                        if (!isHeld) return;
+                        const squad = (typeof getMatchPlayingSquad === 'function') ? getMatchPlayingSquad(m) : (m.attendees || []).slice(0, 14);
+                        if (squad.includes(p)) {
+                            played++;
+                        }
+                    });
+                });
+                return base + played;
+            }
 
             function getLeader(teamPlayers) {
                 if (!teamPlayers || teamPlayers.length === 0) return { name: 'Zawodnicy', matches: 0 };
-                let best = { name: teamPlayers[0], matches: 0 };
+                let best = { name: teamPlayers[0], matches: getPlayerTotalMatches(teamPlayers[0]) };
                 teamPlayers.forEach(p => {
-                    const row = allTimeLeaderboard.find(r => r.name === p);
-                    const mCount = row ? (row.matches || 0) : 0;
+                    const mCount = getPlayerTotalMatches(p);
                     if (mCount > best.matches) {
                         best = { name: p, matches: mCount };
                     }
@@ -7710,22 +7717,32 @@
             const darkLeader = getLeader(dark);
             const lightLeader = getLeader(light);
 
-            let topDuo = { p1: dark[0] || 'Zawodnik A', p2: dark[1] || 'Zawodnik B', together: 0, wins: 0, winPct: 50 };
+            let topDuo = null;
             try {
-                const duos = typeof calculateBestDuos === 'function' ? (calculateBestDuos() || []) : [];
-                for (const d of duos) {
-                    const inDark = (dark || []).includes(d.p1) && (dark || []).includes(d.p2);
-                    const inLight = (light || []).includes(d.p1) && (light || []).includes(d.p2);
-                    if ((inDark || inLight) && d.together >= 2) {
-                        topDuo = { p1: d.p1, p2: d.p2, together: d.together, wins: d.wins, winPct: d.winPct };
-                        break;
+                const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+                const duoStats = adv?.duoStats || {};
+                const checkTeamPairs = (teamList) => {
+                    if (!teamList || teamList.length < 2) return;
+                    for (let i = 0; i < teamList.length; i++) {
+                        for (let j = i + 1; j < teamList.length; j++) {
+                            const pA = teamList[i];
+                            const pB = teamList[j];
+                            const key = pA < pB ? `${pA}|||${pB}` : `${pB}|||${pA}`;
+                            const st = duoStats[key];
+                            if (st && st.together >= 2) {
+                                const winPct = Math.round((st.wins / st.together) * 100);
+                                if (!topDuo || st.together > topDuo.together || (st.together === topDuo.together && winPct > topDuo.winPct)) {
+                                    topDuo = { p1: st.p1, p2: st.p2, together: st.together, wins: st.wins, winPct };
+                                }
+                            }
+                        }
                     }
-                }
+                };
+                checkTeamPairs(dark);
+                checkTeamPairs(light);
             } catch(e) {}
 
-            const duoLosses = Math.max(0, topDuo.together - topDuo.wins);
-
-            return [
+            const facts = [
                 {
                     category: `STAWKA W ${currentMonthName.toUpperCase()}`,
                     text: `Bilans w tym miesiącu: Ciemni wygrali ${darkWinsMonth} z ${monthTotal} meczów (${monthDarkPct}%). Czy Jaśni doprowadzą dziś do remisu w miesiącu?`,
@@ -7733,32 +7750,77 @@
                     lightLabel: `Jaśni: ${lightWinsMonth}W (${100 - monthDarkPct}%)`,
                     pct: monthDarkPct,
                     theme: 'month'
-                },
-                {
+                }
+            ];
+
+            if (darkLeader.matches > 0 && lightLeader.matches > 0) {
+                const totalM = darkLeader.matches + lightLeader.matches;
+                const darkPct = Math.round((darkLeader.matches / totalM) * 100);
+                facts.push({
                     category: `STARCIE LIDERÓW OBECNOŚCI`,
                     text: `Pojedynek filarów ligi: ${darkLeader.name} (${darkLeader.matches} meczów) staje dziś naprzeciwko ${lightLeader.name} (${lightLeader.matches} meczów)!`,
-                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}M`,
-                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}M`,
-                    pct: (darkLeader.matches + lightLeader.matches > 0) ? Math.round((darkLeader.matches / (darkLeader.matches + lightLeader.matches)) * 100) : 50,
+                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}M (${darkPct}%)`,
+                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}M (${100 - darkPct}%)`,
+                    pct: darkPct,
                     theme: 'leaders'
-                },
-                {
+                });
+            }
+
+            if (topDuo && topDuo.together >= 2) {
+                const duoLosses = Math.max(0, topDuo.together - topDuo.wins);
+                facts.push({
                     category: `CHEMIA W ZESPOLE (DUET)`,
                     text: `Najbardziej zgrany duet w składzie: ${topDuo.p1} i ${topDuo.p2} rozegrali razem już ${topDuo.together} spotkań, notując ${topDuo.winPct}% zwycięstw!`,
                     darkLabel: `Wygrane: ${topDuo.wins} (${topDuo.winPct}%)`,
                     lightLabel: `Porażki: ${duoLosses}`,
                     pct: topDuo.winPct,
                     theme: 'duo'
-                },
-                {
-                    category: `BILANS CAŁEGO SEZONU 2026`,
-                    text: `W całym sezonie 2026: Ciemni mają ${darkWinsSeason} wygranych (${seasonDarkPct}%), Jaśni ${lightWinsSeason} wygranych (${100 - seasonDarkPct}%). Wyrównana rywalizacja!`,
-                    darkLabel: `Ciemni: ${darkWinsSeason}W`,
-                    lightLabel: `Jaśni: ${lightWinsSeason}W`,
-                    pct: seasonDarkPct,
-                    theme: 'season'
+                });
+            }
+
+            // Statystyka tie-breaków
+            let tieBreakMatches = 0;
+            let totalFinishedMatches = 0;
+            for (const mName of Object.keys(months)) {
+                const matches = months[mName]?.matches || [];
+                for (const m of matches) {
+                    if (!m || m.isCancelled || !m.score) continue;
+                    if (typeof m.score === 'string') {
+                        const matchScoreMatch = m.score.match(/\s(\d+)\s*:\s*(\d+)\s/);
+                        if (matchScoreMatch) {
+                            totalFinishedMatches++;
+                            const sA = parseInt(matchScoreMatch[1], 10);
+                            const sB = parseInt(matchScoreMatch[2], 10);
+                            if ((sA === 2 && sB === 1) || (sA === 1 && sB === 2) || (sA === 3 && sB === 2) || (sA === 2 && sB === 3)) {
+                                tieBreakMatches++;
+                            }
+                        }
+                    }
                 }
-            ];
+            }
+
+            if (totalFinishedMatches >= 3 && tieBreakMatches > 0) {
+                const tbPct = Math.round((tieBreakMatches / totalFinishedMatches) * 100);
+                facts.push({
+                    category: `WALKA DO SAMEGO KOŃCA`,
+                    text: `Aż ${tieBreakMatches} z dotychczasowych ${totalFinishedMatches} meczów sezonu (${tbPct}%) rozstrzygało się dopiero w decydującym secie!`,
+                    darkLabel: `Tie-breaki: ${tieBreakMatches} (${tbPct}%)`,
+                    lightLabel: `Pozostałe: ${totalFinishedMatches - tieBreakMatches}`,
+                    pct: tbPct,
+                    theme: 'month'
+                });
+            }
+
+            facts.push({
+                category: `BILANS CAŁEGO SEZONU 2026`,
+                text: `W całym sezonie 2026: Ciemni mają ${darkWinsSeason} wygranych (${seasonDarkPct}%), Jaśni ${lightWinsSeason} wygranych (${100 - seasonDarkPct}%). Wyrównana rywalizacja!`,
+                darkLabel: `Ciemni: ${darkWinsSeason}W`,
+                lightLabel: `Jaśni: ${lightWinsSeason}W`,
+                pct: seasonDarkPct,
+                theme: 'season'
+            });
+
+            return facts;
         }
 
         function renderMatchdayFact(dark, light, currentMatch) {
