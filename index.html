@@ -32,9 +32,6 @@
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
-    <!-- html2canvas -->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    
     <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -1648,24 +1645,32 @@
             font-weight: 900 !important;
             font-size: 11.5px !important;
             line-height: 1.2 !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
         }
         .player-chip-dark .player-last-name {
             color: #93c5fd !important;
             font-weight: 700 !important;
             font-size: 10px !important;
             line-height: 1.2 !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
         }
         .player-chip-light .player-first-name {
             color: #090d16 !important;
             font-weight: 900 !important;
             font-size: 11.5px !important;
             line-height: 1.2 !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
         }
         .player-chip-light .player-last-name {
             color: #334155 !important;
             font-weight: 700 !important;
             font-size: 10px !important;
             line-height: 1.2 !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
         }
         .matchday-dark-badge,
         .matchday-light-badge {
@@ -3785,7 +3790,7 @@
                         <span id="playerCardPartnerWin" class="text-emerald-400 font-mono">-</span>
                     </div>
                     <div class="mt-1.5">
-                        <strong id="playerCardPartnerName" class="text-white text-xs block leading-tight truncate">Brak danych</strong>
+                        <strong id="playerCardPartnerName" class="text-white text-xs block leading-tight break-words">Brak danych</strong>
                         <span id="playerCardPartnerSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
                     </div>
                 </div>
@@ -3797,7 +3802,7 @@
                         <span id="playerCardKryptoniteWin" class="text-rose-400 font-mono">-</span>
                     </div>
                     <div class="mt-1.5">
-                        <strong id="playerCardKryptoniteName" class="text-white text-xs block leading-tight truncate">Brak rywala</strong>
+                        <strong id="playerCardKryptoniteName" class="text-white text-xs block leading-tight break-words">Brak rywala</strong>
                         <span id="playerCardKryptoniteSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
                     </div>
                 </div>
@@ -5051,7 +5056,7 @@
             if (match) {
                 const mainName = escapeHtml(match[1].trim());
                 const note = escapeHtml(match[2].trim());
-                return `<span class="player-name-main">${mainName}</span> <span class="player-name-note text-[10px] opacity-75 font-medium whitespace-nowrap">${note}</span>`;
+                return `<span class="player-name-main">${mainName}</span> <span class="player-name-note text-[10px] opacity-75 font-medium inline-block whitespace-normal break-words">${note}</span>`;
             }
             return escapeHtml(raw);
         }
@@ -7734,7 +7739,7 @@
                                 <div class="bg-slate-900 border ${isMe ? 'border-emerald-500/70 bg-emerald-950/20' : 'border-slate-800'} px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between gap-2 shadow-sm">
                                     <div class="flex items-center gap-1.5 min-w-0 flex-1">
                                         ${getPlayerAvatarHtml(p, 'xs')}
-                                        <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} truncate">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
+                                        <span class="font-semibold ${isMe ? 'text-emerald-300 font-bold' : 'text-slate-200'} whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${escapeHtml(p)}${isMe ? ' ⭐' : ''}</span>
                                     </div>
                                     ${isAdmin ? `
                                     <div class="flex items-center gap-1 shrink-0">
@@ -8188,181 +8193,6 @@
             showToast("Zamieniono kolory drużyn! 🔄");
         }
 
-        function downloadMatchdayBlob(blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const today = new Date().toISOString().slice(0, 10);
-            a.href = url;
-            a.download = `karta-meczowa-${today}.png`;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 1000);
-        }
-
-        async function ensureHtml2CanvasLoaded() {
-            if (typeof html2canvas !== 'undefined') return true;
-            try {
-                await new Promise((resolve, reject) => {
-                    const s = document.createElement('script');
-                    s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
-                    s.onload = resolve;
-                    s.onerror = reject;
-                    document.head.appendChild(s);
-                });
-                return true;
-            } catch (e) {
-                console.error("Failed to load html2canvas:", e);
-                return false;
-            }
-        }
-
-        async function copyMatchdayImage() {
-            const card = document.getElementById('matchdayCard');
-            if (!card) return;
-
-            const loaded = await ensureHtml2CanvasLoaded();
-            if (!loaded) {
-                showToast("Błąd ładowania generatora grafiki.");
-                return;
-            }
-
-            showToast("Przygotowuję dociętą grafikę... 📸");
-
-            try {
-                if (document.fonts && document.fonts.ready) {
-                    await document.fonts.ready;
-                }
-
-                const canvas = await html2canvas(card, {
-                    scale: 2,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: null,
-                    logging: false,
-                    onclone: (clonedDoc) => {
-                        const clonedCard = clonedDoc.getElementById('matchdayCard');
-                        if (clonedCard) {
-                            clonedCard.style.overflow = 'visible';
-                        }
-                        clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
-                            chip.style.overflow = 'visible';
-                            chip.style.minHeight = '44px';
-                            chip.style.display = 'flex';
-                            chip.style.alignItems = 'center';
-                        });
-                        clonedDoc.querySelectorAll('.player-name-container, .player-first-name, .player-last-name').forEach(el => {
-                            el.style.overflow = 'visible';
-                            el.style.whiteSpace = 'nowrap';
-                            el.style.lineHeight = '1.25';
-                        });
-                        clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
-                            badge.style.overflow = 'visible';
-                            badge.style.lineHeight = '1.35';
-                            badge.style.paddingTop = '3px';
-                            badge.style.paddingBottom = '3px';
-                            badge.style.display = 'inline-flex';
-                            badge.style.alignItems = 'center';
-                        });
-                    }
-                });
-
-                canvas.toBlob(async (blob) => {
-                    if (!blob) {
-                        showToast("Nie udało się utworzyć obrazu.");
-                        return;
-                    }
-
-                    let copied = false;
-                    if (navigator.clipboard && window.ClipboardItem && navigator.clipboard.write) {
-                        try {
-                            await navigator.clipboard.write([
-                                new ClipboardItem({ 'image/png': blob })
-                            ]);
-                            copied = true;
-                            showToast("Skopiowano grafikę do schowka! 📸 (Wklej Ctrl+V na Messengera)");
-                        } catch (err) {
-                            console.warn("ClipboardItem write failed, fallback to download:", err);
-                        }
-                    }
-
-                    if (!copied) {
-                        downloadMatchdayBlob(blob);
-                        showToast("Pobrano dociętą grafikę karty meczowej! 🖼️");
-                    }
-                }, 'image/png');
-            } catch (err) {
-                console.error("Błąd renderowania karty do grafiki:", err);
-                showToast("Wystąpił błąd podczas generowania grafiki.");
-            }
-        }
-
-        async function downloadMatchdayImage() {
-            const card = document.getElementById('matchdayCard');
-            if (!card) return;
-
-            const loaded = await ensureHtml2CanvasLoaded();
-            if (!loaded) {
-                showToast("Błąd ładowania generatora grafiki.");
-                return;
-            }
-
-            showToast("Generuję plik graficzny... 🖼️");
-
-            try {
-                if (document.fonts && document.fonts.ready) {
-                    await document.fonts.ready;
-                }
-
-                const canvas = await html2canvas(card, {
-                    scale: 2,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: null,
-                    logging: false,
-                    onclone: (clonedDoc) => {
-                        const clonedCard = clonedDoc.getElementById('matchdayCard');
-                        if (clonedCard) {
-                            clonedCard.style.overflow = 'visible';
-                        }
-                        clonedDoc.querySelectorAll('.player-chip-dark, .player-chip-light').forEach(chip => {
-                            chip.style.overflow = 'visible';
-                            chip.style.minHeight = '44px';
-                            chip.style.display = 'flex';
-                            chip.style.alignItems = 'center';
-                        });
-                        clonedDoc.querySelectorAll('.player-name-container, .player-first-name, .player-last-name').forEach(el => {
-                            el.style.overflow = 'visible';
-                            el.style.whiteSpace = 'nowrap';
-                            el.style.lineHeight = '1.25';
-                        });
-                        clonedDoc.querySelectorAll('.matchday-dark-badge, .matchday-light-badge, .matchday-time-badge').forEach(badge => {
-                            badge.style.overflow = 'visible';
-                            badge.style.lineHeight = '1.35';
-                            badge.style.paddingTop = '3px';
-                            badge.style.paddingBottom = '3px';
-                            badge.style.display = 'inline-flex';
-                            badge.style.alignItems = 'center';
-                        });
-                    }
-                });
-
-                canvas.toBlob((blob) => {
-                    if (!blob) {
-                        showToast("Nie udało się utworzyć pliku.");
-                        return;
-                    }
-                    downloadMatchdayBlob(blob);
-                    showToast("Pobrano grafikę karty meczowej! 🖼️");
-                }, 'image/png');
-            } catch (err) {
-                console.error("Błąd pobierania grafiki:", err);
-                showToast("Wystąpił błąd podczas pobierania grafiki.");
-            }
-        }
-
         function getSeasonMatchNumber(targetMatch) {
             if (!targetMatch || !targetMatch.date) return null;
             const sortedMonths = (typeof getSortedMonths === 'function') 
@@ -8387,16 +8217,24 @@
 
         function formatMatchdayPlayerName(name) {
             if (!name) return { first: "", last: "", isTwoLine: false };
-            const parts = name.trim().split(/\s+/);
+            const clean = String(name).trim();
+            const parenMatch = clean.match(/^(.*?)\s*(\(.*?\))$/);
+            let mainName = clean;
+            let note = '';
+            if (parenMatch) {
+                mainName = parenMatch[1].trim();
+                note = parenMatch[2].trim();
+            }
+            const parts = mainName.split(/\s+/);
             if (parts.length === 1) {
+                if (note) {
+                    return { first: parts[0], last: note, isTwoLine: true };
+                }
                 return { first: parts[0], last: "", isTwoLine: false };
             }
-            if (parts.length === 2) {
-                return { first: parts[0], last: parts[1], isTwoLine: true };
-            }
-            const last = parts[parts.length - 1];
-            const first = parts.slice(0, parts.length - 1).join(" ");
-            return { first, last, isTwoLine: true };
+            const firstName = parts[0];
+            const lastName = parts.slice(1).join(" ") + (note ? ` ${note}` : '');
+            return { first: firstName, last: lastName, isTwoLine: true };
         }
 
         function renderMatchdayCard(dark, light, currentMatch) {
@@ -8434,12 +8272,12 @@
                         const nameInfo = formatMatchdayPlayerName(p);
                         const nameContent = nameInfo.isTwoLine ? `
                             <div class="player-name-container min-w-0 flex-1 flex flex-col justify-center leading-tight py-0.5">
-                                <span class="player-first-name font-black text-[11.5px] leading-tight text-white tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
-                                <span class="player-last-name font-bold text-[10px] leading-tight text-sky-200/90 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
+                                <span class="player-first-name font-black text-[11px] sm:text-[11.5px] leading-tight text-white tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-last-name font-bold text-[9.5px] sm:text-[10px] leading-tight text-sky-200/90 tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
                             </div>
                         ` : `
                             <div class="player-name-container min-w-0 flex-1 flex items-center leading-tight py-0.5">
-                                <span class="player-first-name font-black text-[12px] leading-tight text-white tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-first-name font-black text-[11.5px] sm:text-[12px] leading-tight text-white tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
                             </div>
                         `;
 
@@ -8476,12 +8314,12 @@
                         const nameInfo = formatMatchdayPlayerName(p);
                         const nameContent = nameInfo.isTwoLine ? `
                             <div class="player-name-container min-w-0 flex-1 flex flex-col justify-center leading-tight py-0.5">
-                                <span class="player-first-name font-black text-[11.5px] leading-tight text-slate-950 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
-                                <span class="player-last-name font-bold text-[10px] leading-tight text-slate-700 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
+                                <span class="player-first-name font-black text-[11px] sm:text-[11.5px] leading-tight text-slate-950 tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-last-name font-bold text-[9.5px] sm:text-[10px] leading-tight text-slate-700 tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.last)}</span>
                             </div>
                         ` : `
                             <div class="player-name-container min-w-0 flex-1 flex items-center leading-tight py-0.5">
-                                <span class="player-first-name font-black text-[12px] leading-tight text-slate-950 tracking-tight truncate" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
+                                <span class="player-first-name font-black text-[11.5px] sm:text-[12px] leading-tight text-slate-950 tracking-tight break-words" title="${escapeHtml(p)}">${escapeHtml(nameInfo.first)}</span>
                             </div>
                         `;
 
@@ -11670,12 +11508,12 @@
                                 <strong class="text-white font-bold text-[11px]">${formatPlayerNameHtml(player)}</strong>
                                 <span class="text-[9.5px] text-amber-400 font-mono font-bold">Wybór ➔ 🏆 ${formatPlayerNameHtml(mvpChoice)}</span>
                             </div>
-                            <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[9.5px] text-slate-400">
-                                ${womenChoice ? `<div class="truncate col-span-2 text-pink-300 font-semibold">🌸 MTV Kobiet: <span class="text-white">${formatPlayerNameHtml(womenChoice)}</span></div>` : ''}
-                                <div class="truncate">🧱 Czapa: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.block || '—')}</span></div>
-                                <div class="truncate">🔨 Gwóźdź: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.spike || '—')}</span></div>
-                                <div class="truncate">🐟 Obrona: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.defense || '—')}</span></div>
-                                <div class="truncate">🌪️ Serwis: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.serve || '—')}</span></div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1 text-[9.5px] text-slate-400">
+                                ${womenChoice ? `<div class="col-span-1 sm:col-span-2 text-pink-300 font-semibold break-words">🌸 ${isArekApp ? 'MTV Kobiet' : 'MVP Kobiet'}: <span class="text-white">${formatPlayerNameHtml(womenChoice)}</span></div>` : ''}
+                                <div class="break-words">🧱 Czapa: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.block || '—')}</span></div>
+                                <div class="break-words">🔨 Gwóźdź: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.spike || '—')}</span></div>
+                                <div class="break-words">🐟 Obrona: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.defense || '—')}</span></div>
+                                <div class="break-words">🌪️ Serwis: <span class="text-slate-200 font-semibold">${formatPlayerNameHtml(s.serve || '—')}</span></div>
                             </div>
                         </div>
                     `;
@@ -11744,7 +11582,7 @@
                             <div class="flex items-center gap-1.5 min-w-0 pr-2">
                                 <span class="text-xs shrink-0">${isWinner ? '👑' : `${index + 1}.`}</span>
                                 ${(typeof getPlayerAvatarHtml === 'function') ? getPlayerAvatarHtml(name, 'xs') : ''}
-                                <span class="font-bold ${isWinner ? 'text-amber-300 font-black' : 'text-slate-200'} truncate">
+                                <span class="font-bold ${isWinner ? 'text-amber-300 font-black' : 'text-slate-200'} whitespace-normal break-words leading-tight">
                                     ${formatPlayerNameHtml(name)}
                                 </span>
                             </div>
@@ -11879,7 +11717,7 @@
                                             ${info.winners.map(w => `
                                                 <div class="text-[10px] sm:text-[11px] font-black text-white leading-tight flex items-center gap-1 min-w-0" title="${escapeHtml(w)}">
                                                     <span class="w-1 h-1 rounded-full bg-amber-400 shrink-0"></span>
-                                                    <span class="truncate">${escapeHtml(w)}</span>
+                                                    <span class="whitespace-normal break-words leading-tight">${escapeHtml(w)}</span>
                                                 </div>
                                             `).join('')}
                                         </div>
@@ -13666,7 +13504,7 @@
                                 <span class="text-emerald-400 font-mono">${bestPartner ? `${bestPartner.winPct}% W` : '-'}</span>
                             </div>
                             <div class="mt-1.5">
-                                <strong class="text-white text-xs block leading-tight truncate">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
+                                <strong class="text-white text-xs block leading-tight break-words">${bestPartner ? escapeHtml(bestPartner.name) : 'Brak danych'}</strong>
                                 <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${bestPartner ? `${bestPartner.wins} ${bestPartner.wins === 1 ? 'wygrana' : (bestPartner.wins >= 2 && bestPartner.wins <= 4 ? 'wygrane' : 'wygranych')} w ${bestPartner.together} meczach` : 'Min. 2 mecze'}</span>
                             </div>
                         </div>
@@ -13678,7 +13516,7 @@
                                 <span class="text-rose-400 font-mono">${pAdv?.kryptonite ? `${pAdv.kryptonite.lossPct}% L` : '-'}</span>
                             </div>
                             <div class="mt-1.5">
-                                <strong class="text-white text-xs block leading-tight truncate">${pAdv?.kryptonite ? escapeHtml(pAdv.kryptonite.rival) : 'Brak rywala'}</strong>
+                                <strong class="text-white text-xs block leading-tight break-words">${pAdv?.kryptonite ? escapeHtml(pAdv.kryptonite.rival) : 'Brak rywala'}</strong>
                                 <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${pAdv?.kryptonite ? `${pAdv.kryptonite.losses} ${pAdv.kryptonite.losses === 1 ? 'porażka' : (pAdv.kryptonite.losses >= 2 && pAdv.kryptonite.losses <= 4 ? 'porażki' : 'porażek')} w ${pAdv.kryptonite.against} meczach` : 'Min. 3 mecze'}</span>
                             </div>
                         </div>
@@ -13877,8 +13715,8 @@
                                     <span class="text-slate-500 group-hover:text-indigo-300 transition">➔</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight">${escapeHtml(loggedPlayer)}</strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Zmień podpis na liście</span>
+                                    <strong class="text-white text-xs block break-words leading-tight">${escapeHtml(loggedPlayer)}</strong>
+                                    <span class="text-[9.5px] text-slate-500 block">Zmień podpis na liście</span>
                                 </div>
                             </div>
 
@@ -15273,7 +15111,7 @@
                                 <span class="text-sm leading-none">${t.icon}</span>
                             </div>
                             <div class="min-w-0">
-                                <span class="block font-black text-xs text-white leading-tight truncate">${t.name}</span>
+                                <span class="block font-black text-xs text-white leading-tight break-words">${t.name}</span>
                                 <span class="block text-[9.5px] text-slate-400 leading-tight mt-0.5">${t.typeBadge}</span>
                             </div>
                         </div>
