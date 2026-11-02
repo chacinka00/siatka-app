@@ -7371,6 +7371,69 @@
             showToast(`Przeniesiono ${playerName} do graczy nieprzypisanych.`);
         }
 
+        // ================= INTELIGENTNY GENERATOR SKŁADÓW (POMYSŁ A + B) =================
+        // Wykrywanie płci żeńskiej na podstawie polskich imion z obsługą wyjątków męskich
+        function detectFemalePlayer(playerName) {
+            if (!playerName || typeof playerName !== 'string') return false;
+            if (AppState.player_genders && AppState.player_genders[playerName]) {
+                return AppState.player_genders[playerName] === 'F';
+            }
+            const clean = playerName.replace(/\(.*?\)/g, '').trim();
+            if (!clean) return false;
+            const firstName = clean.split(/[\s(]/)[0].toLowerCase();
+            const maleExceptions = ['kuba', 'jakub', 'barnaba', 'kosma', 'jarema', 'bonawentura'];
+            if (maleExceptions.includes(firstName)) return false;
+            return firstName.endsWith('a');
+        }
+
+        // Zbieranie wag powtarzających się par z ostatnich 1-3 rozegranych meczów (Pomysł B - pamięć par)
+        function getRecentMatchPairWeights(currentMatch, maxMatchesToLookBack = 3) {
+            const pairWeights = new Map();
+            if (!AppState.months) return pairWeights;
+
+            const currentMatchDate = currentMatch?.date || '';
+            const pastMatches = [];
+
+            Object.keys(AppState.months).forEach(mName => {
+                const matches = AppState.months[mName]?.matches || [];
+                matches.forEach(m => {
+                    if (!m || m === currentMatch || m.isCancelled) return;
+                    if (currentMatchDate && m.date && m.date >= currentMatchDate) return;
+                    if (!m.teams) return;
+                    const dark = Array.isArray(m.teams.dark) ? m.teams.dark : [];
+                    const light = Array.isArray(m.teams.light) ? m.teams.light : [];
+                    if (dark.length >= 2 || light.length >= 2) {
+                        pastMatches.push(m);
+                    }
+                });
+            });
+
+            // Sortowanie od najnowszego meczu wstecz
+            pastMatches.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            const recent = pastMatches.slice(0, maxMatchesToLookBack);
+
+            // Kary za granie razem w jednym teamie: 1 mecz temu -> 12, 2 mecze temu -> 6, 3 mecze temu -> 3
+            const weights = [12, 6, 3];
+            const makePairKey = (u, v) => (u < v ? `${u}___${v}` : `${v}___${u}`);
+
+            recent.forEach((m, idx) => {
+                const w = weights[idx] || 2;
+                const addTeamPairs = (teamList) => {
+                    if (!Array.isArray(teamList)) return;
+                    for (let i = 0; i < teamList.length; i++) {
+                        for (let j = i + 1; j < teamList.length; j++) {
+                            const k = makePairKey(teamList[i], teamList[j]);
+                            pairWeights.set(k, (pairWeights.get(k) || 0) + w);
+                        }
+                    }
+                };
+                addTeamPairs(m.teams.dark);
+                addTeamPairs(m.teams.light);
+            });
+
+            return pairWeights;
+        }
+
         function generateRandomTeams() {
             if (!isAdmin) {
                 showToast("Tylko Organizator może losować składy! 🔒");
@@ -7389,58 +7452,12 @@
             const skills = AppState.player_skills || {};
             const p1 = "Kuba Parszewski";
             const p2 = "Kondziu Parszewski";
-
-            const ratedPlayers = mainSquad.map(name => ({
-                name,
-                skill: (skills[name] || 3) + (Math.random() * 0.6 - 0.3)
-            }));
-
-            ratedPlayers.sort((a, b) => b.skill - a.skill);
-
-            const teamA = [];
-            const teamB = [];
-            let sumA = 0;
-            let sumB = 0;
-            const maxPerTeam = Math.ceil(mainSquad.length / 2);
-
             const hasP1 = mainSquad.includes(p1);
             const hasP2 = mainSquad.includes(p2);
-            let remaining = [];
 
-            // PARSZEWSKI BROTHERS RULE: Rozdzielenie braci
-            if (hasP1 && hasP2) {
-                const p1Obj = ratedPlayers.find(x => x.name === p1);
-                const p2Obj = ratedPlayers.find(x => x.name === p2);
+            const makePairKey = (u, v) => (u < v ? `${u}___${v}` : `${v}___${u}`);
+            const pairWeights = getRecentMatchPairWeights(currentMatch, 3);
 
-                if (p1Obj.skill >= p2Obj.skill) {
-                    teamA.push(p1); sumA += p1Obj.skill;
-                    teamB.push(p2); sumB += p2Obj.skill;
-                } else {
-                    teamA.push(p2); sumA += p2Obj.skill;
-                    teamB.push(p1); sumB += p1Obj.skill;
-                }
-                remaining = ratedPlayers.filter(x => x.name !== p1 && x.name !== p2);
-            } else {
-                remaining = ratedPlayers;
-            }
-
-            remaining.forEach((player) => {
-                if (teamA.length >= maxPerTeam) {
-                    teamB.push(player.name);
-                    sumB += player.skill;
-                } else if (teamB.length >= maxPerTeam) {
-                    teamA.push(player.name);
-                    sumA += player.skill;
-                } else if (sumA <= sumB) {
-                    teamA.push(player.name);
-                    sumA += player.skill;
-                } else {
-                    teamB.push(player.name);
-                    sumB += player.skill;
-                }
-            });
-
-            // Losowe przetasowanie kolejności w drużynach (Fisher-Yates) ukrywające ranking gwiazdek
             const shuffleArray = (arr) => {
                 const result = [...arr];
                 for (let i = result.length - 1; i > 0; i--) {
@@ -7450,9 +7467,149 @@
                 return result;
             };
 
-            const shuffledTeamA = shuffleArray(teamA);
-            const shuffledTeamB = shuffleArray(teamB);
+            const getCombinations = (arr, k) => {
+                if (k === 0) return [[]];
+                if (k >= arr.length) return [arr.slice()];
+                const result = [];
+                const backtrack = (start, combo) => {
+                    if (combo.length === k) {
+                        result.push([...combo]);
+                        return;
+                    }
+                    for (let i = start; i < arr.length; i++) {
+                        combo.push(arr[i]);
+                        backtrack(i + 1, combo);
+                        combo.pop();
+                    }
+                };
+                backtrack(0, []);
+                return result;
+            };
 
+            // Podział graczy na dziewczyny i chłopaków
+            const females = mainSquad.filter(detectFemalePlayer);
+            const males = mainSquad.filter(p => !detectFemalePlayer(p));
+
+            const maxPerTeam = Math.ceil(mainSquad.length / 2);
+            const targetA = maxPerTeam;
+            const targetB = mainSquad.length - targetA;
+
+            // RÓWNY PODZIAŁ DZIEWCZYN (jeśli 2 -> 1v1, jeśli 4 -> 2v2, jeśli nieparzysta -> max różnica 1 losowo dla A/B)
+            let kFemA = (Math.random() < 0.5) ? Math.floor(females.length / 2) : Math.ceil(females.length / 2);
+            const minFemA = Math.max(0, targetA - males.length);
+            const maxFemA = Math.min(females.length, targetA);
+            kFemA = Math.max(minFemA, Math.min(maxFemA, kFemA));
+            const kMaleA = targetA - kFemA;
+
+            const femCombos = getCombinations(females, kFemA);
+            const maleCombos = getCombinations(males, kMaleA);
+
+            let candidates = [];
+
+            // Generowanie kombinatoryczne jeśli w granicach wydajności (<= 1500)
+            if (femCombos.length * maleCombos.length <= 1500) {
+                for (const fSub of femCombos) {
+                    const fSubSet = new Set(fSub);
+                    const femB = females.filter(f => !fSubSet.has(f));
+                    for (const mSub of maleCombos) {
+                        // PARSZEWSKI BROTHERS RULE: Rozdzielenie braci
+                        if (hasP1 && hasP2) {
+                            const p1InM = mSub.includes(p1);
+                            const p2InM = mSub.includes(p2);
+                            if (p1InM === p2InM) continue; // obaj w A lub obaj w B
+                        }
+
+                        const mSubSet = new Set(mSub);
+                        const maleB = males.filter(m => !mSubSet.has(m));
+
+                        const teamA = [...fSub, ...mSub];
+                        const teamB = [...femB, ...maleB];
+
+                        candidates.push({ teamA, teamB });
+                    }
+                }
+            }
+
+            // Monte Carlo sampling jeśli kombinacji jest za dużo (> 1500)
+            if (candidates.length === 0) {
+                const seen = new Set();
+                let attempts = 0;
+                while (candidates.length < 1000 && attempts < 4000) {
+                    attempts++;
+                    const shuffledFem = shuffleArray(females);
+                    const shuffledMale = shuffleArray(males);
+
+                    const teamA_fem = shuffledFem.slice(0, kFemA);
+                    const teamB_fem = shuffledFem.slice(kFemA);
+                    const teamA_male = shuffledMale.slice(0, kMaleA);
+                    const teamB_male = shuffledMale.slice(kMaleA);
+
+                    if (hasP1 && hasP2) {
+                        const p1InA = teamA_male.includes(p1);
+                        const p2InA = teamA_male.includes(p2);
+                        if (p1InA === p2InA) continue;
+                    }
+
+                    const teamA = [...teamA_fem, ...teamA_male];
+                    const teamB = [...teamB_fem, ...teamB_male];
+
+                    const key = [...teamA].sort().join('|');
+                    if (seen.has(key)) continue;
+                    seen.add(key);
+
+                    candidates.push({ teamA, teamB });
+                }
+            }
+
+            // Fallback awaryjny
+            if (candidates.length === 0) {
+                const shuffled = shuffleArray(mainSquad);
+                const teamA = shuffled.slice(0, targetA);
+                const teamB = shuffled.slice(targetA);
+                candidates.push({ teamA, teamB });
+            }
+
+            // Obliczenie różnicy umiejętności (gwiazdek) i kary powtórzeń (Pomysł B)
+            candidates.forEach(c => {
+                let sumA = 0;
+                let sumB = 0;
+                c.teamA.forEach(p => { sumA += (typeof skills[p] === 'number' ? skills[p] : (parseInt(skills[p], 10) || 3)); });
+                c.teamB.forEach(p => { sumB += (typeof skills[p] === 'number' ? skills[p] : (parseInt(skills[p], 10) || 3)); });
+                c.sumA = sumA;
+                c.sumB = sumB;
+                c.skillDiff = Math.abs(sumA - sumB);
+
+                let repPenalty = 0;
+                for (let i = 0; i < c.teamA.length; i++) {
+                    for (let j = i + 1; j < c.teamA.length; j++) {
+                        repPenalty += pairWeights.get(makePairKey(c.teamA[i], c.teamA[j])) || 0;
+                    }
+                }
+                for (let i = 0; i < c.teamB.length; i++) {
+                    for (let j = i + 1; j < c.teamB.length; j++) {
+                        repPenalty += pairWeights.get(makePairKey(c.teamB[i], c.teamB[j])) || 0;
+                    }
+                }
+                c.repPenalty = repPenalty;
+            });
+
+            // Selekcja kandydatów o optymalnym lub zbliżonym do optymalnego balansie (różnica <= minDiff + 1.0)
+            const minDiff = Math.min(...candidates.map(c => c.skillDiff));
+            const balancedCandidates = candidates.filter(c => c.skillDiff <= minDiff + 1.0);
+
+            // Połączenie anty-powtórzeń (Pomysł B) oraz losowej różnorodności (Pomysł A)
+            balancedCandidates.forEach(c => {
+                c.score = c.repPenalty + (c.skillDiff * 5) + (Math.random() * 14);
+            });
+
+            balancedCandidates.sort((a, b) => a.score - b.score);
+            const chosen = balancedCandidates[0] || candidates[0];
+
+            // Losowe przetasowanie kolejności w drużynach (Fisher-Yates) ukrywające ranking gwiazdek
+            const shuffledTeamA = shuffleArray(chosen.teamA);
+            const shuffledTeamB = shuffleArray(chosen.teamB);
+
+            // Losowy rzut monetą który skład przypada do koszulki Ciemnej / Jasnej
             const flip = Math.random() > 0.5;
             const existingDarkName = currentMatch.teams?.darkName || "Drużyna Ciemna";
             const existingLightName = currentMatch.teams?.lightName || "Drużyna Jasna";
@@ -7466,7 +7623,15 @@
 
             syncState();
             renderTeamsTab();
-            showToast("Wylosowano zbalansowane składy (losowa kolejność)! 🎲");
+
+            const countFemDark = (currentMatch.teams.dark || []).filter(detectFemalePlayer).length;
+            const countFemLight = (currentMatch.teams.light || []).filter(detectFemalePlayer).length;
+
+            if (females.length > 0) {
+                showToast(`Wylosowano zbalansowane składy! 🎲 (Dziewczyny: ${countFemDark} w Ciemnych, ${countFemLight} w Jasnych)`);
+            } else {
+                showToast("Wylosowano zróżnicowane i zbalansowane składy! 🎲");
+            }
         }
 
         function clearCurrentMatchTeams() {
@@ -7997,6 +8162,10 @@
         }
 
         function swapMatchTeamsColors() {
+            if (!isAdmin) {
+                showToast("Tylko Organizator może zamieniać kolory drużyn! 🔒");
+                return;
+            }
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
             if (!currentMatch) return;
@@ -8006,9 +8175,15 @@
             teams.dark = [...(teams.light || [])];
             teams.light = tempDark;
 
-            if (isAdmin && typeof saveData === 'function') {
-                saveData();
+            const isDarkDefault = !teams.darkName || /ciemn/i.test(teams.darkName);
+            const isLightDefault = !teams.lightName || /jasn/i.test(teams.lightName);
+            if (!isDarkDefault && !isLightDefault) {
+                const tempName = teams.darkName;
+                teams.darkName = teams.lightName;
+                teams.lightName = tempName;
             }
+
+            syncState();
             renderTeamsTab();
             showToast("Zamieniono kolory drużyn! 🔄");
         }
