@@ -41,7 +41,10 @@
     <script>
         // Natychmiastowe ustawienie zapisanego motywu przed renderem DOM (Zero Flash)
         (function() {
-            var t = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
+            var t = 'haaland-dark';
+            try {
+                t = localStorage.getItem('siatka_app_theme') || 'haaland-dark';
+            } catch (e) {}
             document.documentElement.setAttribute('data-theme', t);
             if (t === 'haaland-light' || t === 'mercurial-light') {
                 document.documentElement.classList.remove('dark');
@@ -2358,8 +2361,8 @@
             <!-- Row 1: Brand Logo, Title & Actions -->
             <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2 min-w-0 shrink-0">
-                    <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0">
-                        <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[10px]" loading="eager">
+                    <div class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl p-0.5 bg-gradient-to-tr from-emerald-500 via-amber-400 to-sky-500 shadow-md shadow-emerald-950/40 shrink-0 flex items-center justify-center">
+                        <img src="logo.jpg.jpg" alt="Logo Siatkówka" class="w-full h-full object-cover rounded-[10px]" loading="eager" onerror="this.onerror=null; this.outerHTML='<span class=\'flex items-center justify-center w-full h-full text-base\'>🏐</span>';">
                         <span class="absolute -bottom-1 -right-1 text-[8px] bg-slate-950 rounded-full p-0.5 border border-slate-700 leading-none">🏐</span>
                     </div>
                     <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">Siatkówka Piątek</h1>
@@ -3080,23 +3083,27 @@
                 </h2>
             </div>
 
-            <!-- Przełącznik Segmentowy Hall of Fame (Ranking vs Rekordy vs Staty vs Archiwum) -->
-            <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-4 gap-1 text-xs font-bold shadow-md">
-                <button type="button" id="hofSubtabBtn-ranking" onclick="setHallOfFameSubtab('ranking')" class="py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+            <!-- Przełącznik Segmentowy Hall of Fame (Ranking vs Odznaki vs Rekordy vs Staty vs Archiwum) -->
+            <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-5 gap-1 text-xs font-bold shadow-md">
+                <button type="button" id="hofSubtabBtn-ranking" onclick="setHallOfFameSubtab('ranking')" class="py-2 px-0.5 sm:px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>🏆</span>
-                    <span class="truncate">Ranking</span>
+                    <span class="hidden sm:inline truncate">Ranking</span>
                 </button>
-                <button type="button" id="hofSubtabBtn-records" onclick="setHallOfFameSubtab('records')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                <button type="button" id="hofSubtabBtn-badges" onclick="setHallOfFameSubtab('badges')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
+                    <span>🏅</span>
+                    <span class="hidden sm:inline truncate">Odznaki</span>
+                </button>
+                <button type="button" id="hofSubtabBtn-records" onclick="setHallOfFameSubtab('records')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>👑</span>
-                    <span class="truncate">Rekordy</span>
+                    <span class="hidden sm:inline truncate">Rekordy</span>
                 </button>
-                <button type="button" id="hofSubtabBtn-stats" onclick="setHallOfFameSubtab('stats')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                <button type="button" id="hofSubtabBtn-stats" onclick="setHallOfFameSubtab('stats')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>📊</span>
-                    <span class="truncate">Staty</span>
+                    <span class="hidden sm:inline truncate">Staty</span>
                 </button>
-                <button type="button" id="hofSubtabBtn-archive" onclick="setHallOfFameSubtab('archive')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                <button type="button" id="hofSubtabBtn-archive" onclick="setHallOfFameSubtab('archive')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>📜</span>
-                    <span class="truncate">Archiwum</span>
+                    <span class="hidden sm:inline truncate">Archiwum</span>
                 </button>
             </div>
 
@@ -3136,92 +3143,11 @@
                     </table>
                 </div>
             </div>
+            </div>
 
-            <!-- Rozwijana Legenda Odznak (Mobile-Friendly Accordion) -->
-            <details id="badgesAccordion" class="group bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 shadow-xl transition-all">
-                <summary class="cursor-pointer flex items-center justify-between font-black text-xs text-amber-300 uppercase tracking-wider select-none list-none">
-                    <span class="flex items-center gap-1.5">
-                        <span>🏅</span> Księga Osiągnięć & Trofeów
-                    </span>
-                    <span class="flex items-center gap-2 text-[10px] text-slate-400 font-bold">
-                        <span>10 odznak do zdobycia</span>
-                        <span class="transform group-open:rotate-180 transition-transform duration-200 text-amber-400 text-xs">▼</span>
-                    </span>
-                </summary>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs pt-3 mt-3 border-t border-slate-800/80">
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">👑</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-white text-xs font-bold">MVP Star</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Min. 1x MVP meczu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🌟</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-300 text-xs font-bold">Dominator MVP</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">2+ wygrane MVP w sezonie</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🎯</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-sky-300 text-xs font-bold">Głos Ludu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">>50% głosów na MVP w meczu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">⚡</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-300 text-xs font-bold">W Zwycięskim Cugu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Seria min. 3 wygranych z rzędu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">⚔️</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-400 text-xs font-bold">Mistrz Tie-breaka</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Wygrana 3:2 lub z setem na przewagi</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🔀</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-indigo-300 text-xs font-bold">Kameleon Parkietu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Wygrana u Ciemnych i Jasnych</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🦾</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-emerald-400 text-xs font-bold">Żelazne Płuca</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">100% obecności w danym miesiącu</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">💎</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-cyan-300 text-xs font-bold">Weteran Parkietu</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">12+ rozegranych gier w sezonie</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🚀</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-teal-300 text-xs font-bold">Świeża Krew</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Nowy gracz z min. 3 grami</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-2.5 flex items-start gap-2.5">
-                        <span class="text-xl shrink-0 mt-0.5">🎖️</span>
-                        <div class="min-w-0 flex-1">
-                            <strong class="block text-amber-200 text-xs font-bold">Aktywny Sędzia</strong>
-                            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">Głosuje w min. 70% swoich gier</p>
-                        </div>
-                    </div>
-                </div>
-            </details>
+            <!-- SUBTAB 2: GABLOTA OSIĄGNIĘĆ & TROFEÓW -->
+            <div id="hofSubtabContainer-badges" class="space-y-3.5 hidden">
+                <!-- Rendered dynamically by renderBadgesGallery() -->
             </div>
 
             <!-- SUBTAB 2: REKORDY & STATYSTYKI -->
@@ -5863,8 +5789,13 @@
         }
 
         function checkUserAuthSession() {
-            loggedPlayer = localStorage.getItem('siatka_active_player') || '';
-            isAdmin = (loggedPlayer === ORGANIZER_NAME) || (localStorage.getItem('siatka_is_admin') === 'true');
+            try {
+                loggedPlayer = localStorage.getItem('siatka_active_player') || '';
+                isAdmin = (loggedPlayer === ORGANIZER_NAME) || (localStorage.getItem('siatka_is_admin') === 'true');
+            } catch (e) {
+                loggedPlayer = '';
+                isAdmin = false;
+            }
             updateAdminUI();
             if (typeof checkWelcomeGate === 'function') {
                 checkWelcomeGate();
@@ -5872,7 +5803,10 @@
         }
 
         function loadLocalState() {
-            const saved = localStorage.getItem('siatka_master_app_state');
+            let saved = null;
+            try {
+                saved = localStorage.getItem('siatka_master_app_state');
+            } catch (e) {}
             if (saved) {
                 try { 
                     AppState = JSON.parse(saved); 
@@ -6772,9 +6706,9 @@
                                     </button>
                                 </div>
                             ` : `
-                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-4 py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2.5">
-                                    ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950')}
-                                    <span>ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
+                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-3 sm:px-4 py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 sm:gap-2.5 min-w-0">
+                                    ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950 shrink-0')}
+                                    <span class="truncate">ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
                                 </button>
                             `}
 
@@ -8863,12 +8797,12 @@
                     winnerName.innerText = totalVotesCast === 0 ? "Czekamy na pierwsze głosy" : `Oddano ${totalVotesCast} z ${attendees.length} możliwych głosów`;
                 }
                 if (winnerVotes) {
-                    const percentVoted = Math.round((totalVotesCast / attendees.length) * 100);
+                    const percentVoted = Math.round((totalVotesCast / (attendees.length || 1)) * 100);
                     winnerVotes.innerText = `Wyniki cząstkowe i wybór MVP są ukryte do momentu, aż wszyscy oddadzą głos (${percentVoted}%).`;
                 }
 
                 if (resultsSectionTitle) resultsSectionTitle.innerText = "Postęp głosowania:";
-                const percentDone = Math.round((totalVotesCast / attendees.length) * 100);
+                const percentDone = Math.round((totalVotesCast / (attendees.length || 1)) * 100);
                 if (resultsList) {
                     resultsList.innerHTML = `
                         <div class="bg-slate-950 border border-amber-900/40 rounded-2xl p-3.5 space-y-2.5">
@@ -10964,7 +10898,7 @@
             let topRival = null;
             let maxAgainst = -1;
             Object.entries(opponentStats).forEach(([name, st]) => {
-                if (st.against > maxAgainst) {
+                if (st.against > 0 && st.against > maxAgainst) {
                     maxAgainst = st.against;
                     const winPct = Math.round((st.winsAgainst / st.against) * 100);
                     topRival = { name, against: st.against, winsAgainst: st.winsAgainst, winPct };
@@ -12190,20 +12124,20 @@
 
                 <!-- Sub-tab Bento Grid (100% visible on 1 screen without scrolling) -->
                 <div class="grid grid-cols-6 sm:grid-cols-5 gap-1 sm:gap-1.5 text-[10.5px] sm:text-xs font-bold pt-0.5">
-                    <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>🎯</span> <span class="truncate">Win Impact</span>
+                    <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🎯</span> <span class="truncate min-w-0">Win Impact</span>
                     </button>
-                    <button type="button" data-adv-tab="duos" onclick="switchAdvancedStatsSubTab('duos')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>🤝</span> <span class="truncate">Duety</span>
+                    <button type="button" data-adv-tab="duos" onclick="switchAdvancedStatsSubTab('duos')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'duos' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🤝</span> <span class="truncate min-w-0">Duety</span>
                     </button>
-                    <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 active:scale-95 ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>🥊</span> <span class="truncate">Kryptonit</span>
+                    <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🥊</span> <span class="truncate min-w-0">Kryptonit</span>
                     </button>
-                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 active:scale-95 ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>🔥</span> <span class="truncate">Tie-breaki</span>
+                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🔥</span> <span class="truncate min-w-0">Tie-breaki</span>
                     </button>
-                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 active:scale-95 ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>📈</span> <span class="truncate">Bilans setów</span>
+                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>📈</span> <span class="truncate min-w-0">Bilans setów</span>
                     </button>
                 </div>
 
@@ -12342,63 +12276,140 @@
             return calculatePlayerCareerOutcomes(playerName).recent;
         }
 
+        // ================= TAB 6: ROZBUDOWANY SYSTEM ODZNAK I STATYSTYK =================
+        const ALL_BADGES_DEFINITIONS = [
+            {
+                id: "orchestra",
+                icon: "🎻",
+                name: "Człowiek Orkiestra",
+                tier: "legendary",
+                tierLabel: "Legenda",
+                badgeBg: "from-amber-500/15 via-purple-950/40 to-slate-950",
+                borderClass: "border-purple-500/50 hover:border-purple-400",
+                badgePillClass: "bg-purple-950 text-purple-300 border-purple-700/80",
+                desc: "Min. 1x nagroda w każdej z 4 kategorii (Blok, Atak, Obrona, Serwis)",
+                detailedReq: "Wymaga zdobycia przynajmniej raz nagrody MVP w głosowaniach na Czapę (blok), Gwóźdź (atak), Obronę i Serwis."
+            },
+            {
+                id: "mvp_dominator",
+                icon: "🌟",
+                name: "Dominator MVP",
+                tier: "legendary",
+                tierLabel: "Legenda",
+                badgeBg: "from-amber-500/20 via-amber-950/40 to-slate-950",
+                borderClass: "border-amber-500/50 hover:border-amber-400",
+                badgePillClass: "bg-amber-950 text-amber-300 border-amber-700/80",
+                desc: "Zdobył oficjalny tytuł MVP meczu co najmniej 4 razy w sezonie",
+                detailedReq: "Najwyższe indywidualne wyróżnienie ligowe za regularne przewodzenie drużynie do zwycięstw (min. 4x MVP)."
+            },
+            {
+                id: "mvp_star",
+                icon: "👑",
+                name: "MVP Star",
+                tier: "epic",
+                tierLabel: "Elitarna",
+                badgeBg: "from-amber-500/15 via-yellow-950/30 to-slate-950",
+                borderClass: "border-amber-400/40 hover:border-amber-300",
+                badgePillClass: "bg-amber-950/80 text-amber-300 border-amber-800/80",
+                desc: "Przynajmniej 2 wygrane MVP meczu w sezonie 2026",
+                detailedReq: "Wygraj oficjalne pomeczowe głosowanie ligowe na MVP co najmniej 2 razy."
+            },
+            {
+                id: "voice_of_people",
+                icon: "🎯",
+                name: "Głos Ludu",
+                tier: "epic",
+                tierLabel: "Elitarna",
+                badgeBg: "from-sky-500/15 via-indigo-950/40 to-slate-950",
+                borderClass: "border-sky-500/40 hover:border-sky-300",
+                badgePillClass: "bg-sky-950 text-sky-300 border-sky-700/80",
+                desc: "Wygrana MVP z dominującym poparciem (>55% głosów w meczu)",
+                detailedReq: "Zdobądź ponad połowę wszystkich oddanych głosów na MVP w pojedynczym spotkaniu (min. 4 głosy)."
+            },
+            {
+                id: "win_streak",
+                icon: "🔥",
+                name: "W Zwycięskim Cugu",
+                tier: "rare",
+                tierLabel: "Mistrzowska",
+                badgeBg: "from-orange-500/15 via-rose-950/30 to-slate-950",
+                borderClass: "border-orange-500/40 hover:border-orange-300",
+                badgePillClass: "bg-orange-950 text-orange-300 border-orange-700/80",
+                desc: "Seria min. 3 zwycięstw z rzędu w oficjalnych meczach",
+                detailedReq: "Wyłącznie mecze z wpisanym oficjalnym wynikiem i składami."
+            },
+            {
+                id: "tiebreak_king",
+                icon: "⚔️",
+                name: "Król 5. Seta",
+                tier: "rare",
+                tierLabel: "Mistrzowska",
+                badgeBg: "from-rose-500/15 via-slate-900 to-slate-950",
+                borderClass: "border-rose-500/40 hover:border-rose-300",
+                badgePillClass: "bg-rose-950 text-rose-300 border-rose-700/80",
+                desc: "Min. 3 wygrane tie-breaki (3:2) w meczach z wynikiem",
+                detailedReq: "Udowodniona odporność psychiczna w końcówkach decydujących 5. setów (min. 3 wygrane tie-breaki)."
+            },
+            {
+                id: "chameleon",
+                icon: "🔀",
+                name: "Kameleon Parkietu",
+                tier: "challenge",
+                tierLabel: "Wyzwanie",
+                badgeBg: "from-indigo-500/15 via-cyan-950/30 to-slate-950",
+                borderClass: "border-indigo-500/40 hover:border-indigo-300",
+                badgePillClass: "bg-indigo-950 text-indigo-300 border-indigo-700/80",
+                desc: "Min. 3 wygrane u Ciemnych i min. 3 wygrane u Jasnych",
+                detailedReq: "Wygrana z obiema stronami siatki w meczach z oficjalnym wynikiem (min. 3 u Ciemnych i 3 u Jasnych)."
+            },
+            {
+                id: "iron_streak",
+                icon: "🦾",
+                name: "Żelazna Seria",
+                tier: "challenge",
+                tierLabel: "Wyzwanie",
+                badgeBg: "from-emerald-500/15 via-teal-950/30 to-slate-950",
+                borderClass: "border-emerald-500/40 hover:border-emerald-300",
+                badgePillClass: "bg-emerald-950 text-emerald-300 border-emerald-700/80",
+                desc: "Seria min. 8 meczów ligowych z rzędu bez pauzy",
+                detailedReq: "Niezachwiana frekwencja i pełne zaangażowanie w każdy kolejny mecz sezonu."
+            },
+            {
+                id: "veteran_20",
+                icon: "💎",
+                name: "Klub 20+",
+                tier: "challenge",
+                tierLabel: "Prestiż",
+                badgeBg: "from-cyan-500/15 via-blue-950/30 to-slate-950",
+                borderClass: "border-cyan-500/40 hover:border-cyan-300",
+                badgePillClass: "bg-cyan-950 text-cyan-300 border-cyan-700/80",
+                desc: "Filar ligi: ponad 20 rozegranych spotkań w sezonie",
+                detailedReq: "Osiągnięcie elitarnego progu 20 rozegranych meczów w sezonie 2026."
+            }
+        ];
+
         function calculatePlayerBadges(playerName) {
             const badges = [];
-            if (!playerName) return { badges, totalGames: 0, mvpWins: 0, attendedMatches: 0 };
+            if (!playerName) return { badges, totalGames: 0, mvpWins: 0, attendedMatches: 0, attendancePercent: 0 };
 
             const baseGames = (AppState.base_games && AppState.base_games[playerName]) || 0;
             let attendedMatches = 0;
             let totalAvailableSeasonMatches = 0;
             let mvpWins = 0;
             let hasUnanimousMvp = false;
-            let wonAsDark = false;
-            let wonAsLight = false;
-            let wonTieBreak = false;
-            let matchesWithVoting = 0;
-            let votesCast = 0;
-            let hasIronMonth = false;
 
             const todayStr = getLocalDateKey();
 
+            // 1. Frekwencja i MVP
             Object.keys(AppState.months || {}).forEach(mName => {
                 const matches = AppState.months[mName]?.matches || [];
-                let activeMatches = 0;
-                let playerAttended = 0;
-
                 matches.forEach(m => {
-                    // Licz wyłącznie mecze, które już się odbyły (w przeszłości lub z wpisanym wynikiem/MVP)
                     const isPlayedMatch = isMatchHeld(m, todayStr);
                     if (isPlayedMatch) {
-                        activeMatches++;
                         totalAvailableSeasonMatches++;
                         const mainSquad = getMatchPlayingSquad(m);
                         if (mainSquad.includes(playerName)) {
-                            playerAttended++;
                             attendedMatches++;
-
-                            const votes = m.votes || {};
-                            if (Object.keys(votes).length > 0) {
-                                matchesWithVoting++;
-                                if (votes[playerName]) votesCast++;
-                            }
-
-                            if (m.score && m.teams) {
-                                const dark = m.teams.dark || [];
-                                const light = m.teams.light || [];
-                                const resMatch = m.score.match(/\s(\d+)\s*:\s*(\d+)\s/);
-                                if (resMatch) {
-                                    const sA = parseInt(resMatch[1], 10);
-                                    const sB = parseInt(resMatch[2], 10);
-                                    const isWon = (dark.includes(playerName) && sA > sB) || (light.includes(playerName) && sB > sA);
-                                    if (isWon) {
-                                        if (dark.includes(playerName)) wonAsDark = true;
-                                        if (light.includes(playerName)) wonAsLight = true;
-                                        if (m.score.includes('3 : 2') || m.score.includes('2 : 3') || m.score.includes('26:') || m.score.includes('28:')) {
-                                            wonTieBreak = true;
-                                        }
-                                    }
-                                }
-                            }
 
                             const mWinners = getMatchMvpWinners(m);
                             if (mWinners.includes(playerName)) {
@@ -12406,44 +12417,202 @@
                                 const votesMap = m.votes || {};
                                 const totalVotes = Object.keys(votesMap).length;
                                 const playerVotes = Object.values(votesMap).filter(v => v === playerName).length;
-                                if (totalVotes >= 4 && (playerVotes / totalVotes) >= 0.5) {
+                                if (totalVotes >= 4 && (playerVotes / totalVotes) >= 0.55) {
                                     hasUnanimousMvp = true;
                                 }
                             }
                         }
                     }
                 });
-
-                if (activeMatches >= 3 && playerAttended === activeMatches) {
-                    hasIronMonth = true;
-                }
             });
 
             const totalGames = baseGames + attendedMatches;
-            const recentForm = calculatePlayerForm(playerName);
-            const isWinningStreak = recentForm.length >= 3 && recentForm.slice(-3).every(r => r === 'W');
+            const attendancePercent = totalAvailableSeasonMatches > 0 ? Math.round((attendedMatches / totalAvailableSeasonMatches) * 100) : 0;
 
-            // 1. KATEGORIA MVP
-            if (mvpWins === 1) badges.push({ icon: "👑", title: "MVP Star: 1x MVP meczu" });
-            if (mvpWins >= 2) badges.push({ icon: "🌟", title: `Dominator MVP: ${mvpWins}x MVP meczu` });
-            if (hasUnanimousMvp) badges.push({ icon: "🎯", title: "Głos Ludu: >50% głosów na MVP w jednym meczu" });
+            // 2. Człowiek Orkiestra: 1x wygrana w 4 kategoriach specjalnych (Blok, Atak, Obrona, Serwis)
+            const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
+            const pAwards = seasonAwards?.playerStats?.[playerName];
+            const isOrchestra = Boolean(pAwards &&
+                pAwards.block?.wins >= 1 &&
+                pAwards.spike?.wins >= 1 &&
+                pAwards.defense?.wins >= 1 &&
+                pAwards.serve?.wins >= 1
+            );
 
-            // 2. KATEGORIA FORMA & WYNIKI
-            if (isWinningStreak) badges.push({ icon: "⚡", title: "W Zwycięskim Cugu: 3 wygrane mecze z rzędu" });
-            if (wonTieBreak) badges.push({ icon: "⚔️", title: "Mistrz Tie-breaka: Wygrany mecz 3:2 lub na przewagi" });
-            if (wonAsDark && wonAsLight) badges.push({ icon: "🔀", title: "Kameleon Parkietu: Wygrane w Drużynie Ciemnej i Jasnej" });
+            // 3. Wyniki wyłącznie z meczów z oficjalnym wynikiem i składami (m.score && m.teams)
+            let darkWins = 0;
+            let lightWins = 0;
+            let tieBreakWins = 0;
 
-            // 3. KATEGORIA FREKWENCJA
-            if (hasIronMonth) badges.push({ icon: "🦾", title: "Żelazne Płuca: 100% obecności w miesiącu" });
-            if (totalGames >= 12) badges.push({ icon: "💎", title: `Weteran: ${totalGames} rozegranych gier` });
-            if (baseGames === 0 && attendedMatches >= 3) badges.push({ icon: "🚀", title: "Świeża Krew: Nowy gracz z min. 3 grami" });
+            Object.keys(AppState.months || {}).forEach(mName => {
+                (AppState.months[mName]?.matches || []).forEach(m => {
+                    if (!m || m.isCancelled || !m.score || !m.teams) return;
+                    const attendees = (typeof getMatchPlayingSquad === 'function') ? getMatchPlayingSquad(m) : (m.attendees || []);
+                    if (!attendees.includes(playerName)) return;
 
-            // 4. KATEGORIA ZAANGAŻOWANIE
-            if (matchesWithVoting >= 3 && (votesCast / matchesWithVoting) >= 0.7) {
-                badges.push({ icon: "🎖️", title: "Aktywny Sędzia: Głosuje w min. 70% swoich gier" });
+                    const dark = m.teams.dark || [];
+                    const light = m.teams.light || [];
+                    const isDark = dark.includes(playerName);
+                    const isLight = light.includes(playerName);
+                    if (!isDark && !isLight) return;
+
+                    const scoreStr = String(m.score);
+                    const matchWithSets = scoreStr.match(/^(.*?)\s+(\d+)\s*:\s*(\d+)\s+/);
+                    const matchSimple = scoreStr.match(/\s(\d+)\s*:\s*(\d+)\s/) || scoreStr.match(/(?:^|\s)(\d+)\s*:\s*(\d+)(?:\s|$)/);
+                    let setsDark = null, setsLight = null;
+                    if (matchWithSets) {
+                        setsDark = parseInt(matchWithSets[2].trim(), 10);
+                        setsLight = parseInt(matchWithSets[3].trim(), 10);
+                    } else if (matchSimple) {
+                        setsDark = parseInt(matchSimple[1].trim(), 10);
+                        setsLight = parseInt(matchSimple[2].trim(), 10);
+                    }
+
+                    if (setsDark !== null && setsLight !== null && !isNaN(setsDark) && !isNaN(setsLight) && setsDark !== setsLight) {
+                        const darkWon = setsDark > setsLight;
+                        const lightWon = setsLight > setsDark;
+                        const isTieBreak = (setsDark + setsLight === 5) || scoreStr.includes('3 : 2') || scoreStr.includes('2 : 3');
+
+                        if (isDark && darkWon) {
+                            darkWins++;
+                            if (isTieBreak) tieBreakWins++;
+                        } else if (isLight && lightWon) {
+                            lightWins++;
+                            if (isTieBreak) tieBreakWins++;
+                        }
+                    }
+                });
+            });
+
+            // 4. Seria wygranych z oficjalnych meczów
+            const careerOutcomes = calculatePlayerCareerOutcomes(playerName);
+            let maxWinStreak = 0;
+            let curStreak = 0;
+            (careerOutcomes.all || []).forEach(res => {
+                if (res === 'W') {
+                    curStreak++;
+                    if (curStreak > maxWinStreak) maxWinStreak = curStreak;
+                } else {
+                    curStreak = 0;
+                }
+            });
+            const hasWinStreak = maxWinStreak >= 3;
+
+            // 5. Seria frekwencji (bez pauzy)
+            const pStreaks = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(playerName) : { current: 0, max: 0 };
+            const hasIronStreak = (pStreaks.max >= 8 || pStreaks.current >= 8);
+
+            // 6. Klub 20+
+            const isClub20 = totalGames >= 20;
+
+            // BUDOWANIE ZESTAWU 9 ELITARNYCH ODZNAK
+            if (isOrchestra) {
+                badges.push({
+                    id: "orchestra",
+                    icon: "🎻",
+                    name: "Człowiek Orkiestra",
+                    tier: "legendary",
+                    tierLabel: "Legenda",
+                    desc: "Min. 1x nagroda w 4 kategoriach (Blok, Atak, Obrona, Serwis)",
+                    title: "Człowiek Orkiestra: Wszechstronny mistrz parkietu (Blok, Atak, Obrona, Serwis)"
+                });
             }
 
-            const attendancePercent = totalAvailableSeasonMatches > 0 ? Math.round((attendedMatches / totalAvailableSeasonMatches) * 100) : 0;
+            if (mvpWins >= 4) {
+                badges.push({
+                    id: "mvp_dominator",
+                    icon: "🌟",
+                    name: "Dominator MVP",
+                    tier: "legendary",
+                    tierLabel: "Legenda",
+                    desc: `Min. 4x MVP meczu w sezonie (${mvpWins} zdobytych)`,
+                    title: `Dominator MVP: ${mvpWins}x MVP meczu w sezonie`
+                });
+            }
+
+            if (mvpWins >= 2) {
+                badges.push({
+                    id: "mvp_star",
+                    icon: "👑",
+                    name: "MVP Star",
+                    tier: "epic",
+                    tierLabel: "Elitarna",
+                    desc: `Min. 2x MVP meczu w sezonie (${mvpWins} zdobytych)`,
+                    title: `MVP Star: ${mvpWins}x MVP meczu`
+                });
+            }
+
+            if (hasUnanimousMvp) {
+                badges.push({
+                    id: "voice_of_people",
+                    icon: "🎯",
+                    name: "Głos Ludu",
+                    tier: "epic",
+                    tierLabel: "Elitarna",
+                    desc: "Dominujące zwycięstwo w głosowaniu (>55% głosów w meczu)",
+                    title: "Głos Ludu: >55% głosów na MVP w meczu"
+                });
+            }
+
+            if (hasWinStreak) {
+                badges.push({
+                    id: "win_streak",
+                    icon: "🔥",
+                    name: "W Zwycięskim Cugu",
+                    tier: "rare",
+                    tierLabel: "Mistrzowska",
+                    desc: "Seria min. 3 wygranych z rzędu w oficjalnych meczach",
+                    title: "W Zwycięskim Cugu: Seria min. 3 wygranych z rzędu"
+                });
+            }
+
+            if (tieBreakWins >= 3) {
+                badges.push({
+                    id: "tiebreak_king",
+                    icon: "⚔️",
+                    name: "Król 5. Seta",
+                    tier: "rare",
+                    tierLabel: "Mistrzowska",
+                    desc: `Min. 3 wygrane tie-breaki 3:2 (${tieBreakWins} wygranych)`,
+                    title: `Król 5. Seta: ${tieBreakWins} wygrane tie-breaki (3:2)`
+                });
+            }
+
+            if (darkWins >= 3 && lightWins >= 3) {
+                badges.push({
+                    id: "chameleon",
+                    icon: "🔀",
+                    name: "Kameleon Parkietu",
+                    tier: "challenge",
+                    tierLabel: "Wyzwanie",
+                    desc: `Min. 3 wygrane u Ciemnych i Jasnych (${darkWins}W / ${lightWins}W)`,
+                    title: `Kameleon Parkietu: ${darkWins}W Ciemni / ${lightWins}W Jasni`
+                });
+            }
+
+            if (hasIronStreak) {
+                badges.push({
+                    id: "iron_streak",
+                    icon: "🦾",
+                    name: "Żelazna Seria",
+                    tier: "challenge",
+                    tierLabel: "Wyzwanie",
+                    desc: `Seria min. 8 meczów ligowych z rzędu (${pStreaks.max} z rzędu)`,
+                    title: `Żelazna Seria: ${pStreaks.max} meczów z rzędu bez pauzy`
+                });
+            }
+
+            if (isClub20) {
+                badges.push({
+                    id: "veteran_20",
+                    icon: "💎",
+                    name: "Klub 20+",
+                    tier: "challenge",
+                    tierLabel: "Prestiż",
+                    desc: `Ponad 20 rozegranych spotkań w sezonie (${totalGames} gier)`,
+                    title: `Klub 20+: ${totalGames} rozegranych gier w sezonie`
+                });
+            }
 
             return { badges, totalGames, mvpWins, attendedMatches, attendancePercent };
         }
@@ -12456,7 +12625,7 @@
                 const remaining = badges.slice(maxCount);
                 const allTooltip = badges.map(b => `${b.icon} ${b.title}`).join('\n');
                 return visible.map(b => `<span onclick="event.stopPropagation(); showToast('${escapeHtml(b.icon)} ${escapeHtml(b.title)}');" title="${escapeHtml(b.title)}" class="text-xs cursor-pointer select-none inline-flex items-center justify-center hover:scale-125 active:scale-90 transition transform">${b.icon}</span>`).join(' ') +
-                    ` <span onclick="event.stopPropagation(); openPlayerCardModal(${toInlineArgument(playerName)});" title="${escapeHtml(allTooltip)}" class="text-[10px] font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 px-1 py-0.5 rounded cursor-pointer border border-slate-700 select-none inline-flex items-center leading-none">+${remaining.length}</span>`;
+                    ` <span onclick="event.stopPropagation(); setHallOfFameSubtab('badges');" title="${escapeHtml(allTooltip)}" class="text-[10px] font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 px-1 py-0.5 rounded cursor-pointer border border-slate-700 select-none inline-flex items-center leading-none">+${remaining.length}</span>`;
             }
             return badges.map(b => `<span onclick="event.stopPropagation(); showToast('${escapeHtml(b.icon)} ${escapeHtml(b.title)}');" title="${escapeHtml(b.title)}" class="text-xs cursor-pointer select-none inline-flex items-center justify-center hover:scale-125 active:scale-90 transition transform">${b.icon}</span>`).join(' ');
         }
@@ -12980,7 +13149,7 @@
         let currentHofSubtab = 'ranking';
         function setHallOfFameSubtab(subtab) {
             currentHofSubtab = subtab;
-            const subtabs = ['ranking', 'records', 'stats', 'archive'];
+            const subtabs = ['ranking', 'badges', 'records', 'stats', 'archive'];
             subtabs.forEach(t => {
                 const btn = document.getElementById(`hofSubtabBtn-${t}`);
                 const container = document.getElementById(`hofSubtabContainer-${t}`);
@@ -12990,20 +13159,231 @@
                 }
                 if (btn) {
                     if (isActive) {
-                        btn.className = "py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs";
                     } else {
-                        btn.className = "py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs";
                     }
                 }
             });
 
-            if (subtab === 'records' && typeof renderSeasonRecords === 'function') {
+            if (subtab === 'badges' && typeof renderBadgesGallery === 'function') {
+                renderBadgesGallery();
+            } else if (subtab === 'records' && typeof renderSeasonRecords === 'function') {
                 renderSeasonRecords();
             } else if (subtab === 'stats' && typeof renderAdvancedStatsSection === 'function') {
                 renderAdvancedStatsSection();
             } else if (subtab === 'archive' && typeof renderArchiveTab === 'function') {
                 renderArchiveTab();
             }
+        }
+
+        function renderBadgesGallery() {
+            const container = document.getElementById('hofSubtabContainer-badges');
+            if (!container) return;
+
+            const allPlayers = AppState.all_players || [];
+
+            // 1. Oblicz odznaki dla wszystkich graczy
+            const playerBadgesMap = {};
+            const badgeHoldersMap = {};
+            ALL_BADGES_DEFINITIONS.forEach(def => {
+                badgeHoldersMap[def.id] = [];
+            });
+
+            allPlayers.forEach(p => {
+                const { badges } = calculatePlayerBadges(p);
+                playerBadgesMap[p] = badges;
+                badges.forEach(b => {
+                    if (badgeHoldersMap[b.id]) {
+                        badgeHoldersMap[b.id].push(p);
+                    }
+                });
+            });
+
+            // 2. Statystyki sumaryczne
+            let totalBadgesUnlocked = 0;
+            ALL_BADGES_DEFINITIONS.forEach(def => {
+                totalBadgesUnlocked += badgeHoldersMap[def.id].length;
+            });
+
+            // Kolekcjonerzy (posortowani wg liczby zdobytych odznak)
+            const collectors = allPlayers
+                .map(p => ({
+                    name: p,
+                    count: playerBadgesMap[p]?.length || 0,
+                    badges: playerBadgesMap[p] || []
+                }))
+                .filter(c => c.count > 0)
+                .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pl'));
+
+            const topCollector = collectors.length > 0 ? collectors[0] : { name: "-", count: 0 };
+
+            // Najrzadsza odznaka (wśród tych z min. 1 posiadaczem, a jeśli żadna nie ma - najtrudniejsza)
+            let rarestBadgeDef = ALL_BADGES_DEFINITIONS[0];
+            const badgesWithHolders = ALL_BADGES_DEFINITIONS.filter(d => badgeHoldersMap[d.id].length > 0);
+            if (badgesWithHolders.length > 0) {
+                badgesWithHolders.sort((a, b) => badgeHoldersMap[a.id].length - badgeHoldersMap[b.id].length);
+                rarestBadgeDef = badgesWithHolders[0];
+            } else {
+                rarestBadgeDef = ALL_BADGES_DEFINITIONS[0];
+            }
+
+            // Top 3 Kolekcjonerów (Podium / Mini-ranking)
+            let topCollectorsHtml = '';
+            if (collectors.length >= 3) {
+                const c1 = collectors[0];
+                const c2 = collectors[1];
+                const c3 = collectors[2];
+                topCollectorsHtml = `
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3 sm:p-3.5 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>👑</span> TOP Kolekcjonerzy Odznak
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-semibold font-mono">Elita ligi</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-end pt-1">
+                            <!-- 2. miejsce -->
+                            <div onclick="openPlayerCardModal(${toInlineArgument(c2.name)})" class="cursor-pointer bg-slate-900/90 hover:bg-slate-800 border border-slate-700/60 rounded-xl p-2 text-center flex flex-col items-center justify-between transition active:scale-95 shadow-sm group">
+                                <span class="text-[9px] font-black text-slate-300">🥈 2. Miejsce</span>
+                                <div class="my-1 ring-1 ring-slate-400 rounded-full p-0.5">${getPlayerAvatarHtml(c2.name, 'xs')}</div>
+                                <span class="text-[11px] font-bold text-white group-hover:text-emerald-300 truncate w-full" title="${escapeHtml(c2.name)}">${escapeHtml(c2.name)}</span>
+                                <span class="text-[10px] font-black text-amber-300 font-mono mt-0.5">${c2.count} ${c2.count === 1 ? 'odznaka' : (c2.count >= 2 && c2.count <= 4 ? 'odznaki' : 'odznak')}</span>
+                            </div>
+
+                            <!-- 1. miejsce (złoto - wyniesione) -->
+                            <div onclick="openPlayerCardModal(${toInlineArgument(c1.name)})" class="cursor-pointer bg-gradient-to-b from-amber-500/20 to-slate-900/90 hover:from-amber-500/30 border border-amber-500/60 rounded-xl p-2 text-center flex flex-col items-center justify-between transition active:scale-95 shadow-md group -translate-y-1">
+                                <span class="text-[9px] font-black text-amber-300">👑 Lider</span>
+                                <div class="my-1 ring-2 ring-amber-400 rounded-full p-0.5">${getPlayerAvatarHtml(c1.name, 'sm')}</div>
+                                <span class="text-[11px] font-black text-white group-hover:text-amber-300 truncate w-full" title="${escapeHtml(c1.name)}">${escapeHtml(c1.name)}</span>
+                                <span class="text-xs font-black text-amber-400 font-mono mt-0.5">${c1.count} ${c1.count === 1 ? 'odznaka' : (c1.count >= 2 && c1.count <= 4 ? 'odznaki' : 'odznak')}</span>
+                            </div>
+
+                            <!-- 3. miejsce -->
+                            <div onclick="openPlayerCardModal(${toInlineArgument(c3.name)})" class="cursor-pointer bg-slate-900/90 hover:bg-slate-800 border border-amber-900/50 rounded-xl p-2 text-center flex flex-col items-center justify-between transition active:scale-95 shadow-sm group">
+                                <span class="text-[9px] font-black text-amber-500">🥉 3. Miejsce</span>
+                                <div class="my-1 ring-1 ring-amber-600 rounded-full p-0.5">${getPlayerAvatarHtml(c3.name, 'xs')}</div>
+                                <span class="text-[11px] font-bold text-white group-hover:text-emerald-300 truncate w-full" title="${escapeHtml(c3.name)}">${escapeHtml(c3.name)}</span>
+                                <span class="text-[10px] font-black text-amber-300 font-mono mt-0.5">${c3.count} ${c3.count === 1 ? 'odznaka' : (c3.count >= 2 && c3.count <= 4 ? 'odznaki' : 'odznak')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Karty wszystkich 9 odznak
+            const badgeCardsHtml = ALL_BADGES_DEFINITIONS.map(def => {
+                const holders = badgeHoldersMap[def.id] || [];
+                const holdersCount = holders.length;
+                const holdersWord = holdersCount === 1 ? 'posiadacz' : 'posiadaczy';
+
+                return `
+                    <div class="bg-gradient-to-br ${def.badgeBg} border ${def.borderClass} rounded-2xl p-3.5 sm:p-4 shadow-lg space-y-3 transition-all hover:border-slate-600">
+                        <!-- Top Header: Ikona, Nazwa, Trudność, Licznik -->
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-start gap-2.5 min-w-0 flex-1">
+                                <div class="w-11 h-11 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-2xl shrink-0 shadow-inner mt-0.5">
+                                    ${def.icon}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <strong class="text-white text-xs sm:text-sm font-black leading-tight">${escapeHtml(def.name)}</strong>
+                                        <span class="text-[8.5px] uppercase font-black px-1.5 py-0.5 rounded-full border shrink-0 ${def.badgePillClass}">
+                                            ${def.tierLabel}
+                                        </span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-300 font-medium leading-snug mt-1">${escapeHtml(def.desc)}</p>
+                                </div>
+                            </div>
+                            <span class="shrink-0 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-950/80 border border-slate-800 ${holdersCount > 0 ? 'text-amber-300 border-amber-900/60' : 'text-slate-500'}">
+                                ${holdersCount} ${holdersWord}
+                            </span>
+                        </div>
+
+                        <!-- Szczegółowe kryterium -->
+                        <div class="text-[10.5px] text-slate-400 bg-slate-950/60 border border-slate-800/70 rounded-xl px-2.5 py-1.5 leading-relaxed">
+                            <span class="text-slate-500 font-semibold">Wymóg:</span> ${escapeHtml(def.detailedReq)}
+                        </div>
+
+                        <!-- Posiadacze z awatarami -->
+                        ${holdersCount > 0 ? `
+                            <div class="space-y-1.5 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-[9.5px] text-slate-400 font-extrabold uppercase tracking-wider block">Posiadają (${holdersCount}):</span>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    ${holders.map(pName => `
+                                        <button type="button" onclick="openPlayerCardModal(${toInlineArgument(pName)})" title="Otwórz profil: ${escapeHtml(pName)}" class="inline-flex items-center gap-1.5 px-2 py-1 rounded-xl bg-slate-950/90 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-600 text-xs font-bold text-white transition active:scale-95 shadow-sm group">
+                                            ${getPlayerAvatarHtml(pName, 'xs')}
+                                            <span class="truncate max-w-[130px] group-hover:text-emerald-300">${escapeHtml(pName)}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="flex items-center gap-2 mt-1.5 pt-1.5 border-t border-amber-900/30 text-[11px] text-amber-300/90 font-medium bg-amber-950/20 px-2.5 py-1.5 rounded-xl">
+                                <span class="text-sm">🔒</span>
+                                <span class="leading-tight">Nikt jeszcze nie zdobył tej odznaki — powalcz o to trofeum!</span>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <!-- Hero Header Card -->
+                    <div class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/40 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                        <div class="flex items-start justify-between border-b border-amber-900/30 pb-3 gap-2">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-lg sm:text-xl shrink-0 shadow-sm">
+                                    🏅
+                                </div>
+                                <div class="min-w-0">
+                                    <h3 class="font-black text-sm sm:text-base text-white tracking-wide leading-tight">GABLOTA OSIĄGNIĘĆ</h3>
+                                    <p class="text-[10px] sm:text-[11px] text-slate-400 leading-snug mt-0.5">9 elitarnych odznak • Tylko oficjalne osiągnięcia</p>
+                                </div>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] text-amber-400/90 font-bold font-mono bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
+                                9 Odznak
+                            </span>
+                        </div>
+
+                        <!-- Bento Statystyki Gabloty -->
+                        <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2 sm:p-2.5">
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold block leading-tight">Zdobyte</span>
+                                <span class="text-base sm:text-xl font-black text-amber-400 font-mono">${totalBadgesUnlocked}</span>
+                                <span class="text-[9px] text-slate-500 block leading-tight">w lidze</span>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2 sm:p-2.5">
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold block leading-tight">Najrzadsze</span>
+                                <span class="text-[10px] sm:text-xs font-black text-purple-300 block mt-0.5 leading-tight truncate" title="${escapeHtml(rarestBadgeDef.name)}">${rarestBadgeDef.icon} <span class="hidden sm:inline">${escapeHtml(rarestBadgeDef.name)}</span></span>
+                                <span class="text-[9px] text-purple-400/80 font-bold block">${badgeHoldersMap[rarestBadgeDef.id].length} ${badgeHoldersMap[rarestBadgeDef.id].length === 1 ? 'os.' : 'os.'}</span>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2 sm:p-2.5">
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold block leading-tight">Lider</span>
+                                <span class="text-[10px] sm:text-xs font-black text-emerald-300 block mt-0.5 leading-tight truncate" title="${escapeHtml(topCollector.name)}">${escapeHtml(topCollector.name.split(' ')[0])}</span>
+                                <span class="text-[9px] text-emerald-400 font-bold block font-mono">${topCollector.count} odznak</span>
+                            </div>
+                        </div>
+
+                        <!-- Podium TOP 3 Kolekcjonerów -->
+                        ${topCollectorsHtml}
+                    </div>
+
+                    <!-- Siatka 9 Kart Odznak -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between px-1 gap-2 flex-wrap">
+                            <span class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>🏆</span> Wszystkie Odznaki (${ALL_BADGES_DEFINITIONS.length})
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-semibold hidden sm:block">Kliknij zawodnika, aby podejrzeć profil</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${badgeCardsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function formatPodiumPlayerNameHtml(fullName, isFirst = false) {
@@ -13200,6 +13580,9 @@
             renderSeasonRecords();
             if (typeof renderAdvancedStatsSection === 'function') {
                 renderAdvancedStatsSection();
+            }
+            if (typeof renderBadgesGallery === 'function') {
+                renderBadgesGallery();
             }
             setHallOfFameSubtab(currentHofSubtab);
         }
@@ -13672,8 +14055,8 @@
                                     <span class="text-slate-500 group-hover:text-amber-400 transition">➔</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight flex items-center gap-1">
-                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay">${escapeHtml(activeThemeInfo.name)}</span>
+                                    <strong class="text-white text-xs leading-tight flex items-center gap-1 min-w-0">
+                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay" class="truncate">${escapeHtml(activeThemeInfo.name)}</span>
                                     </strong>
                                     <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
                                 </div>
@@ -13938,8 +14321,8 @@
                                     <span class="text-slate-500 group-hover:text-amber-400 transition">➔</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight flex items-center gap-1">
-                                        <span>${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplayAdmin">${escapeHtml(activeThemeInfo.name)}</span>
+                                    <strong class="text-white text-xs leading-tight flex items-center gap-1 min-w-0">
+                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplayAdmin" class="truncate">${escapeHtml(activeThemeInfo.name)}</span>
                                     </strong>
                                     <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
                                 </div>
