@@ -112,10 +112,10 @@
             border-color: rgba(56, 189, 248, 0.35) !important;
         }
         /* Akcenty i przyciski akcji Haaland Dark (Lodowy błękit & kobalt) */
-        [data-theme="haaland-dark"] .bg-emerald-500,
-        [data-theme="haaland-dark"] .bg-emerald-600,
-        [data-theme="haaland-dark"] [class*="from-emerald-"],
-        [data-theme="haaland-dark"] [class*="from-teal-"],
+        [data-theme="haaland-dark"] .bg-emerald-500:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-dark"] .bg-emerald-600:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-dark"] [class*="from-emerald-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-dark"] [class*="from-teal-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
         [data-theme="haaland-dark"] #matchSubtabSquadBtn.bg-gradient-to-r {
             background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%) !important;
             background-image: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%) !important;
@@ -275,10 +275,10 @@
         }
 
         /* Kolory akcentów Haaland Light (Świeży błękit oceaniczny) */
-        [data-theme="haaland-light"] .bg-emerald-500,
-        [data-theme="haaland-light"] .bg-emerald-600,
-        [data-theme="haaland-light"] [class*="from-emerald-"],
-        [data-theme="haaland-light"] [class*="from-teal-"],
+        [data-theme="haaland-light"] .bg-emerald-500:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-light"] .bg-emerald-600:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-light"] [class*="from-emerald-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="haaland-light"] [class*="from-teal-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
         [data-theme="haaland-light"] #matchSubtabSquadBtn.bg-gradient-to-r {
             background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
             background-image: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
@@ -439,10 +439,10 @@
             border-color: rgba(255, 23, 131, 0.35) !important;
         }
         /* Akcenty i przyciski akcji Mercurial Dark (Neonowy Pink Blast) */
-        [data-theme="mercurial-dark"] .bg-emerald-500,
-        [data-theme="mercurial-dark"] .bg-emerald-600,
-        [data-theme="mercurial-dark"] [class*="from-emerald-"],
-        [data-theme="mercurial-dark"] [class*="from-teal-"],
+        [data-theme="mercurial-dark"] .bg-emerald-500:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-dark"] .bg-emerald-600:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-dark"] [class*="from-emerald-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-dark"] [class*="from-teal-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
         [data-theme="mercurial-dark"] #matchSubtabSquadBtn.bg-gradient-to-r {
             background: linear-gradient(135deg, #ff1783 0%, #ff4b9b 55%, #ffffff 130%) !important;
             background-image: linear-gradient(135deg, #ff1783 0%, #ff4b9b 55%, #ffffff 130%) !important;
@@ -602,10 +602,10 @@
         }
 
         /* Kolory akcentów Mercurial Light (Neonowy róż & malina) */
-        [data-theme="mercurial-light"] .bg-emerald-500,
-        [data-theme="mercurial-light"] .bg-emerald-600,
-        [data-theme="mercurial-light"] [class*="from-emerald-"],
-        [data-theme="mercurial-light"] [class*="from-teal-"],
+        [data-theme="mercurial-light"] .bg-emerald-500:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-light"] .bg-emerald-600:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-light"] [class*="from-emerald-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
+        [data-theme="mercurial-light"] [class*="from-teal-"]:not(.gablota-badge-card):not(.gablota-badge-card *),
         [data-theme="mercurial-light"] #matchSubtabSquadBtn.bg-gradient-to-r {
             background: linear-gradient(135deg, #e11d48 0%, #ff1783 100%) !important;
             background-image: linear-gradient(135deg, #e11d48 0%, #ff1783 100%) !important;
@@ -1000,9 +1000,7 @@
         [data-theme="haaland-light"] .match-modal-mvp-banner,
         [data-theme="mercurial-light"] .match-modal-mvp-banner,
         [data-theme="haaland-light"] .profile-vote-alert-banner,
-        [data-theme="mercurial-light"] .profile-vote-alert-banner,
-        [data-theme="haaland-light"] #playerCardSpecialAwardsCard,
-        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard {
+        [data-theme="mercurial-light"] .profile-vote-alert-banner {
             background-color: #fef3c7 !important;
             background-image: linear-gradient(90deg, #fffdf5 0%, #fef3c7 65%, #fde68a 100%) !important;
             border-color: #f59e0b !important;
@@ -1011,9 +1009,7 @@
         [data-theme="haaland-light"] .match-card-mvp-banner span.text-amber-300,
         [data-theme="mercurial-light"] .match-card-mvp-banner span.text-amber-300,
         [data-theme="haaland-light"] .match-modal-mvp-banner span.text-amber-300,
-        [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-amber-300,
-        [data-theme="haaland-light"] #playerCardSpecialAwardsCard span.text-amber-300,
-        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard span.text-amber-300 {
+        [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-amber-300 {
             color: #92400e !important;
             font-weight: 800 !important;
         }
@@ -1022,9 +1018,7 @@
         [data-theme="haaland-light"] .match-modal-mvp-banner span.text-white,
         [data-theme="mercurial-light"] .match-modal-mvp-banner span.text-white,
         [data-theme="haaland-light"] .profile-vote-alert-banner p.text-white,
-        [data-theme="mercurial-light"] .profile-vote-alert-banner p.text-white,
-        [data-theme="haaland-light"] #playerCardSpecialAwardsCard span.text-white,
-        [data-theme="mercurial-light"] #playerCardSpecialAwardsCard span.text-white {
+        [data-theme="mercurial-light"] .profile-vote-alert-banner p.text-white {
             color: #78350f !important;
             font-weight: 900 !important;
         }
@@ -2350,6 +2344,86 @@
         [data-theme="mercurial-light"] .border-slate-800\/60,
         [data-theme="mercurial-light"] .border-slate-800\/50 {
             border-color: #fce7f3 !important;
+        }
+
+        /* ================= GABLOTA OSIĄGNIĘĆ & ODZNAKI (CROSS-THEME SUPPORT) ================= */
+        .gablota-badge-card {
+            background-color: #111a2e !important;
+            background-image: none !important;
+            box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.35) !important;
+            transition: all 0.2s ease;
+        }
+        [data-theme="haaland-dark"] .gablota-badge-card {
+            background-color: #151f33 !important;
+            background-image: none !important;
+        }
+        [data-theme="mercurial-dark"] .gablota-badge-card {
+            background-color: #12121b !important;
+            background-image: none !important;
+        }
+        [data-theme="classic"] .gablota-badge-card {
+            background-color: #0f172a !important;
+            background-image: none !important;
+        }
+        [data-theme="haaland-light"] .gablota-badge-card {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04) !important;
+        }
+        [data-theme="mercurial-light"] .gablota-badge-card {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            box-shadow: 0 4px 12px -2px rgba(255, 23, 131, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        /* Wymóg, Ikona i Przyciski graczy wewnątrz kart w jasnych motywach */
+        [data-theme="haaland-light"] .gablota-badge-card .gablota-req-box,
+        [data-theme="mercurial-light"] .gablota-badge-card .gablota-req-box {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        [data-theme="haaland-light"] .gablota-badge-card .gablota-icon-box,
+        [data-theme="mercurial-light"] .gablota-badge-card .gablota-icon-box {
+            background-color: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+        }
+        [data-theme="haaland-light"] .gablota-badge-card button,
+        [data-theme="mercurial-light"] .gablota-badge-card button {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+        [data-theme="haaland-light"] .gablota-badge-card button:hover,
+        [data-theme="mercurial-light"] .gablota-badge-card button:hover {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        /* Wsparcie kolorów badgePill w jasnych motywach */
+        [data-theme="haaland-light"] [class*="bg-purple-950"],
+        [data-theme="mercurial-light"] [class*="bg-purple-950"] {
+            background-color: #f3e8ff !important;
+            color: #7e22ce !important;
+            border-color: #e9d5ff !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-orange-950"],
+        [data-theme="mercurial-light"] [class*="bg-orange-950"] {
+            background-color: #ffedd5 !important;
+            color: #c2410c !important;
+            border-color: #fed7aa !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-teal-950"],
+        [data-theme="mercurial-light"] [class*="bg-teal-950"] {
+            background-color: #ccfbf1 !important;
+            color: #0f766e !important;
+            border-color: #99f6e4 !important;
+        }
+        [data-theme="haaland-light"] [class*="bg-cyan-950"],
+        [data-theme="mercurial-light"] [class*="bg-cyan-950"] {
+            background-color: #cffafe !important;
+            color: #0e7490 !important;
+            border-color: #a5f3fc !important;
         }
     </style>
 </head>
@@ -3758,29 +3832,26 @@
                 </div>
             </div>
 
-            <!-- 3. Wyróżnienie Sezonu (Złota pigułka) -->
-            <div id="playerCardSpecialAwardsCard" class="hidden bg-gradient-to-r from-amber-500/10 via-amber-950/30 to-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-xs shadow-sm">
-                <div class="flex items-center gap-2 min-w-0">
-                    <span class="text-base shrink-0">👑</span>
-                    <div class="min-w-0">
-                        <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
-                        <strong id="playerCardSpecialAwards" class="text-amber-200 text-xs whitespace-normal break-words leading-tight block">-</strong>
-                    </div>
+            <!-- 3. Wyróżnienie Sezonu (Prosta, estetyczna forma) -->
+            <div id="playerCardSpecialAwardsCard" class="hidden bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2.5 text-xs">
+                <div class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-sm shrink-0">
+                    ⭐
                 </div>
-                <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
-                    Top 1
-                </span>
+                <div class="min-w-0 flex-1">
+                    <span class="text-[9.5px] uppercase font-bold text-slate-400 block tracking-wider">Wyróżnienie w sezonie</span>
+                    <strong id="playerCardSpecialAwards" class="text-white text-xs font-semibold whitespace-normal break-words leading-snug block">-</strong>
+                </div>
             </div>
 
-            <!-- 4. Zdobyte Odznaki (Odchudzona siatka 2-kolumnowa z tap-to-toast) -->
+            <!-- 4. Zdobyte Odznaki (Kompaktowa siatka 2-kolumnowa) -->
             <div class="space-y-2 pt-1">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-1 flex-wrap">
                     <h4 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-1">
                         <span>🏅</span> Zdobyte Odznaki (<span id="playerCardBadgeCount">0</span>)
                     </h4>
-                    <span class="text-[10px] text-slate-500 font-semibold">Dotknij odznaki, by poznać opis</span>
+                    <span class="text-[10px] text-slate-500 font-medium">Kliknij, by poznać wymóg</span>
                 </div>
-                <div id="playerCardBadgesList" class="grid grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1">
+                <div id="playerCardBadgesList" class="grid grid-cols-2 gap-1.5 sm:gap-2 max-h-48 overflow-y-auto pr-1">
                     <!-- Badges injected dynamically -->
                 </div>
             </div>
@@ -12284,8 +12355,7 @@
                 name: "Człowiek Orkiestra",
                 tier: "legendary",
                 tierLabel: "Legenda",
-                badgeBg: "from-amber-500/15 via-purple-950/40 to-slate-950",
-                borderClass: "border-purple-500/50 hover:border-purple-400",
+                borderClass: "border-purple-500/50 hover:border-purple-300",
                 badgePillClass: "bg-purple-950 text-purple-300 border-purple-700/80",
                 desc: "Min. 1x nagroda w każdej z 4 kategorii (Blok, Atak, Obrona, Serwis)",
                 detailedReq: "Wymaga zdobycia przynajmniej raz nagrody MVP w głosowaniach na Czapę (blok), Gwóźdź (atak), Obronę i Serwis."
@@ -12296,8 +12366,7 @@
                 name: "Dominator MVP",
                 tier: "legendary",
                 tierLabel: "Legenda",
-                badgeBg: "from-amber-500/20 via-amber-950/40 to-slate-950",
-                borderClass: "border-amber-500/50 hover:border-amber-400",
+                borderClass: "border-amber-500/50 hover:border-amber-300",
                 badgePillClass: "bg-amber-950 text-amber-300 border-amber-700/80",
                 desc: "Zdobył oficjalny tytuł MVP meczu co najmniej 4 razy w sezonie",
                 detailedReq: "Najwyższe indywidualne wyróżnienie ligowe za regularne przewodzenie drużynie do zwycięstw (min. 4x MVP)."
@@ -12308,7 +12377,6 @@
                 name: "MVP Star",
                 tier: "epic",
                 tierLabel: "Elitarna",
-                badgeBg: "from-amber-500/15 via-yellow-950/30 to-slate-950",
                 borderClass: "border-amber-400/40 hover:border-amber-300",
                 badgePillClass: "bg-amber-950/80 text-amber-300 border-amber-800/80",
                 desc: "Przynajmniej 2 wygrane MVP meczu w sezonie 2026",
@@ -12320,7 +12388,6 @@
                 name: "Głos Ludu",
                 tier: "epic",
                 tierLabel: "Elitarna",
-                badgeBg: "from-sky-500/15 via-indigo-950/40 to-slate-950",
                 borderClass: "border-sky-500/40 hover:border-sky-300",
                 badgePillClass: "bg-sky-950 text-sky-300 border-sky-700/80",
                 desc: "Wygrana MVP z dominującym poparciem (>55% głosów w meczu)",
@@ -12332,7 +12399,6 @@
                 name: "W Zwycięskim Cugu",
                 tier: "rare",
                 tierLabel: "Mistrzowska",
-                badgeBg: "from-orange-500/15 via-rose-950/30 to-slate-950",
                 borderClass: "border-orange-500/40 hover:border-orange-300",
                 badgePillClass: "bg-orange-950 text-orange-300 border-orange-700/80",
                 desc: "Seria min. 3 zwycięstw z rzędu w oficjalnych meczach",
@@ -12344,7 +12410,6 @@
                 name: "Król 5. Seta",
                 tier: "rare",
                 tierLabel: "Mistrzowska",
-                badgeBg: "from-rose-500/15 via-slate-900 to-slate-950",
                 borderClass: "border-rose-500/40 hover:border-rose-300",
                 badgePillClass: "bg-rose-950 text-rose-300 border-rose-700/80",
                 desc: "Min. 3 wygrane tie-breaki (3:2) w meczach z wynikiem",
@@ -12356,7 +12421,6 @@
                 name: "Kameleon Parkietu",
                 tier: "challenge",
                 tierLabel: "Wyzwanie",
-                badgeBg: "from-indigo-500/15 via-cyan-950/30 to-slate-950",
                 borderClass: "border-indigo-500/40 hover:border-indigo-300",
                 badgePillClass: "bg-indigo-950 text-indigo-300 border-indigo-700/80",
                 desc: "Min. 3 wygrane u Ciemnych i min. 3 wygrane u Jasnych",
@@ -12368,9 +12432,8 @@
                 name: "Żelazna Seria",
                 tier: "challenge",
                 tierLabel: "Wyzwanie",
-                badgeBg: "from-emerald-500/15 via-teal-950/30 to-slate-950",
-                borderClass: "border-emerald-500/40 hover:border-emerald-300",
-                badgePillClass: "bg-emerald-950 text-emerald-300 border-emerald-700/80",
+                borderClass: "border-teal-500/40 hover:border-teal-300",
+                badgePillClass: "bg-teal-950 text-teal-300 border-teal-700/80",
                 desc: "Seria min. 8 meczów ligowych z rzędu bez pauzy",
                 detailedReq: "Niezachwiana frekwencja i pełne zaangażowanie w każdy kolejny mecz sezonu."
             },
@@ -12380,7 +12443,6 @@
                 name: "Klub 20+",
                 tier: "challenge",
                 tierLabel: "Prestiż",
-                badgeBg: "from-cyan-500/15 via-blue-950/30 to-slate-950",
                 borderClass: "border-cyan-500/40 hover:border-cyan-300",
                 badgePillClass: "bg-cyan-950 text-cyan-300 border-cyan-700/80",
                 desc: "Filar ligi: ponad 20 rozegranych spotkań w sezonie",
@@ -13036,16 +13098,12 @@
                 } else {
                     badgesListEl.innerHTML = badges.map(b => {
                         const colonIdx = b.title.indexOf(':');
-                        const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : b.title;
-                        const badgeDesc = colonIdx !== -1 ? b.title.slice(colonIdx + 1).trim() : '';
-                        const safeFullTitle = escapeHtml(b.title).replace(/'/g, "\\'");
+                        const badgeName = colonIdx !== -1 ? b.title.slice(0, colonIdx).trim() : (b.name || b.title);
+                        const safeFullTitle = escapeHtml(b.title || b.name || '').replace(/'/g, "\\'");
                         return `
-                            <div onclick="if(typeof showToast==='function') showToast('${safeFullTitle}')" class="bg-slate-950/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-xl p-2 flex items-center gap-2 cursor-pointer transition active:scale-95 shadow-sm">
-                                <span class="text-lg shrink-0">${b.icon}</span>
-                                <div class="min-w-0 flex-1">
-                                    <strong class="text-[11px] font-bold text-white block truncate leading-tight">${escapeHtml(badgeName)}</strong>
-                                    <span class="text-[9px] text-slate-400 truncate block">${escapeHtml(badgeDesc || badgeName)}</span>
-                                </div>
+                            <div onclick="if(typeof showToast==='function') showToast('${safeFullTitle}')" title="${escapeHtml(b.title || badgeName)}" class="bg-slate-950/80 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 rounded-xl px-2.5 py-2 flex items-center gap-2 cursor-pointer transition active:scale-95 shadow-sm group">
+                                <span class="text-lg shrink-0 group-hover:scale-110 transition-transform">${b.icon}</span>
+                                <span class="text-xs font-bold text-white leading-snug break-words min-w-0 flex-1">${escapeHtml(badgeName)}</span>
                             </div>
                         `;
                     }).join('');
@@ -13278,11 +13336,11 @@
                 const holdersWord = holdersCount === 1 ? 'posiadacz' : 'posiadaczy';
 
                 return `
-                    <div class="bg-gradient-to-br ${def.badgeBg} border ${def.borderClass} rounded-2xl p-3.5 sm:p-4 shadow-lg space-y-3 transition-all hover:border-slate-600">
+                    <div class="gablota-badge-card border ${def.borderClass} rounded-2xl p-3.5 sm:p-4 shadow-lg space-y-3 transition-all hover:scale-[1.01]">
                         <!-- Top Header: Ikona, Nazwa, Trudność, Licznik -->
                         <div class="flex items-start justify-between gap-2">
                             <div class="flex items-start gap-2.5 min-w-0 flex-1">
-                                <div class="w-11 h-11 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-2xl shrink-0 shadow-inner mt-0.5">
+                                <div class="gablota-icon-box w-11 h-11 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-2xl shrink-0 shadow-inner mt-0.5">
                                     ${def.icon}
                                 </div>
                                 <div class="min-w-0 flex-1">
@@ -13301,7 +13359,7 @@
                         </div>
 
                         <!-- Szczegółowe kryterium -->
-                        <div class="text-[10.5px] text-slate-400 bg-slate-950/60 border border-slate-800/70 rounded-xl px-2.5 py-1.5 leading-relaxed">
+                        <div class="gablota-req-box text-[10.5px] text-slate-400 bg-slate-950/60 border border-slate-800/70 rounded-xl px-2.5 py-1.5 leading-relaxed">
                             <span class="text-slate-500 font-semibold">Wymóg:</span> ${escapeHtml(def.detailedReq)}
                         </div>
 
