@@ -3832,14 +3832,16 @@
                 </div>
             </div>
 
-            <!-- 3. Wyróżnienie Sezonu (Prosta, estetyczna forma) -->
-            <div id="playerCardSpecialAwardsCard" class="hidden bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2.5 text-xs">
-                <div class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-sm shrink-0">
-                    ⭐
+            <!-- 3. Wyróżnienia Pomeczowe (4 kafelki kategorii: Czapa, Gwóźdź, Obrona, Serwis) -->
+            <div id="playerCardSpecialAwardsCard" class="hidden space-y-1.5">
+                <div class="flex items-center justify-between px-0.5">
+                    <span class="text-[10px] font-black uppercase text-amber-300 tracking-wider flex items-center gap-1">
+                        <span>✨</span> Wyróżnienia ligowe
+                    </span>
+                    <span id="playerCardSpecialAwardsTotal" class="text-[9.5px] text-slate-400 font-bold font-mono"></span>
                 </div>
-                <div class="min-w-0 flex-1">
-                    <span class="text-[9.5px] uppercase font-bold text-slate-400 block tracking-wider">Wyróżnienie w sezonie</span>
-                    <strong id="playerCardSpecialAwards" class="text-white text-xs font-semibold whitespace-normal break-words leading-snug block">-</strong>
+                <div id="playerCardSpecialAwardsGrid" class="grid grid-cols-4 gap-1.5 text-center">
+                    <!-- 4 mini-kafelki renderowane dynamicznie -->
                 </div>
             </div>
 
@@ -13044,42 +13046,62 @@
                 if (setsSubEl) setsSubEl.innerText = "Brak rozegranych setów";
             }
 
-            // Wyróżnienia Sezonu (Złota pigułka)
+            // Wyróżnienia Sezonu (4 mini-kafelki kategorii: Czapa, Gwóźdź, Obrona, Serwis)
             const specialAwardsCard = document.getElementById('playerCardSpecialAwardsCard');
-            const specialAwardsEl = document.getElementById('playerCardSpecialAwards');
-            if (specialAwardsEl) {
+            const specialAwardsGrid = document.getElementById('playerCardSpecialAwardsGrid');
+            const specialAwardsTotal = document.getElementById('playerCardSpecialAwardsTotal');
+            if (specialAwardsCard && specialAwardsGrid) {
                 const seasonAwards = (typeof calculateSeasonSpecialAwards === 'function') ? calculateSeasonSpecialAwards(AppState) : null;
                 const pAwards = seasonAwards?.playerStats?.[playerName];
-                if (pAwards && (pAwards.totalWins > 0 || (pAwards.titles && pAwards.titles.length > 0))) {
-                    const awardTokens = [];
-                    const catMeta = [
-                        { key: 'block', icon: '🧱', name: 'Czapa' },
-                        { key: 'spike', icon: '🔨', name: 'Gwóźdź' },
-                        { key: 'defense', icon: '🐟', name: 'Obrona' },
-                        { key: 'serve', icon: '🌪️', name: 'Serwis' }
-                    ];
-                    catMeta.forEach(c => {
-                        const w = pAwards[c.key]?.wins || 0;
-                        if (w > 0) {
-                            awardTokens.push(`${w}x ${c.name} ${c.icon}`);
-                        }
-                    });
+                const totalWins = pAwards?.totalWins || 0;
+                const titles = pAwards?.titles || [];
 
-                    const titleStrs = (pAwards.titles || []).map(t => `${t.icon} ${t.title}`);
-                    let text = "";
-                    if (titleStrs.length > 0) {
-                        text = `${titleStrs.join(', ')}${awardTokens.length ? ` (${awardTokens.join(' • ')})` : ''}`;
-                    } else if (awardTokens.length) {
-                        text = awardTokens.join(' • ');
+                if (pAwards && (totalWins > 0 || titles.length > 0)) {
+                    if (specialAwardsTotal) {
+                        specialAwardsTotal.innerText = `Suma: ${totalWins}`;
                     }
-                    if (text) {
-                        specialAwardsEl.innerText = text;
-                        if (specialAwardsCard) specialAwardsCard.classList.remove('hidden');
-                    } else {
-                        if (specialAwardsCard) specialAwardsCard.classList.add('hidden');
-                    }
+
+                    const catMeta = [
+                        { key: 'block', icon: '🧱', name: 'Czapa', sub: 'Blok' },
+                        { key: 'spike', icon: '🔨', name: 'Gwóźdź', sub: 'Atak' },
+                        { key: 'defense', icon: '🐟', name: 'Obrona', sub: 'Obrona' },
+                        { key: 'serve', icon: '🌪️', name: 'Serwis', sub: 'Zagrywka' }
+                    ];
+
+                    specialAwardsGrid.innerHTML = catMeta.map(c => {
+                        const wins = pAwards[c.key]?.wins || 0;
+                        const isLeader = titles.some(t => t.cat === c.key || t.title.toLowerCase().includes(c.name.toLowerCase()));
+                        const leaderTitleObj = titles.find(t => t.cat === c.key || t.title.toLowerCase().includes(c.name.toLowerCase()));
+                        const leaderTitle = leaderTitleObj ? `${leaderTitleObj.icon} ${leaderTitleObj.title}` : '';
+                        const hasWins = wins > 0;
+                        const tooltipText = isLeader 
+                            ? `${leaderTitle} (${wins}x ${c.name})` 
+                            : `${c.name} (${c.sub}): ${wins}x wyróżnienie`;
+
+                        return `
+                            <div onclick="if(typeof showToast==='function') showToast('${tooltipText.replace(/'/g, "\\'")}')" 
+                                 title="${escapeHtml(tooltipText)}" 
+                                 class="relative rounded-2xl p-2 flex flex-col items-center justify-between transition cursor-pointer active:scale-95 shadow-sm ${
+                                     isLeader 
+                                         ? 'bg-slate-950/90 border border-amber-500/60 ring-1 ring-amber-500/30' 
+                                         : (hasWins 
+                                             ? 'bg-slate-950/90 border border-slate-800 hover:border-slate-700' 
+                                             : 'bg-slate-950/40 border border-slate-850/60 opacity-45 hover:opacity-75')
+                                 }">
+                                ${isLeader ? `<span class="absolute -top-1.5 -right-1 text-xs" title="${escapeHtml(leaderTitle)}">👑</span>` : ''}
+                                <span class="text-base sm:text-lg shrink-0 leading-none mt-0.5">${c.icon}</span>
+                                <span class="text-sm sm:text-base font-black font-mono my-0.5 ${hasWins ? (isLeader ? 'text-amber-300' : 'text-white') : 'text-slate-500'} leading-none">${wins}</span>
+                                <div class="w-full min-w-0">
+                                    <span class="text-[9.5px] font-bold ${hasWins ? 'text-slate-200' : 'text-slate-500'} block truncate leading-tight">${c.name}</span>
+                                    <span class="text-[8px] text-slate-500 block truncate leading-none mt-0.5">${c.sub}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    specialAwardsCard.classList.remove('hidden');
                 } else {
-                    if (specialAwardsCard) specialAwardsCard.classList.add('hidden');
+                    specialAwardsCard.classList.add('hidden');
                 }
             }
 
@@ -13764,25 +13786,58 @@
             const pStreak = (typeof calculatePlayerStreaks === 'function') ? calculatePlayerStreaks(loggedPlayer) : { current: 0, max: 0 };
             const streakText = pStreak.current >= 2 ? `🔥 ${pluralizeMatches(pStreak.current)} z rzędu` : '';
 
-            let specialAwardsText = "";
+            let specialAwardsGridHtml = "";
             if (myAwards && (myAwards.totalWins > 0 || (myAwards.titles && myAwards.titles.length > 0))) {
-                const awardTokens = [];
+                const totalWins = myAwards.totalWins || 0;
+                const titles = myAwards.titles || [];
                 const catMeta = [
-                    { key: 'block', icon: '🧱', name: 'Czapa' },
-                    { key: 'spike', icon: '🔨', name: 'Gwóźdź' },
-                    { key: 'defense', icon: '🐟', name: 'Obrona' },
-                    { key: 'serve', icon: '🌪️', name: 'Serwis' }
+                    { key: 'block', icon: '🧱', name: 'Czapa', sub: 'Blok' },
+                    { key: 'spike', icon: '🔨', name: 'Gwóźdź', sub: 'Atak' },
+                    { key: 'defense', icon: '🐟', name: 'Obrona', sub: 'Obrona' },
+                    { key: 'serve', icon: '🌪️', name: 'Serwis', sub: 'Zagrywka' }
                 ];
-                catMeta.forEach(c => {
-                    const w = myAwards[c.key]?.wins || 0;
-                    if (w > 0) awardTokens.push(`${w}x ${c.name} ${c.icon}`);
-                });
-                const titleStrs = (myAwards.titles || []).map(t => `${t.icon} ${t.title}`);
-                if (titleStrs.length > 0) {
-                    specialAwardsText = `${titleStrs.join(', ')}${awardTokens.length ? ` (${awardTokens.join(' • ')})` : ''}`;
-                } else if (awardTokens.length) {
-                    specialAwardsText = awardTokens.join(' • ');
-                }
+                specialAwardsGridHtml = `
+                    <div class="space-y-1.5 pt-0.5">
+                        <div class="flex items-center justify-between px-0.5">
+                            <span class="text-[10px] font-black uppercase text-amber-300 tracking-wider flex items-center gap-1">
+                                <span>✨</span> Wyróżnienia ligowe
+                            </span>
+                            <span class="text-[9.5px] text-slate-400 font-bold font-mono">Suma: ${totalWins}</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5 text-center">
+                            ${catMeta.map(c => {
+                                const wins = myAwards[c.key]?.wins || 0;
+                                const isLeader = titles.some(t => t.cat === c.key || t.title.toLowerCase().includes(c.name.toLowerCase()));
+                                const leaderTitleObj = titles.find(t => t.cat === c.key || t.title.toLowerCase().includes(c.name.toLowerCase()));
+                                const leaderTitle = leaderTitleObj ? `${leaderTitleObj.icon} ${leaderTitleObj.title}` : '';
+                                const hasWins = wins > 0;
+                                const tooltipText = isLeader 
+                                    ? `${leaderTitle} (${wins}x ${c.name})` 
+                                    : `${c.name} (${c.sub}): ${wins}x wyróżnienie`;
+
+                                return `
+                                    <div onclick="if(typeof showToast==='function') showToast('${tooltipText.replace(/'/g, "\\'")}')" 
+                                         title="${escapeHtml(tooltipText)}" 
+                                         class="relative rounded-2xl p-2 flex flex-col items-center justify-between transition cursor-pointer active:scale-95 shadow-sm ${
+                                             isLeader 
+                                                 ? 'bg-slate-950/90 border border-amber-500/60 ring-1 ring-amber-500/30' 
+                                                 : (hasWins 
+                                                     ? 'bg-slate-950/90 border border-slate-800 hover:border-slate-700' 
+                                                     : 'bg-slate-950/40 border border-slate-850/60 opacity-45 hover:opacity-75')
+                                         }">
+                                        ${isLeader ? `<span class="absolute -top-1.5 -right-1 text-xs" title="${escapeHtml(leaderTitle)}">👑</span>` : ''}
+                                        <span class="text-base sm:text-lg shrink-0 leading-none mt-0.5">${c.icon}</span>
+                                        <span class="text-sm sm:text-base font-black font-mono my-0.5 ${hasWins ? (isLeader ? 'text-amber-300' : 'text-white') : 'text-slate-500'} leading-none">${wins}</span>
+                                        <div class="w-full min-w-0">
+                                            <span class="text-[9.5px] font-bold ${hasWins ? 'text-slate-200' : 'text-slate-500'} block truncate leading-tight">${c.name}</span>
+                                            <span class="text-[8px] text-slate-500 block truncate leading-none mt-0.5">${c.sub}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
             }
 
             const latestPlayed = getLatestPlayedMatchInfo();
@@ -13987,21 +14042,8 @@
                         </div>
                     </div>
 
-                    <!-- 3. Wyróżnienie Sezonu (Złota pigułka) -->
-                    ${specialAwardsText ? `
-                    <div class="bg-gradient-to-r from-amber-500/10 via-amber-950/30 to-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-xs shadow-sm">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span class="text-base shrink-0">👑</span>
-                            <div class="min-w-0">
-                                <span class="text-[9.5px] uppercase font-black text-amber-400 block tracking-wider">Tytuł Sezonu</span>
-                                <strong class="text-amber-200 text-xs whitespace-normal break-words leading-tight block">${specialAwardsText}</strong>
-                            </div>
-                        </div>
-                        <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full shrink-0">
-                            Top 1
-                        </span>
-                    </div>
-                    ` : ''}
+                    <!-- 3. Wyróżnienia Pomeczowe (4 mini-kafelki) -->
+                    ${specialAwardsGridHtml}
 
                     <!-- 4. Zdobyte Odznaki (Odchudzona siatka 2-kolumnowa z tap-to-toast) -->
                     <div class="space-y-2 pt-1">
