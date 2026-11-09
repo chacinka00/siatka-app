@@ -12007,9 +12007,15 @@
         }
 
         let currentAdvancedStatsTab = 'winimpact';
+        let currentPointsSortMode = 'diff';
 
         function switchAdvancedStatsSubTab(tabName) {
             currentAdvancedStatsTab = tabName;
+            renderAdvancedStatsSection(true);
+        }
+
+        function setPointsSortMode(mode) {
+            currentPointsSortMode = mode;
             renderAdvancedStatsSection(true);
         }
 
@@ -12290,12 +12296,26 @@
                     </div>
                 `;
             } else if (currentAdvancedStatsTab === 'points') {
-                const list = stats.pointBalanceRanking;
+                const rawList = stats.pointBalanceRanking || [];
+                const list = (currentPointsSortMode === 'ratio')
+                    ? [...rawList].sort((a, b) => b.ratio - a.ratio || b.diff - a.diff || b.won - a.won || a.name.localeCompare(b.name, 'pl'))
+                    : rawList;
+
                 subTabContentHtml = `
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-400 bg-slate-950/60 border border-slate-800/80 rounded-xl px-3 py-2">
-                            <span>Suma punktów zdobytych i straconych oraz bilans małych punktów</span>
-                            <span class="text-[10px] text-slate-400 font-bold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md shrink-0">Wymóg: min. 4 sety</span>
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-400 bg-slate-950/60 border border-slate-800/80 rounded-xl px-2.5 py-1.5">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-slate-500 font-semibold text-[10px]">Sortuj:</span>
+                                <div class="inline-flex rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-[9.5px] font-bold">
+                                    <button type="button" onclick="setPointsSortMode('diff')" class="px-2 py-0.5 rounded-md transition ${currentPointsSortMode === 'diff' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' : 'text-slate-400 hover:text-white'}">
+                                        Bilans +/-
+                                    </button>
+                                    <button type="button" onclick="setPointsSortMode('ratio')" class="px-2 py-0.5 rounded-md transition ${currentPointsSortMode === 'ratio' ? 'bg-emerald-500 text-slate-950 font-black shadow-sm' : 'text-slate-400 hover:text-white'}">
+                                        Ratio (FIVB)
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="text-[9.5px] text-slate-400 font-bold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md shrink-0">Wymóg: min. 4 sety</span>
                         </div>
                         ${list.length === 0 ? `
                             <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-6 text-center space-y-1.5">
@@ -12308,33 +12328,39 @@
                                 <table class="w-full text-left text-xs text-slate-300">
                                     <thead class="bg-slate-950 text-slate-400 uppercase font-bold text-[9px] tracking-wider border-b border-slate-800">
                                         <tr>
-                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center w-7 sm:w-8">#</th>
-                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-left">Zawodnik</th>
-                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center whitespace-nowrap">Małe Pkt (+ / -)</th>
-                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center whitespace-nowrap">Bilans +/-</th>
-                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-right font-extrabold text-emerald-400 whitespace-nowrap">Ratio</th>
+                                            <th class="py-2 px-1 text-center w-6 sm:w-8">#</th>
+                                            <th class="py-2 px-1 sm:px-2 text-left">Zawodnik</th>
+                                            <th class="py-2 px-1 sm:px-2 text-center whitespace-nowrap">Pkt (+ / -)</th>
+                                            <th class="py-2 px-1 sm:px-2 text-center whitespace-nowrap cursor-pointer hover:text-white transition" onclick="setPointsSortMode('diff')" title="Sortuj wg Bilansu">
+                                                <span class="${currentPointsSortMode === 'diff' ? 'text-emerald-400 underline decoration-2 underline-offset-2' : ''}">Bilans +/-</span>
+                                            </th>
+                                            <th class="py-2 px-1 sm:px-2 text-right whitespace-nowrap cursor-pointer hover:text-white transition pr-2 sm:pr-3" onclick="setPointsSortMode('ratio')" title="Sortuj wg Ratio">
+                                                <span class="${currentPointsSortMode === 'ratio' ? 'text-emerald-400 underline decoration-2 underline-offset-2' : ''}">Ratio</span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-800/60 bg-slate-900/60">
                                         ${list.map((item, idx) => `
                                             <tr class="hover:bg-slate-800/40 transition">
-                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-bold font-mono ${idx === 0 ? 'text-amber-300' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-500'}">
+                                                <td class="py-2 px-1 text-center font-bold font-mono text-[11px] sm:text-xs ${idx === 0 ? 'text-amber-300' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-500'}">
                                                     ${idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1)}
                                                 </td>
-                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2">
-                                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(item.name)})" class="flex items-center gap-1.5 sm:gap-2 text-left hover:text-cyan-300 transition group">
-                                                        ${getPlayerAvatarHtml(item.name, 'xs')}
-                                                        <span class="font-bold text-white group-hover:text-cyan-300 whitespace-normal break-words leading-tight">${escapeHtml(item.name)}</span>
+                                                <td class="py-2 px-1 sm:px-2 min-w-0 max-w-[105px] sm:max-w-none">
+                                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(item.name)})" class="flex items-center gap-1 sm:gap-2 text-left hover:text-cyan-300 transition group min-w-0 w-full">
+                                                        <div class="shrink-0 scale-90 sm:scale-100 origin-left">
+                                                            ${getPlayerAvatarHtml(item.name, 'xs')}
+                                                        </div>
+                                                        <span class="font-bold text-white group-hover:text-cyan-300 whitespace-nowrap truncate text-[11px] sm:text-xs min-w-0 block">${escapeHtml(item.name)}</span>
                                                     </button>
                                                 </td>
-                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-mono text-[11px] text-slate-300 whitespace-nowrap">
-                                                    <span class="text-emerald-400 font-bold">${item.won}</span> : <span class="text-rose-400 font-bold">${item.lost}</span>
-                                                    <span class="text-[10px] text-slate-500 block">(${pluralizeSets(item.sets)})</span>
+                                                <td class="py-2 px-1 sm:px-2 text-center font-mono text-[10.5px] sm:text-[11px] text-slate-300 whitespace-nowrap">
+                                                    <span class="text-emerald-400 font-bold">${item.won}</span>:<span class="text-rose-400 font-bold">${item.lost}</span>
+                                                    <span class="text-[9px] sm:text-[10px] text-slate-500 block leading-tight">(${item.sets} setów)</span>
                                                 </td>
-                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-mono font-bold text-xs whitespace-nowrap ${item.diff > 0 ? 'text-emerald-400' : item.diff < 0 ? 'text-rose-400' : 'text-slate-400'}">
+                                                <td class="py-2 px-1 sm:px-2 text-center font-mono font-bold text-[11px] sm:text-xs whitespace-nowrap ${item.diff > 0 ? 'text-emerald-400' : item.diff < 0 ? 'text-rose-400' : 'text-slate-400'}">
                                                     ${item.diff > 0 ? `+${item.diff}` : item.diff}
                                                 </td>
-                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-right font-mono font-black text-xs sm:text-sm whitespace-nowrap ${item.ratio >= 1.0 ? 'text-emerald-400' : 'text-rose-400'}">
+                                                <td class="py-2 px-1 sm:px-2 pr-2 sm:pr-3 text-right font-mono font-black text-xs sm:text-sm whitespace-nowrap ${item.ratio >= 1.0 ? 'text-emerald-400' : 'text-rose-400'}">
                                                     ${item.ratioFormatted}
                                                 </td>
                                             </tr>
