@@ -2778,25 +2778,25 @@
                                     <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
                                         <div>
                                             <label for="voteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
-                                            <select id="voteAwardBlock" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <select id="voteAwardBlock" onchange="handleSpecialAwardChange('')" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                                 <option value="">-- Pomiń --</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label for="voteAwardSpike" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🔨 Gwóźdź (atak):</label>
-                                            <select id="voteAwardSpike" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <select id="voteAwardSpike" onchange="handleSpecialAwardChange('')" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                                 <option value="">-- Pomiń --</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label for="voteAwardDefense" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🐟 Ryba (obrona):</label>
-                                            <select id="voteAwardDefense" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <select id="voteAwardDefense" onchange="handleSpecialAwardChange('')" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                                 <option value="">-- Pomiń --</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label for="voteAwardServe" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🌪️ Serwis Turbo:</label>
-                                            <select id="voteAwardServe" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                            <select id="voteAwardServe" onchange="handleSpecialAwardChange('')" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                                 <option value="">-- Pomiń --</option>
                                             </select>
                                         </div>
@@ -3849,15 +3849,21 @@
                     </div>
                 </div>
 
-                <!-- Bilans Setów -->
+                <!-- Bilans Setów & Małych Punktów -->
                 <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
                     <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
-                        <span class="flex items-center gap-1"><span>📈</span> Bilans Setów</span>
+                        <span class="flex items-center gap-1"><span class="text-cyan-400">📈</span> Sety & Małe Pkt</span>
                         <span id="playerCardSetsDiff" class="text-cyan-400 font-mono">-</span>
                     </div>
-                    <div class="mt-1.5">
-                        <strong id="playerCardSetsName" class="text-white text-xs block leading-tight font-mono">-</strong>
-                        <span id="playerCardSetsSub" class="text-[10px] text-slate-500 mt-0.5 block font-mono">-</span>
+                    <div class="mt-1.5 space-y-1">
+                        <div class="flex items-baseline justify-between gap-1">
+                            <strong id="playerCardSetsName" class="text-white text-xs block leading-tight font-mono">-</strong>
+                            <span id="playerCardSetsSub" class="text-[9.5px] text-cyan-300 font-mono font-semibold">-</span>
+                        </div>
+                        <div id="playerCardPointsRow" class="pt-1 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono leading-tight">
+                            <span class="text-slate-400">Pkt: <strong id="playerCardPointsScore" class="text-slate-200">0 : 0</strong></span>
+                            <span id="playerCardPointsRatio" class="text-emerald-300 font-bold">ratio -</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -9251,25 +9257,25 @@
                                 <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
                                     <div>
                                         <label for="dedVoteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
-                                        <select id="dedVoteAwardBlock" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <select id="dedVoteAwardBlock" onchange="handleSpecialAwardChange('ded')" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                             <option value="">-- Pomiń --</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="dedVoteAwardSpike" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🔨 Gwóźdź (atak):</label>
-                                        <select id="dedVoteAwardSpike" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <select id="dedVoteAwardSpike" onchange="handleSpecialAwardChange('ded')" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                             <option value="">-- Pomiń --</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="dedVoteAwardDefense" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🐟 Ryba (obrona):</label>
-                                        <select id="dedVoteAwardDefense" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <select id="dedVoteAwardDefense" onchange="handleSpecialAwardChange('ded')" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                             <option value="">-- Pomiń --</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="dedVoteAwardServe" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🌪️ Serwis Turbo:</label>
-                                        <select id="dedVoteAwardServe" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
+                                        <select id="dedVoteAwardServe" onchange="handleSpecialAwardChange('ded')" class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-2.5 py-2 focus:outline-none focus:border-amber-500 cursor-pointer">
                                             <option value="">-- Pomiń --</option>
                                         </select>
                                     </div>
@@ -11021,6 +11027,7 @@
                         kryptoniteRanking: [],
                         clutchRanking: [],
                         setBalanceRanking: [],
+                        pointBalanceRanking: [],
                         playerAdvMap: {}
                     };
                 }
@@ -11030,6 +11037,7 @@
                 const h2hStats = {};        // p1 -> p2 -> { against: 0, losses: 0, wins: 0 }
                 const clutchStats = {};     // name -> { clutchWon: 0, clutchTotal: 0 }
                 const setStats = {};        // name -> { won: 0, lost: 0 }
+                const pointStats = {};      // name -> { won: 0, lost: 0, sets: 0 }
 
                 const ensurePlayer = (p) => {
                     if (!p) return;
@@ -11037,6 +11045,7 @@
                     if (!h2hStats[p]) h2hStats[p] = {};
                     if (!clutchStats[p]) clutchStats[p] = { clutchWon: 0, clutchTotal: 0 };
                     if (!setStats[p]) setStats[p] = { won: 0, lost: 0 };
+                    if (!pointStats[p]) pointStats[p] = { won: 0, lost: 0, sets: 0 };
                 };
 
                 (state.all_players || []).forEach(p => ensurePlayer(p));
@@ -11133,16 +11142,22 @@
                                 const darkWonSet = pDark > pLight;
                                 const lightWonSet = pLight > pDark;
 
-                                // Bilans małych setów
+                                // Bilans małych setów oraz małych punktów
                                 dark.forEach(p => {
                                     ensurePlayer(p);
                                     if (darkWonSet) setStats[p].won++;
                                     else setStats[p].lost++;
+                                    pointStats[p].won += pDark;
+                                    pointStats[p].lost += pLight;
+                                    pointStats[p].sets++;
                                 });
                                 light.forEach(p => {
                                     ensurePlayer(p);
                                     if (lightWonSet) setStats[p].won++;
                                     else setStats[p].lost++;
+                                    pointStats[p].won += pLight;
+                                    pointStats[p].lost += pDark;
+                                    pointStats[p].sets++;
                                 });
 
                                 // Kryteria 5. seta (Tie-break):
@@ -11299,12 +11314,33 @@
                     })
                     .sort((a, b) => b.diff - a.diff || b.setPct - a.setPct || b.won - a.won || a.name.localeCompare(b.name, 'pl'));
 
+                // 6. Ranking Bilansu Małych Punktów (min. 4 rozegrane sety ze szczegółowymi punktami)
+                const pointBalanceRanking = Object.entries(pointStats)
+                    .filter(([_, st]) => st.sets >= 4 && (st.won + st.lost) > 0)
+                    .map(([name, st]) => {
+                        const diff = st.won - st.lost;
+                        const total = st.won + st.lost;
+                        const ratio = st.lost > 0 ? (st.won / st.lost) : (st.won > 0 ? 9.999 : 1.000);
+                        return {
+                            name,
+                            won: st.won,
+                            lost: st.lost,
+                            diff,
+                            total,
+                            sets: st.sets,
+                            ratio,
+                            ratioFormatted: ratio.toFixed(3)
+                        };
+                    })
+                    .sort((a, b) => b.diff - a.diff || b.ratio - a.ratio || b.won - a.won || a.name.localeCompare(b.name, 'pl'));
+
                 // Mapa statystyk dla profili graczy
                 const playerAdvMap = {};
                 const allPlayers = Array.from(new Set([
                     ...(state.all_players || []),
                     ...Object.keys(playerMatchStats),
-                    ...Object.keys(setStats)
+                    ...Object.keys(setStats),
+                    ...Object.keys(pointStats)
                 ]));
 
                 allPlayers.forEach(p => {
@@ -11329,6 +11365,14 @@
                     const setsDiffFormatted = sTotal > 0 ? `${sDiff > 0 ? '+' : ''}${sDiff}` : "-";
                     const setsSub = sTotal > 0 ? `${sSt.won}W - ${sSt.lost}L (${sPct}%)` : "0-0";
 
+                    const ptSt = pointStats[p] || { won: 0, lost: 0, sets: 0 };
+                    const ptTotal = ptSt.won + ptSt.lost;
+                    const ptDiff = ptSt.won - ptSt.lost;
+                    const ptRatio = ptSt.lost > 0 ? (ptSt.won / ptSt.lost) : (ptSt.won > 0 ? 9.999 : 1.000);
+                    const ptRatioFormatted = ptTotal > 0 ? ptRatio.toFixed(3) : "-";
+                    const pointsDiffFormatted = ptTotal > 0 ? `${ptDiff > 0 ? '+' : ''}${ptDiff} pkt` : "-";
+                    const pointsScoreFormatted = ptTotal > 0 ? `${ptSt.won} : ${ptSt.lost}` : "0 : 0";
+
                     playerAdvMap[p] = {
                         name: p,
                         winImpact: { played: mSt.played, won: mSt.won, lost: (mSt.played - mSt.won), winPct, isQualified: mSt.played >= 4 },
@@ -11342,7 +11386,10 @@
                         clutchSub,
                         setBalance: { won: sSt.won, lost: sSt.lost, total: sTotal, diff: sDiff, setPct: sPct, isQualified: sTotal >= 4 },
                         setsDiffFormatted,
-                        setsSub
+                        setsSub,
+                        pointBalance: { won: ptSt.won, lost: ptSt.lost, total: ptTotal, diff: ptDiff, sets: ptSt.sets, ratio: ptRatio, ratioFormatted: ptRatioFormatted, isQualified: ptSt.sets >= 4 },
+                        pointsDiffFormatted,
+                        pointsScoreFormatted
                     };
                 });
 
@@ -11352,6 +11399,7 @@
                     kryptoniteRanking,
                     clutchRanking,
                     setBalanceRanking,
+                    pointBalanceRanking,
                     playerAdvMap
                 };
             } catch (err) {
@@ -11362,6 +11410,7 @@
                     kryptoniteRanking: [],
                     clutchRanking: [],
                     setBalanceRanking: [],
+                    pointBalanceRanking: [],
                     playerAdvMap: {}
                 };
             }
@@ -11374,6 +11423,43 @@
             if (firstName === 'kuba') return maleTitle;
             if (firstName.endsWith('a')) return femaleTitle;
             return maleTitle;
+        }
+
+        function handleSpecialAwardChange(prefix = '') {
+            const badgeId = prefix === 'ded' ? 'dedAwardsCounterBadge' : 'awardsCounterBadge';
+            const badgeEl = document.getElementById(badgeId);
+
+            const awards = [
+                prefix === 'ded' ? 'dedVoteAwardBlock' : 'voteAwardBlock',
+                prefix === 'ded' ? 'dedVoteAwardSpike' : 'voteAwardSpike',
+                prefix === 'ded' ? 'dedVoteAwardDefense' : 'voteAwardDefense',
+                prefix === 'ded' ? 'dedVoteAwardServe' : 'voteAwardServe'
+            ];
+
+            let selectedCount = 0;
+            awards.forEach(id => {
+                const sel = document.getElementById(id);
+                if (sel && sel.value && sel.value.trim() !== '') {
+                    selectedCount++;
+                }
+            });
+
+            if (badgeEl) {
+                if (selectedCount > 0) {
+                    badgeEl.innerText = `${selectedCount}/4 wybrane`;
+                    badgeEl.classList.remove('hidden');
+                    if (selectedCount === 4) {
+                        badgeEl.classList.add('bg-emerald-950/80', 'border-emerald-600/70', 'text-emerald-300');
+                        badgeEl.classList.remove('bg-amber-950/80', 'border-amber-800/60', 'text-amber-300');
+                    } else {
+                        badgeEl.classList.add('bg-amber-950/80', 'border-amber-800/60', 'text-amber-300');
+                        badgeEl.classList.remove('bg-emerald-950/80', 'border-emerald-600/70', 'text-emerald-300');
+                    }
+                } else {
+                    badgeEl.innerText = '0/4 wybrane';
+                    badgeEl.classList.add('hidden');
+                }
+            }
         }
 
         function populateSpecialAwardSelects(match, voter, prefix = '') {
@@ -11389,31 +11475,25 @@
                 { id: prefix === 'ded' ? 'dedVoteAwardServe' : 'voteAwardServe', key: 'serve' }
             ];
 
-            let selectedCount = 0;
             awards.forEach(a => {
                 const select = document.getElementById(a.id);
                 if (!select) return;
-                const savedVal = existingVotes[a.key] || '';
-                const currentVal = (savedVal && availableCandidates.includes(savedVal)) ? savedVal : (select.value || '');
-                if (currentVal) selectedCount++;
+                const savedVal = (existingVotes[a.key] && availableCandidates.includes(existingVotes[a.key])) ? existingVotes[a.key] : '';
+                const curVal = (select.value && availableCandidates.includes(select.value)) ? select.value : '';
+                const currentVal = curVal || savedVal;
                 select.innerHTML = `<option value="">-- Pomiń --</option>` + availableCandidates.map(p => {
                     return `<option value="${escapeHtml(p)}" ${p === currentVal ? 'selected' : ''}>${escapeHtml(p)}</option>`;
                 }).join('');
             });
 
-            const badgeId = prefix === 'ded' ? 'dedAwardsCounterBadge' : 'awardsCounterBadge';
-            const badgeEl = document.getElementById(badgeId);
+            handleSpecialAwardChange(prefix);
+
             const detailsId = prefix === 'ded' ? 'dedAwardsDetails' : 'awardsDetails';
             const detailsEl = document.getElementById(detailsId);
-            if (badgeEl) {
-                if (selectedCount > 0) {
-                    badgeEl.innerText = `${selectedCount}/4 wybrane`;
-                    badgeEl.classList.remove('hidden');
-                } else {
-                    badgeEl.classList.add('hidden');
-                }
-            }
-            if (detailsEl && selectedCount > 0) {
+            const badgeId = prefix === 'ded' ? 'dedAwardsCounterBadge' : 'awardsCounterBadge';
+            const badgeEl = document.getElementById(badgeId);
+            const hasSelected = badgeEl && !badgeEl.classList.contains('hidden');
+            if (detailsEl && hasSelected) {
                 detailsEl.open = true;
             }
         }
@@ -12209,6 +12289,62 @@
                         `}
                     </div>
                 `;
+            } else if (currentAdvancedStatsTab === 'points') {
+                const list = stats.pointBalanceRanking;
+                subTabContentHtml = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-400 bg-slate-950/60 border border-slate-800/80 rounded-xl px-3 py-2">
+                            <span>Suma punktów zdobytych i straconych oraz bilans małych punktów</span>
+                            <span class="text-[10px] text-slate-400 font-bold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md shrink-0">Wymóg: min. 4 sety</span>
+                        </div>
+                        ${list.length === 0 ? `
+                            <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-6 text-center space-y-1.5">
+                                <span class="text-2xl block">🔢</span>
+                                <strong class="text-xs text-slate-300 font-bold block">Brak danych małych punktów</strong>
+                                <p class="text-[11px] text-slate-500">Wymagane min. 4 rozegrane sety ze szczegółowym wynikiem (np. 25:21).</p>
+                            </div>
+                        ` : `
+                            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                                <table class="w-full text-left text-xs text-slate-300">
+                                    <thead class="bg-slate-950 text-slate-400 uppercase font-bold text-[9px] tracking-wider border-b border-slate-800">
+                                        <tr>
+                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center w-7 sm:w-8">#</th>
+                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-left">Zawodnik</th>
+                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center whitespace-nowrap">Małe Pkt (+ / -)</th>
+                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center whitespace-nowrap">Bilans +/-</th>
+                                            <th class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-right font-extrabold text-emerald-400 whitespace-nowrap">Ratio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60 bg-slate-900/60">
+                                        ${list.map((item, idx) => `
+                                            <tr class="hover:bg-slate-800/40 transition">
+                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-bold font-mono ${idx === 0 ? 'text-amber-300' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-500'}">
+                                                    ${idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1)}
+                                                </td>
+                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2">
+                                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(item.name)})" class="flex items-center gap-1.5 sm:gap-2 text-left hover:text-cyan-300 transition group">
+                                                        ${getPlayerAvatarHtml(item.name, 'xs')}
+                                                        <span class="font-bold text-white group-hover:text-cyan-300 whitespace-normal break-words leading-tight">${escapeHtml(item.name)}</span>
+                                                    </button>
+                                                </td>
+                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-mono text-[11px] text-slate-300 whitespace-nowrap">
+                                                    <span class="text-emerald-400 font-bold">${item.won}</span> : <span class="text-rose-400 font-bold">${item.lost}</span>
+                                                    <span class="text-[10px] text-slate-500 block">(${pluralizeSets(item.sets)})</span>
+                                                </td>
+                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-center font-mono font-bold text-xs whitespace-nowrap ${item.diff > 0 ? 'text-emerald-400' : item.diff < 0 ? 'text-rose-400' : 'text-slate-400'}">
+                                                    ${item.diff > 0 ? `+${item.diff}` : item.diff}
+                                                </td>
+                                                <td class="py-2 px-1.5 sm:py-2.5 sm:px-2 text-right font-mono font-black text-xs sm:text-sm whitespace-nowrap ${item.ratio >= 1.0 ? 'text-emerald-400' : 'text-rose-400'}">
+                                                    ${item.ratioFormatted}
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `}
+                    </div>
+                `;
             }
 
             container.innerHTML = `
@@ -12226,7 +12362,7 @@
                 </div>
 
                 <!-- Sub-tab Bento Grid (100% visible on 1 screen without scrolling) -->
-                <div class="grid grid-cols-6 sm:grid-cols-5 gap-1 sm:gap-1.5 text-[10.5px] sm:text-xs font-bold pt-0.5">
+                <div class="grid grid-cols-6 sm:grid-cols-6 gap-1 sm:gap-1.5 text-[10.5px] sm:text-xs font-bold pt-0.5">
                     <button type="button" data-adv-tab="winimpact" onclick="switchAdvancedStatsSubTab('winimpact')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'winimpact' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
                         <span>🎯</span> <span class="truncate min-w-0">Win Impact</span>
                     </button>
@@ -12236,11 +12372,14 @@
                     <button type="button" data-adv-tab="kryptonite" onclick="switchAdvancedStatsSubTab('kryptonite')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'kryptonite' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
                         <span>🥊</span> <span class="truncate min-w-0">Kryptonit</span>
                     </button>
-                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                    <button type="button" data-adv-tab="clutch" onclick="switchAdvancedStatsSubTab('clutch')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'clutch' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
                         <span>🔥</span> <span class="truncate min-w-0">Tie-breaki</span>
                     </button>
-                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="col-span-3 sm:col-span-1 py-2 px-1.5 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1.5 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
-                        <span>📈</span> <span class="truncate min-w-0">Bilans setów</span>
+                    <button type="button" data-adv-tab="sets" onclick="switchAdvancedStatsSubTab('sets')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'sets' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>📈</span> <span class="truncate min-w-0">Sety</span>
+                    </button>
+                    <button type="button" data-adv-tab="points" onclick="switchAdvancedStatsSubTab('points')" class="col-span-2 sm:col-span-1 py-2 px-1 rounded-xl transition whitespace-nowrap flex items-center justify-center gap-1 min-w-0 active:scale-95 ${currentAdvancedStatsTab === 'points' ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20' : 'bg-slate-950/80 text-slate-400 hover:text-white border border-slate-800 font-bold'}">
+                        <span>🔢</span> <span class="truncate min-w-0">Małe Pkt</span>
                     </button>
                 </div>
 
@@ -12479,6 +12618,17 @@
                 badgePillClass: "bg-cyan-950 text-cyan-300 border-cyan-700/80",
                 desc: "Filar ligi: ponad 20 rozegranych spotkań w sezonie",
                 detailedReq: "Osiągnięcie elitarnego progu 20 rozegranych meczów w sezonie 2026."
+            },
+            {
+                id: "remontada",
+                icon: "🔄",
+                name: "Wielka Remontada",
+                tier: "challenge",
+                tierLabel: "Prestiż",
+                borderClass: "border-emerald-500/40 hover:border-emerald-300",
+                badgePillClass: "bg-emerald-950 text-emerald-300 border-emerald-700/80",
+                desc: "Zwycięstwo po odrobieniu strat od stanu 0:2 do 3:2 w setach",
+                detailedReq: "Wymaga odwrócenia losów meczu i wygrania tie-breaka (3:2) po przegraniu dwóch pierwszych setów (0:2)."
             }
         ];
 
@@ -12537,6 +12687,7 @@
             let darkWins = 0;
             let lightWins = 0;
             let tieBreakWins = 0;
+            let remontadaWins = 0;
 
             Object.keys(AppState.months || {}).forEach(mName => {
                 (AppState.months[mName]?.matches || []).forEach(m => {
@@ -12574,6 +12725,30 @@
                             lightWins++;
                             if (isTieBreak) tieBreakWins++;
                         }
+
+                        // Wielka Remontada (wygrana 3:2 po przegrywaniu 0:2 w setach)
+                        if (isTieBreak && ((isDark && darkWon) || (isLight && lightWon))) {
+                            const parenMatch = scoreStr.match(/\((.*?)\)/);
+                            if (parenMatch && parenMatch[1].trim()) {
+                                const setStrings = parenMatch[1].split(',');
+                                const validSets = [];
+                                for (const sStr of setStrings) {
+                                    const parts = sStr.trim().split(':');
+                                    if (parts.length !== 2) continue;
+                                    const pDark = parseInt(parts[0], 10);
+                                    const pLight = parseInt(parts[1], 10);
+                                    if (isNaN(pDark) || isNaN(pLight) || pDark === pLight) continue;
+                                    validSets.push({ darkWon: pDark > pLight, lightWon: pLight > pDark });
+                                }
+                                if (validSets.length >= 5) {
+                                    if (isDark && darkWon && validSets[0].lightWon && validSets[1].lightWon) {
+                                        remontadaWins++;
+                                    } else if (isLight && lightWon && validSets[0].darkWon && validSets[1].darkWon) {
+                                        remontadaWins++;
+                                    }
+                                }
+                            }
+                        }
                     }
                 });
             });
@@ -12599,7 +12774,7 @@
             // 6. Klub 20+
             const isClub20 = totalGames >= 20;
 
-            // BUDOWANIE ZESTAWU 9 ELITARNYCH ODZNAK
+            // BUDOWANIE ZESTAWU 10 ELITARNYCH ODZNAK
             if (isOrchestra) {
                 badges.push({
                     id: "orchestra",
@@ -12705,6 +12880,18 @@
                     tierLabel: "Prestiż",
                     desc: `Ponad 20 rozegranych spotkań w sezonie (${totalGames} gier)`,
                     title: `Klub 20+: ${totalGames} rozegranych gier w sezonie`
+                });
+            }
+
+            if (remontadaWins >= 1) {
+                badges.push({
+                    id: "remontada",
+                    icon: "🔄",
+                    name: "Wielka Remontada",
+                    tier: "challenge",
+                    tierLabel: "Prestiż",
+                    desc: remontadaWins === 1 ? "Wygrana po odwróceniu z 0:2 na 3:2" : `Wygrana po odwróceniu z 0:2 na 3:2 (${remontadaWins}x)`,
+                    title: `Wielka Remontada: Wygrana po odrobieniu strat z 0:2 na 3:2 (${remontadaWins}x)`
                 });
             }
 
@@ -13061,19 +13248,59 @@
                 if (clutchSubEl) clutchSubEl.innerText = "Brak tie-breaków";
             }
 
-            // Bilans Setów
+            // Bilans Setów & Małych Punktów
             const setsDiffEl = document.getElementById('playerCardSetsDiff');
             const setsNameEl = document.getElementById('playerCardSetsName');
             const setsSubEl = document.getElementById('playerCardSetsSub');
+            const pointsScoreEl = document.getElementById('playerCardPointsScore');
+            const pointsRatioEl = document.getElementById('playerCardPointsRatio');
+
             if (pAdv?.setBalance && pAdv.setBalance.total > 0) {
                 const s = pAdv.setBalance;
-                if (setsDiffEl) setsDiffEl.innerText = `${s.diff > 0 ? '+' : ''}${s.diff}`;
+                const pt = pAdv.pointBalance;
                 if (setsNameEl) setsNameEl.innerText = `${s.won}W – ${s.lost}L`;
-                if (setsSubEl) setsSubEl.innerText = `${s.setPct}% wygranych setów`;
+                if (setsSubEl) setsSubEl.innerText = `${s.setPct}% setów`;
+
+                if (pt && pt.total > 0) {
+                    if (setsDiffEl) {
+                        const sign = pt.diff > 0 ? '+' : '';
+                        setsDiffEl.innerText = `${sign}${pt.diff} pkt`;
+                        setsDiffEl.className = `font-mono font-black px-1.5 py-0.5 rounded text-[9.5px] border ${
+                            pt.diff > 0 
+                                ? 'text-emerald-400 bg-emerald-950/80 border-emerald-800/60' 
+                                : pt.diff < 0 
+                                    ? 'text-rose-400 bg-rose-950/80 border-rose-800/60' 
+                                    : 'text-slate-400 bg-slate-900 border-slate-800'
+                        }`;
+                    }
+                    if (pointsScoreEl) pointsScoreEl.innerText = `${pt.won} : ${pt.lost}`;
+                    if (pointsRatioEl) {
+                        pointsRatioEl.innerText = `ratio ${pt.ratioFormatted}`;
+                        pointsRatioEl.className = pt.ratio >= 1.0 ? 'text-emerald-300 font-bold' : 'text-rose-300 font-bold';
+                    }
+                } else {
+                    if (setsDiffEl) {
+                        setsDiffEl.innerText = `${s.diff > 0 ? '+' : ''}${s.diff}`;
+                        setsDiffEl.className = 'text-cyan-400 font-mono font-bold';
+                    }
+                    if (pointsScoreEl) pointsScoreEl.innerText = "0 : 0";
+                    if (pointsRatioEl) {
+                        pointsRatioEl.innerText = "ratio -";
+                        pointsRatioEl.className = 'text-slate-500 font-bold';
+                    }
+                }
             } else {
-                if (setsDiffEl) setsDiffEl.innerText = "-";
+                if (setsDiffEl) {
+                    setsDiffEl.innerText = "-";
+                    setsDiffEl.className = 'text-cyan-400 font-mono';
+                }
                 if (setsNameEl) setsNameEl.innerText = "0W – 0L";
-                if (setsSubEl) setsSubEl.innerText = "Brak rozegranych setów";
+                if (setsSubEl) setsSubEl.innerText = "Brak setów";
+                if (pointsScoreEl) pointsScoreEl.innerText = "0 : 0";
+                if (pointsRatioEl) {
+                    pointsRatioEl.innerText = "ratio -";
+                    pointsRatioEl.className = 'text-slate-500 font-bold';
+                }
             }
 
             // Wyróżnienia Sezonu (4 mini-kafelki kategorii: Czapa, Gwóźdź, Obrona, Serwis)
@@ -13441,7 +13668,7 @@
                 `;
             }
 
-            // Karty wszystkich 9 odznak
+            // Karty wszystkich odznak
             const badgeCardsHtml = ALL_BADGES_DEFINITIONS.map(def => {
                 const holders = badgeHoldersMap[def.id] || [];
                 const holdersCount = holders.length;
@@ -13509,11 +13736,11 @@
                                 </div>
                                 <div class="min-w-0">
                                     <h3 class="font-black text-sm sm:text-base text-white tracking-wide leading-tight">GABLOTA OSIĄGNIĘĆ</h3>
-                                    <p class="text-[10px] sm:text-[11px] text-slate-400 leading-snug mt-0.5">9 elitarnych odznak • Tylko oficjalne osiągnięcia</p>
+                                    <p class="text-[10px] sm:text-[11px] text-slate-400 leading-snug mt-0.5">${ALL_BADGES_DEFINITIONS.length} elitarnych odznak • Tylko oficjalne osiągnięcia</p>
                                 </div>
                             </div>
                             <span class="text-[9px] sm:text-[10px] text-amber-400/90 font-bold font-mono bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
-                                9 Odznak
+                                ${ALL_BADGES_DEFINITIONS.length} Odznak
                             </span>
                         </div>
 
@@ -13540,7 +13767,7 @@
                         ${topCollectorsHtml}
                     </div>
 
-                    <!-- Siatka 9 Kart Odznak -->
+                    <!-- Siatka Kart Odznak -->
                     <div class="space-y-3">
                         <div class="flex items-center justify-between px-1 gap-2 flex-wrap">
                             <span class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -14084,15 +14311,27 @@
                             </div>
                         </div>
 
-                        <!-- Bilans Setów -->
+                        <!-- Bilans Setów & Małych Punktów -->
                         <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 flex flex-col justify-between hover:border-slate-700 transition">
                             <div class="flex items-center justify-between text-slate-400 text-[10px] font-bold">
-                                <span class="flex items-center gap-1"><span>📈</span> Bilans Setów</span>
-                                <span class="text-cyan-400 font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.diff > 0 ? '+' : ''}${pAdv.setBalance.diff}` : '-'}</span>
+                                <span class="flex items-center gap-1"><span class="text-cyan-400">📈</span> Sety & Małe Pkt</span>
+                                ${(pAdv?.pointBalance && pAdv.pointBalance.total > 0) ? `
+                                    <span class="font-mono font-black px-1.5 py-0.5 rounded text-[9.5px] border ${pAdv.pointBalance.diff > 0 ? 'text-emerald-400 bg-emerald-950/80 border-emerald-800/60' : pAdv.pointBalance.diff < 0 ? 'text-rose-400 bg-rose-950/80 border-rose-800/60' : 'text-slate-400 bg-slate-900 border-slate-800'}">
+                                        ${pAdv.pointBalance.diff > 0 ? '+' : ''}${pAdv.pointBalance.diff} pkt
+                                    </span>
+                                ` : `
+                                    <span class="text-cyan-400 font-mono font-bold">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.diff > 0 ? '+' : ''}${pAdv.setBalance.diff}` : '-'}</span>
+                                `}
                             </div>
-                            <div class="mt-1.5">
-                                <strong class="text-white text-xs block leading-tight font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.won}W – ${pAdv.setBalance.lost}L` : '0W – 0L'}</strong>
-                                <span class="text-[10px] text-slate-500 mt-0.5 block font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.setPct}% wygranych setów` : 'Brak rozegranych setów'}</span>
+                            <div class="mt-1.5 space-y-1">
+                                <div class="flex items-baseline justify-between gap-1">
+                                    <strong class="text-white text-xs block leading-tight font-mono">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.won}W – ${pAdv.setBalance.lost}L` : '0W – 0L'}</strong>
+                                    <span class="text-[9.5px] text-cyan-300 font-mono font-semibold">${(pAdv?.setBalance && pAdv.setBalance.total > 0) ? `${pAdv.setBalance.setPct}% setów` : 'Brak setów'}</span>
+                                </div>
+                                <div class="pt-1 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono leading-tight">
+                                    <span class="text-slate-400">Pkt: <strong class="text-slate-200">${(pAdv?.pointBalance && pAdv.pointBalance.total > 0) ? `${pAdv.pointBalance.won} : ${pAdv.pointBalance.lost}` : '0 : 0'}</strong></span>
+                                    <span class="${(pAdv?.pointBalance && pAdv.pointBalance.total > 0) ? (pAdv.pointBalance.ratio >= 1.0 ? 'text-emerald-300 font-bold' : 'text-rose-300 font-bold') : 'text-slate-500 font-bold'}">${(pAdv?.pointBalance && pAdv.pointBalance.total > 0) ? `ratio ${pAdv.pointBalance.ratioFormatted}` : 'ratio -'}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
