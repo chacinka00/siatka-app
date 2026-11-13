@@ -1234,12 +1234,13 @@
 
         /* ================= KURSY BUKMACHERSKIE W WYNIKU I RAPORCIE ================= */
         .match-odds-pill {
-            background-color: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(51, 65, 85, 0.8);
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(51, 65, 85, 0.6);
             color: #cbd5e1;
         }
         .match-odds-value {
-            color: #fbbf24;
+            color: #f1f5f9;
+            font-weight: 700;
         }
         [data-theme="haaland-light"] .match-odds-pill,
         [data-theme="mercurial-light"] .match-odds-pill {
@@ -1249,7 +1250,30 @@
         }
         [data-theme="haaland-light"] .match-odds-value,
         [data-theme="mercurial-light"] .match-odds-value {
-            color: #b45309 !important;
+            color: #0f172a !important;
+            font-weight: 700;
+        }
+
+        .matchday-odds-strip {
+            background-color: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.7);
+            color: #cbd5e1;
+        }
+        [data-theme="haaland-light"] .matchday-odds-strip,
+        [data-theme="mercurial-light"] .matchday-odds-strip {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #1e293b !important;
+        }
+        [data-theme="haaland-light"] .matchday-odds-strip strong,
+        [data-theme="mercurial-light"] .matchday-odds-strip strong {
+            color: #0f172a !important;
+        }
+        [data-theme="haaland-light"] .matchday-odds-strip button,
+        [data-theme="mercurial-light"] .matchday-odds-strip button {
+            background-color: #ffffff !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
         }
 
         .typer-mismatch-pill {
@@ -2729,20 +2753,20 @@
                 </div>
 
                 <!-- Live Typer Teaser Bar (Dynamic Match Odds & Status) -->
-                <div id="quickTyperMatchBanner" onclick="switchTab('typer')" class="bg-slate-950/90 border border-indigo-500/30 hover:border-indigo-400/60 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-inner cursor-pointer active:scale-98 transition">
+                <div id="quickTyperMatchBanner" onclick="switchTab('typer')" class="bg-slate-950/80 border border-slate-800 hover:border-slate-700 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-sm cursor-pointer active:scale-98 transition">
                     <div class="flex items-center gap-2 min-w-0">
                         <span class="text-base shrink-0">🎯</span>
-                        <div class="min-w-0">
+                        <div class="min-w-0 leading-tight">
                             <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-[9.5px] font-black uppercase tracking-wider text-indigo-400">Liga Typerów</span>
-                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DO 20:00</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Liga Typerów</span>
+                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700">DO 20:00</span>
                             </div>
-                            <p id="quickTyperTeaserText" class="text-[11px] font-bold text-slate-200 truncate mt-0.5 leading-tight">
-                                Typuj zwycięzcę i dokładny wynik meczu!
-                            </p>
+                            <div id="quickTyperTeaserText" class="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                                Wytypuj zwycięzcę i wynik w setach
+                            </div>
                         </div>
                     </div>
-                    <span class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-xl text-[10px] font-black shrink-0 whitespace-nowrap">
+                    <span class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-[10px] font-bold shrink-0 whitespace-nowrap shadow-sm">
                         Typuj ➔
                     </span>
                 </div>
@@ -3242,21 +3266,18 @@
                         </div>
 
                         <!-- 4b. Kursy i Przycisk Typera na Karcie Meczowej -->
-                        <div id="matchdayTyperOddsStrip" class="mt-3 p-2.5 sm:p-3 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-2 shadow-sm flex-wrap sm:flex-nowrap">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <span class="text-base shrink-0">🎲</span>
-                                <div class="min-w-0">
-                                    <span class="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400 block leading-tight">Kursy meczowe & Typy</span>
-                                    <div class="flex items-center gap-2 text-xs font-black font-mono mt-0.5" id="matchdayTyperOddsValues">
-                                        <span class="text-sky-400">⬛ Ciemni: -</span>
-                                        <span class="text-slate-500 font-normal">vs</span>
-                                        <span class="text-amber-400">Jaśni: - ⬜</span>
-                                    </div>
+                        <div id="matchdayTyperOddsStrip" class="matchday-odds-strip mt-2.5 px-3 py-2 rounded-xl flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="text-xs shrink-0">🎲</span>
+                                <div id="matchdayTyperOddsValues" class="text-xs font-mono flex items-center gap-1.5 min-w-0">
+                                    <span class="text-slate-300">Ciemni <strong class="text-white font-bold">-</strong></span>
+                                    <span class="text-slate-500 text-[10px] mx-0.5">vs</span>
+                                    <span class="text-slate-300">Jaśni <strong class="text-white font-bold">-</strong></span>
                                 </div>
                             </div>
-                            <button type="button" onclick="switchTab('typer')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-[11px] shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition shrink-0">
+                            <button type="button" onclick="switchTab('typer')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-[11px] font-bold shadow-sm flex items-center gap-1 active:scale-95 transition shrink-0 whitespace-nowrap">
                                 <span>🎯</span>
-                                <span>Obstaw w Typerze</span>
+                                <span>Typuj</span>
                             </button>
                         </div>
 
@@ -6725,20 +6746,20 @@
 
                         oddsA_Html = `
                             <div class="flex items-center justify-end gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
-                                    <span class="match-odds-value font-black text-amber-300">${oddsA}</span>
-                                    <span class="text-slate-500 text-[8.5px]">(${probA}%)</span>
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-400 text-[8.5px]">kurs</span>
+                                    <span class="match-odds-value font-bold text-slate-100">${oddsA}</span>
+                                    <span class="text-slate-400 text-[8.5px]">(${probA}%)</span>
                                 </span>
                             </div>
                         `;
 
                         oddsB_Html = `
                             <div class="flex items-center justify-start gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                    <span class="text-slate-500 text-[8.5px]">(${probB}%)</span>
-                                    <span class="match-odds-value font-black text-amber-300">${oddsB}</span>
-                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-400 text-[8.5px]">(${probB}%)</span>
+                                    <span class="match-odds-value font-bold text-slate-100">${oddsB}</span>
+                                    <span class="text-slate-400 text-[8.5px]">kurs</span>
                                 </span>
                             </div>
                         `;
@@ -6746,9 +6767,9 @@
                         const nA = parseFloat(oddsA);
                         const nB = parseFloat(oddsB);
                         if (aWon && nA > nB && (nA - nB) >= 0.20) {
-                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-bold text-amber-300 bg-amber-950/40 border border-amber-800/60 px-2 py-0.5 rounded-full shadow-sm">⚡ Niespodzianka! Wygrana po wyższym kursie ${oddsA}</span></div>`;
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm">⚡ Wygrana po wyższym kursie ${oddsA}</span></div>`;
                         } else if (bWon && nB > nA && (nB - nA) >= 0.20) {
-                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-bold text-amber-300 bg-amber-950/40 border border-amber-800/60 px-2 py-0.5 rounded-full shadow-sm">⚡ Niespodzianka! Wygrana po wyższym kursie ${oddsB}</span></div>`;
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm">⚡ Wygrana po wyższym kursie ${oddsB}</span></div>`;
                         }
                     }
                 }
@@ -6809,20 +6830,20 @@
 
                         oddsA_Html = `
                             <div class="flex items-center justify-end gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
-                                    <span class="match-odds-value font-black text-amber-300">${oddsA}</span>
-                                    <span class="text-slate-500 text-[8.5px]">(${probA}%)</span>
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-400 text-[8.5px]">kurs</span>
+                                    <span class="match-odds-value font-bold text-slate-100">${oddsA}</span>
+                                    <span class="text-slate-400 text-[8.5px]">(${probA}%)</span>
                                 </span>
                             </div>
                         `;
 
                         oddsB_Html = `
                             <div class="flex items-center justify-start gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                    <span class="text-slate-500 text-[8.5px]">(${probB}%)</span>
-                                    <span class="match-odds-value font-black text-amber-300">${oddsB}</span>
-                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-400 text-[8.5px]">(${probB}%)</span>
+                                    <span class="match-odds-value font-bold text-slate-100">${oddsB}</span>
+                                    <span class="text-slate-400 text-[8.5px]">kurs</span>
                                 </span>
                             </div>
                         `;
@@ -7094,83 +7115,16 @@
                     if (scoreTextEl) scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score, currentMatch);
                     if (editLabel) editLabel.innerText = "Edytuj wynik";
                     if (editScoreBtn && isAdmin) editScoreBtn.classList.remove('hidden');
-                } else if (isMatchFinished(currentMatch)) {
-                    scoreCard.classList.remove('hidden');
-                    if (scoreTextEl) {
-                        const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(currentMatch) : null;
-                        const darkPlayers = (currentMatch.teams?.dark || []).filter(Boolean);
-                        const lightPlayers = (currentMatch.teams?.light || []).filter(Boolean);
-                        const hasSquads = (darkPlayers.length > 0 || lightPlayers.length > 0);
-                        const darkOdds = oddsObj?.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
-                        const lightOdds = oddsObj?.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
-                        const darkProb = oddsObj?.darkProb !== undefined ? oddsObj.darkProb : 50;
-                        const lightProb = oddsObj?.lightProb !== undefined ? oddsObj.lightProb : 50;
-
-                        scoreTextEl.innerHTML = `
-                            <div class="space-y-1.5 py-0.5">
-                                <div class="flex items-center justify-between py-0.5 text-xs text-slate-500 italic">
-                                    <span>Brak wpisanego oficjalnego wyniku</span>
-                                    ${isAdmin ? `<button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1 shadow-sm"><span>📊</span> + Wpisz wynik</button>` : ''}
-                                </div>
-                                ${hasSquads ? `
-                                    <div class="match-odds-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2 text-[10.5px]">
-                                        <div class="flex items-center gap-1.5 min-w-0">
-                                            <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
-                                            <span class="font-bold text-slate-300 truncate">Ciemni</span>
-                                            <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${darkOdds}</span>
-                                            <span class="text-[9px] text-slate-500 shrink-0">(${darkProb}%)</span>
-                                        </div>
-                                        <span class="text-slate-500 font-bold text-[9.5px] uppercase shrink-0">vs</span>
-                                        <div class="flex items-center gap-1.5 min-w-0">
-                                            <span class="text-[9.5px] text-slate-500 shrink-0">(${lightProb}%)</span>
-                                            <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${lightOdds}</span>
-                                            <span class="font-bold text-slate-300 truncate">Jaśni</span>
-                                            <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
-                                        </div>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    }
-                    if (editScoreBtn) editScoreBtn.classList.add('hidden');
                 } else {
                     if (isAdmin) {
                         scoreCard.classList.remove('hidden');
                         if (scoreTextEl) {
-                            const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(currentMatch) : null;
-                            const darkPlayers = (currentMatch.teams?.dark || []).filter(Boolean);
-                            const lightPlayers = (currentMatch.teams?.light || []).filter(Boolean);
-                            const hasSquads = (darkPlayers.length > 0 || lightPlayers.length > 0);
-                            const darkOdds = oddsObj?.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
-                            const lightOdds = oddsObj?.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
-                            const darkProb = oddsObj?.darkProb !== undefined ? oddsObj.darkProb : 50;
-                            const lightProb = oddsObj?.lightProb !== undefined ? oddsObj.lightProb : 50;
-
                             scoreTextEl.innerHTML = `
-                                <div class="space-y-1.5 py-0.5">
-                                    <div class="flex items-center justify-between py-0.5">
-                                        <span class="text-xs text-slate-500 italic">Brak wpisanego wyniku</span>
-                                        <button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1 shadow-sm">
-                                            <span>📊</span> + Wpisz wynik spotkania
-                                        </button>
-                                    </div>
-                                    ${hasSquads ? `
-                                        <div class="match-odds-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2 text-[10.5px]">
-                                            <div class="flex items-center gap-1.5 min-w-0">
-                                                <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
-                                                <span class="font-bold text-slate-300 truncate">Ciemni</span>
-                                                <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${darkOdds}</span>
-                                                <span class="text-[9px] text-slate-500 shrink-0">(${darkProb}%)</span>
-                                            </div>
-                                            <span class="text-slate-500 font-bold text-[9.5px] uppercase shrink-0">vs</span>
-                                            <div class="flex items-center gap-1.5 min-w-0">
-                                                <span class="text-[9.5px] text-slate-500 shrink-0">(${lightProb}%)</span>
-                                                <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${lightOdds}</span>
-                                                <span class="font-bold text-slate-300 truncate">Jaśni</span>
-                                                <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
-                                            </div>
-                                        </div>
-                                    ` : ''}
+                                <div class="flex items-center justify-between py-1 text-xs text-slate-400">
+                                    <span>Brak wpisanego wyniku</span>
+                                    <button type="button" onclick="editMatchScorePrompt()" class="bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold px-3 py-1.5 rounded-xl transition active:scale-95 flex items-center gap-1.5 shadow-sm">
+                                        <span>✏️</span> Wpisz wynik
+                                    </button>
                                 </div>
                             `;
                         }
@@ -7230,27 +7184,41 @@
                     const isLocked = (typeof isMatchBettingLocked === 'function') ? isMatchBettingLocked(currentMatch) : false;
                     const predCount = (currentMatch.predictions && typeof currentMatch.predictions === 'object') ? Object.keys(currentMatch.predictions).length : 0;
 
+                    const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(currentMatch) : null;
+                    const darkPlayers = (currentMatch.teams?.dark || []).filter(Boolean);
+                    const lightPlayers = (currentMatch.teams?.light || []).filter(Boolean);
+                    const hasSquads = (darkPlayers.length > 0 && lightPlayers.length > 0);
+
                     if (lockBadge) {
                         if (currentMatch.score) {
-                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30";
+                            lockBadge.className = "text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700";
                             lockBadge.innerText = "ZAKOŃCZONY";
                         } else if (isLocked) {
-                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                            lockBadge.className = "text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-rose-400 border border-slate-700";
                             lockBadge.innerText = "ZAMKNIĘTE (20:00)";
                         } else {
-                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                            lockBadge.className = "text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700";
                             lockBadge.innerText = "DO 20:00";
                         }
                     }
                     if (teaserText) {
                         if (currentMatch.score) {
-                            teaserText.innerText = `Wynik meczu: ${currentMatch.score} • Zobacz podsumowanie typów (${predCount} typerów) ➔`;
+                            teaserText.innerHTML = `<span class="text-slate-300">Wynik: <b class="text-white">${escapeHtml(currentMatch.score)}</b> • Podsumowanie typów (${predCount})</span>`;
                         } else if (isLocked) {
-                            teaserText.innerText = `Typowanie zakończone o 20:00 • Oddano ${predCount} typów • Zobacz sondę ➔`;
+                            teaserText.innerHTML = `<span class="text-slate-300">Typowanie zakończone • Oddano ${predCount} typów</span>`;
+                        } else if (hasSquads && oddsObj) {
+                            const dOdds = Number(oddsObj.darkOdds).toFixed(2);
+                            const lOdds = Number(oddsObj.lightOdds).toFixed(2);
+                            teaserText.innerHTML = `
+                                <span class="text-slate-400">Kursy:</span>
+                                <span class="font-bold text-slate-100">Ciemni ${dOdds}</span>
+                                <span class="text-slate-400 text-[10px]">(${oddsObj.darkProb}%)</span>
+                                <span class="text-slate-500 font-bold mx-0.5">vs</span>
+                                <span class="text-slate-400 text-[10px]">(${oddsObj.lightProb}%)</span>
+                                <span class="font-bold text-slate-100">Jaśni ${lOdds}</span>
+                            `;
                         } else {
-                            teaserText.innerText = predCount > 0 
-                                ? `Już ${predCount} typerów wytypowało! Sprawdź kursy i dodaj swój typ ➔`
-                                : `Wytypuj zwycięzcę (kursy) i dokładny wynik w setach! Zdobądź punkty ➔`;
+                            teaserText.innerHTML = `<span class="text-slate-300">Wybierz zwycięzcę meczu i wynik w setach</span>`;
                         }
                     }
                 }
@@ -9263,9 +9231,9 @@
                         const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
                         const oddsObj = calculateMatchOdds(darkNames, lightNames, adv);
                         oddsValues.innerHTML = `
-                            <span class="text-sky-400">⬛ Ciemni: <strong class="text-white">${oddsObj.darkOdds.toFixed(2)}</strong> (${oddsObj.darkProb || 50}%)</span>
-                            <span class="text-slate-500 font-normal">vs</span>
-                            <span class="text-amber-400"><strong class="text-white">${oddsObj.lightOdds.toFixed(2)}</strong> (${oddsObj.lightProb || 50}%) Jaśni ⬜</span>
+                            <span class="text-slate-300 whitespace-nowrap">Ciemni <strong class="text-white font-mono font-bold">${oddsObj.darkOdds.toFixed(2)}</strong> <span class="text-slate-400 font-normal text-[10px]">(${oddsObj.darkProb || 50}%)</span></span>
+                            <span class="text-slate-500 font-bold text-[10px] mx-0.5">vs</span>
+                            <span class="text-slate-300 whitespace-nowrap">Jaśni <strong class="text-white font-mono font-bold">${oddsObj.lightOdds.toFixed(2)}</strong> <span class="text-slate-400 font-normal text-[10px]">(${oddsObj.lightProb || 50}%)</span></span>
                         `;
                     } else {
                         oddsValues.innerHTML = `<span class="text-slate-400 text-[11px] italic">Ustal składy, aby wyliczyć kursy meczowe</span>`;
@@ -11855,14 +11823,14 @@
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
                                 </div>
                                 <div class="flex items-center justify-end gap-1 mt-0.5">
-                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                        <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
-                                        <span class="match-odds-value font-black text-amber-300">${darkOddsFormatted}</span>
-                                        <span class="text-slate-500 text-[8px]">(${darkProbVal}%)</span>
+                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                        <span class="text-slate-400 text-[8.5px]">kurs</span>
+                                        <span class="match-odds-value font-bold text-slate-100">${darkOddsFormatted}</span>
+                                        <span class="text-slate-400 text-[8.5px]">(${darkProbVal}%)</span>
                                     </span>
                                 </div>
                             </div>
-                            <div class="bg-slate-950 border border-slate-700/80 px-3 py-1 rounded-xl font-mono text-base font-black tracking-widest text-amber-300 shadow-inner shrink-0 text-center min-w-[56px]">
+                            <div class="bg-slate-950 border border-slate-700/80 px-3 py-1 rounded-xl font-mono text-base font-black tracking-widest text-slate-100 shadow-inner shrink-0 text-center min-w-[56px]">
                                 <span class="${darkWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
                                 <span class="text-slate-500 mx-1">:</span>
                                 <span class="${lightWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
@@ -11874,10 +11842,10 @@
                                     ${lightWon ? '<span class="text-xs shrink-0">🏆</span>' : ''}
                                 </div>
                                 <div class="flex items-center justify-start gap-1 mt-0.5">
-                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
-                                        <span class="text-slate-500 text-[8px]">(${lightProbVal}%)</span>
-                                        <span class="match-odds-value font-black text-amber-300">${lightOddsFormatted}</span>
-                                        <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                        <span class="text-slate-400 text-[8.5px]">(${lightProbVal}%)</span>
+                                        <span class="match-odds-value font-bold text-slate-100">${lightOddsFormatted}</span>
+                                        <span class="text-slate-400 text-[8.5px]">kurs</span>
                                     </span>
                                 </div>
                             </div>
@@ -12042,7 +12010,6 @@
                                     <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(darkName)}</strong>
                                 </div>
                                 <div class="flex items-center gap-1 shrink-0">
-                                    <span class="match-odds-pill text-[9px] font-mono px-1.5 py-0.5 rounded text-amber-300 font-black">kurs ${darkOddsFormatted}</span>
                                     ${darkWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
                                 </div>
                             </div>
@@ -12059,7 +12026,6 @@
                                     <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(lightName)}</strong>
                                 </div>
                                 <div class="flex items-center gap-1 shrink-0">
-                                    <span class="match-odds-pill text-[9px] font-mono px-1.5 py-0.5 rounded text-amber-300 font-black">kurs ${lightOddsFormatted}</span>
                                     ${lightWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
                                 </div>
                             </div>
