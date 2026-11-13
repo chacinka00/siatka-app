@@ -1091,6 +1091,185 @@
             color: #9f1239 !important;
         }
 
+        /* ================= LIGA TYPERÓW - CZYTELNOŚĆ WE WSZYSTKICH MOTYWACH ================= */
+        .typer-pick-btn {
+            background-color: #0c1322 !important;
+            background-image: none !important;
+            border: 1.5px solid #1e293b !important;
+            color: #f8fafc !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .typer-pick-btn.typer-pick-dark-active {
+            background-color: #082f49 !important;
+            background-image: linear-gradient(135deg, #0c1a2e 0%, #073b61 100%) !important;
+            border: 2px solid #38bdf8 !important;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.35) !important;
+        }
+        .typer-pick-btn.typer-pick-light-active {
+            background-color: #451a03 !important;
+            background-image: linear-gradient(135deg, #241407 0%, #542c0a 100%) !important;
+            border: 2px solid #f59e0b !important;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.35) !important;
+        }
+
+        /* Motywy jasne (Haaland Light & Mercurial Light) */
+        [data-theme="haaland-light"] .typer-pick-btn,
+        [data-theme="mercurial-light"] .typer-pick-btn {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            border: 1.5px solid #cbd5e1 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+        }
+        [data-theme="haaland-light"] .typer-pick-btn:hover,
+        [data-theme="mercurial-light"] .typer-pick-btn:hover {
+            border-color: #94a3b8 !important;
+        }
+        [data-theme="haaland-light"] .typer-pick-btn.typer-pick-dark-active {
+            background-color: #f0f9ff !important;
+            background-image: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%) !important;
+            border: 2px solid #0284c7 !important;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.22) !important;
+        }
+        [data-theme="mercurial-light"] .typer-pick-btn.typer-pick-dark-active {
+            background-color: #f0f9ff !important;
+            background-image: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%) !important;
+            border: 2px solid #0284c7 !important;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.22) !important;
+        }
+        [data-theme="haaland-light"] .typer-pick-btn.typer-pick-light-active,
+        [data-theme="mercurial-light"] .typer-pick-btn.typer-pick-light-active {
+            background-color: #fffbeb !important;
+            background-image: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%) !important;
+            border: 2px solid #d97706 !important;
+            box-shadow: 0 4px 16px rgba(217, 119, 6, 0.22) !important;
+        }
+
+        /* Etykiety i teksty w kartach wyboru zwycięzcy */
+        .typer-team-title-dark {
+            color: #38bdf8 !important;
+        }
+        .typer-team-title-light {
+            color: #fbbf24 !important;
+        }
+        .typer-odds-val {
+            color: #ffffff !important;
+        }
+        .typer-odds-lbl {
+            color: #94a3b8 !important;
+        }
+        .typer-pct-val {
+            color: #cbd5e1 !important;
+        }
+
+        [data-theme="haaland-light"] .typer-team-title-dark,
+        [data-theme="mercurial-light"] .typer-team-title-dark {
+            color: #0369a1 !important;
+        }
+        [data-theme="haaland-light"] .typer-team-title-light,
+        [data-theme="mercurial-light"] .typer-team-title-light {
+            color: #b45309 !important;
+        }
+        [data-theme="haaland-light"] .typer-odds-val,
+        [data-theme="mercurial-light"] .typer-odds-val {
+            color: #0f172a !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] .typer-odds-lbl,
+        [data-theme="mercurial-light"] .typer-odds-lbl {
+            color: #64748b !important;
+            font-weight: 800 !important;
+        }
+        [data-theme="haaland-light"] .typer-pct-val,
+        [data-theme="mercurial-light"] .typer-pct-val {
+            color: #334155 !important;
+            font-weight: 800 !important;
+        }
+
+        /* Przyciski wyboru setów */
+        .typer-set-btn {
+            background-color: rgba(2, 6, 23, 0.7);
+            border: 1px solid #1e293b;
+            color: #cbd5e1;
+            transition: all 0.2s;
+        }
+        .typer-set-btn.typer-set-btn-active {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+            border: 2px solid #f59e0b !important;
+            color: #fef08a !important;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3) !important;
+        }
+        .typer-set-btn.typer-set-btn-active .typer-set-bonus-badge {
+            color: #fbbf24 !important;
+            font-weight: 800 !important;
+        }
+
+        [data-theme="haaland-light"] .typer-set-btn,
+        [data-theme="mercurial-light"] .typer-set-btn {
+            background-color: #ffffff !important;
+            border: 1.5px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        [data-theme="haaland-light"] .typer-set-btn:hover,
+        [data-theme="mercurial-light"] .typer-set-btn:hover {
+            border-color: #94a3b8 !important;
+        }
+        [data-theme="haaland-light"] .typer-set-btn.typer-set-btn-active,
+        [data-theme="mercurial-light"] .typer-set-btn.typer-set-btn-active {
+            background-color: #fef3c7 !important;
+            border: 2px solid #d97706 !important;
+            color: #78350f !important;
+            box-shadow: 0 2px 10px rgba(217, 119, 6, 0.2) !important;
+        }
+        [data-theme="haaland-light"] .typer-set-btn.typer-set-btn-active span,
+        [data-theme="mercurial-light"] .typer-set-btn.typer-set-btn-active span {
+            color: #78350f !important;
+            font-weight: 900 !important;
+        }
+        [data-theme="haaland-light"] .typer-set-btn.typer-set-btn-active .typer-set-bonus-badge,
+        [data-theme="mercurial-light"] .typer-set-btn.typer-set-btn-active .typer-set-bonus-badge {
+            color: #b45309 !important;
+            font-weight: 800 !important;
+        }
+
+        /* ================= KURSY BUKMACHERSKIE W WYNIKU I RAPORCIE ================= */
+        .match-odds-pill {
+            background-color: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            color: #cbd5e1;
+        }
+        .match-odds-value {
+            color: #fbbf24;
+        }
+        [data-theme="haaland-light"] .match-odds-pill,
+        [data-theme="mercurial-light"] .match-odds-pill {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #1e293b !important;
+        }
+        [data-theme="haaland-light"] .match-odds-value,
+        [data-theme="mercurial-light"] .match-odds-value {
+            color: #b45309 !important;
+        }
+
+        .typer-mismatch-pill {
+            background-color: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fef08a;
+        }
+        [data-theme="haaland-light"] .typer-mismatch-pill,
+        [data-theme="mercurial-light"] .typer-mismatch-pill {
+            background-color: #fef3c7 !important;
+            border-color: #fcd34d !important;
+            color: #92400e !important;
+        }
+        [data-theme="haaland-light"] .typer-mismatch-badge,
+        [data-theme="mercurial-light"] .typer-mismatch-badge {
+            background-color: #fde68a !important;
+            border-color: #f59e0b !important;
+            color: #78350f !important;
+        }
+
         /* ================= KARTA MOJA SKŁADKA W KAŻDYM MOTYWIE ================= */
         .billing-badge-paid {
             background-color: #10b981 !important;
@@ -2549,6 +2728,25 @@
                     </span>
                 </div>
 
+                <!-- Live Typer Teaser Bar (Dynamic Match Odds & Status) -->
+                <div id="quickTyperMatchBanner" onclick="switchTab('typer')" class="bg-slate-950/90 border border-indigo-500/30 hover:border-indigo-400/60 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-inner cursor-pointer active:scale-98 transition">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-base shrink-0">🎯</span>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[9.5px] font-black uppercase tracking-wider text-indigo-400">Liga Typerów</span>
+                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DO 20:00</span>
+                            </div>
+                            <p id="quickTyperTeaserText" class="text-[11px] font-bold text-slate-200 truncate mt-0.5 leading-tight">
+                                Typuj zwycięzcę i dokładny wynik meczu!
+                            </p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-xl text-[10px] font-black shrink-0 whitespace-nowrap">
+                        Typuj ➔
+                    </span>
+                </div>
+
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
@@ -3043,6 +3241,25 @@
                             </div>
                         </div>
 
+                        <!-- 4b. Kursy i Przycisk Typera na Karcie Meczowej -->
+                        <div id="matchdayTyperOddsStrip" class="mt-3 p-2.5 sm:p-3 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-2 shadow-sm flex-wrap sm:flex-nowrap">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="text-base shrink-0">🎲</span>
+                                <div class="min-w-0">
+                                    <span class="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400 block leading-tight">Kursy meczowe & Typy</span>
+                                    <div class="flex items-center gap-2 text-xs font-black font-mono mt-0.5" id="matchdayTyperOddsValues">
+                                        <span class="text-sky-400">⬛ Ciemni: -</span>
+                                        <span class="text-slate-500 font-normal">vs</span>
+                                        <span class="text-amber-400">Jaśni: - ⬜</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="switchTab('typer')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-[11px] shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition shrink-0">
+                                <span>🎯</span>
+                                <span>Obstaw w Typerze</span>
+                            </button>
+                        </div>
+
                         <!-- 5. Ciekawostka Statystyczna -->
                         <div class="matchday-stat-box mt-3 p-3.5 rounded-2xl border space-y-2">
                             <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
@@ -3088,6 +3305,107 @@
 
 
 
+            </div>
+        </section>
+
+
+        <!-- ================= TAB: LIGA TYPERÓW & ZAKŁADY ================= -->
+        <section id="tab-typer" class="space-y-3.5 hidden animate-fade-in">
+            <!-- Section Header -->
+            <div class="px-1 py-0.5 flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                    <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                        <span>🎯</span> Liga Typerów 2026
+                    </h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Typuj zwycięzców i sety przed 20:00 • Zbieraj punkty i zdobywaj odznaki</p>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1.5 text-xs font-bold">
+                        <span>📋</span><span class="whitespace-nowrap">Link do typowania</span>
+                    </button>
+                    <button type="button" onclick="renderTyperTab()" title="Odśwież Typera" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shrink-0 shadow-sm">
+                        🔄
+                    </button>
+                </div>
+            </div>
+
+            <!-- Segmented Subtabs Bar (Wewnętrzne karty Typera) -->
+            <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-950/80 border border-slate-800/80 rounded-2xl">
+                <button type="button" id="typerSubtabBtn-bet" onclick="setTyperSubtab('bet')" class="py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1.5 transition active:scale-95 text-[11.5px] sm:text-xs whitespace-nowrap min-w-0">
+                    <span>🎯</span><span>Typowanie</span>
+                </button>
+                <button type="button" id="typerSubtabBtn-leaderboard" onclick="setTyperSubtab('leaderboard')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 text-[11.5px] sm:text-xs whitespace-nowrap min-w-0">
+                    <span>🏆</span><span>Ranking</span>
+                </button>
+                <button type="button" id="typerSubtabBtn-rules" onclick="setTyperSubtab('rules')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 text-[11.5px] sm:text-xs whitespace-nowrap min-w-0">
+                    <span>📜</span><span>Zasady</span>
+                </button>
+            </div>
+
+            <!-- SUBTAB 1: TYPOWANIE MECZU & SONDA -->
+            <div id="typerSubtabContainer-bet" class="space-y-3.5">
+                <!-- 1. Strefa Aktywnego Typowania -->
+                <div id="typerActiveBettingContainer" class="space-y-3.5">
+                    <!-- Renderowane dynamicznie przez renderTyperTab() -->
+                </div>
+
+                <!-- 2. Sonda Społeczności i Rozkład Głosów -->
+                <div id="typerCommunityPollContainer" class="space-y-3.5">
+                    <!-- Renderowane dynamicznie przez renderTyperTab() -->
+                </div>
+            </div>
+
+            <!-- SUBTAB 2: RANKING TYPERÓW & PODIUM SEZONU -->
+            <div id="typerSubtabContainer-leaderboard" class="space-y-3.5 hidden">
+                <!-- 3. Tabela Sezonowa Typera (Podium & Wyniki) -->
+                <div id="typerLeaderboardContainer" class="space-y-3.5">
+                    <!-- Renderowane dynamicznie przez renderTyperTab() -->
+                </div>
+            </div>
+
+            <!-- SUBTAB 3: ZASADY PUNKTACJI & ODZNAKI -->
+            <div id="typerSubtabContainer-rules" class="space-y-3.5 hidden">
+                <!-- 4. Karta Zasad & Punktacji -->
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                    <div class="flex items-center gap-2 pb-1 border-b border-slate-800/80">
+                        <span class="text-lg">📜</span>
+                        <h3 class="font-black text-sm text-white uppercase tracking-wider">Zasady Punktacji Typera</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-950/80 border border-slate-800/80 p-3 rounded-2xl space-y-1">
+                            <div class="flex items-center gap-1.5 font-black text-emerald-400">
+                                <span>🎯</span><span>Trafiony Zwycięzca</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                Otrzymujesz punkty równe kursowi meczu (np. <span class="font-mono font-bold text-white">+1.65 pkt</span> lub <span class="font-mono font-bold text-white">+2.25 pkt</span>).
+                            </p>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800/80 p-3 rounded-2xl space-y-1">
+                            <div class="flex items-center gap-1.5 font-black text-amber-300">
+                                <span>🏆</span><span>Dokładny Wynik w Setach</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                Trafienie dokładnego wyniku (np. 3:1) daje potężny bonus <span class="font-mono font-bold text-amber-300">+2.0 pkt</span> do Twojego dorobku!
+                            </p>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800/80 p-3 rounded-2xl space-y-1">
+                            <div class="flex items-center gap-1.5 font-black text-rose-400">
+                                <span>⏰</span><span>Blokada o 20:00</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                Typy można stawiać i zmieniać w każdy piątek <span class="font-bold text-white">do godziny 20:00</span> (koniec rozgrzewki). Po 20:00 zakłady są zamykane!
+                            </p>
+                        </div>
+                        <div class="bg-slate-950/80 border border-slate-800/80 p-3 rounded-2xl space-y-1">
+                            <div class="flex items-center gap-1.5 font-black text-purple-300">
+                                <span>🔮</span><span>Odznaki do Zdobycia</span>
+                            </div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed">
+                                <span class="font-bold text-white">Wyrocznia 🔮</span> (za 2 dokładne trafienia) oraz <span class="font-bold text-white">Pechowy Bukmacher 📉</span> (pocieszenie za 3 pudła)!
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -3443,31 +3761,36 @@
 
     <!-- ================= FLOATING BOTTOM NAVIGATION BAR ================= -->
     <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
-        <div class="max-w-md mx-auto px-2 py-1.5 flex items-center justify-around gap-1">
+        <div class="max-w-md mx-auto px-1 sm:px-2 py-1.5 flex items-center justify-between gap-0.5 sm:gap-1">
             
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn tab-active flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-emerald-400 font-bold transition active:scale-95">
-                <span class="tab-icon text-lg leading-none">📅</span>
-                <span class="tab-text text-[10px] tracking-tight">Mecz</span>
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn tab-active flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-emerald-400 font-bold transition active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none">📅</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Mecz</span>
             </button>
 
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-lg leading-none">🔀</span>
-                <span class="tab-text text-[10px] tracking-tight">Składy</span>
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none">🔀</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Składy</span>
             </button>
 
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-lg leading-none">💰</span>
-                <span class="tab-text text-[10px] tracking-tight">Składki</span>
+            <button type="button" onclick="switchTab('typer')" id="tab-btn-typer" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95 relative">
+                <span class="tab-icon text-base sm:text-lg leading-none">🎯</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Typer</span>
             </button>
 
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-lg leading-none">👑</span>
-                <span class="tab-text text-[10px] tracking-tight">Ranking</span>
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none">💰</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Składki</span>
             </button>
 
-            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-h-[50px] py-1.5 px-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-lg leading-none">👤</span>
-                <span id="navProfileLabel" class="tab-text text-[10px] tracking-tight leading-tight text-center break-words max-w-[68px]">Profil</span>
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none">👑</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Ranking</span>
+            </button>
+
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none">👤</span>
+                <span id="navProfileLabel" class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center truncate max-w-[58px]">Profil</span>
             </button>
 
         </div>
@@ -5672,7 +5995,7 @@
                         target.scrollIntoView({ behavior: 'smooth' });
                     }
                 }, 120);
-            } else if (targetTab && ['matches', 'teams', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
+            } else if (targetTab && ['matches', 'teams', 'typer', 'billing', 'halloffame', 'profile'].includes(targetTab)) {
                 switchTab(targetTab);
                 if (targetTab === 'teams' && urlParams.get('view') === 'court') {
                     setTimeout(() => { if (typeof setTeamsViewMode === 'function') setTeamsViewMode('court'); }, 150);
@@ -6083,6 +6406,7 @@
             if (forceAll) {
                 renderMatchesTab();
                 renderTeamsTab();
+                renderTyperTab();
                 renderIntegratedMvpCard();
                 renderArchiveTab();
                 renderBilling();
@@ -6094,6 +6418,8 @@
                     renderIntegratedMvpCard();
                 } else if (currentActiveTab === 'teams') {
                     renderTeamsTab();
+                } else if (currentActiveTab === 'typer') {
+                    renderTyperTab();
                 } else if (currentActiveTab === 'billing') {
                     renderBilling();
                 } else if (currentActiveTab === 'halloffame') {
@@ -6283,6 +6609,8 @@
                 renderIntegratedMvpCard();
             } else if (tabName === 'teams') {
                 renderTeamsTab();
+            } else if (tabName === 'typer') {
+                renderTyperTab();
             } else if (tabName === 'billing') {
                 renderBilling();
             } else if (tabName === 'halloffame') {
@@ -6337,7 +6665,7 @@
             renderMatchesTab();
         }
 
-        function formatScoreHtml(scoreStr) {
+        function formatScoreHtml(scoreStr, match = null) {
             if (!scoreStr) {
                 return `<div class="text-xs text-slate-500 py-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span><span>Jeszcze nie wpisano wyniku spotkania</span></div>`;
             }
@@ -6377,6 +6705,54 @@
                     setsPillsHtml = `<div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">${pills}</div>`;
                 }
 
+                let oddsA_Html = '';
+                let oddsB_Html = '';
+                let upsetBadgeHtml = '';
+
+                if (match) {
+                    const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(match) : null;
+                    if (oddsObj) {
+                        const darkOdds = oddsObj.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
+                        const lightOdds = oddsObj.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
+                        const darkProb = oddsObj.darkProb !== undefined ? oddsObj.darkProb : 50;
+                        const lightProb = oddsObj.lightProb !== undefined ? oddsObj.lightProb : 50;
+
+                        const isADark = !teamA.toLowerCase().includes('jasn') && (teamA.toLowerCase().includes('ciemn') || !teamB.toLowerCase().includes('ciemn'));
+                        const oddsA = isADark ? darkOdds : lightOdds;
+                        const probA = isADark ? darkProb : lightProb;
+                        const oddsB = isADark ? lightOdds : darkOdds;
+                        const probB = isADark ? lightProb : darkProb;
+
+                        oddsA_Html = `
+                            <div class="flex items-center justify-end gap-1 mt-0.5">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                    <span class="match-odds-value font-black text-amber-300">${oddsA}</span>
+                                    <span class="text-slate-500 text-[8.5px]">(${probA}%)</span>
+                                </span>
+                            </div>
+                        `;
+
+                        oddsB_Html = `
+                            <div class="flex items-center justify-start gap-1 mt-0.5">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-500 text-[8.5px]">(${probB}%)</span>
+                                    <span class="match-odds-value font-black text-amber-300">${oddsB}</span>
+                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                </span>
+                            </div>
+                        `;
+
+                        const nA = parseFloat(oddsA);
+                        const nB = parseFloat(oddsB);
+                        if (aWon && nA > nB && (nA - nB) >= 0.20) {
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-bold text-amber-300 bg-amber-950/40 border border-amber-800/60 px-2 py-0.5 rounded-full shadow-sm">⚡ Niespodzianka! Wygrana po wyższym kursie ${oddsA}</span></div>`;
+                        } else if (bWon && nB > nA && (nB - nA) >= 0.20) {
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-bold text-amber-300 bg-amber-950/40 border border-amber-800/60 px-2 py-0.5 rounded-full shadow-sm">⚡ Niespodzianka! Wygrana po wyższym kursie ${oddsB}</span></div>`;
+                        }
+                    }
+                }
+
                 return `
                     <div class="space-y-2 py-0.5">
                         <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
@@ -6384,6 +6760,7 @@
                                 <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
                                     ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
                                 </span>
+                                ${oddsA_Html}
                             </div>
                             <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
                                 <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
@@ -6394,9 +6771,11 @@
                                 <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
                                     ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
                                 </span>
+                                ${oddsB_Html}
                             </div>
                         </div>
                         ${setsPillsHtml}
+                        ${upsetBadgeHtml}
                     </div>
                 `;
             }
@@ -6411,12 +6790,52 @@
                 const numB = parseInt(scoreB, 10);
                 const aWon = numA > numB;
                 const bWon = numB > numA;
+
+                let oddsA_Html = '';
+                let oddsB_Html = '';
+                if (match) {
+                    const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(match) : null;
+                    if (oddsObj) {
+                        const darkOdds = oddsObj.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
+                        const lightOdds = oddsObj.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
+                        const darkProb = oddsObj.darkProb !== undefined ? oddsObj.darkProb : 50;
+                        const lightProb = oddsObj.lightProb !== undefined ? oddsObj.lightProb : 50;
+
+                        const isADark = !teamA.toLowerCase().includes('jasn') && (teamA.toLowerCase().includes('ciemn') || !teamB.toLowerCase().includes('ciemn'));
+                        const oddsA = isADark ? darkOdds : lightOdds;
+                        const probA = isADark ? darkProb : lightProb;
+                        const oddsB = isADark ? lightOdds : darkOdds;
+                        const probB = isADark ? lightProb : darkProb;
+
+                        oddsA_Html = `
+                            <div class="flex items-center justify-end gap-1 mt-0.5">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                    <span class="match-odds-value font-black text-amber-300">${oddsA}</span>
+                                    <span class="text-slate-500 text-[8.5px]">(${probA}%)</span>
+                                </span>
+                            </div>
+                        `;
+
+                        oddsB_Html = `
+                            <div class="flex items-center justify-start gap-1 mt-0.5">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                    <span class="text-slate-500 text-[8.5px]">(${probB}%)</span>
+                                    <span class="match-odds-value font-black text-amber-300">${oddsB}</span>
+                                    <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                </span>
+                            </div>
+                        `;
+                    }
+                }
+
                 return `
                     <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3 py-0.5">
                         <div class="text-right min-w-0">
                             <span class="text-xs sm:text-sm font-black leading-snug break-words ${aWon ? 'text-emerald-400' : 'text-slate-200'}">
                                 ${aWon ? '🏆 ' : ''}${escapeHtml(teamA)}
                             </span>
+                            ${oddsA_Html}
                         </div>
                         <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
                             <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
@@ -6427,6 +6846,7 @@
                             <span class="text-xs sm:text-sm font-black leading-snug break-words ${bWon ? 'text-emerald-400' : 'text-slate-200'}">
                                 ${escapeHtml(teamB)}${bWon ? ' 🏆' : ''}
                             </span>
+                            ${oddsB_Html}
                         </div>
                     </div>
                 `;
@@ -6671,16 +7091,44 @@
             if (scoreCard) {
                 if (currentMatch.score) {
                     scoreCard.classList.remove('hidden');
-                    if (scoreTextEl) scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score);
+                    if (scoreTextEl) scoreTextEl.innerHTML = formatScoreHtml(currentMatch.score, currentMatch);
                     if (editLabel) editLabel.innerText = "Edytuj wynik";
                     if (editScoreBtn && isAdmin) editScoreBtn.classList.remove('hidden');
                 } else if (isMatchFinished(currentMatch)) {
                     scoreCard.classList.remove('hidden');
                     if (scoreTextEl) {
+                        const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(currentMatch) : null;
+                        const darkPlayers = (currentMatch.teams?.dark || []).filter(Boolean);
+                        const lightPlayers = (currentMatch.teams?.light || []).filter(Boolean);
+                        const hasSquads = (darkPlayers.length > 0 || lightPlayers.length > 0);
+                        const darkOdds = oddsObj?.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
+                        const lightOdds = oddsObj?.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
+                        const darkProb = oddsObj?.darkProb !== undefined ? oddsObj.darkProb : 50;
+                        const lightProb = oddsObj?.lightProb !== undefined ? oddsObj.lightProb : 50;
+
                         scoreTextEl.innerHTML = `
-                            <div class="flex items-center justify-between py-0.5 text-xs text-slate-500 italic">
-                                <span>Brak wpisanego oficjalnego wyniku</span>
-                                ${isAdmin ? `<button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1"><span>📊</span> + Wpisz wynik</button>` : ''}
+                            <div class="space-y-1.5 py-0.5">
+                                <div class="flex items-center justify-between py-0.5 text-xs text-slate-500 italic">
+                                    <span>Brak wpisanego oficjalnego wyniku</span>
+                                    ${isAdmin ? `<button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1 shadow-sm"><span>📊</span> + Wpisz wynik</button>` : ''}
+                                </div>
+                                ${hasSquads ? `
+                                    <div class="match-odds-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2 text-[10.5px]">
+                                        <div class="flex items-center gap-1.5 min-w-0">
+                                            <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
+                                            <span class="font-bold text-slate-300 truncate">Ciemni</span>
+                                            <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${darkOdds}</span>
+                                            <span class="text-[9px] text-slate-500 shrink-0">(${darkProb}%)</span>
+                                        </div>
+                                        <span class="text-slate-500 font-bold text-[9.5px] uppercase shrink-0">vs</span>
+                                        <div class="flex items-center gap-1.5 min-w-0">
+                                            <span class="text-[9.5px] text-slate-500 shrink-0">(${lightProb}%)</span>
+                                            <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${lightOdds}</span>
+                                            <span class="font-bold text-slate-300 truncate">Jaśni</span>
+                                            <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
+                                        </div>
+                                    </div>
+                                ` : ''}
                             </div>
                         `;
                     }
@@ -6689,12 +7137,40 @@
                     if (isAdmin) {
                         scoreCard.classList.remove('hidden');
                         if (scoreTextEl) {
+                            const oddsObj = (typeof getMatchOdds === 'function') ? getMatchOdds(currentMatch) : null;
+                            const darkPlayers = (currentMatch.teams?.dark || []).filter(Boolean);
+                            const lightPlayers = (currentMatch.teams?.light || []).filter(Boolean);
+                            const hasSquads = (darkPlayers.length > 0 || lightPlayers.length > 0);
+                            const darkOdds = oddsObj?.darkOdds ? Number(oddsObj.darkOdds).toFixed(2) : '1.85';
+                            const lightOdds = oddsObj?.lightOdds ? Number(oddsObj.lightOdds).toFixed(2) : '1.85';
+                            const darkProb = oddsObj?.darkProb !== undefined ? oddsObj.darkProb : 50;
+                            const lightProb = oddsObj?.lightProb !== undefined ? oddsObj.lightProb : 50;
+
                             scoreTextEl.innerHTML = `
-                                <div class="flex items-center justify-between py-0.5">
-                                    <span class="text-xs text-slate-500 italic">Brak wpisanego wyniku</span>
-                                    <button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1">
-                                        <span>📊</span> + Wpisz wynik spotkania
-                                    </button>
+                                <div class="space-y-1.5 py-0.5">
+                                    <div class="flex items-center justify-between py-0.5">
+                                        <span class="text-xs text-slate-500 italic">Brak wpisanego wyniku</span>
+                                        <button type="button" onclick="editMatchScorePrompt()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2.5 py-1 rounded-xl transition active:scale-95 flex items-center gap-1 shadow-sm">
+                                            <span>📊</span> + Wpisz wynik spotkania
+                                        </button>
+                                    </div>
+                                    ${hasSquads ? `
+                                        <div class="match-odds-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2 text-[10.5px]">
+                                            <div class="flex items-center gap-1.5 min-w-0">
+                                                <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
+                                                <span class="font-bold text-slate-300 truncate">Ciemni</span>
+                                                <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${darkOdds}</span>
+                                                <span class="text-[9px] text-slate-500 shrink-0">(${darkProb}%)</span>
+                                            </div>
+                                            <span class="text-slate-500 font-bold text-[9.5px] uppercase shrink-0">vs</span>
+                                            <div class="flex items-center gap-1.5 min-w-0">
+                                                <span class="text-[9.5px] text-slate-500 shrink-0">(${lightProb}%)</span>
+                                                <span class="match-odds-value font-mono font-black text-amber-300 text-[11px] shrink-0">kurs ${lightOdds}</span>
+                                                <span class="font-bold text-slate-300 truncate">Jaśni</span>
+                                                <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
+                                            </div>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `;
                         }
@@ -6739,6 +7215,44 @@
                     extraPlayingBtn.innerText = `🔄 Zmiany: +${extraCount} (${12 + extraCount})`;
                 } else {
                     extraPlayingBtn.innerText = "🔄 Zmiany: Wył (12)";
+                }
+            }
+
+            // Update Quick Typer Banner in Hero Card
+            const typerBanner = document.getElementById('quickTyperMatchBanner');
+            if (typerBanner) {
+                if (isCancelled) {
+                    typerBanner.classList.add('hidden');
+                } else {
+                    typerBanner.classList.remove('hidden');
+                    const lockBadge = document.getElementById('quickTyperLockStatusBadge');
+                    const teaserText = document.getElementById('quickTyperTeaserText');
+                    const isLocked = (typeof isMatchBettingLocked === 'function') ? isMatchBettingLocked(currentMatch) : false;
+                    const predCount = (currentMatch.predictions && typeof currentMatch.predictions === 'object') ? Object.keys(currentMatch.predictions).length : 0;
+
+                    if (lockBadge) {
+                        if (currentMatch.score) {
+                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30";
+                            lockBadge.innerText = "ZAKOŃCZONY";
+                        } else if (isLocked) {
+                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                            lockBadge.innerText = "ZAMKNIĘTE (20:00)";
+                        } else {
+                            lockBadge.className = "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                            lockBadge.innerText = "DO 20:00";
+                        }
+                    }
+                    if (teaserText) {
+                        if (currentMatch.score) {
+                            teaserText.innerText = `Wynik meczu: ${currentMatch.score} • Zobacz podsumowanie typów (${predCount} typerów) ➔`;
+                        } else if (isLocked) {
+                            teaserText.innerText = `Typowanie zakończone o 20:00 • Oddano ${predCount} typów • Zobacz sondę ➔`;
+                        } else {
+                            teaserText.innerText = predCount > 0 
+                                ? `Już ${predCount} typerów wytypowało! Sprawdź kursy i dodaj swój typ ➔`
+                                : `Wytypuj zwycięzcę (kursy) i dokładny wynik w setach! Zdobądź punkty ➔`;
+                        }
+                    }
                 }
             }
 
@@ -7968,12 +8482,189 @@
             return parts[0].slice(0, 2).toUpperCase();
         }
 
-        function getMatchdayFactsList(dark, light, currentMatch) {
-            let darkWinsMonth = 0, lightWinsMonth = 0;
-            let darkWinsSeason = 0, lightWinsSeason = 0;
+        function calculateMatchOdds(darkPlayers, lightPlayers, advStats) {
+            const adv = advStats || ((typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null);
+            const pAdv = adv?.playerAdvMap || {};
+            const duoStats = adv?.duoStats || {};
 
-            const currentMonthName = AppState.currentMonth || "Październik";
+            const cleanPlayerName = (name) => {
+                if (!name || typeof name !== 'string') return '';
+                const clean = name.trim();
+                if (!clean || /^(wolne|wakat|brak|\?|-+)$/i.test(clean)) return '';
+                return clean;
+            };
+
+            const cleanDark = (darkPlayers || []).map(cleanPlayerName).filter(Boolean);
+            const cleanLight = (lightPlayers || []).map(cleanPlayerName).filter(Boolean);
+
+            if (cleanDark.length === 0 || cleanLight.length === 0) {
+                return {
+                    darkProb: 50,
+                    lightProb: 50,
+                    darkOdds: 1.89,
+                    lightOdds: 1.89,
+                    isBalanced: true,
+                    favourite: 'even',
+                    darkWinImpactAvg: 50,
+                    lightWinImpactAvg: 50,
+                    darkPointDiffAvg: 0,
+                    lightPointDiffAvg: 0
+                };
+            }
+
+            // 1. Średni Win Impact składów (waga 60%)
+            const getTeamWinImpact = (team) => {
+                let total = 0;
+                let count = 0;
+                team.forEach(p => {
+                    const st = pAdv[p]?.winImpact;
+                    if (st && st.played >= 1) {
+                        total += st.winPct;
+                        count++;
+                    } else {
+                        total += 50;
+                        count++;
+                    }
+                });
+                return count > 0 ? (total / count) : 50;
+            };
+
+            // 2. Średni bilans małych punktów na seta
+            const getTeamPointDiffAvg = (team) => {
+                let totalDiff = 0;
+                let totalSets = 0;
+                team.forEach(p => {
+                    const st = pAdv[p]?.pointBalance;
+                    if (st && st.sets >= 1) {
+                        totalDiff += st.diff;
+                        totalSets += st.sets;
+                    }
+                });
+                return totalSets > 0 ? (totalDiff / totalSets) : 0;
+            };
+
+            // 3. Bonus zgrania duetów (synergia par na parkiecie)
+            const getTeamSynergyBonus = (team) => {
+                let bonus = 0;
+                for (let i = 0; i < team.length; i++) {
+                    for (let j = i + 1; j < team.length; j++) {
+                        const p1 = team[i];
+                        const p2 = team[j];
+                        const key = p1 < p2 ? `${p1}|||${p2}` : `${p2}|||${p1}`;
+                        const pair = duoStats[key];
+                        if (pair && pair.together >= 2) {
+                            const winPct = (pair.wins / pair.together) * 100;
+                            if (winPct >= 65) bonus += 12;
+                            else if (winPct <= 35) bonus -= 8;
+                        }
+                    }
+                }
+                return Math.max(-25, Math.min(25, bonus));
+            };
+
+            const darkWI = getTeamWinImpact(cleanDark);
+            const lightWI = getTeamWinImpact(cleanLight);
+
+            const darkPtDiff = getTeamPointDiffAvg(cleanDark);
+            const lightPtDiff = getTeamPointDiffAvg(cleanLight);
+
+            const darkSynergy = getTeamSynergyBonus(cleanDark);
+            const lightSynergy = getTeamSynergyBonus(cleanLight);
+
+            // Baza ratingu: 1000
+            const darkRating = 1000 + (darkWI - 50) * 10 + (darkPtDiff * 20) + darkSynergy;
+            const lightRating = 1000 + (lightWI - 50) * 10 + (lightPtDiff * 20) + lightSynergy;
+
+            const expDiff = (lightRating - darkRating) / 400;
+            const rawDarkProb = 1 / (1 + Math.pow(10, expDiff));
+
+            // Ograniczenie dla realizmu amatorskich rozgrywek (20% - 80%)
+            const clampedDarkProb = Math.max(0.20, Math.min(0.80, rawDarkProb));
+            const darkProb = Math.round(clampedDarkProb * 100);
+            const lightProb = 100 - darkProb;
+
+            // Kursy dziesiętne z marżą bukmacherską 5.5% (fairness factor = 0.945)
+            const margin = 0.945;
+            const darkOdds = Math.max(1.18, Math.min(4.75, Math.round((margin / (darkProb / 100)) * 100) / 100));
+            const lightOdds = Math.max(1.18, Math.min(4.75, Math.round((margin / (lightProb / 100)) * 100) / 100));
+
+            let favourite = 'even';
+            if (darkProb >= 54) favourite = 'dark';
+            else if (lightProb >= 54) favourite = 'light';
+
+            return {
+                darkProb,
+                lightProb,
+                darkOdds,
+                lightOdds,
+                isBalanced: Math.abs(darkProb - lightProb) <= 6,
+                favourite,
+                darkWinImpactAvg: Math.round(darkWI),
+                lightWinImpactAvg: Math.round(lightWI),
+                darkPointDiffAvg: darkPtDiff,
+                lightPointDiffAvg: lightPtDiff
+            };
+        }
+
+        function getMatchOdds(match) {
+            if (!match) return { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85, isBalanced: true, favourite: 'even' };
+            const isLocked = (typeof isMatchBettingLocked === 'function') ? isMatchBettingLocked(match) : false;
+            // Zamrożone kursy z bazy stosujemy tylko dla meczów już zablokowanych o 20:00 lub zakończonych
+            if (isLocked && match.odds && match.odds.darkOdds && match.odds.lightOdds) {
+                return match.odds;
+            }
+            const darkPlayers = (match.teams?.dark || []).filter(Boolean);
+            const lightPlayers = (match.teams?.light || []).filter(Boolean);
+            if (darkPlayers.length > 0 && lightPlayers.length > 0 && typeof calculateMatchOdds === 'function') {
+                const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+                const fresh = calculateMatchOdds(darkPlayers, lightPlayers, advStats);
+                if (isLocked) {
+                    match.odds = fresh;
+                }
+                return fresh;
+            }
+            return { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85, isBalanced: true, favourite: 'even' };
+        }
+
+        function getMatchdayFactsList(dark, light, currentMatch) {
+            const cleanPlayerName = (name) => {
+                if (!name || typeof name !== 'string') return '';
+                const clean = name.trim();
+                if (!clean || /^(wolne|wakat|brak|\?|-+)$/i.test(clean)) return '';
+                return clean;
+            };
+
+            // Wyciągamy graczy z aktualnego meczu
+            const mainSquad = currentMatch ? (typeof getMatchPlayingSquad === 'function' ? getMatchPlayingSquad(currentMatch) : (currentMatch.attendees || []).slice(0, 14)) : [];
+            const rawTeams = currentMatch ? ensureMatchTeamsObject(currentMatch) : { dark: [], light: [] };
+
+            let effectiveDark = (Array.isArray(dark) && dark.length > 0)
+                ? dark.map(cleanPlayerName).filter(Boolean)
+                : (rawTeams.dark || []).map(cleanPlayerName).filter(Boolean);
+            let effectiveLight = (Array.isArray(light) && light.length > 0)
+                ? light.map(cleanPlayerName).filter(Boolean)
+                : (rawTeams.light || []).map(cleanPlayerName).filter(Boolean);
+
+            if (mainSquad.length > 0) {
+                effectiveDark = effectiveDark.filter(p => mainSquad.includes(p));
+                effectiveLight = effectiveLight.filter(p => mainSquad.includes(p));
+            }
+
+            const pluralizeMatches = (n) => {
+                if (n === 1) return "1 mecz";
+                if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return `${n} mecze`;
+                return `${n} meczów`;
+            };
+            const pluralizeGames = (n) => {
+                if (n === 1) return "1 spotkanie";
+                if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return `${n} spotkania`;
+                return `${n} spotkań`;
+            };
+
             const months = AppState.months || {};
+            let darkWinsSeason = 0, lightWinsSeason = 0;
+            let totalFinishedMatches = 0;
+            let tieBreakMatches = 0;
 
             for (const mName of Object.keys(months)) {
                 const matches = months[mName]?.matches || [];
@@ -7994,118 +8685,288 @@
                                 isScoreValid = true;
                                 if (sA > sB) darkWon = true;
                                 else if (sB > sA) lightWon = true;
+                                if ((sA === 2 && sB === 1) || (sA === 1 && sB === 2) || (sA === 3 && sB === 2) || (sA === 2 && sB === 3)) {
+                                    tieBreakMatches++;
+                                }
                             }
                         }
                     }
 
                     if (isScoreValid) {
-                        if (darkWon) {
-                            darkWinsSeason++;
-                            if (mName.toLowerCase().includes(currentMonthName.toLowerCase())) darkWinsMonth++;
-                        } else if (lightWon) {
-                            lightWinsSeason++;
-                            if (mName.toLowerCase().includes(currentMonthName.toLowerCase())) lightWinsMonth++;
-                        }
+                        totalFinishedMatches++;
+                        if (darkWon) darkWinsSeason++;
+                        else if (lightWon) lightWinsSeason++;
                     }
                 }
             }
-
-            const monthTotal = darkWinsMonth + lightWinsMonth || 1;
-            const monthDarkPct = Math.round((darkWinsMonth / monthTotal) * 100);
 
             const seasonTotal = darkWinsSeason + lightWinsSeason || 1;
             const seasonDarkPct = Math.round((darkWinsSeason / seasonTotal) * 100);
 
-            // Obliczamy faktyczną liczbę rozegranych meczów w sezonie dla każdego gracza
-            const todayStr = (typeof getLocalDateKey === 'function') ? getLocalDateKey() : new Date().toISOString().slice(0, 10);
-            function getPlayerTotalMatches(p) {
-                if (!p) return 0;
-                const base = (AppState.base_games && AppState.base_games[p]) || 0;
-                let played = 0;
-                Object.keys(months).forEach(mName => {
-                    const mList = months[mName]?.matches || [];
-                    mList.forEach(m => {
-                        if (!m || m.isCancelled) return;
-                        const isHeld = (typeof isMatchHeld === 'function') ? isMatchHeld(m, todayStr) : (Boolean(m.score) || (m.date && m.date <= todayStr));
-                        if (!isHeld) return;
-                        const squad = (typeof getMatchPlayingSquad === 'function') ? getMatchPlayingSquad(m) : (m.attendees || []).slice(0, 14);
-                        if (squad.includes(p)) {
-                            played++;
-                        }
-                    });
+            const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+            const pAdv = adv?.playerAdvMap || {};
+            const duoStats = adv?.duoStats || {};
+            const h2hStats = adv?.h2hStats || {};
+
+            const facts = [];
+
+            // A. Jeśli brak przydzielonych składów (0 graczy) - fallback do ogólnych statystyk sezonu
+            if (effectiveDark.length === 0 || effectiveLight.length === 0) {
+                facts.push({
+                    category: `⚔️ KLASYK SEZONU 2026`,
+                    text: `W całym sezonie 2026: Ciemni wygrali ${pluralizeMatches(darkWinsSeason)} (${seasonDarkPct}%), a Jaśni ${pluralizeMatches(lightWinsSeason)} (${100 - seasonDarkPct}%). Wyrównana rywalizacja!`,
+                    darkLabel: `Ciemni: ${darkWinsSeason}W (${seasonDarkPct}%)`,
+                    lightLabel: `Jaśni: ${lightWinsSeason}W (${100 - seasonDarkPct}%)`,
+                    pct: seasonDarkPct,
+                    theme: 'season'
                 });
-                return base + played;
+
+                facts.push({
+                    category: `👥 OCZEKIWANIE NA SKŁADY`,
+                    text: `Przydziel zawodników do Ciemnych i Jasnych, aby odblokować kursy meczowe, pojedynki H2H, siłę ognia i analizę faworyta!`,
+                    darkLabel: `⬛ Drużyna Ciemna`,
+                    lightLabel: `⬜ Drużyna Jasna`,
+                    pct: 50,
+                    theme: 'odds'
+                });
+
+                if (totalFinishedMatches >= 3 && tieBreakMatches > 0) {
+                    const tbPct = Math.round((tieBreakMatches / totalFinishedMatches) * 100);
+                    facts.push({
+                        category: `WALKA DO SAMEGO KOŃCA`,
+                        text: `Aż ${tieBreakMatches} z dotychczasowych ${totalFinishedMatches} meczów sezonu (${tbPct}%) rozstrzygało się w decydującym secie!`,
+                        darkLabel: `Tie-breaki: ${tieBreakMatches} (${tbPct}%)`,
+                        lightLabel: `Pozostałe: ${totalFinishedMatches - tieBreakMatches}`,
+                        pct: tbPct,
+                        theme: 'month'
+                    });
+                }
+                return facts;
             }
 
-            function getLeader(teamPlayers) {
-                if (!teamPlayers || teamPlayers.length === 0) return { name: 'Zawodnicy', matches: 0 };
-                let best = { name: teamPlayers[0], matches: getPlayerTotalMatches(teamPlayers[0]) };
-                teamPlayers.forEach(p => {
-                    const mCount = getPlayerTotalMatches(p);
-                    if (mCount > best.matches) {
-                        best = { name: p, matches: mCount };
+            // B. MAMY SKŁADY NA MECZ -> Pełna dynamiczna analityka obecnych graczy!
+
+            // 1. KURSY & PROGNOZA MECZU (Win Probability & Odds)
+            const odds = calculateMatchOdds(effectiveDark, effectiveLight, adv);
+            let oddsNarrative = "";
+            if (odds.isBalanced) {
+                oddsNarrative = `Algorytm szacuje niezwykle wyrównane starcie: Ciemni mają ${odds.darkProb}% szans (kurs ${odds.darkOdds.toFixed(2)}), a Jaśni ${odds.lightProb}% (kurs ${odds.lightOdds.toFixed(2)}). Szykuje się walka do samego końca!`;
+            } else if (odds.favourite === 'dark') {
+                oddsNarrative = `Algorytm stawia na Ciemnych (${odds.darkProb}% szans, kurs ${odds.darkOdds.toFixed(2)}) w starciu z Jasnymi (${odds.lightProb}%, kurs ${odds.lightOdds.toFixed(2)}). Średni Win Impact Ciemnych to ${odds.darkWinImpactAvg}%!`;
+            } else {
+                oddsNarrative = `Algorytm stawia na Jasnych (${odds.lightProb}% szans, kurs ${odds.lightOdds.toFixed(2)}) w starciu z Ciemnymi (${odds.darkProb}%, kurs ${odds.darkOdds.toFixed(2)}). Średni Win Impact Jasnych to ${odds.lightWinImpactAvg}%!`;
+            }
+
+            facts.push({
+                category: `🎲 KURSY & PROGNOZA MECZU`,
+                text: oddsNarrative,
+                darkLabel: `Ciemni: ${odds.darkOdds.toFixed(2)} (${odds.darkProb}%)`,
+                lightLabel: `Jaśni: ${odds.lightOdds.toFixed(2)} (${odds.lightProb}%)`,
+                pct: odds.darkProb,
+                theme: 'odds'
+            });
+
+            // 2. POJEDYNEK DNIA / KRYPTONIT (H2H obecnych graczy)
+            let bestKryptonite = null;
+            let mostFrequentH2H = null;
+
+            effectiveDark.forEach(pDark => {
+                effectiveLight.forEach(pLight => {
+                    const st = h2hStats[pDark]?.[pLight];
+                    if (st && st.against >= 2) {
+                        const darkWinRate = (st.wins / st.against) * 100;
+                        const isKrypto = (st.against >= 3 && (st.losses >= 2 || st.wins >= 2));
+                        const severity = Math.abs(st.wins - st.losses) * 10 + st.against;
+
+                        if (isKrypto) {
+                            if (!bestKryptonite || severity > bestKryptonite.severity) {
+                                bestKryptonite = {
+                                    darkPlayer: pDark,
+                                    lightPlayer: pLight,
+                                    darkWins: st.wins,
+                                    lightWins: st.losses,
+                                    against: st.against,
+                                    darkWinRate,
+                                    severity
+                                };
+                            }
+                        }
+
+                        if (!mostFrequentH2H || st.against > mostFrequentH2H.against) {
+                            mostFrequentH2H = {
+                                darkPlayer: pDark,
+                                lightPlayer: pLight,
+                                darkWins: st.wins,
+                                lightWins: st.losses,
+                                against: st.against,
+                                darkWinRate
+                            };
+                        }
                     }
                 });
-                return best;
+            });
+
+            if (bestKryptonite) {
+                const isDarkNemesis = bestKryptonite.darkWins > bestKryptonite.lightWins;
+                const dShort = bestKryptonite.darkPlayer.split(' ')[0];
+                const lShort = bestKryptonite.lightPlayer.split(' ')[0];
+                const pct = Math.round((bestKryptonite.darkWins / (bestKryptonite.against || 1)) * 100);
+
+                let kText = "";
+                if (isDarkNemesis) {
+                    kText = `${bestKryptonite.darkPlayer} to koszmar dla ${bestKryptonite.lightPlayer} (bilans ${bestKryptonite.darkWins}-${bestKryptonite.lightWins} w bezpośrednich starciach). Czy ${lShort} dziś przełamie tę passę?`;
+                } else {
+                    kText = `${bestKryptonite.lightPlayer} to koszmar dla ${bestKryptonite.darkPlayer} (bilans ${bestKryptonite.lightWins}-${bestKryptonite.darkWins} w bezpośrednich starciach). Czy ${dShort} znajdzie dziś na niego sposób?`;
+                }
+
+                facts.push({
+                    category: `🥊 POJEDYNEK DNIA (KRYPTONIT)`,
+                    text: kText,
+                    darkLabel: `${dShort}: ${bestKryptonite.darkWins}W`,
+                    lightLabel: `${lShort}: ${bestKryptonite.lightWins}W`,
+                    pct: Math.max(10, Math.min(90, pct)),
+                    theme: 'kryptonite'
+                });
+            } else if (mostFrequentH2H && mostFrequentH2H.against >= 3) {
+                const dShort = mostFrequentH2H.darkPlayer.split(' ')[0];
+                const lShort = mostFrequentH2H.lightPlayer.split(' ')[0];
+                const pct = Math.round((mostFrequentH2H.darkWins / (mostFrequentH2H.against || 1)) * 100);
+                facts.push({
+                    category: `⚔️ STARCIE WIECZORU (H2H)`,
+                    text: `Najczęstszy pojedynek pod siatką: ${mostFrequentH2H.darkPlayer} vs ${mostFrequentH2H.lightPlayer}! Grali przeciwko sobie już ${mostFrequentH2H.against} razy (bilans ${mostFrequentH2H.darkWins}-${mostFrequentH2H.lightWins}).`,
+                    darkLabel: `${dShort}: ${mostFrequentH2H.darkWins}W`,
+                    lightLabel: `${lShort}: ${mostFrequentH2H.lightWins}W`,
+                    pct: Math.max(10, Math.min(90, pct)),
+                    theme: 'kryptonite'
+                });
             }
 
-            const darkLeader = getLeader(dark);
-            const lightLeader = getLeader(light);
+            // 3. SIŁA OGNIA (ŁĄCZNY BILANS MAŁYCH PUNKTÓW)
+            let darkPtsDiff = 0, lightPtsDiff = 0;
+            let darkPtsWon = 0, lightPtsWon = 0;
+            effectiveDark.forEach(p => {
+                const pt = pAdv[p]?.pointBalance;
+                if (pt) {
+                    darkPtsDiff += (pt.diff || 0);
+                    darkPtsWon += (pt.won || 0);
+                }
+            });
+            effectiveLight.forEach(p => {
+                const pt = pAdv[p]?.pointBalance;
+                if (pt) {
+                    lightPtsDiff += (pt.diff || 0);
+                    lightPtsWon += (pt.won || 0);
+                }
+            });
 
+            if (darkPtsWon > 0 || lightPtsWon > 0) {
+                const totalPts = darkPtsWon + lightPtsWon || 1;
+                const ptsPct = Math.round((darkPtsWon / totalPts) * 100);
+                facts.push({
+                    category: `💥 SIŁA OGNIA (MAŁE PUNKTY)`,
+                    text: `Łączny sezonowy bilans małych punktów dzisiejszych składów: Ciemni wypracowali ${darkPtsDiff > 0 ? '+' : ''}${darkPtsDiff} pkt, a Jaśni ${lightPtsDiff > 0 ? '+' : ''}${lightPtsDiff} pkt. Kto dziś narzuci wyższy rytm?`,
+                    darkLabel: `Ciemni: ${darkPtsDiff > 0 ? '+' : ''}${darkPtsDiff} pkt`,
+                    lightLabel: `Jaśni: ${lightPtsDiff > 0 ? '+' : ''}${lightPtsDiff} pkt`,
+                    pct: Math.max(15, Math.min(85, ptsPct)),
+                    theme: 'small_points'
+                });
+            }
+
+            // 4. ZAWODNIK W GAZIE (AKTYWNA SERIA ZWYCIĘSTW)
+            let topStreakPlayer = null;
+            const checkPlayerStreak = (name, team) => {
+                const outcomes = (typeof calculatePlayerCareerOutcomes === 'function') ? calculatePlayerCareerOutcomes(name)?.all || [] : [];
+                let cur = 0;
+                for (let i = outcomes.length - 1; i >= 0; i--) {
+                    if (outcomes[i] === 'W') cur++;
+                    else break;
+                }
+                if (cur >= 2) {
+                    if (!topStreakPlayer || cur > topStreakPlayer.streak) {
+                        topStreakPlayer = { name, streak: cur, team };
+                    }
+                }
+            };
+            effectiveDark.forEach(p => checkPlayerStreak(p, 'dark'));
+            effectiveLight.forEach(p => checkPlayerStreak(p, 'light'));
+
+            if (topStreakPlayer) {
+                const isDark = (topStreakPlayer.team === 'dark');
+                const pShort = topStreakPlayer.name.split(' ')[0];
+                const teamName = isDark ? "Ciemnych" : "Jasnych";
+                const oppName = isDark ? "Jaśni" : "Ciemni";
+                facts.push({
+                    category: `⚡ ZAWODNIK W GAZIE`,
+                    text: `${topStreakPlayer.name} przystępuje do meczu w barwach ${teamName} z gorącą passą ${topStreakPlayer.streak} wygranych z rzędu! Czy ${oppName} znajdą dziś na niego sposób?`,
+                    darkLabel: isDark ? `${pShort}: ${topStreakPlayer.streak}W z rzędu 🔥` : `Ciemni: Przerwać passę!`,
+                    lightLabel: !isDark ? `${pShort}: ${topStreakPlayer.streak}W z rzędu 🔥` : `Jaśni: Przerwać passę!`,
+                    pct: isDark ? 75 : 25,
+                    theme: 'streak'
+                });
+            }
+
+            // 5. MISTRZOWIE TIE-BREAKÓW (5. SETY)
+            let bestDarkClutch = null, bestLightClutch = null;
+            effectiveDark.forEach(p => {
+                const cl = pAdv[p]?.clutch;
+                if (cl && cl.clutchTotal >= 2 && cl.clutchPct > 0) {
+                    if (!bestDarkClutch || cl.clutchPct > bestDarkClutch.pct || (cl.clutchPct === bestDarkClutch.pct && cl.clutchWon > bestDarkClutch.won)) {
+                        bestDarkClutch = { name: p, won: cl.clutchWon, total: cl.clutchTotal, pct: cl.clutchPct };
+                    }
+                }
+            });
+            effectiveLight.forEach(p => {
+                const cl = pAdv[p]?.clutch;
+                if (cl && cl.clutchTotal >= 2 && cl.clutchPct > 0) {
+                    if (!bestLightClutch || cl.clutchPct > bestLightClutch.pct || (cl.clutchPct === bestLightClutch.pct && cl.clutchWon > bestLightClutch.won)) {
+                        bestLightClutch = { name: p, won: cl.clutchWon, total: cl.clutchTotal, pct: cl.clutchPct };
+                    }
+                }
+            });
+
+            if (bestDarkClutch && bestLightClutch) {
+                const dShort = bestDarkClutch.name.split(' ')[0];
+                const lShort = bestLightClutch.name.split(' ')[0];
+                const totalPct = bestDarkClutch.pct + bestLightClutch.pct || 1;
+                const clutchBarPct = Math.round((bestDarkClutch.pct / totalPct) * 100);
+
+                facts.push({
+                    category: `🔥 MISTRZOWIE TIE-BREAKÓW`,
+                    text: `W razie 5. seta o wyniku mogą decydować nerwy ze stali: ${bestDarkClutch.name} (${bestDarkClutch.pct}% W w tie-breakach) staje naprzeciw ${bestLightClutch.name} (${bestLightClutch.pct}% W)!`,
+                    darkLabel: `${dShort}: ${bestDarkClutch.pct}% TB (${bestDarkClutch.won}/${bestDarkClutch.total})`,
+                    lightLabel: `${lShort}: ${bestLightClutch.pct}% TB (${bestLightClutch.won}/${bestLightClutch.total})`,
+                    pct: Math.max(15, Math.min(85, clutchBarPct)),
+                    theme: 'clutch'
+                });
+            }
+
+            // 6. SYNERGIA W ZESPOLE (NAJLEPSZY DUET W TEJ SAMEJ DRUŻYNIE)
             let topDuo = null;
-            try {
-                const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
-                const duoStats = adv?.duoStats || {};
-                const checkTeamPairs = (teamList) => {
-                    if (!teamList || teamList.length < 2) return;
-                    for (let i = 0; i < teamList.length; i++) {
-                        for (let j = i + 1; j < teamList.length; j++) {
-                            const pA = teamList[i];
-                            const pB = teamList[j];
-                            const key = pA < pB ? `${pA}|||${pB}` : `${pB}|||${pA}`;
-                            const st = duoStats[key];
-                            if (st && st.together >= 2) {
-                                const winPct = Math.round((st.wins / st.together) * 100);
-                                if (!topDuo || st.together > topDuo.together || (st.together === topDuo.together && winPct > topDuo.winPct)) {
-                                    topDuo = { p1: st.p1, p2: st.p2, together: st.together, wins: st.wins, winPct };
-                                }
+            const findBestTeamDuo = (teamArr, teamName) => {
+                if (!teamArr || teamArr.length < 2) return;
+                for (let i = 0; i < teamArr.length; i++) {
+                    for (let j = i + 1; j < teamArr.length; j++) {
+                        const pA = teamArr[i];
+                        const pB = teamArr[j];
+                        const key = pA < pB ? `${pA}|||${pB}` : `${pB}|||${pA}`;
+                        const st = duoStats[key];
+                        if (st && st.together >= 2) {
+                            const winPct = Math.round((st.wins / st.together) * 100);
+                            if (!topDuo || st.together > topDuo.together || (st.together === topDuo.together && winPct > topDuo.winPct)) {
+                                topDuo = { p1: st.p1, p2: st.p2, together: st.together, wins: st.wins, winPct, teamName };
                             }
                         }
                     }
-                };
-                checkTeamPairs(dark);
-                checkTeamPairs(light);
-            } catch(e) {}
-
-            const facts = [
-                {
-                    category: `STAWKA W ${currentMonthName.toUpperCase()}`,
-                    text: `Bilans w tym miesiącu: Ciemni wygrali ${darkWinsMonth} z ${monthTotal} meczów (${monthDarkPct}%). Czy Jaśni doprowadzą dziś do remisu w miesiącu?`,
-                    darkLabel: `Ciemni: ${darkWinsMonth}W (${monthDarkPct}%)`,
-                    lightLabel: `Jaśni: ${lightWinsMonth}W (${100 - monthDarkPct}%)`,
-                    pct: monthDarkPct,
-                    theme: 'month'
                 }
-            ];
-
-            if (darkLeader.matches > 0 && lightLeader.matches > 0) {
-                const totalM = darkLeader.matches + lightLeader.matches;
-                const darkPct = Math.round((darkLeader.matches / totalM) * 100);
-                facts.push({
-                    category: `STARCIE LIDERÓW OBECNOŚCI`,
-                    text: `Pojedynek filarów ligi: ${darkLeader.name} (${darkLeader.matches} meczów) staje dziś naprzeciwko ${lightLeader.name} (${lightLeader.matches} meczów)!`,
-                    darkLabel: `${darkLeader.name.split(' ')[0]}: ${darkLeader.matches}M (${darkPct}%)`,
-                    lightLabel: `${lightLeader.name.split(' ')[0]}: ${lightLeader.matches}M (${100 - darkPct}%)`,
-                    pct: darkPct,
-                    theme: 'leaders'
-                });
-            }
+            };
+            findBestTeamDuo(effectiveDark, "Ciemnych");
+            findBestTeamDuo(effectiveLight, "Jasnych");
 
             if (topDuo && topDuo.together >= 2) {
                 const duoLosses = Math.max(0, topDuo.together - topDuo.wins);
                 facts.push({
-                    category: `CHEMIA W ZESPOLE (DUET)`,
-                    text: `Najbardziej zgrany duet w składzie: ${topDuo.p1} i ${topDuo.p2} rozegrali razem już ${topDuo.together} spotkań, notując ${topDuo.winPct}% zwycięstw!`,
+                    category: `🤝 SYNERGIA W ZESPOLE (DUET)`,
+                    text: `Najbardziej zgrany duet po stronie ${topDuo.teamName}: ${topDuo.p1} i ${topDuo.p2} rozegrali razem już ${pluralizeGames(topDuo.together)}, notując ${topDuo.winPct}% zwycięstw!`,
                     darkLabel: `Wygrane: ${topDuo.wins} (${topDuo.winPct}%)`,
                     lightLabel: `Porażki: ${duoLosses}`,
                     pct: topDuo.winPct,
@@ -8113,44 +8974,36 @@
                 });
             }
 
-            // Statystyka tie-breaków
-            let tieBreakMatches = 0;
-            let totalFinishedMatches = 0;
-            for (const mName of Object.keys(months)) {
-                const matches = months[mName]?.matches || [];
-                for (const m of matches) {
-                    if (!m || m.isCancelled || !m.score) continue;
-                    if (typeof m.score === 'string') {
-                        const matchScoreMatch = m.score.match(/\s(\d+)\s*:\s*(\d+)\s/);
-                        if (matchScoreMatch) {
-                            totalFinishedMatches++;
-                            const sA = parseInt(matchScoreMatch[1], 10);
-                            const sB = parseInt(matchScoreMatch[2], 10);
-                            if ((sA === 2 && sB === 1) || (sA === 1 && sB === 2) || (sA === 3 && sB === 2) || (sA === 2 && sB === 3)) {
-                                tieBreakMatches++;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (totalFinishedMatches >= 3 && tieBreakMatches > 0) {
-                const tbPct = Math.round((tieBreakMatches / totalFinishedMatches) * 100);
-                facts.push({
-                    category: `WALKA DO SAMEGO KOŃCA`,
-                    text: `Aż ${tieBreakMatches} z dotychczasowych ${totalFinishedMatches} meczów sezonu (${tbPct}%) rozstrzygało się dopiero w decydującym secie!`,
-                    darkLabel: `Tie-breaki: ${tieBreakMatches} (${tbPct}%)`,
-                    lightLabel: `Pozostałe: ${totalFinishedMatches - tieBreakMatches}`,
-                    pct: tbPct,
-                    theme: 'month'
+            // 7. BITWA KOLEKCJONERÓW (ODZNAKI LIGOWE)
+            let darkBadges = 0, lightBadges = 0;
+            if (typeof calculatePlayerBadges === 'function') {
+                effectiveDark.forEach(p => {
+                    darkBadges += (calculatePlayerBadges(p)?.badges || []).length;
+                });
+                effectiveLight.forEach(p => {
+                    lightBadges += (calculatePlayerBadges(p)?.badges || []).length;
                 });
             }
 
+            if (darkBadges + lightBadges > 0) {
+                const totalB = darkBadges + lightBadges;
+                const bPct = Math.round((darkBadges / totalB) * 100);
+                facts.push({
+                    category: `🏅 BITWA KOLEKCJONERÓW`,
+                    text: `Na parkiecie spotyka się dziś aż ${totalB} zdobytych odznak ligowych (${darkBadges} po stronie Ciemnych vs ${lightBadges} u Jasnych). Czy trofea przełożą się na wygraną?`,
+                    darkLabel: `Ciemni: ${darkBadges} 🏅 (${bPct}%)`,
+                    lightLabel: `Jaśni: ${lightBadges} 🏅 (${100 - bPct}%)`,
+                    pct: Math.max(10, Math.min(90, bPct)),
+                    theme: 'badges'
+                });
+            }
+
+            // 8. KLASYK CAŁEGO SEZONU 2026 (Zamiast wąskiego miesiąca)
             facts.push({
-                category: `BILANS CAŁEGO SEZONU 2026`,
-                text: `W całym sezonie 2026: Ciemni mają ${darkWinsSeason} wygranych (${seasonDarkPct}%), Jaśni ${lightWinsSeason} wygranych (${100 - seasonDarkPct}%). Wyrównana rywalizacja!`,
-                darkLabel: `Ciemni: ${darkWinsSeason}W`,
-                lightLabel: `Jaśni: ${lightWinsSeason}W`,
+                category: `⚔️ KLASYK SEZONU 2026`,
+                text: `W całym sezonie 2026: Ciemni wygrali ${pluralizeMatches(darkWinsSeason)} (${seasonDarkPct}%), a Jaśni ${pluralizeMatches(lightWinsSeason)} (${100 - seasonDarkPct}%). Ciągła walka o prymat!`,
+                darkLabel: `Ciemni: ${darkWinsSeason}W (${seasonDarkPct}%)`,
+                lightLabel: `Jaśni: ${lightWinsSeason}W (${100 - seasonDarkPct}%)`,
                 pct: seasonDarkPct,
                 theme: 'season'
             });
@@ -8166,6 +9019,8 @@
             if (!factText || !factVisual) return;
 
             const facts = getMatchdayFactsList(dark, light, currentMatch);
+            if (!facts || facts.length === 0) return;
+
             const idx = matchdayFactIdx % facts.length;
             const f = facts[idx];
 
@@ -8173,8 +9028,8 @@
             if (factBadge) factBadge.textContent = `${idx + 1} / ${facts.length}`;
             factText.textContent = f.text;
 
-            const leftPct = f.pct;
-            const rightPct = 100 - f.pct;
+            const leftPct = Math.max(8, Math.min(92, f.pct));
+            const rightPct = 100 - leftPct;
 
             if (f.theme === 'duo') {
                 factVisual.innerHTML = `
@@ -8205,8 +9060,11 @@
             matchdayFactIdx++;
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
-            const teams = currentMatch ? ensureMatchTeamsObject(currentMatch) : { dark: [], light: [] };
-            renderMatchdayFact(teams.dark, teams.light, currentMatch);
+            const mainSquad = currentMatch ? (typeof getMatchPlayingSquad === 'function' ? getMatchPlayingSquad(currentMatch) : (currentMatch.attendees || []).slice(0, 14)) : [];
+            const rawTeams = currentMatch ? ensureMatchTeamsObject(currentMatch) : { dark: [], light: [] };
+            const dark = (rawTeams.dark || []).filter(p => mainSquad.length ? mainSquad.includes(p) : Boolean(p));
+            const light = (rawTeams.light || []).filter(p => mainSquad.length ? mainSquad.includes(p) : Boolean(p));
+            renderMatchdayFact(dark, light, currentMatch);
         }
 
         function swapMatchTeamsColors() {
@@ -8390,6 +9248,740 @@
 
             // Render Ciekawostka Statystyczna
             renderMatchdayFact(dark, light, currentMatch);
+
+            // Render Kursy i Przycisk Typera na Karcie Meczowej
+            const oddsStrip = document.getElementById('matchdayTyperOddsStrip');
+            const oddsValues = document.getElementById('matchdayTyperOddsValues');
+            if (oddsStrip && oddsValues) {
+                if (!currentMatch || currentMatch.isCancelled) {
+                    oddsStrip.classList.add('hidden');
+                } else {
+                    oddsStrip.classList.remove('hidden');
+                    const darkNames = (dark || []).filter(Boolean);
+                    const lightNames = (light || []).filter(Boolean);
+                    if (darkNames.length > 0 && lightNames.length > 0) {
+                        const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+                        const oddsObj = calculateMatchOdds(darkNames, lightNames, adv);
+                        oddsValues.innerHTML = `
+                            <span class="text-sky-400">⬛ Ciemni: <strong class="text-white">${oddsObj.darkOdds.toFixed(2)}</strong> (${oddsObj.darkProb || 50}%)</span>
+                            <span class="text-slate-500 font-normal">vs</span>
+                            <span class="text-amber-400"><strong class="text-white">${oddsObj.lightOdds.toFixed(2)}</strong> (${oddsObj.lightProb || 50}%) Jaśni ⬜</span>
+                        `;
+                    } else {
+                        oddsValues.innerHTML = `<span class="text-slate-400 text-[11px] italic">Ustal składy, aby wyliczyć kursy meczowe</span>`;
+                    }
+                }
+            }
+        }
+
+        // ================= LIGA TYPERÓW & SYSTEM OBSTAWIANIA =================
+        let currentTyperSubtab = 'bet';
+        let typerSelectedTeam = 'dark'; // 'dark' | 'light'
+        let typerSelectedSets = '3:1'; // '3:0' | '3:1' | '3:2' | '0:3' | '1:3' | '2:3'
+        let typerSelectedVoter = null;
+        let typerLastSyncedMatchKey = null;
+
+        function setTyperSubtab(subtab) {
+            currentTyperSubtab = subtab;
+            const subtabs = ['bet', 'leaderboard', 'rules'];
+            subtabs.forEach(t => {
+                const btn = document.getElementById(`typerSubtabBtn-${t}`);
+                const container = document.getElementById(`typerSubtabContainer-${t}`);
+                const isActive = (t === subtab);
+                if (container) container.classList.toggle('hidden', !isActive);
+                if (btn) {
+                    if (isActive) {
+                        btn.className = "py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1.5 transition active:scale-95 text-[11.5px] sm:text-xs whitespace-nowrap min-w-0";
+                    } else {
+                        btn.className = "py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 text-[11.5px] sm:text-xs whitespace-nowrap min-w-0";
+                    }
+                }
+            });
+        }
+
+        function copyTyperShareLink() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            const dateStr = currentMatch ? currentMatch.date : '';
+            
+            let baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const link = dateStr 
+                ? `${baseUrl}?tab=typer&date=${encodeURIComponent(dateStr)}&guest=1` 
+                : `${baseUrl}?tab=typer&guest=1`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast("Skopiowano link do typowania do schowka! 📋");
+                }).catch(() => {
+                    prompt("Skopiuj link do typowania:", link);
+                });
+            } else {
+                prompt("Skopiuj link do typowania:", link);
+            }
+        }
+
+        function parseMatchOutcome(score) {
+            if (!score) return null;
+            let sDark = null;
+            let sLight = null;
+            if (typeof score === 'object' && score.dark !== undefined && score.light !== undefined) {
+                sDark = parseInt(score.dark, 10);
+                sLight = parseInt(score.light, 10);
+            } else if (typeof score === 'string') {
+                const m = score.match(/(\d+)\s*:\s*(\d+)/);
+                if (m) {
+                    sDark = parseInt(m[1], 10);
+                    sLight = parseInt(m[2], 10);
+                }
+            }
+            if (sDark === null || sLight === null || isNaN(sDark) || isNaN(sLight)) return null;
+            const winner = sDark > sLight ? 'dark' : (sLight > sDark ? 'light' : null);
+            const setsStr = `${sDark}:${sLight}`;
+            return { sDark, sLight, winner, setsStr };
+        }
+
+        function isMatchBettingLocked(match) {
+            if (!match || match.isCancelled) return true;
+            if (match.score) return true; // Wynik już jest wpisany
+            if (!match.date) return true;
+
+            const now = new Date();
+            const todayStr = getLocalDateKey(now);
+
+            // Jeśli data meczu jest w przeszłości (przed dzisiaj) - zablokowany
+            if (match.date < todayStr) return true;
+            // Jeśli data meczu jest w przyszłości (kolejny tydzień/miesiąc) - otwarty
+            if (match.date > todayStr) return false;
+
+            // Jeśli mecz jest DZISIAJ: blokada punktualnie o 20:00 (godzina >= 20)
+            const hours = now.getHours();
+            return (hours >= 20);
+        }
+
+        function calculatePlayerTyperRecord(playerName) {
+            let totalBets = 0;
+            let wonBets = 0;
+            let lostBets = 0;
+            let exactSets = 0;
+            let totalPoints = 0.0;
+            let pendingBets = 0;
+
+            const months = AppState.months || {};
+            Object.keys(months).forEach(mName => {
+                const matches = months[mName]?.matches || [];
+                matches.forEach(m => {
+                    if (!m || m.isCancelled || !m.predictions) return;
+                    const pred = m.predictions[playerName];
+                    if (!pred) return;
+
+                    const outcome = parseMatchOutcome(m.score);
+                    if (!outcome || !outcome.winner) {
+                        pendingBets++;
+                    } else {
+                        totalBets++;
+                        const isWinnerCorrect = (pred.team === outcome.winner);
+                        const isSetsCorrect = (pred.sets === outcome.setsStr);
+
+                        if (isWinnerCorrect) {
+                            wonBets++;
+                            const finalOdds = (m.odds && (pred.team === 'dark' ? m.odds.darkOdds : m.odds.lightOdds))
+                                ? Number(pred.team === 'dark' ? m.odds.darkOdds : m.odds.lightOdds)
+                                : Number(pred.odds || 1.85);
+                            let pts = finalOdds;
+                            if (isSetsCorrect) {
+                                pts += 2.0;
+                                exactSets++;
+                            }
+                            totalPoints += pts;
+                        } else {
+                            lostBets++;
+                        }
+                    }
+                });
+            });
+
+            return {
+                playerName,
+                totalBets,
+                wonBets,
+                lostBets,
+                exactSets,
+                totalPoints: Number(totalPoints.toFixed(2)),
+                pendingBets,
+                accuracy: totalBets > 0 ? Math.round((wonBets / totalBets) * 100) : 0
+            };
+        }
+
+        function calculateTyperLeaderboard() {
+            const records = [];
+            const players = (AppState.all_players || []).slice();
+
+            players.forEach(p => {
+                const rec = calculatePlayerTyperRecord(p);
+                if (rec.totalBets > 0 || rec.pendingBets > 0) {
+                    records.push(rec);
+                }
+            });
+
+            records.sort((a, b) => {
+                if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
+                if (b.exactSets !== a.exactSets) return b.exactSets - a.exactSets;
+                if (b.wonBets !== a.wonBets) return b.wonBets - a.wonBets;
+                return a.playerName.localeCompare(b.playerName, 'pl');
+            });
+
+            return records;
+        }
+
+        function selectTyperTeam(teamKey) {
+            typerSelectedTeam = teamKey;
+            if (teamKey === 'dark' && !['3:0', '3:1', '3:2'].includes(typerSelectedSets)) {
+                typerSelectedSets = '3:1';
+            } else if (teamKey === 'light' && !['0:3', '1:3', '2:3'].includes(typerSelectedSets)) {
+                typerSelectedSets = '1:3';
+            }
+            renderTyperTab();
+        }
+
+        function selectTyperSets(setScore) {
+            typerSelectedSets = setScore;
+            renderTyperTab();
+        }
+
+        function onTyperVoterChanged(voterName) {
+            typerSelectedVoter = voterName;
+            typerLastSyncedMatchKey = null;
+            renderTyperTab();
+        }
+
+        function submitTyperBet() {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) {
+                showToast("Brak wybranego meczu!");
+                return;
+            }
+
+            if (isMatchBettingLocked(currentMatch)) {
+                showToast("⏰ Typowanie na ten mecz zostało zablokowane o 20:00!");
+                return;
+            }
+
+            const voter = loggedPlayer || typerSelectedVoter;
+            if (!voter) {
+                showToast("Wybierz swoje nazwisko lub zaloguj się przed zapisaniem typu!");
+                return;
+            }
+
+            const oddsObj = (typeof getMatchOdds === 'function')
+                ? getMatchOdds(currentMatch)
+                : { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85 };
+
+            const chosenOdds = typerSelectedTeam === 'dark' ? oddsObj.darkOdds : oddsObj.lightOdds;
+
+            if (!currentMatch.predictions) {
+                currentMatch.predictions = {};
+            }
+            if (!currentMatch.odds) {
+                currentMatch.odds = oddsObj;
+            }
+
+            currentMatch.predictions[voter] = {
+                team: typerSelectedTeam,
+                sets: typerSelectedSets,
+                odds: Number(chosenOdds.toFixed(2)),
+                timestamp: new Date().toISOString()
+            };
+
+            syncState();
+            renderTyperTab();
+            renderMatchesTab();
+
+            const teamLabel = typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni';
+            showToast(`🎯 Zapisano typ dla ${voter}: ${teamLabel} (${typerSelectedSets}), kurs ${chosenOdds.toFixed(2)}!`);
+        }
+
+        function removeTyperBet(playerName) {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch || !currentMatch.predictions) return;
+
+            if (isMatchBettingLocked(currentMatch)) {
+                showToast("⏰ Nie można wycofać typu - typowanie zostało zablokowane o 20:00.");
+                return;
+            }
+
+            delete currentMatch.predictions[playerName];
+            syncState();
+            renderTyperTab();
+            renderMatchesTab();
+            showToast(`Wycofano typ dla ${playerName}.`);
+        }
+
+        function renderTyperTab() {
+            const activeContainer = document.getElementById('typerActiveBettingContainer');
+            const pollContainer = document.getElementById('typerCommunityPollContainer');
+            const leaderboardContainer = document.getElementById('typerLeaderboardContainer');
+            if (!activeContainer || !pollContainer || !leaderboardContainer) return;
+
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (!currentMatch) {
+                activeContainer.innerHTML = `<div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center text-slate-400 text-xs">Brak wybranego meczu do typowania.</div>`;
+                pollContainer.innerHTML = '';
+                leaderboardContainer.innerHTML = '';
+                return;
+            }
+
+            const isLocked = isMatchBettingLocked(currentMatch);
+            const isCancelled = Boolean(currentMatch.isCancelled);
+            const outcome = parseMatchOutcome(currentMatch.score);
+            const isFinished = Boolean(outcome && outcome.winner);
+
+            // Oblicz dynamiczne kursy meczowe na podstawie składów
+            const oddsObj = (typeof getMatchOdds === 'function')
+                ? getMatchOdds(currentMatch)
+                : { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85 };
+
+            const darkPct = (oddsObj && oddsObj.darkProb !== undefined) ? oddsObj.darkProb : 50;
+            const lightPct = (oddsObj && oddsObj.lightProb !== undefined) ? oddsObj.lightProb : 50;
+            const darkOddsFormatted = (oddsObj && oddsObj.darkOdds) ? oddsObj.darkOdds.toFixed(2) : '1.85';
+            const lightOddsFormatted = (oddsObj && oddsObj.lightOdds) ? oddsObj.lightOdds.toFixed(2) : '1.85';
+
+            // Ustalenie aktywnego typera: preferujemy loggedPlayer (brak konieczności wyboru)
+            const allPlayersList = (AppState.all_players || []).slice().sort((a,b) => a.localeCompare(b, 'pl'));
+            const voter = loggedPlayer || typerSelectedVoter || '';
+            const userBet = (voter && currentMatch.predictions && currentMatch.predictions[voter]) || null;
+
+            // Synchronizacja zapisanego typu gracza
+            const currentMatchKey = `${AppState.currentMonth}_${AppState.currentMatchIndex}_${voter}`;
+            if (userBet && typerLastSyncedMatchKey !== currentMatchKey) {
+                typerSelectedTeam = userBet.team;
+                typerSelectedSets = userBet.sets;
+                typerLastSyncedMatchKey = currentMatchKey;
+            }
+
+            // Zapewnienie poprawnych setów dla wybranej drużyny
+            if (typerSelectedTeam === 'dark' && !['3:0', '3:1', '3:2'].includes(typerSelectedSets)) {
+                typerSelectedSets = '3:1';
+            } else if (typerSelectedTeam === 'light' && !['0:3', '1:3', '2:3'].includes(typerSelectedSets)) {
+                typerSelectedSets = '1:3';
+            }
+
+            const canPrev = AppState.currentMatchIndex > 0;
+            const canNext = AppState.currentMatchIndex < (monthData.matches.length - 1);
+
+            let statusBadgeHtml = '';
+            if (isCancelled) {
+                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold">🚫 Odwołany</span>`;
+            } else if (isFinished) {
+                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold font-mono">🏆 Wynik: ${escapeHtml(outcome.setsStr)}</span>`;
+            } else if (isLocked) {
+                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold font-mono">🔒 Blokada o 20:00</span>`;
+            } else {
+                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold font-mono animate-pulse">⏰ Otwarte do 20:00</span>`;
+            }
+
+            // Pasek tożsamości / profilu typera
+            let voterIdentityHtml = '';
+            if (loggedPlayer) {
+                voterIdentityHtml = `
+                    <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 font-black flex items-center justify-center text-xs shrink-0 border border-emerald-500/30">
+                            ${getMatchdayInitials(loggedPlayer)}
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[9.5px] font-mono text-slate-400 font-bold uppercase tracking-wider block leading-tight">Typujesz ze swojego profilu</span>
+                            <span class="text-xs sm:text-sm font-black text-white whitespace-normal break-words leading-tight block">${escapeHtml(loggedPlayer)}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                voterIdentityHtml = `
+                    <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-xs shrink-0 border border-slate-700">
+                            👤
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <label for="typerGuestSelect" class="text-[9.5px] font-mono text-slate-400 font-bold uppercase tracking-wider block leading-tight">
+                                Kim jesteś? (Wybierz siebie z listy graczy):
+                            </label>
+                            <select id="typerGuestSelect" onchange="onTyperVoterChanged(this.value)" class="bg-slate-900 border border-slate-700 text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-sky-500 w-full mt-1">
+                                <option value="">-- Wybierz swoje nazwisko --</option>
+                                ${allPlayersList.map(p => `<option value="${escapeHtml(p)}" ${p === voter ? 'selected' : ''}>${escapeHtml(p)}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Przyciski wyboru dokładnego wyniku w setach
+            const currentSetOptions = typerSelectedTeam === 'dark' ? ['3:0', '3:1', '3:2'] : ['0:3', '1:3', '2:3'];
+            const setButtonsHtml = currentSetOptions.map(s => {
+                const isSelected = typerSelectedSets === s;
+                return `
+                    <button type="button" onclick="selectTyperSets('${s}')" ${isLocked ? 'disabled' : ''} class="typer-set-btn ${isSelected ? 'typer-set-btn-active font-black' : 'font-bold'} p-2 sm:p-2.5 rounded-2xl border text-center transition active:scale-95 flex flex-col items-center justify-center min-h-[50px] ${isLocked ? 'cursor-not-allowed opacity-70' : ''}">
+                        <span class="text-sm sm:text-base font-mono">${s}</span>
+                        <span class="typer-set-bonus-badge text-[9.5px] font-normal mt-0.5 whitespace-normal break-words">+2.0 pkt</span>
+                    </button>
+                `;
+            }).join('');
+
+            // Informacja o ewentualnej roszadzie w składzie (Opcja B)
+            const darkRoster = currentMatch.teams?.dark || [];
+            const lightRoster = currentMatch.teams?.light || [];
+            const voterInDark = voter ? darkRoster.includes(voter) : false;
+            const voterInLight = voter ? lightRoster.includes(voter) : false;
+            const voterActualTeam = voterInDark ? 'dark' : (voterInLight ? 'light' : null);
+
+            let teamMismatchNoticeHtml = '';
+            if (voterActualTeam && userBet && userBet.team !== voterActualTeam && !isLocked) {
+                const actualTeamLabel = voterActualTeam === 'dark' ? 'Ciemnych' : 'Jasnych';
+                const betTeamLabel = userBet.team === 'dark' ? 'Ciemnych' : 'Jasnych';
+                teamMismatchNoticeHtml = `
+                    <div class="typer-mismatch-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-1.5 text-[10.5px] sm:text-xs shadow-sm animate-fade-in">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="shrink-0 text-xs">⚠️</span>
+                            <span class="leading-tight">Grasz w <b>${actualTeamLabel}</b>, typujesz <b>${betTeamLabel} (${userBet.sets})</b></span>
+                        </div>
+                        <span class="typer-mismatch-badge text-[9px] sm:text-[10px] font-mono font-bold shrink-0 px-1.5 py-0.5 rounded-md whitespace-nowrap bg-amber-500/20 text-amber-300 border border-amber-500/30">do 20:00</span>
+                    </div>
+                `;
+            }
+
+            activeContainer.innerHTML = `
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                    <!-- Top Match Navigation & Status -->
+                    <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap pb-3 border-b border-slate-800/80">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <button type="button" onclick="selectAdjacentMatch(-1); renderTyperTab();" ${!canPrev ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 ${!canPrev ? 'opacity-30 cursor-not-allowed' : ''}">
+                                ◀
+                            </button>
+                            <div class="px-2 min-w-0">
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Mecz Piątkowy</span>
+                                <h3 class="font-black text-sm sm:text-base text-white whitespace-nowrap">${escapeHtml(currentMatch.date)}</h3>
+                            </div>
+                            <button type="button" onclick="selectAdjacentMatch(1); renderTyperTab();" ${!canNext ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 ${!canNext ? 'opacity-30 cursor-not-allowed' : ''}">
+                                ▶
+                            </button>
+                        </div>
+                        <div class="shrink-0">
+                            ${statusBadgeHtml}
+                        </div>
+                    </div>
+
+                    <!-- Tożsamość Typera -->
+                    ${voterIdentityHtml}
+
+                    <!-- Ostrzeżenie o roszadzie w składzie (Opcja B) -->
+                    ${teamMismatchNoticeHtml}
+
+                    <!-- Odds Matchup Cards (Wybór zwycięzcy) -->
+                    <div class="space-y-1.5">
+                        <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider block px-1">
+                            1. Wybierz zwycięzcę meczu (kurs dziesiętny)
+                        </label>
+                        <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
+                            <!-- Team Dark Option -->
+                            <button type="button" onclick="selectTyperTeam('dark')" ${isLocked ? 'disabled' : ''} class="typer-pick-btn ${typerSelectedTeam === 'dark' ? 'typer-pick-dark-active' : ''} relative p-3 sm:p-4 rounded-2xl border text-left transition active:scale-95 ${isLocked ? 'cursor-not-allowed opacity-75' : ''}">
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="typer-team-title-dark text-xs sm:text-sm font-black flex items-center gap-1.5">
+                                        <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-600 inline-block shrink-0"></span>
+                                        <span>Ciemni</span>
+                                    </span>
+                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${darkPct}%</span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="typer-odds-lbl text-[10px] uppercase font-bold tracking-wider">Kurs</span>
+                                    <span class="typer-odds-val text-base sm:text-xl font-mono font-black">${darkOddsFormatted}</span>
+                                </div>
+                                ${typerSelectedTeam === 'dark' ? `<div class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-sky-500 text-slate-950 rounded-full flex items-center justify-center text-[10px] font-black shadow">✓</div>` : ''}
+                            </button>
+
+                            <!-- Team Light Option -->
+                            <button type="button" onclick="selectTyperTeam('light')" ${isLocked ? 'disabled' : ''} class="typer-pick-btn ${typerSelectedTeam === 'light' ? 'typer-pick-light-active' : ''} relative p-3 sm:p-4 rounded-2xl border text-left transition active:scale-95 ${isLocked ? 'cursor-not-allowed opacity-75' : ''}">
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="typer-team-title-light text-xs sm:text-sm font-black flex items-center gap-1.5">
+                                        <span class="w-3 h-3 rounded-full bg-slate-100 border border-slate-300 inline-block shrink-0"></span>
+                                        <span>Jaśni</span>
+                                    </span>
+                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${lightPct}%</span>
+                                </div>
+                                <div class="mt-2 flex items-baseline justify-between">
+                                    <span class="typer-odds-lbl text-[10px] uppercase font-bold tracking-wider">Kurs</span>
+                                    <span class="typer-odds-val text-base sm:text-xl font-mono font-black">${lightOddsFormatted}</span>
+                                </div>
+                                ${typerSelectedTeam === 'light' ? `<div class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-amber-400 text-slate-950 rounded-full flex items-center justify-center text-[10px] font-black shadow">✓</div>` : ''}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exact Sets Prediction Options -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between px-1">
+                            <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider block">
+                                2. Wytypuj dokładny wynik w setach
+                            </label>
+                            <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-950/50 px-1.5 py-0.5 rounded border border-amber-800/40">+2.0 pkt</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                            ${setButtonsHtml}
+                        </div>
+                    </div>
+
+                    <!-- User Bet Confirmation / Submission Area -->
+                    <div class="pt-2">
+                        ${isLocked ? `
+                            <div class="p-3 rounded-2xl bg-slate-950/90 border border-slate-800 text-center space-y-1">
+                                ${userBet ? `
+                                    <div class="text-xs font-bold text-slate-200">
+                                        Twój zapisany typ: <span class="font-black ${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} (${escapeHtml(userBet.sets)})</span>
+                                        <span class="text-slate-400 font-mono text-[11px]">| Kurs: ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
+                                    </div>
+                                    <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00 po zakończeniu rozgrzewki.</p>
+                                ` : `
+                                    <p class="text-xs text-rose-300 font-bold">Typowanie na ten mecz zostało zablokowane o 20:00.</p>
+                                    <p class="text-[10.5px] text-slate-400">Nie oddałeś typu przed rozgrzewką na ten mecz.</p>
+                                `}
+                            </div>
+                        ` : `
+                            <div class="space-y-2">
+                                <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-98 transition flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-tight text-center">
+                                    <span>🎯</span>
+                                    <span class="whitespace-normal break-words">${userBet ? 'Zmień swój typ' : 'Zatwierdź typ'}${voter ? ` (${escapeHtml(voter)})` : ''}</span>
+                                    <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
+                                </button>
+                                ${userBet ? `
+                                    <div class="flex items-center justify-between px-2 text-xs text-slate-400">
+                                        <span>Aktualny typ: <strong class="text-slate-200">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</strong> (kurs ${userBet.odds ? userBet.odds.toFixed(2) : '-'})</span>
+                                        <button type="button" onclick="removeTyperBet('${escapeHtml(voter)}')" class="text-rose-400 hover:text-rose-300 underline text-[11px] font-semibold">Wycofaj typ</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            // Build Community Poll
+            const predictions = currentMatch.predictions || {};
+            const predEntries = Object.entries(predictions);
+            const totalPreds = predEntries.length;
+
+            const darkPreds = predEntries.filter(([_, p]) => p.team === 'dark');
+            const lightPreds = predEntries.filter(([_, p]) => p.team === 'light');
+
+            const pollDarkPct = totalPreds > 0 ? Math.round((darkPreds.length / totalPreds) * 100) : 50;
+            const pollLightPct = 100 - pollDarkPct;
+
+            const renderBetPill = (name, pred) => {
+                let badgeClass = "bg-slate-950/90 border-slate-800 text-slate-300";
+                let statusIcon = "";
+                let ptsText = "";
+
+                if (isFinished && outcome && outcome.winner) {
+                    const isWinnerHit = (pred.team === outcome.winner);
+                    const isExactHit = (pred.sets === outcome.setsStr);
+                    if (isWinnerHit) {
+                        badgeClass = "bg-emerald-950/60 border-emerald-500/40 text-emerald-300";
+                        const pts = (Number(pred.odds || 1.5) + (isExactHit ? 2.0 : 0)).toFixed(2);
+                        statusIcon = isExactHit ? "🎯" : "✅";
+                        ptsText = `<span class="font-mono text-emerald-400 font-bold ml-1">+${pts}</span>`;
+                    } else {
+                        badgeClass = "bg-rose-950/30 border-rose-800/40 text-rose-400 opacity-60";
+                        statusIcon = "❌";
+                    }
+                }
+
+                return `
+                    <div class="px-2.5 py-1.5 rounded-xl border flex items-center justify-between gap-2 text-xs ${badgeClass}">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="font-bold text-[11.5px] whitespace-normal break-words leading-tight">${escapeHtml(name)}</span>
+                        </div>
+                        <div class="flex items-center gap-1 shrink-0 font-mono text-[10.5px]">
+                            <span class="font-bold whitespace-nowrap">${escapeHtml(pred.sets)}</span>
+                            ${statusIcon ? `<span>${statusIcon}</span>` : ''}
+                            ${ptsText}
+                        </div>
+                    </div>
+                `;
+            };
+
+            const darkListHtml = darkPreds.length > 0 
+                ? darkPreds.map(([n, p]) => renderBetPill(n, p)).join('')
+                : `<p class="text-[11px] text-slate-500 italic p-2">Brak typów na Ciemnych</p>`;
+
+            const lightListHtml = lightPreds.length > 0 
+                ? lightPreds.map(([n, p]) => renderBetPill(n, p)).join('')
+                : `<p class="text-[11px] text-slate-500 italic p-2">Brak typów na Jasnych</p>`;
+
+            pollContainer.innerHTML = `
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">📊</span>
+                            <h3 class="font-black text-sm text-white uppercase tracking-wider">Sonda Społeczności</h3>
+                        </div>
+                        <span class="text-xs font-mono font-bold text-slate-400 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">
+                            ${totalPreds} ${totalPreds === 1 ? 'typ' : (totalPreds >= 2 && totalPreds <= 4 ? 'typy' : 'typów')}
+                        </span>
+                    </div>
+
+                    ${totalPreds === 0 ? `
+                        <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
+                            Brak oddanych typów na ten mecz. Bądź pierwszy i postaw swój typ powyżej! 🎯
+                        </div>
+                    ` : `
+                        <!-- Split Progress Bar -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-xs font-mono font-bold">
+                                <span class="text-sky-400">⬛ Ciemni: ${darkPreds.length} (${pollDarkPct}%)</span>
+                                <span class="text-amber-300">Jaśni: ${lightPreds.length} (${pollLightPct}%) ⬜</span>
+                            </div>
+                            <div class="w-full h-3 rounded-full bg-slate-950 overflow-hidden flex border border-slate-800">
+                                <div style="width: ${pollDarkPct}%" class="bg-gradient-to-r from-sky-600 to-sky-400 transition-all duration-500"></div>
+                                <div style="width: ${pollLightPct}%" class="bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"></div>
+                            </div>
+                        </div>
+
+                        <!-- 2 Columns with Bettors -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                            <div class="space-y-1.5">
+                                <span class="text-[10px] font-black uppercase tracking-wider text-sky-400 block px-1">Typują na Ciemnych (${darkPreds.length})</span>
+                                <div class="space-y-1">
+                                    ${darkListHtml}
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 block px-1">Typują na Jasnych (${lightPreds.length})</span>
+                                <div class="space-y-1">
+                                    ${lightListHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            `;
+
+            // Build Season Leaderboard
+            const leaderboard = calculateTyperLeaderboard();
+            let leaderboardHtml = '';
+
+            if (leaderboard.length === 0) {
+                leaderboardHtml = `
+                    <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
+                        Klasyfikacja generalna wystartuje po rozegraniu pierwszych meczów z typami! 🏐
+                    </div>
+                `;
+            } else {
+                // Podium TOP 3
+                let podiumHtml = '';
+                if (leaderboard.length >= 1) {
+                    const top1 = leaderboard[0];
+                    const top2 = leaderboard[1] || null;
+                    const top3 = leaderboard[2] || null;
+
+                    podiumHtml = `
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <!-- 1st Place -->
+                            <div class="order-1 sm:order-2 bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-500/60 rounded-2xl p-3.5 text-center shadow-lg shadow-amber-500/10 space-y-1.5 relative overflow-hidden">
+                                <div class="absolute -top-6 -right-6 w-16 h-16 bg-amber-500/10 rounded-full blur-xl pointer-events-none"></div>
+                                <span class="text-2xl">🥇</span>
+                                <h4 class="font-black text-sm text-amber-300 whitespace-normal break-words leading-tight">${escapeHtml(top1.playerName)}</h4>
+                                <div class="text-xl font-mono font-black text-white">${top1.totalPoints.toFixed(2)} <span class="text-xs text-amber-400 font-bold">pkt</span></div>
+                                <div class="text-[10px] text-slate-400 font-mono">${top1.wonBets}W • ${top1.exactSets} dokładnych (${top1.accuracy}%)</div>
+                            </div>
+
+                            <!-- 2nd Place -->
+                            ${top2 ? `
+                                <div class="order-2 sm:order-1 bg-gradient-to-b from-slate-800/40 via-slate-900 to-slate-950 border border-slate-400/50 rounded-2xl p-3 text-center shadow space-y-1.5">
+                                    <span class="text-xl">🥈</span>
+                                    <h4 class="font-black text-xs sm:text-sm text-slate-200 whitespace-normal break-words leading-tight">${escapeHtml(top2.playerName)}</h4>
+                                    <div class="text-lg font-mono font-black text-white">${top2.totalPoints.toFixed(2)} <span class="text-xs text-slate-400 font-bold">pkt</span></div>
+                                    <div class="text-[10px] text-slate-400 font-mono">${top2.wonBets}W • ${top2.exactSets} dokł. (${top2.accuracy}%)</div>
+                                </div>
+                            ` : ''}
+
+                            <!-- 3rd Place -->
+                            ${top3 ? `
+                                <div class="order-3 sm:order-3 bg-gradient-to-b from-orange-950/30 via-slate-900 to-slate-950 border border-orange-500/40 rounded-2xl p-3 text-center shadow space-y-1.5">
+                                    <span class="text-xl">🥉</span>
+                                    <h4 class="font-black text-xs sm:text-sm text-orange-200 whitespace-normal break-words leading-tight">${escapeHtml(top3.playerName)}</h4>
+                                    <div class="text-lg font-mono font-black text-white">${top3.totalPoints.toFixed(2)} <span class="text-xs text-orange-400 font-bold">pkt</span></div>
+                                    <div class="text-[10px] text-slate-400 font-mono">${top3.wonBets}W • ${top3.exactSets} dokł. (${top3.accuracy}%)</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+
+                // Table rows
+                const rowsHtml = leaderboard.map((rec, idx) => {
+                    const rank = idx + 1;
+                    const rankMedal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `#${rank}`));
+                    return `
+                        <tr class="border-b border-slate-800/60 hover:bg-slate-800/40 transition">
+                            <td class="py-2.5 px-2 sm:px-3 text-center font-mono font-bold text-xs ${rank <= 3 ? 'text-amber-300' : 'text-slate-400'}">${rankMedal}</td>
+                            <td class="py-2.5 px-2 min-w-[110px] sm:min-w-[140px]">
+                                <div class="font-bold text-xs sm:text-sm text-white whitespace-normal break-words leading-tight">
+                                    ${escapeHtml(rec.playerName)}
+                                </div>
+                            </td>
+                            <td class="py-2.5 px-2 sm:px-3 text-right font-mono font-black text-xs sm:text-sm text-emerald-400 whitespace-nowrap">
+                                ${rec.totalPoints.toFixed(2)}
+                            </td>
+                            <td class="py-2.5 px-2 sm:px-3 text-center font-mono text-[11px] text-slate-300 whitespace-nowrap">
+                                <span class="text-emerald-300 font-bold">${rec.wonBets}</span>
+                                <span class="text-slate-500">/</span>
+                                <span class="text-amber-300 font-bold">${rec.exactSets}</span>
+                            </td>
+                            <td class="py-2.5 px-2 sm:px-3 text-right font-mono text-[11px] font-bold text-slate-400 whitespace-nowrap">
+                                ${rec.accuracy}%
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                leaderboardHtml = `
+                    <div class="space-y-3">
+                        ${podiumHtml}
+                        <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/70">
+                            <table class="w-full min-w-[320px] text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-slate-800 text-[10px] font-black uppercase tracking-wider text-slate-400 bg-slate-900/80">
+                                        <th class="py-2 px-2 sm:px-3 text-center w-10 sm:w-12">Poz</th>
+                                        <th class="py-2 px-2 min-w-[110px] sm:min-w-[140px]">Typer</th>
+                                        <th class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">Punkty</th>
+                                        <th class="py-2 px-2 sm:px-3 text-center whitespace-nowrap">W / Dokł.</th>
+                                        <th class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">Skut.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${rowsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+
+            leaderboardContainer.innerHTML = `
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                    <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">🏆</span>
+                            <h3 class="font-black text-sm text-white uppercase tracking-wider">Tabela Ligi Typerów 2026</h3>
+                        </div>
+                        <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/40">
+                            Oficjalne Wyniki
+                        </span>
+                    </div>
+                    ${leaderboardHtml}
+                </div>
+            `;
+
+            // Aktywacja bieżącej podkarty (Subtab)
+            setTyperSubtab(currentTyperSubtab);
         }
 
         // ================= ZINTEGROWANA KARTA MVP (BEZPOŚREDNIO NA STRONIE GŁÓWNEJ) =================
@@ -10098,7 +11690,7 @@
 
                         <!-- Scoreboard -->
                         <div class="bg-slate-950/90 border border-slate-800/80 p-2.5 sm:p-3 rounded-2xl">
-                            ${m.score ? formatScoreHtml(m.score) : '<div class="text-xs text-slate-500 py-1 text-center italic">Brak oficjalnego wyniku</div>'}
+                            ${m.score ? formatScoreHtml(m.score, m) : '<div class="text-xs text-slate-500 py-1 text-center italic">Brak oficjalnego wyniku</div>'}
                         </div>
 
                         <!-- MVP Banner -->
@@ -10246,6 +11838,12 @@
             }
 
             let scoreboardHtml = '';
+            const matchOdds = (typeof getMatchOdds === 'function') ? getMatchOdds(targetMatch) : { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85 };
+            const darkOddsFormatted = matchOdds?.darkOdds ? Number(matchOdds.darkOdds).toFixed(2) : '1.85';
+            const lightOddsFormatted = matchOdds?.lightOdds ? Number(matchOdds.lightOdds).toFixed(2) : '1.85';
+            const darkProbVal = matchOdds?.darkProb !== undefined ? matchOdds.darkProb : 50;
+            const lightProbVal = matchOdds?.lightProb !== undefined ? matchOdds.lightProb : 50;
+
             if (targetMatch.score && scoreA !== null && scoreB !== null) {
                 scoreboardHtml = `
                     <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-2.5 shadow-md">
@@ -10255,6 +11853,13 @@
                                     ${darkWon ? '<span class="text-xs shrink-0">🏆</span>' : ''}
                                     <span class="text-xs sm:text-sm font-black ${darkWon ? 'text-emerald-400' : 'text-slate-200'} whitespace-normal break-words leading-tight">${escapeHtml(darkName)}</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
+                                </div>
+                                <div class="flex items-center justify-end gap-1 mt-0.5">
+                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                        <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                        <span class="match-odds-value font-black text-amber-300">${darkOddsFormatted}</span>
+                                        <span class="text-slate-500 text-[8px]">(${darkProbVal}%)</span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="bg-slate-950 border border-slate-700/80 px-3 py-1 rounded-xl font-mono text-base font-black tracking-widest text-amber-300 shadow-inner shrink-0 text-center min-w-[56px]">
@@ -10267,6 +11872,13 @@
                                     <span class="w-2.5 h-2.5 rounded-full bg-white border border-slate-300 shrink-0"></span>
                                     <span class="text-xs sm:text-sm font-black ${lightWon ? 'text-emerald-400' : 'text-slate-200'} whitespace-normal break-words leading-tight">${escapeHtml(lightName)}</span>
                                     ${lightWon ? '<span class="text-xs shrink-0">🏆</span>' : ''}
+                                </div>
+                                <div class="flex items-center justify-start gap-1 mt-0.5">
+                                    <span class="match-odds-pill inline-flex items-center gap-1 text-[9px] font-mono px-1.5 py-0.5 rounded-md shadow-sm">
+                                        <span class="text-slate-500 text-[8px]">(${lightProbVal}%)</span>
+                                        <span class="match-odds-value font-black text-amber-300">${lightOddsFormatted}</span>
+                                        <span class="text-slate-500 text-[8px] font-bold uppercase tracking-wider">KURS</span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -10424,12 +12036,15 @@
                     <div class="grid grid-cols-2 gap-2 pt-0.5">
                         <!-- Drużyna Ciemna -->
                         <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2 space-y-1 ${darkWon ? 'ring-1 ring-emerald-500/40' : ''}">
-                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px]">
+                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px] gap-1 flex-wrap">
                                 <div class="flex items-center gap-1 min-w-0">
                                     <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
                                     <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(darkName)}</strong>
                                 </div>
-                                ${darkWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <span class="match-odds-pill text-[9px] font-mono px-1.5 py-0.5 rounded text-amber-300 font-black">kurs ${darkOddsFormatted}</span>
+                                    ${darkWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
+                                </div>
                             </div>
                             <div class="space-y-0.5">
                                 ${renderTeamRosterCompact(darkRoster)}
@@ -10438,12 +12053,15 @@
 
                         <!-- Drużyna Jasna -->
                         <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2 space-y-1 ${lightWon ? 'ring-1 ring-emerald-500/40' : ''}">
-                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px]">
+                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-1 text-[11px] gap-1 flex-wrap">
                                 <div class="flex items-center gap-1 min-w-0">
                                     <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
                                     <strong class="font-black text-slate-300 whitespace-normal break-words leading-tight">${escapeHtml(lightName)}</strong>
                                 </div>
-                                ${lightWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <span class="match-odds-pill text-[9px] font-mono px-1.5 py-0.5 rounded text-amber-300 font-black">kurs ${lightOddsFormatted}</span>
+                                    ${lightWon ? `<span class="text-[8.5px] font-black uppercase text-emerald-400 shrink-0">🏆 WIN</span>` : ''}
+                                </div>
                             </div>
                             <div class="space-y-0.5">
                                 ${renderTeamRosterCompact(lightRoster)}
@@ -10473,6 +12091,40 @@
                                     </div>
                                 `;
                             }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            let typerReportHtml = '';
+            if (targetMatch.predictions && Object.keys(targetMatch.predictions).length > 0) {
+                const predEntries = Object.entries(targetMatch.predictions);
+                const totalPreds = predEntries.length;
+                const correctWinners = predEntries.filter(([_, p]) => p.team === (darkWon ? 'dark' : lightWon ? 'light' : null));
+                const outcomeSets = (typeof parseMatchOutcome === 'function') ? parseMatchOutcome(targetMatch.score)?.setsStr : null;
+                const exactSetsWinners = predEntries.filter(([_, p]) => p.team === (darkWon ? 'dark' : lightWon ? 'light' : null) && p.sets === outcomeSets);
+
+                typerReportHtml = `
+                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-2.5 space-y-1.5 text-xs">
+                        <div class="flex items-center justify-between gap-1 flex-wrap">
+                            <span class="text-[10px] font-black text-pink-400 uppercase tracking-wider flex items-center gap-1">
+                                <span>🎯</span> Liga Typerów • Wyniki (${totalPreds} ${totalPreds === 1 ? 'typ' : (totalPreds < 5 ? 'typy' : 'typów')})
+                            </span>
+                            <span class="text-[9px] font-bold text-slate-400 font-mono bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded">
+                                Kursy: Ciemni ${darkOddsFormatted} • Jaśni ${lightOddsFormatted}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5 pt-0.5 text-[10px]">
+                            <div class="match-odds-pill rounded-xl p-2 space-y-0.5">
+                                <span class="text-slate-500 font-bold block text-[9px]">Trafiony zwycięzca:</span>
+                                <span class="text-emerald-400 font-black text-xs block font-mono">${correctWinners.length}/${totalPreds}</span>
+                                <span class="text-slate-400 text-[9px] truncate block">${correctWinners.map(([n]) => formatPlayerNameHtml(n)).join(', ') || 'Nikt'}</span>
+                            </div>
+                            <div class="match-odds-pill rounded-xl p-2 space-y-0.5">
+                                <span class="text-slate-500 font-bold block text-[9px]">Dokładny wynik (${outcomeSets || '-'}):</span>
+                                <span class="text-amber-400 font-black text-xs block font-mono">${exactSetsWinners.length} trafień (+2 pkt)</span>
+                                <span class="text-slate-400 text-[9px] truncate block">${exactSetsWinners.map(([n]) => formatPlayerNameHtml(n)).join(', ') || 'Brak'}</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -10514,6 +12166,9 @@
 
                 <!-- Wyróżnienia Meczowe (Tylko zwycięzcy nagród) -->
                 ${specialAwardsHtml}
+
+                <!-- Podsumowanie Typera (jeśli były typy) -->
+                ${typerReportHtml}
 
                 <!-- Składy Drużyn -->
                 ${teamsHtml}
@@ -11400,7 +13055,9 @@
                     clutchRanking,
                     setBalanceRanking,
                     pointBalanceRanking,
-                    playerAdvMap
+                    playerAdvMap,
+                    h2hStats,
+                    duoStats
                 };
             } catch (err) {
                 console.error("Błąd w calculateAdvancedMatchStats:", err);
@@ -11410,8 +13067,10 @@
                     kryptoniteRanking: [],
                     clutchRanking: [],
                     setBalanceRanking: [],
-                    pointBalanceRanking: [],
-                    playerAdvMap: {}
+                    pointBalanceRanking,
+                    playerAdvMap: {},
+                    h2hStats: {},
+                    duoStats: {}
                 };
             }
         }
@@ -12325,16 +13984,16 @@
                             </div>
                         ` : `
                             <div class="overflow-x-auto rounded-xl border border-slate-800">
-                                <table class="w-full text-left text-xs text-slate-300">
+                                <table class="w-full min-w-[300px] sm:min-w-full text-left text-xs text-slate-300">
                                     <thead class="bg-slate-950 text-slate-400 uppercase font-bold text-[9px] tracking-wider border-b border-slate-800">
                                         <tr>
-                                            <th class="py-2 px-1 text-center w-6 sm:w-8">#</th>
-                                            <th class="py-2 px-1 sm:px-2 text-left">Zawodnik</th>
-                                            <th class="py-2 px-1 sm:px-2 text-center whitespace-nowrap">Pkt (+ / -)</th>
+                                            <th class="py-2 px-1 text-center w-5 sm:w-7">#</th>
+                                            <th class="py-2 px-1 sm:px-2 text-left min-w-[95px] sm:min-w-[130px]">Zawodnik</th>
+                                            <th class="py-2 px-1 sm:px-2 text-center whitespace-nowrap">Pkt (+/-)</th>
                                             <th class="py-2 px-1 sm:px-2 text-center whitespace-nowrap cursor-pointer hover:text-white transition" onclick="setPointsSortMode('diff')" title="Sortuj wg Bilansu">
                                                 <span class="${currentPointsSortMode === 'diff' ? 'text-emerald-400 underline decoration-2 underline-offset-2' : ''}">Bilans +/-</span>
                                             </th>
-                                            <th class="py-2 px-1 sm:px-2 text-right whitespace-nowrap cursor-pointer hover:text-white transition pr-2 sm:pr-3" onclick="setPointsSortMode('ratio')" title="Sortuj wg Ratio">
+                                            <th class="py-2 px-1 sm:px-2 pr-2 sm:pr-3 text-right whitespace-nowrap cursor-pointer hover:text-white transition" onclick="setPointsSortMode('ratio')" title="Sortuj wg Ratio">
                                                 <span class="${currentPointsSortMode === 'ratio' ? 'text-emerald-400 underline decoration-2 underline-offset-2' : ''}">Ratio</span>
                                             </th>
                                         </tr>
@@ -12345,12 +14004,12 @@
                                                 <td class="py-2 px-1 text-center font-bold font-mono text-[11px] sm:text-xs ${idx === 0 ? 'text-amber-300' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-500'}">
                                                     ${idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1)}
                                                 </td>
-                                                <td class="py-2 px-1 sm:px-2 min-w-0 max-w-[105px] sm:max-w-none">
-                                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(item.name)})" class="flex items-center gap-1 sm:gap-2 text-left hover:text-cyan-300 transition group min-w-0 w-full">
+                                                <td class="py-2 px-1 sm:px-2 min-w-[95px] sm:min-w-[130px]">
+                                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(item.name)})" class="flex items-center gap-1.5 sm:gap-2 text-left hover:text-cyan-300 transition group w-full">
                                                         <div class="shrink-0 scale-90 sm:scale-100 origin-left">
                                                             ${getPlayerAvatarHtml(item.name, 'xs')}
                                                         </div>
-                                                        <span class="font-bold text-white group-hover:text-cyan-300 whitespace-nowrap truncate text-[11px] sm:text-xs min-w-0 block">${escapeHtml(item.name)}</span>
+                                                        <span class="font-bold text-white group-hover:text-cyan-300 whitespace-normal break-words leading-tight text-[11px] sm:text-xs">${escapeHtml(item.name)}</span>
                                                     </button>
                                                 </td>
                                                 <td class="py-2 px-1 sm:px-2 text-center font-mono text-[10.5px] sm:text-[11px] text-slate-300 whitespace-nowrap">
@@ -12655,6 +14314,28 @@
                 badgePillClass: "bg-emerald-950 text-emerald-300 border-emerald-700/80",
                 desc: "Zwycięstwo po odrobieniu strat od stanu 0:2 do 3:2 w setach",
                 detailedReq: "Wymaga odwrócenia losów meczu i wygrania tie-breaka (3:2) po przegraniu dwóch pierwszych setów (0:2)."
+            },
+            {
+                id: "oracle",
+                icon: "🔮",
+                name: "Wyrocznia Parkietu",
+                tier: "epic",
+                tierLabel: "Elitarna",
+                borderClass: "border-purple-500/50 hover:border-purple-300",
+                badgePillClass: "bg-purple-950 text-purple-300 border-purple-700/80",
+                desc: "Trafił dokładny wynik w setach (np. 3:1) co najmniej 2 razy w Lidze Typera",
+                detailedReq: "Wymaga bezbłędnego przewidzenia dokładnego wyniku spotkania w setach co najmniej 2 razy w sezonie 2026."
+            },
+            {
+                id: "bad_luck_bettor",
+                icon: "📉",
+                name: "Pechowy Bukmacher",
+                tier: "challenge",
+                tierLabel: "Pocieszenie",
+                borderClass: "border-rose-500/40 hover:border-rose-300",
+                badgePillClass: "bg-rose-950 text-rose-300 border-rose-700/80",
+                desc: "Co najmniej 3 nietrafione typy w sezonie — nagroda pocieszenia za wierność!",
+                detailedReq: "Nagroda pocieszenia za co najmniej 3 przegrane zakłady w Lidze Typera. Nie poddawaj się, karta wkrótce się odwróci!"
             }
         ];
 
@@ -12918,6 +14599,35 @@
                     tierLabel: "Prestiż",
                     desc: remontadaWins === 1 ? "Wygrana po odwróceniu z 0:2 na 3:2" : `Wygrana po odwróceniu z 0:2 na 3:2 (${remontadaWins}x)`,
                     title: `Wielka Remontada: Wygrana po odrobieniu strat z 0:2 na 3:2 (${remontadaWins}x)`
+                });
+            }
+
+            // 7. Liga Typerów (Wyrocznia Parkietu & Pechowy Bukmacher)
+            const typerRecord = (typeof calculatePlayerTyperRecord === 'function') 
+                ? calculatePlayerTyperRecord(playerName) 
+                : { exactSets: 0, lostBets: 0 };
+
+            if (typerRecord.exactSets >= 2) {
+                badges.push({
+                    id: "oracle",
+                    icon: "🔮",
+                    name: "Wyrocznia Parkietu",
+                    tier: "epic",
+                    tierLabel: "Elitarna",
+                    desc: `Min. 2 trafione dokładne wyniki w setach (${typerRecord.exactSets} trafionych)`,
+                    title: `Wyrocznia Parkietu: ${typerRecord.exactSets}x dokładny wynik w setach w Lidze Typera`
+                });
+            }
+
+            if (typerRecord.lostBets >= 3) {
+                badges.push({
+                    id: "bad_luck_bettor",
+                    icon: "📉",
+                    name: "Pechowy Bukmacher",
+                    tier: "challenge",
+                    tierLabel: "Pocieszenie",
+                    desc: `Nagroda pocieszenia: min. 3 nietrafione typy w sezonie (${typerRecord.lostBets} pudeł)`,
+                    title: `Pechowy Bukmacher: ${typerRecord.lostBets}x nietrafione typy w Lidze Typera`
                 });
             }
 
@@ -13736,7 +15446,7 @@
                                     ${holders.map(pName => `
                                         <button type="button" onclick="openPlayerCardModal(${toInlineArgument(pName)})" title="Otwórz profil: ${escapeHtml(pName)}" class="inline-flex items-center gap-1.5 px-2 py-1 rounded-xl bg-slate-950/90 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-600 text-xs font-bold text-white transition active:scale-95 shadow-sm group">
                                             ${getPlayerAvatarHtml(pName, 'xs')}
-                                            <span class="truncate max-w-[130px] group-hover:text-emerald-300">${escapeHtml(pName)}</span>
+                                            <span class="whitespace-nowrap group-hover:text-emerald-300">${escapeHtml(pName)}</span>
                                         </button>
                                     `).join('')}
                                 </div>
@@ -15002,7 +16712,7 @@
 
         function checkWelcomeGate() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('guest') || urlParams.get('guest') === '1') {
+            if (urlParams.has('guest') || urlParams.get('guest') === '1' || urlParams.has('typer') || urlParams.get('tab') === 'typer') {
                 sessionStorage.setItem('siatka_guest_mode', 'true');
                 closeWelcomeGateModal();
                 return;
@@ -15723,6 +17433,9 @@
 
             const formatted = buildFormattedScoreString();
             currentMatch.score = formatted;
+            if (!currentMatch.odds && typeof getMatchOdds === 'function') {
+                currentMatch.odds = getMatchOdds(currentMatch);
+            }
             syncState();
             renderMatchesTab();
             renderArchiveTab();
