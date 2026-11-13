@@ -1232,6 +1232,15 @@
             font-weight: 800 !important;
         }
 
+        details.typer-squads-details summary::-webkit-details-marker {
+            display: none;
+        }
+        [data-theme="haaland-light"] details.typer-squads-details,
+        [data-theme="mercurial-light"] details.typer-squads-details {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+        }
+
         /* ================= KURSY BUKMACHERSKIE W WYNIKU I RAPORCIE ================= */
         .match-odds-pill {
             background-color: rgba(15, 23, 42, 0.7);
@@ -2757,11 +2766,11 @@
                     <div class="flex items-center gap-2 min-w-0">
                         <span class="text-base shrink-0">🎯</span>
                         <div class="min-w-0 leading-tight">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Liga Typerów</span>
-                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700">DO 20:00</span>
+                            <div class="flex items-center gap-1.5 flex-nowrap">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300 whitespace-nowrap">Liga Typerów</span>
+                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700 whitespace-nowrap">DO 20:00</span>
                             </div>
-                            <div id="quickTyperTeaserText" class="text-[11px] text-slate-300 mt-0.5 leading-snug">
+                            <div id="quickTyperTeaserText" class="text-[10.5px] sm:text-[11px] text-slate-300 mt-0.5 leading-snug truncate">
                                 Wytypuj zwycięzcę i wynik w setach
                             </div>
                         </div>
@@ -3338,7 +3347,7 @@
                     <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
                         <span>🎯</span> Liga Typerów 2026
                     </h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Typuj zwycięzców i sety przed 20:00 • Zbieraj punkty i zdobywaj odznaki</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Typuj zwycięzców i sety przed 20:00 • Typować mogą wszyscy gracze ligi!</p>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
                     <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1.5 text-xs font-bold">
@@ -5402,6 +5411,13 @@
             currentMonth: 'Sierpień',
             currentMatchIndex: 0
         };
+        try {
+            Object.defineProperty(window, 'AppState', {
+                get() { return AppState; },
+                set(v) { AppState = v; },
+                configurable: true
+            });
+        } catch(e) { window.AppState = AppState; }
 
         let db = null;
         let isOnlineSync = false;
@@ -7210,12 +7226,9 @@
                             const dOdds = Number(oddsObj.darkOdds).toFixed(2);
                             const lOdds = Number(oddsObj.lightOdds).toFixed(2);
                             teaserText.innerHTML = `
-                                <span class="text-slate-400">Kursy:</span>
-                                <span class="font-bold text-slate-100">Ciemni ${dOdds}</span>
-                                <span class="text-slate-400 text-[10px]">(${oddsObj.darkProb}%)</span>
-                                <span class="text-slate-500 font-bold mx-0.5">vs</span>
-                                <span class="text-slate-400 text-[10px]">(${oddsObj.lightProb}%)</span>
-                                <span class="font-bold text-slate-100">Jaśni ${lOdds}</span>
+                                <span class="font-bold text-slate-100 whitespace-nowrap">Ciemni ${dOdds} <span class="text-slate-400 text-[10px] font-normal">(${oddsObj.darkProb}%)</span></span>
+                                <span class="text-slate-500 font-bold mx-1">vs</span>
+                                <span class="font-bold text-slate-100 whitespace-nowrap">Jaśni ${lOdds} <span class="text-slate-400 text-[10px] font-normal">(${oddsObj.lightProb}%)</span></span>
                             `;
                         } else {
                             teaserText.innerHTML = `<span class="text-slate-300">Wybierz zwycięzcę meczu i wynik w setach</span>`;
@@ -9246,7 +9259,7 @@
         let currentTyperSubtab = 'bet';
         let typerSelectedTeam = 'dark'; // 'dark' | 'light'
         let typerSelectedSets = '3:1'; // '3:0' | '3:1' | '3:2' | '0:3' | '1:3' | '2:3'
-        let typerSelectedVoter = null;
+        let typerSelectedVoter = localStorage.getItem('siatka_typer_voter') || null;
         let typerLastSyncedMatchKey = null;
 
         function setTyperSubtab(subtab) {
@@ -9419,6 +9432,11 @@
         function onTyperVoterChanged(voterName) {
             typerSelectedVoter = voterName;
             typerLastSyncedMatchKey = null;
+            if (voterName) {
+                try { localStorage.setItem('siatka_typer_voter', voterName); } catch(e) {}
+            } else {
+                try { localStorage.removeItem('siatka_typer_voter'); } catch(e) {}
+            }
             renderTyperTab();
         }
 
@@ -9440,6 +9458,7 @@
                 showToast("Wybierz swoje nazwisko lub zaloguj się przed zapisaniem typu!");
                 return;
             }
+            try { localStorage.setItem('siatka_typer_voter', voter); } catch(e) {}
 
             const oddsObj = (typeof getMatchOdds === 'function')
                 ? getMatchOdds(currentMatch)
@@ -9617,6 +9636,94 @@
                 `;
             }
 
+            // Sekcja podglądu składów na mecz (dostępna dla każdego gracza, także nieobecnych)
+            const hasSquads = Boolean(currentMatch.teams && (darkRoster.length > 0 || lightRoster.length > 0));
+            const attendees = currentMatch.attendees || [];
+            let squadsPreviewHtml = '';
+            if (hasSquads) {
+                squadsPreviewHtml = `
+                    <details class="typer-squads-details group bg-slate-950/70 border border-slate-800/80 rounded-2xl overflow-hidden transition">
+                        <summary class="p-2.5 sm:p-3 flex items-center justify-between cursor-pointer select-none hover:bg-slate-900/50 transition list-none">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="text-sm shrink-0">👥</span>
+                                <div class="min-w-0 text-left">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="text-[11px] sm:text-xs font-bold text-slate-200">Podgląd składów na ten mecz</span>
+                                        <span class="text-[9px] font-mono text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-800/60 px-1.5 py-0.2 rounded">${darkRoster.length + lightRoster.length} graczy</span>
+                                    </div>
+                                    <span class="text-[9.5px] text-slate-400 block leading-tight mt-0.5 truncate">
+                                        Ciemni (${darkRoster.length}) vs Jaśni (${lightRoster.length}) • Sprawdź składy przed typem
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                                <span class="text-[9.5px] font-mono font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg group-open:hidden transition">
+                                    Pokaż składy ▾
+                                </span>
+                                <span class="text-[9.5px] font-mono font-bold text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg hidden group-open:inline-block transition">
+                                    Zwiń ▴
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="p-2.5 pt-0 border-t border-slate-800/80">
+                            <div class="grid grid-cols-2 gap-2 pt-2 text-xs">
+                                <!-- Drużyna Ciemna -->
+                                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 space-y-1">
+                                    <div class="flex items-center justify-between pb-1 border-b border-slate-800 text-[10.5px] font-black">
+                                        <span class="flex items-center gap-1 text-slate-200 min-w-0">
+                                            <span class="w-2 h-2 rounded-full bg-slate-700 border border-slate-500 shrink-0"></span>
+                                            <span class="truncate">${escapeHtml(currentMatch.teams?.darkName || 'Ciemni')}</span>
+                                        </span>
+                                        <span class="text-[9.5px] font-mono text-sky-400 shrink-0">${darkOddsFormatted}</span>
+                                    </div>
+                                    <div class="space-y-0.5">
+                                        ${darkRoster.map(p => `
+                                            <div class="flex items-center gap-1.5 py-0.5 text-[10.5px] ${p === voter ? 'text-amber-300 font-bold bg-amber-950/20 rounded px-1' : 'text-slate-300'}">
+                                                ${getPlayerAvatarHtml(p, 'xs')}
+                                                <span class="truncate">${formatPlayerNameHtml(p)}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <!-- Drużyna Jasna -->
+                                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 space-y-1">
+                                    <div class="flex items-center justify-between pb-1 border-b border-slate-800 text-[10.5px] font-black">
+                                        <span class="flex items-center gap-1 text-slate-200 min-w-0">
+                                            <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
+                                            <span class="truncate">${escapeHtml(currentMatch.teams?.lightName || 'Jaśni')}</span>
+                                        </span>
+                                        <span class="text-[9.5px] font-mono text-amber-300 shrink-0">${lightOddsFormatted}</span>
+                                    </div>
+                                    <div class="space-y-0.5">
+                                        ${lightRoster.map(p => `
+                                            <div class="flex items-center gap-1.5 py-0.5 text-[10.5px] ${p === voter ? 'text-amber-300 font-bold bg-amber-950/20 rounded px-1' : 'text-slate-300'}">
+                                                ${getPlayerAvatarHtml(p, 'xs')}
+                                                <span class="truncate">${formatPlayerNameHtml(p)}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                `;
+            } else {
+                squadsPreviewHtml = `
+                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 text-xs text-slate-400">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-sm shrink-0">👥</span>
+                            <span class="text-[11px] leading-tight text-slate-400">
+                                Składy drużyn nie zostały jeszcze rozlosowane.
+                            </span>
+                        </div>
+                        <span class="text-[10px] font-mono font-bold text-slate-500 bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-800 shrink-0">
+                            ${attendees.length}/12 na liście
+                        </span>
+                    </div>
+                `;
+            }
+
             activeContainer.innerHTML = `
                 <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
                     <!-- Top Match Navigation & Status -->
@@ -9643,6 +9750,9 @@
 
                     <!-- Ostrzeżenie o roszadzie w składzie (Opcja B) -->
                     ${teamMismatchNoticeHtml}
+
+                    <!-- Podgląd Składów Drużyn -->
+                    ${squadsPreviewHtml}
 
                     <!-- Odds Matchup Cards (Wybór zwycięzcy) -->
                     <div class="space-y-1.5">
@@ -9783,53 +9893,137 @@
                 ? lightPreds.map(([n, p]) => renderBetPill(n, p)).join('')
                 : `<p class="text-[11px] text-slate-500 italic p-2">Brak typów na Jasnych</p>`;
 
-            pollContainer.innerHTML = `
-                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
-                    <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">📊</span>
-                            <h3 class="font-black text-sm text-white uppercase tracking-wider">Sonda Społeczności</h3>
+            if (!isFinished) {
+                const secretVotersListHtml = predEntries
+                    .slice()
+                    .sort((a, b) => {
+                        if (a[0] === voter) return -1;
+                        if (b[0] === voter) return 1;
+                        return a[0].localeCompare(b[0], 'pl');
+                    })
+                    .map(([name, pred]) => {
+                        const isSelf = (name === voter);
+                        return `
+                            <div class="px-2.5 py-2 rounded-xl border flex items-center justify-between gap-2 text-xs transition ${isSelf ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200 shadow-sm' : 'bg-slate-950/80 border-slate-800 text-slate-300'}">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    ${getPlayerAvatarHtml(name, 'xs')}
+                                    <div class="min-w-0">
+                                        <span class="font-bold text-[11.5px] whitespace-normal break-words leading-tight block ${isSelf ? 'text-white' : 'text-slate-200'}">
+                                            ${formatPlayerNameHtml(name)}${isSelf ? ' <span class="text-[9.5px] text-emerald-400 font-bold uppercase tracking-wider">(Ty)</span>' : ''}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="shrink-0 font-mono text-[10.5px]">
+                                    ${isSelf && userBet ? `
+                                        <span class="inline-flex items-center gap-1 font-bold text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-2 py-0.5 rounded-lg">
+                                            <span>✓</span>
+                                            <span>${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</span>
+                                        </span>
+                                    ` : `
+                                        <span class="inline-flex items-center gap-1 text-slate-400 font-medium text-[10px] bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg shadow-sm">
+                                            <span>🔒</span>
+                                            <span>Typ oddany</span>
+                                        </span>
+                                    `}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                pollContainer.innerHTML = `
+                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                        <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                            <div class="flex items-center gap-2">
+                                <span class="text-base sm:text-lg">🔒</span>
+                                <h3 class="font-black text-sm text-white uppercase tracking-wider">Kto już zagłosował</h3>
+                            </div>
+                            <span class="text-xs font-mono font-bold text-slate-400 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800">
+                                ${totalPreds} ${totalPreds === 1 ? 'osoba' : (totalPreds >= 2 && totalPreds <= 4 ? 'osoby' : 'osób')}
+                            </span>
                         </div>
-                        <span class="text-xs font-mono font-bold text-slate-400 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">
-                            ${totalPreds} ${totalPreds === 1 ? 'typ' : (totalPreds >= 2 && totalPreds <= 4 ? 'typy' : 'typów')}
-                        </span>
+
+                        ${totalPreds === 0 ? `
+                            <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
+                                Brak oddanych typów na ten mecz. Bądź pierwszy i postaw swój typ powyżej! 🎯
+                            </div>
+                        ` : `
+                            <div class="space-y-2.5">
+                                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-2.5">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-base shrink-0">🔒</span>
+                                        <div class="min-w-0 text-left">
+                                            <span class="text-xs font-bold text-white block leading-tight">Typy są tajne do momentu wpisania wyniku</span>
+                                            <span class="text-[10px] text-slate-400 block leading-tight mt-0.5">Widać kto zagłosował, ale szczegóły na kogo i w jakich setach odkryją się po meczu!</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10.5px] font-mono font-bold text-amber-300 bg-amber-950/60 border border-amber-600/40 px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap">
+                                        ${totalPreds} ${totalPreds === 1 ? 'głos' : (totalPreds >= 2 && totalPreds <= 4 ? 'głosy' : 'głosów')}
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                                    ${secretVotersListHtml}
+                                </div>
+
+                                ${!userBet ? `
+                                    <div class="p-2.5 rounded-2xl bg-amber-950/30 border border-amber-500/30 text-center flex items-center justify-center gap-2 text-xs text-amber-300">
+                                        <span>⏰</span>
+                                        <span>Czekamy na Twój głos — wybierz faworyta i zatwierdź typ powyżej!</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `}
                     </div>
-
-                    ${totalPreds === 0 ? `
-                        <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
-                            Brak oddanych typów na ten mecz. Bądź pierwszy i postaw swój typ powyżej! 🎯
-                        </div>
-                    ` : `
-                        <!-- Split Progress Bar -->
-                        <div class="space-y-1.5">
-                            <div class="flex justify-between text-xs font-mono font-bold">
-                                <span class="text-sky-400">⬛ Ciemni: ${darkPreds.length} (${pollDarkPct}%)</span>
-                                <span class="text-amber-300">Jaśni: ${lightPreds.length} (${pollLightPct}%) ⬜</span>
+                `;
+            } else {
+                pollContainer.innerHTML = `
+                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                        <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📊</span>
+                                <h3 class="font-black text-sm text-white uppercase tracking-wider">Wyniki Typowania Społeczności</h3>
                             </div>
-                            <div class="w-full h-3 rounded-full bg-slate-950 overflow-hidden flex border border-slate-800">
-                                <div style="width: ${pollDarkPct}%" class="bg-gradient-to-r from-sky-600 to-sky-400 transition-all duration-500"></div>
-                                <div style="width: ${pollLightPct}%" class="bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"></div>
-                            </div>
+                            <span class="text-xs font-mono font-bold text-slate-400 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">
+                                ${totalPreds} ${totalPreds === 1 ? 'typ' : (totalPreds >= 2 && totalPreds <= 4 ? 'typy' : 'typów')}
+                            </span>
                         </div>
 
-                        <!-- 2 Columns with Bettors -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                        ${totalPreds === 0 ? `
+                            <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
+                                Brak oddanych typów na ten mecz.
+                            </div>
+                        ` : `
+                            <!-- Split Progress Bar -->
                             <div class="space-y-1.5">
-                                <span class="text-[10px] font-black uppercase tracking-wider text-sky-400 block px-1">Typują na Ciemnych (${darkPreds.length})</span>
-                                <div class="space-y-1">
-                                    ${darkListHtml}
+                                <div class="flex justify-between text-xs font-mono font-bold">
+                                    <span class="text-sky-400">⬛ Ciemni: ${darkPreds.length} (${pollDarkPct}%)</span>
+                                    <span class="text-amber-300">Jaśni: ${lightPreds.length} (${pollLightPct}%) ⬜</span>
+                                </div>
+                                <div class="w-full h-3 rounded-full bg-slate-950 overflow-hidden flex border border-slate-800">
+                                    <div style="width: ${pollDarkPct}%" class="bg-gradient-to-r from-sky-600 to-sky-400 transition-all duration-500"></div>
+                                    <div style="width: ${pollLightPct}%" class="bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"></div>
                                 </div>
                             </div>
-                            <div class="space-y-1.5">
-                                <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 block px-1">Typują na Jasnych (${lightPreds.length})</span>
-                                <div class="space-y-1">
-                                    ${lightListHtml}
+
+                            <!-- 2 Columns with Bettors -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                                <div class="space-y-1.5">
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-sky-400 block px-1">Typowali na Ciemnych (${darkPreds.length})</span>
+                                    <div class="space-y-1">
+                                        ${darkListHtml}
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 block px-1">Typowali na Jasnych (${lightPreds.length})</span>
+                                    <div class="space-y-1">
+                                        ${lightListHtml}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `}
-                </div>
-            `;
+                        `}
+                    </div>
+                `;
+            }
 
             // Build Season Leaderboard
             const leaderboard = calculateTyperLeaderboard();
@@ -10301,7 +10495,7 @@
                     const isExAequoPreTieBreak = (currentMatch.date < '2026-10-17') && (leaders.length > 1) && (maxVotes > 0);
                     if (winnerHeaderLabel) {
                         winnerHeaderLabel.innerHTML = isExAequoPreTieBreak 
-                            ? `OFICJALNI MVP SPOTKANIA (EX AEQUO) 🏆` 
+                            ? `OFICJALNI MVP SPOTKANIA 🏆` 
                             : `OFICJALNY MVP SPOTKANIA 🏆`;
                     }
                     if (winnerName && winnerVotes) {
@@ -10312,11 +10506,11 @@
                             winnerName.innerHTML = `<span class="inline-flex items-center gap-2">${getPlayerAvatarHtml(leaders[0], 'sm')} 👑 ${escapeHtml(leaders[0])}</span>`;
                             winnerVotes.innerText = `${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
                         } else if (isExAequoPreTieBreak) {
-                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
-                            winnerVotes.innerText = `MVP Ex aequo: po ${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
+                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
+                            winnerVotes.innerText = `Po ${pluralizeVotes(maxVotes)} (${Math.round((maxVotes / (totalVotesCast || 1)) * 100)}% poparcia)`;
                         } else {
-                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 Remis: ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
-                            winnerVotes.innerText = `Remis: po ${pluralizeVotes(maxVotes)}`;
+                            winnerName.innerHTML = `<span class="inline-flex items-center gap-2 flex-wrap justify-center">👑 ${leaders.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${escapeHtml(l)}</span>`).join(' & ')}</span>`;
+                            winnerVotes.innerText = `Po ${pluralizeVotes(maxVotes)}`;
                         }
                     }
                 }
@@ -11596,7 +11790,6 @@
                                     <span>${c.icon}</span>
                                     <span class="text-slate-400 font-semibold">${c.label}:</span>
                                     <span class="font-bold text-white">${escapeHtml(wNames)}</span>
-                                    ${isTie ? '<span class="text-[9.5px] text-amber-400 font-semibold font-mono">(remis)</span>' : ''}
                                 </span>
                             `);
                         }
@@ -11610,13 +11803,12 @@
 
                 let mvpBannerHtml = '';
                 if (mvpWinners.length > 0) {
-                    const isExAequo = mvpWinners.length > 1;
                     mvpBannerHtml = `
                         <div class="match-card-mvp-banner bg-gradient-to-r from-amber-500/15 via-amber-950/30 to-slate-950 border border-amber-500/30 rounded-2xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm">
                             <div class="flex items-center gap-2 min-w-0 flex-1">
                                 <span class="text-base shrink-0">👑</span>
                                 <div class="min-w-0 flex-1">
-                                    <span class="text-[9px] text-amber-300 font-black uppercase tracking-wider block leading-tight">MVP Spotkania ${isExAequo ? '(Ex aequo)' : ''}</span>
+                                    <span class="text-[9px] text-amber-300 font-black uppercase tracking-wider block leading-tight">MVP Spotkania</span>
                                     <span class="text-xs sm:text-sm font-black text-white whitespace-normal break-words block leading-tight mt-0.5">${escapeHtml(mvpWinners.join(' & '))}</span>
                                 </div>
                             </div>
@@ -11883,7 +12075,7 @@
                         <div class="flex items-center justify-between gap-2 flex-wrap">
                             <div class="flex items-center gap-2 min-w-0 flex-wrap">
                                 <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded shadow-sm shrink-0">
-                                    👑 MVP ${isExAequo ? '(Ex aequo)' : ''}
+                                    👑 MVP
                                 </span>
                                 <div class="flex items-center gap-1 flex-wrap">
                                     ${winnersListHtml}
@@ -11967,7 +12159,7 @@
                                         <div class="bg-slate-900/90 border border-slate-800/80 p-2 rounded-xl flex flex-col justify-between min-h-[46px] shadow-sm">
                                             <div class="flex items-center justify-between gap-1 text-[9px] text-slate-400 font-bold">
                                                 <span class="whitespace-nowrap">${c.icon} ${c.title}</span>
-                                                ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap text-[8.5px]">${voteStr}${winCount > 1 ? ' (remis)' : ''}</span>` : ''}
+                                                ${voteStr ? `<span class="text-amber-400 font-mono shrink-0 whitespace-nowrap text-[8.5px]">${voteStr}</span>` : ''}
                                             </div>
                                             ${winnersHtml}
                                         </div>
@@ -12066,32 +12258,30 @@
             if (targetMatch.predictions && Object.keys(targetMatch.predictions).length > 0) {
                 const predEntries = Object.entries(targetMatch.predictions);
                 const totalPreds = predEntries.length;
+                const hasScore = Boolean(targetMatch.score && (scoreA !== null && scoreB !== null));
                 const correctWinners = predEntries.filter(([_, p]) => p.team === (darkWon ? 'dark' : lightWon ? 'light' : null));
                 const outcomeSets = (typeof parseMatchOutcome === 'function') ? parseMatchOutcome(targetMatch.score)?.setsStr : null;
                 const exactSetsWinners = predEntries.filter(([_, p]) => p.team === (darkWon ? 'dark' : lightWon ? 'light' : null) && p.sets === outcomeSets);
+                const predLabel = totalPreds === 1 ? 'typ' : (totalPreds < 5 ? 'typy' : 'typów');
 
                 typerReportHtml = `
-                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-2.5 space-y-1.5 text-xs">
-                        <div class="flex items-center justify-between gap-1 flex-wrap">
-                            <span class="text-[10px] font-black text-pink-400 uppercase tracking-wider flex items-center gap-1">
-                                <span>🎯</span> Liga Typerów • Wyniki (${totalPreds} ${totalPreds === 1 ? 'typ' : (totalPreds < 5 ? 'typy' : 'typów')})
-                            </span>
-                            <span class="text-[9px] font-bold text-slate-400 font-mono bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded">
-                                Kursy: Ciemni ${darkOddsFormatted} • Jaśni ${lightOddsFormatted}
-                            </span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-1.5 pt-0.5 text-[10px]">
-                            <div class="match-odds-pill rounded-xl p-2 space-y-0.5">
-                                <span class="text-slate-500 font-bold block text-[9px]">Trafiony zwycięzca:</span>
-                                <span class="text-emerald-400 font-black text-xs block font-mono">${correctWinners.length}/${totalPreds}</span>
-                                <span class="text-slate-400 text-[9px] truncate block">${correctWinners.map(([n]) => formatPlayerNameHtml(n)).join(', ') || 'Nikt'}</span>
-                            </div>
-                            <div class="match-odds-pill rounded-xl p-2 space-y-0.5">
-                                <span class="text-slate-500 font-bold block text-[9px]">Dokładny wynik (${outcomeSets || '-'}):</span>
-                                <span class="text-amber-400 font-black text-xs block font-mono">${exactSetsWinners.length} trafień (+2 pkt)</span>
-                                <span class="text-slate-400 text-[9px] truncate block">${exactSetsWinners.map(([n]) => formatPlayerNameHtml(n)).join(', ') || 'Brak'}</span>
+                    <div onclick="closeArchivedMatchModal(); switchTab('typer');" title="Dotknij, aby przejść do Ligi Typerów" class="match-odds-pill rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2 text-[10px] cursor-pointer hover:border-pink-500/50 transition active:scale-[0.99] shadow-sm">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="text-xs shrink-0">🎯</span>
+                            <div class="min-w-0 text-slate-300 whitespace-nowrap flex items-center gap-1">
+                                <span class="font-bold text-pink-400">Typer:</span>
+                                ${hasScore ? `
+                                    <span class="text-slate-200">Zwycięzca: <b class="text-emerald-400 font-mono font-bold">${correctWinners.length}/${totalPreds}</b></span>
+                                    <span class="text-slate-500 mx-0.5">•</span>
+                                    <span class="text-slate-200">Wynik: <b class="text-amber-300 font-mono font-bold">${exactSetsWinners.length}</b></span>
+                                ` : `
+                                    <span class="text-slate-400">Oddano <b class="text-white font-mono">${totalPreds}</b> ${predLabel} • Rozliczenie po meczu</span>
+                                `}
                             </div>
                         </div>
+                        <span class="text-[9px] font-mono text-slate-400 shrink-0 whitespace-nowrap bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800">
+                            ${darkOddsFormatted} vs ${lightOddsFormatted}
+                        </span>
                     </div>
                 `;
             }
@@ -13472,7 +13662,7 @@
                                             <span class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
                                                 <span>${c.icon}</span> <span class="leading-tight">${c.title}</span>
                                             </span>
-                                            ${voteStr ? `<span class="text-[9px] font-mono font-bold text-amber-400 shrink-0">${voteStr}${winCount > 1 ? ' (remis)' : ''}</span>` : ''}
+                                            ${voteStr ? `<span class="text-[9px] font-mono font-bold text-amber-400 shrink-0">${voteStr}</span>` : ''}
                                         </div>
                                         ${winnersHtml}
                                     </div>
