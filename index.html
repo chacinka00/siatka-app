@@ -9261,6 +9261,7 @@
         let typerSelectedSets = '3:1'; // '3:0' | '3:1' | '3:2' | '0:3' | '1:3' | '2:3'
         let typerSelectedVoter = localStorage.getItem('siatka_typer_voter') || null;
         let typerLastSyncedMatchKey = null;
+        let typerIsChanging = false;
 
         function setTyperSubtab(subtab) {
             currentTyperSubtab = subtab;
@@ -9440,6 +9441,41 @@
             renderTyperTab();
         }
 
+        function startTyperChange() {
+            typerIsChanging = true;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            const voter = loggedPlayer || typerSelectedVoter;
+            const userBet = (voter && currentMatch?.predictions && currentMatch.predictions[voter]) || null;
+            if (userBet) {
+                if (userBet.team === 'dark') {
+                    typerSelectedTeam = 'light';
+                    typerSelectedSets = '1:3';
+                } else {
+                    typerSelectedTeam = 'dark';
+                    typerSelectedSets = '3:1';
+                }
+            }
+            renderTyperTab();
+            const target = document.getElementById('typerOptionsSection');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function cancelTyperChange() {
+            typerIsChanging = false;
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            const voter = loggedPlayer || typerSelectedVoter;
+            const userBet = (voter && currentMatch?.predictions && currentMatch.predictions[voter]) || null;
+            if (userBet) {
+                typerSelectedTeam = userBet.team;
+                typerSelectedSets = userBet.sets;
+            }
+            renderTyperTab();
+        }
+
         function submitTyperBet() {
             const monthData = AppState.months[AppState.currentMonth];
             const currentMatch = monthData?.matches[AppState.currentMatchIndex];
@@ -9459,6 +9495,8 @@
                 return;
             }
             try { localStorage.setItem('siatka_typer_voter', voter); } catch(e) {}
+
+            const isModifying = Boolean(currentMatch.predictions && currentMatch.predictions[voter]);
 
             const oddsObj = (typeof getMatchOdds === 'function')
                 ? getMatchOdds(currentMatch)
@@ -9480,12 +9518,17 @@
                 timestamp: new Date().toISOString()
             };
 
+            typerIsChanging = false;
             syncState();
             renderTyperTab();
             renderMatchesTab();
 
             const teamLabel = typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni';
-            showToast(`🎯 Zapisano typ dla ${voter}: ${teamLabel} (${typerSelectedSets}), kurs ${chosenOdds.toFixed(2)}!`);
+            if (isModifying) {
+                showToast(`🎯 Zmieniono Twój typ na: ${teamLabel} (${typerSelectedSets}), kurs ${chosenOdds.toFixed(2)}!`);
+            } else {
+                showToast(`🎯 Zapisano typ dla ${voter}: ${teamLabel} (${typerSelectedSets}), kurs ${chosenOdds.toFixed(2)}!`);
+            }
         }
 
         function removeTyperBet(playerName) {
@@ -9499,6 +9542,7 @@
             }
 
             delete currentMatch.predictions[playerName];
+            typerIsChanging = false;
             syncState();
             renderTyperTab();
             renderMatchesTab();
@@ -9542,9 +9586,12 @@
 
             // Synchronizacja zapisanego typu gracza
             const currentMatchKey = `${AppState.currentMonth}_${AppState.currentMatchIndex}_${voter}`;
-            if (userBet && typerLastSyncedMatchKey !== currentMatchKey) {
-                typerSelectedTeam = userBet.team;
-                typerSelectedSets = userBet.sets;
+            if (typerLastSyncedMatchKey !== currentMatchKey) {
+                typerIsChanging = false;
+                if (userBet) {
+                    typerSelectedTeam = userBet.team;
+                    typerSelectedSets = userBet.sets;
+                }
                 typerLastSyncedMatchKey = currentMatchKey;
             }
 
@@ -9643,24 +9690,17 @@
             if (hasSquads) {
                 squadsPreviewHtml = `
                     <details class="typer-squads-details group bg-slate-950/70 border border-slate-800/80 rounded-2xl overflow-hidden transition">
-                        <summary class="p-2.5 sm:p-3 flex items-center justify-between cursor-pointer select-none hover:bg-slate-900/50 transition list-none">
+                        <summary class="p-2.5 px-3 flex items-center justify-between cursor-pointer select-none hover:bg-slate-900/50 transition list-none">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span class="text-sm shrink-0">👥</span>
-                                <div class="min-w-0 text-left">
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="text-[11px] sm:text-xs font-bold text-slate-200">Podgląd składów na ten mecz</span>
-                                        <span class="text-[9px] font-mono text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-800/60 px-1.5 py-0.2 rounded">${darkRoster.length + lightRoster.length} graczy</span>
-                                    </div>
-                                    <span class="text-[9.5px] text-slate-400 block leading-tight mt-0.5 truncate">
-                                        Ciemni (${darkRoster.length}) vs Jaśni (${lightRoster.length}) • Sprawdź składy przed typem
-                                    </span>
-                                </div>
+                                <span class="text-xs font-bold text-slate-200 whitespace-nowrap">Składy drużyn</span>
+                                <span class="text-[9.5px] font-mono text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-800/60 px-1.5 py-0.5 rounded shrink-0">${darkRoster.length + lightRoster.length}</span>
                             </div>
                             <div class="flex items-center gap-1.5 shrink-0 ml-2">
-                                <span class="text-[9.5px] font-mono font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg group-open:hidden transition">
-                                    Pokaż składy ▾
+                                <span class="text-[10px] font-mono font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg group-open:hidden transition">
+                                    Pokaż ▾
                                 </span>
-                                <span class="text-[9.5px] font-mono font-bold text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg hidden group-open:inline-block transition">
+                                <span class="text-[10px] font-mono font-bold text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg hidden group-open:inline-block transition">
                                     Zwiń ▴
                                 </span>
                             </div>
@@ -9710,17 +9750,78 @@
                 `;
             } else {
                 squadsPreviewHtml = `
-                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 text-xs text-slate-400">
+                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5 px-3 flex items-center justify-between gap-2 text-xs text-slate-400">
                         <div class="flex items-center gap-2 min-w-0">
                             <span class="text-sm shrink-0">👥</span>
-                            <span class="text-[11px] leading-tight text-slate-400">
-                                Składy drużyn nie zostały jeszcze rozlosowane.
-                            </span>
+                            <span class="text-xs font-bold text-slate-300">Składy nie zostały jeszcze rozlosowane</span>
                         </div>
-                        <span class="text-[10px] font-mono font-bold text-slate-500 bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-800 shrink-0">
-                            ${attendees.length}/12 na liście
+                        <span class="text-[10px] font-mono font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-800 shrink-0">
+                            ${attendees.length}/12
                         </span>
                     </div>
+                `;
+            }
+
+            const isBetModified = Boolean(userBet && (userBet.team !== typerSelectedTeam || userBet.sets !== typerSelectedSets));
+
+            let betActionHtml = '';
+            if (isLocked) {
+                betActionHtml = `
+                    <div class="p-3 rounded-2xl bg-slate-950/90 border border-slate-800 text-center space-y-1">
+                        ${userBet ? `
+                            <div class="text-xs font-bold text-slate-200">
+                                Twój zapisany typ: <span class="font-black ${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} (${escapeHtml(userBet.sets)})</span>
+                                <span class="text-slate-400 font-mono text-[11px]">| Kurs: ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
+                            </div>
+                            <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00 po zakończeniu rozgrzewki.</p>
+                        ` : `
+                            <p class="text-xs text-rose-300 font-bold">Typowanie na ten mecz zostało zablokowane o 20:00.</p>
+                            <p class="text-[10.5px] text-slate-400">Nie oddałeś typu przed rozgrzewką na ten mecz.</p>
+                        `}
+                    </div>
+                `;
+            } else if (userBet && !isBetModified && !typerIsChanging) {
+                betActionHtml = `
+                    <div class="bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-3 text-center space-y-1.5 shadow-sm">
+                        <div class="flex items-center justify-center gap-1.5 text-xs text-emerald-400 font-bold">
+                            <span>✓</span>
+                            <span>Twój typ jest zapisany</span>
+                        </div>
+                        <div class="text-sm sm:text-base font-mono font-black text-white">
+                            <span class="${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</span>
+                            <span class="text-xs text-slate-400 font-normal">| kurs ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 pt-1 text-xs">
+                            <button type="button" onclick="startTyperChange()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
+                                ✏️ Zmień typ
+                            </button>
+                            <button type="button" onclick="removeTyperBet('${escapeHtml(voter)}')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-400 hover:text-rose-300 border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
+                                Wycofaj typ
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (userBet && (isBetModified || typerIsChanging)) {
+                betActionHtml = `
+                    <div class="space-y-2">
+                        <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 shadow-lg shadow-amber-500/20 active:scale-98 transition flex items-center justify-center gap-2 leading-tight text-center">
+                            <span>💾</span>
+                            <span>Zapisz nowy typ:</span>
+                            <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
+                        </button>
+                        <div class="flex items-center justify-between px-2 text-xs text-slate-400">
+                            <span>Poprzedni typ: <strong class="text-slate-200">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</strong></span>
+                            <button type="button" onclick="cancelTyperChange()" class="text-slate-400 hover:text-white underline text-[11px] font-semibold">Anuluj zmianę</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                betActionHtml = `
+                    <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-98 transition flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-tight text-center">
+                        <span>🎯</span>
+                        <span>Zatwierdź typ${voter ? ` (${escapeHtml(voter)})` : ''}</span>
+                        <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
+                    </button>
                 `;
             }
 
@@ -9755,7 +9856,7 @@
                     ${squadsPreviewHtml}
 
                     <!-- Odds Matchup Cards (Wybór zwycięzcy) -->
-                    <div class="space-y-1.5">
+                    <div id="typerOptionsSection" class="space-y-1.5">
                         <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider block px-1">
                             1. Wybierz zwycięzcę meczu (kurs dziesiętny)
                         </label>
@@ -9809,34 +9910,7 @@
 
                     <!-- User Bet Confirmation / Submission Area -->
                     <div class="pt-2">
-                        ${isLocked ? `
-                            <div class="p-3 rounded-2xl bg-slate-950/90 border border-slate-800 text-center space-y-1">
-                                ${userBet ? `
-                                    <div class="text-xs font-bold text-slate-200">
-                                        Twój zapisany typ: <span class="font-black ${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} (${escapeHtml(userBet.sets)})</span>
-                                        <span class="text-slate-400 font-mono text-[11px]">| Kurs: ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
-                                    </div>
-                                    <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00 po zakończeniu rozgrzewki.</p>
-                                ` : `
-                                    <p class="text-xs text-rose-300 font-bold">Typowanie na ten mecz zostało zablokowane o 20:00.</p>
-                                    <p class="text-[10.5px] text-slate-400">Nie oddałeś typu przed rozgrzewką na ten mecz.</p>
-                                `}
-                            </div>
-                        ` : `
-                            <div class="space-y-2">
-                                <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-98 transition flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-tight text-center">
-                                    <span>🎯</span>
-                                    <span class="whitespace-normal break-words">${userBet ? 'Zmień swój typ' : 'Zatwierdź typ'}${voter ? ` (${escapeHtml(voter)})` : ''}</span>
-                                    <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
-                                </button>
-                                ${userBet ? `
-                                    <div class="flex items-center justify-between px-2 text-xs text-slate-400">
-                                        <span>Aktualny typ: <strong class="text-slate-200">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</strong> (kurs ${userBet.odds ? userBet.odds.toFixed(2) : '-'})</span>
-                                        <button type="button" onclick="removeTyperBet('${escapeHtml(voter)}')" class="text-rose-400 hover:text-rose-300 underline text-[11px] font-semibold">Wycofaj typ</button>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `}
+                        ${betActionHtml}
                     </div>
                 </div>
             `;
@@ -9931,46 +10005,24 @@
                     }).join('');
 
                 pollContainer.innerHTML = `
-                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
-                        <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
-                            <div class="flex items-center gap-2">
-                                <span class="text-base sm:text-lg">🔒</span>
-                                <h3 class="font-black text-sm text-white uppercase tracking-wider">Kto już zagłosował</h3>
+                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+                        <div class="flex items-center justify-between gap-2 pb-1 border-b border-slate-800/80">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="text-base shrink-0">🔒</span>
+                                <h3 class="font-black text-xs sm:text-sm text-white uppercase tracking-wider truncate">Typy są tajne do wyniku</h3>
                             </div>
-                            <span class="text-xs font-mono font-bold text-slate-400 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800">
-                                ${totalPreds} ${totalPreds === 1 ? 'osoba' : (totalPreds >= 2 && totalPreds <= 4 ? 'osoby' : 'osób')}
+                            <span class="text-xs font-mono font-bold text-slate-300 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800 shrink-0">
+                                ${totalPreds} ${totalPreds === 1 ? 'głos' : (totalPreds >= 2 && totalPreds <= 4 ? 'głosy' : 'głosów')}
                             </span>
                         </div>
 
                         ${totalPreds === 0 ? `
-                            <div class="p-6 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
-                                Brak oddanych typów na ten mecz. Bądź pierwszy i postaw swój typ powyżej! 🎯
+                            <div class="p-5 text-center text-slate-400 text-xs italic bg-slate-950/60 rounded-2xl border border-dashed border-slate-800">
+                                Brak oddanych typów na ten mecz. Bądź pierwszy! 🎯
                             </div>
                         ` : `
-                            <div class="space-y-2.5">
-                                <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-2.5">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-base shrink-0">🔒</span>
-                                        <div class="min-w-0 text-left">
-                                            <span class="text-xs font-bold text-white block leading-tight">Typy są tajne do momentu wpisania wyniku</span>
-                                            <span class="text-[10px] text-slate-400 block leading-tight mt-0.5">Widać kto zagłosował, ale szczegóły na kogo i w jakich setach odkryją się po meczu!</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-[10.5px] font-mono font-bold text-amber-300 bg-amber-950/60 border border-amber-600/40 px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap">
-                                        ${totalPreds} ${totalPreds === 1 ? 'głos' : (totalPreds >= 2 && totalPreds <= 4 ? 'głosy' : 'głosów')}
-                                    </span>
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
-                                    ${secretVotersListHtml}
-                                </div>
-
-                                ${!userBet ? `
-                                    <div class="p-2.5 rounded-2xl bg-amber-950/30 border border-amber-500/30 text-center flex items-center justify-center gap-2 text-xs text-amber-300">
-                                        <span>⏰</span>
-                                        <span>Czekamy na Twój głos — wybierz faworyta i zatwierdź typ powyżej!</span>
-                                    </div>
-                                ` : ''}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
+                                ${secretVotersListHtml}
                             </div>
                         `}
                     </div>
