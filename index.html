@@ -3344,16 +3344,16 @@
             <!-- Section Header -->
             <div class="px-1 py-0.5 flex items-center justify-between gap-2">
                 <div class="min-w-0">
-                    <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                    <h2 class="text-base sm:text-xl font-black text-white flex items-center gap-1.5 leading-tight">
                         <span>🎯</span> Liga Typerów 2026
                     </h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Typuj zwycięzców i sety przed 20:00 • Typować mogą wszyscy gracze ligi!</p>
+                    <p class="text-[10.5px] text-slate-400 mt-0.5 leading-tight">Typuj zwycięzców i sety przed 20:00</p>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1.5 text-xs font-bold">
-                        <span>📋</span><span class="whitespace-nowrap">Link do typowania</span>
+                    <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1 text-[11px] font-bold">
+                        <span>📋</span><span class="hidden sm:inline whitespace-nowrap">Link do typowania</span><span class="sm:hidden whitespace-nowrap">Link</span>
                     </button>
-                    <button type="button" onclick="renderTyperTab()" title="Odśwież Typera" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shrink-0 shadow-sm">
+                    <button type="button" onclick="renderTyperTab()" title="Odśwież Typera" class="p-1.5 sm:p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shrink-0 shadow-sm text-xs">
                         🔄
                     </button>
                 </div>
@@ -7233,16 +7233,22 @@
 
                     if (teaserText) {
                         if (currentMatch.score) {
-                            teaserText.innerHTML = `<span class="text-slate-300">Podsumowanie typów (${predCount} ${predLabel})</span>`;
+                            const outcome = (typeof parseMatchOutcome === 'function') ? parseMatchOutcome(currentMatch.score) : null;
+                            if (outcome && outcome.winner) {
+                                const winName = outcome.winner === 'dark' ? 'Ciemni' : 'Jaśni';
+                                teaserText.innerHTML = `<span class="text-slate-300">Wynik: <b class="text-white">${outcome.setsStr} (${winName})</b> • ${predCount} ${predLabel}</span>`;
+                            } else {
+                                teaserText.innerHTML = `<span class="text-slate-300">Podsumowanie typów (${predCount} ${predLabel})</span>`;
+                            }
                         } else if (isLocked) {
                             teaserText.innerHTML = `<span class="text-slate-300">Typy są tajne do wyniku (${predCount} ${predLabel})</span>`;
                         } else if (hasSquads && oddsObj) {
                             const dOdds = Number(oddsObj.darkOdds).toFixed(2);
                             const lOdds = Number(oddsObj.lightOdds).toFixed(2);
                             teaserText.innerHTML = `
-                                <span class="font-bold text-slate-100 whitespace-nowrap">Ciemni ${dOdds} <span class="text-slate-400 text-[10px] font-normal">(${oddsObj.darkProb}%)</span></span>
+                                <span class="font-bold text-slate-100 whitespace-nowrap">Ciemni ${dOdds}</span>
                                 <span class="text-slate-500 font-bold mx-1">vs</span>
-                                <span class="font-bold text-slate-100 whitespace-nowrap">Jaśni ${lOdds} <span class="text-slate-400 text-[10px] font-normal">(${oddsObj.lightProb}%)</span></span>
+                                <span class="font-bold text-slate-100 whitespace-nowrap">Jaśni ${lOdds}</span>
                             `;
                         } else {
                             teaserText.innerHTML = `<span class="text-slate-300">Wybierz zwycięzcę i wynik w setach</span>`;
@@ -9465,13 +9471,8 @@
             const voter = loggedPlayer || typerSelectedVoter;
             const userBet = (voter && currentMatch?.predictions && currentMatch.predictions[voter]) || null;
             if (userBet) {
-                if (userBet.team === 'dark') {
-                    typerSelectedTeam = 'light';
-                    typerSelectedSets = '1:3';
-                } else {
-                    typerSelectedTeam = 'dark';
-                    typerSelectedSets = '3:1';
-                }
+                typerSelectedTeam = userBet.team;
+                typerSelectedSets = userBet.sets;
             }
             renderTyperTab();
             const target = document.getElementById('typerOptionsSection');
@@ -9601,6 +9602,15 @@
             const voter = loggedPlayer || typerSelectedVoter || '';
             const userBet = (voter && currentMatch.predictions && currentMatch.predictions[voter]) || null;
 
+            // Oblicz rozkład typów społeczności (procentowy udział stawiania na drużyny)
+            const predictions = currentMatch.predictions || {};
+            const predEntries = Object.entries(predictions);
+            const totalPreds = predEntries.length;
+            const darkPreds = predEntries.filter(([_, p]) => p.team === 'dark');
+            const lightPreds = predEntries.filter(([_, p]) => p.team === 'light');
+            const pollDarkPct = totalPreds > 0 ? Math.round((darkPreds.length / totalPreds) * 100) : 50;
+            const pollLightPct = totalPreds > 0 ? (100 - pollDarkPct) : 50;
+
             // Synchronizacja zapisanego typu gracza
             const currentMatchKey = `${AppState.currentMonth}_${AppState.currentMatchIndex}_${voter}`;
             if (typerLastSyncedMatchKey !== currentMatchKey) {
@@ -9627,13 +9637,13 @@
 
             let statusBadgeHtml = '';
             if (isCancelled) {
-                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold">🚫 Odwołany</span>`;
+                statusBadgeHtml = `<span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold whitespace-nowrap">🚫 Odwołany</span>`;
             } else if (isFinished) {
-                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold font-mono">🏆 Wynik: ${escapeHtml(outcome.setsStr)}</span>`;
+                statusBadgeHtml = `<span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-bold font-mono whitespace-nowrap">🏆 ${escapeHtml(outcome.setsStr)}</span>`;
             } else if (isLocked) {
-                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold font-mono">🔒 Blokada o 20:00</span>`;
+                statusBadgeHtml = `<span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold font-mono whitespace-nowrap">🔒 Blokada</span>`;
             } else {
-                statusBadgeHtml = `<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold font-mono animate-pulse">⏰ Otwarte do 20:00</span>`;
+                statusBadgeHtml = `<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold font-mono whitespace-nowrap animate-pulse">⏰ Do 20:00</span>`;
             }
 
             // Pasek tożsamości / profilu typera
@@ -9782,69 +9792,6 @@
                 `;
             }
 
-            const isBetModified = Boolean(userBet && (userBet.team !== typerSelectedTeam || userBet.sets !== typerSelectedSets));
-
-            let betActionHtml = '';
-            if (isLocked) {
-                betActionHtml = `
-                    <div class="p-3 rounded-2xl bg-slate-950/90 border border-slate-800 text-center space-y-1">
-                        ${userBet ? `
-                            <div class="text-xs font-bold text-slate-200">
-                                Twój zapisany typ: <span class="font-black ${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} (${escapeHtml(userBet.sets)})</span>
-                                <span class="text-slate-400 font-mono text-[11px]">| Kurs: ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
-                            </div>
-                            <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00 po zakończeniu rozgrzewki.</p>
-                        ` : `
-                            <p class="text-xs text-rose-300 font-bold">Typowanie na ten mecz zostało zablokowane o 20:00.</p>
-                            <p class="text-[10.5px] text-slate-400">Nie oddałeś typu przed rozgrzewką na ten mecz.</p>
-                        `}
-                    </div>
-                `;
-            } else if (userBet && !isBetModified && !typerIsChanging) {
-                betActionHtml = `
-                    <div class="bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-3 text-center space-y-1.5 shadow-sm">
-                        <div class="flex items-center justify-center gap-1.5 text-xs text-emerald-400 font-bold">
-                            <span>✓</span>
-                            <span>Twój typ jest zapisany</span>
-                        </div>
-                        <div class="text-sm sm:text-base font-mono font-black text-white">
-                            <span class="${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</span>
-                            <span class="text-xs text-slate-400 font-normal">| kurs ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-2 pt-1 text-xs">
-                            <button type="button" onclick="startTyperChange()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
-                                ✏️ Zmień typ
-                            </button>
-                            <button type="button" onclick="removeTyperBet('${escapeHtml(voter)}')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-400 hover:text-rose-300 border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
-                                Wycofaj typ
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else if (userBet && (isBetModified || typerIsChanging)) {
-                betActionHtml = `
-                    <div class="space-y-2">
-                        <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 shadow-lg shadow-amber-500/20 active:scale-98 transition flex items-center justify-center gap-2 leading-tight text-center">
-                            <span>💾</span>
-                            <span>Zapisz nowy typ:</span>
-                            <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
-                        </button>
-                        <div class="flex items-center justify-between px-2 text-xs text-slate-400">
-                            <span>Poprzedni typ: <strong class="text-slate-200">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</strong></span>
-                            <button type="button" onclick="cancelTyperChange()" class="text-slate-400 hover:text-white underline text-[11px] font-semibold">Anuluj zmianę</button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                betActionHtml = `
-                    <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-98 transition flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-tight text-center">
-                        <span>🎯</span>
-                        <span>Zatwierdź typ${voter ? ` (${escapeHtml(voter)})` : ''}</span>
-                        <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
-                    </button>
-                `;
-            }
-
             let mainInteractiveHtml = '';
 
             if (isFinished && outcome && outcome.winner) {
@@ -9930,7 +9877,9 @@
                                 <span class="text-base shrink-0">🎲</span>
                                 <div class="min-w-0">
                                     <span class="text-xs font-bold text-white block leading-tight">Kursy meczowe</span>
-                                    <span class="text-[10px] font-mono text-slate-400 block mt-0.5">Ciemni ${darkOddsFormatted} (${darkPct}%) • Jaśni ${lightOddsFormatted} (${lightPct}%)</span>
+                                    <span class="text-[10px] font-mono text-slate-400 block mt-0.5">
+                                        Ciemni ${darkOddsFormatted} vs Jaśni ${lightOddsFormatted}
+                                    </span>
                                 </div>
                             </div>
                             <span class="text-[10px] font-mono font-bold text-rose-400 bg-rose-950/80 border border-rose-800/60 px-2 py-0.5 rounded-lg shrink-0">
@@ -9943,7 +9892,7 @@
                                     Twój zapisany typ: <span class="font-black ${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} (${escapeHtml(userBet.sets)})</span>
                                     <span class="text-slate-400 font-mono text-[11px]">| Kurs: ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
                                 </div>
-                                <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00. Odkrycie wyników po wpisaniu wyniku spotkania.</p>
+                                <p class="text-[10.5px] text-slate-400">Typowanie zablokowane o 20:00. Rozliczenie punktów po wpisaniu wyniku.</p>
                             ` : `
                                 <p class="text-xs text-rose-300 font-bold">Typowanie na ten mecz zostało zablokowane o 20:00.</p>
                                 <p class="text-[10.5px] text-slate-400">Nie oddałeś typu przed rozgrzewką na ten mecz.</p>
@@ -9951,7 +9900,29 @@
                         </div>
                     </div>
                 `;
+            } else if (userBet && !typerIsChanging) {
+                mainInteractiveHtml = `
+                    <div class="bg-slate-950/80 border border-emerald-500/30 rounded-2xl p-3.5 text-center space-y-2 shadow-sm">
+                        <div class="flex items-center justify-center gap-1.5 text-xs text-emerald-400 font-bold">
+                            <span>✓</span>
+                            <span>Twój typ na ten mecz jest zapisany</span>
+                        </div>
+                        <div class="text-sm sm:text-base font-mono font-black text-white">
+                            <span class="${userBet.team === 'dark' ? 'text-sky-400' : 'text-amber-300'}">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</span>
+                            <span class="text-xs text-slate-400 font-normal">| kurs ${userBet.odds ? userBet.odds.toFixed(2) : '-'}</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 pt-1 text-xs">
+                            <button type="button" onclick="startTyperChange()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
+                                ✏️ Zmień typ
+                            </button>
+                            <button type="button" onclick="removeTyperBet('${escapeHtml(voter)}')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-rose-400 hover:text-rose-300 border border-slate-700 text-xs font-bold transition active:scale-95 shadow-sm">
+                                Wycofaj typ
+                            </button>
+                        </div>
+                    </div>
+                `;
             } else {
+                const isChangingBet = Boolean(userBet && typerIsChanging);
                 mainInteractiveHtml = `
                     <!-- Odds Matchup Cards (Wybór zwycięzcy) -->
                     <div id="typerOptionsSection" class="space-y-1.5">
@@ -9966,7 +9937,7 @@
                                         <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-600 inline-block shrink-0"></span>
                                         <span>Ciemni</span>
                                     </span>
-                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${darkPct}%</span>
+                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${totalPreds > 0 ? `${pollDarkPct}% typów` : `${darkPct}%`}</span>
                                 </div>
                                 <div class="mt-2 flex items-baseline justify-between">
                                     <span class="typer-odds-lbl text-[10px] uppercase font-bold tracking-wider">Kurs</span>
@@ -9982,7 +9953,7 @@
                                         <span class="w-3 h-3 rounded-full bg-slate-100 border border-slate-300 inline-block shrink-0"></span>
                                         <span>Jaśni</span>
                                     </span>
-                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${lightPct}%</span>
+                                    <span class="typer-pct-val text-[10.5px] font-mono font-bold">${totalPreds > 0 ? `${pollLightPct}% typów` : `${lightPct}%`}</span>
                                 </div>
                                 <div class="mt-2 flex items-baseline justify-between">
                                     <span class="typer-odds-lbl text-[10px] uppercase font-bold tracking-wider">Kurs</span>
@@ -10008,24 +9979,42 @@
 
                     <!-- User Bet Confirmation / Submission Area -->
                     <div class="pt-2">
-                        ${betActionHtml}
+                        ${isChangingBet ? `
+                            <div class="space-y-2">
+                                <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 shadow-lg shadow-amber-500/20 active:scale-98 transition flex items-center justify-center gap-2 leading-tight text-center">
+                                    <span>💾</span>
+                                    <span>Zapisz nowy typ:</span>
+                                    <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
+                                </button>
+                                <div class="flex items-center justify-between px-2 text-xs text-slate-400">
+                                    <span>Poprzedni typ: <strong class="text-slate-200">${userBet.team === 'dark' ? 'Ciemni' : 'Jaśni'} ${escapeHtml(userBet.sets)}</strong></span>
+                                    <button type="button" onclick="cancelTyperChange()" class="text-slate-400 hover:text-white underline text-[11px] font-semibold">Anuluj zmianę</button>
+                                </div>
+                            </div>
+                        ` : `
+                            <button type="button" onclick="submitTyperBet()" class="w-full py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-98 transition flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-tight text-center">
+                                <span>🎯</span>
+                                <span>Zatwierdź typ${voter ? ` (${escapeHtml(voter)})` : ''}</span>
+                                <span class="text-xs font-mono font-bold bg-black/25 text-white px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">${typerSelectedTeam === 'dark' ? 'Ciemni' : 'Jaśni'} ${typerSelectedSets}</span>
+                            </button>
+                        `}
                     </div>
                 `;
             }
 
             activeContainer.innerHTML = `
-                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
+                <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-3 sm:p-5 shadow-xl space-y-3.5">
                     <!-- Top Match Navigation & Status -->
-                    <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap pb-3 border-b border-slate-800/80">
+                    <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-800/80">
                         <div class="flex items-center gap-1.5 min-w-0">
-                            <button type="button" onclick="selectAdjacentMatch(-1); renderTyperTab();" ${!canPrev ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 ${!canPrev ? 'opacity-30 cursor-not-allowed' : ''}">
+                            <button type="button" onclick="selectAdjacentMatch(-1); renderTyperTab();" ${!canPrev ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 shrink-0 ${!canPrev ? 'opacity-30 cursor-not-allowed' : ''}">
                                 ◀
                             </button>
-                            <div class="px-2 min-w-0">
-                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Mecz Piątkowy</span>
-                                <h3 class="font-black text-sm sm:text-base text-white whitespace-nowrap">${escapeHtml(currentMatch.date)}</h3>
+                            <div class="px-1 min-w-0">
+                                <span class="text-[9.5px] font-mono text-slate-400 uppercase tracking-wider block leading-tight">Mecz Piątkowy</span>
+                                <h3 class="font-black text-xs sm:text-sm text-white whitespace-nowrap leading-tight">${escapeHtml(currentMatch.date)}</h3>
                             </div>
-                            <button type="button" onclick="selectAdjacentMatch(1); renderTyperTab();" ${!canNext ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 ${!canNext ? 'opacity-30 cursor-not-allowed' : ''}">
+                            <button type="button" onclick="selectAdjacentMatch(1); renderTyperTab();" ${!canNext ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 shrink-0 ${!canNext ? 'opacity-30 cursor-not-allowed' : ''}">
                                 ▶
                             </button>
                         </div>
@@ -10049,16 +10038,6 @@
             `;
 
             // Build Community Poll
-            const predictions = currentMatch.predictions || {};
-            const predEntries = Object.entries(predictions);
-            const totalPreds = predEntries.length;
-
-            const darkPreds = predEntries.filter(([_, p]) => p.team === 'dark');
-            const lightPreds = predEntries.filter(([_, p]) => p.team === 'light');
-
-            const pollDarkPct = totalPreds > 0 ? Math.round((darkPreds.length / totalPreds) * 100) : 50;
-            const pollLightPct = 100 - pollDarkPct;
-
             const renderBetPill = (name, pred) => {
                 let badgeClass = "bg-slate-950/90 border-slate-800 text-slate-300";
                 let statusIcon = "";
@@ -10154,6 +10133,29 @@
                                 Brak oddanych typów na ten mecz. Bądź pierwszy! 🎯
                             </div>
                         ` : `
+                            <!-- Procentowy rozkład typów społeczności -->
+                            <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-1.5">
+                                <div class="flex items-center justify-between text-xs font-mono">
+                                    <span class="font-bold flex items-center gap-1.5 min-w-0">
+                                        <span class="w-2 h-2 rounded-full bg-slate-900 border border-slate-600 shrink-0"></span>
+                                        <span class="${pollDarkPct >= pollLightPct ? 'text-sky-300 font-black' : 'text-slate-300'}">Ciemni ${pollDarkPct}%</span>
+                                        <span class="text-slate-500 text-[10.5px]">(${darkPreds.length})</span>
+                                    </span>
+                                    <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded-full ${pollDarkPct === pollLightPct ? 'bg-slate-800 text-slate-300' : (pollDarkPct > pollLightPct ? 'bg-sky-950 text-sky-300 border border-sky-800/60' : 'bg-amber-950 text-amber-300 border border-amber-800/60')} shrink-0">
+                                        ${pollDarkPct === pollLightPct ? '50/50' : (pollDarkPct > pollLightPct ? 'Faworyt: Ciemni' : 'Faworyt: Jaśni')}
+                                    </span>
+                                    <span class="font-bold flex items-center gap-1.5 min-w-0 justify-end text-right">
+                                        <span class="text-slate-500 text-[10.5px]">(${lightPreds.length})</span>
+                                        <span class="${pollLightPct >= pollDarkPct ? 'text-amber-300 font-black' : 'text-slate-300'}">${pollLightPct}% Jaśni</span>
+                                        <span class="w-2 h-2 rounded-full bg-white border border-slate-300 shrink-0"></span>
+                                    </span>
+                                </div>
+                                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden flex">
+                                    <div class="bg-sky-500 h-full transition-all duration-500" style="width: ${pollDarkPct}%"></div>
+                                    <div class="bg-amber-400 h-full transition-all duration-500" style="width: ${pollLightPct}%"></div>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
                                 ${secretVotersListHtml}
                             </div>
@@ -10738,7 +10740,7 @@
                 // TRWA DOGRYWKA
                 if (winnerHeaderLabel) winnerHeaderLabel.innerText = "⚡ DOGRYWKA O TYTUŁ MVP SPOTKANIA ⚡";
                 if (winnerName) {
-                    winnerName.innerHTML = `<span class="inline-flex items-center gap-1.5 flex-wrap justify-center text-amber-300 font-black">Remis: ${tbCandidates.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${formatPlayerNameHtml(l)}</span>`).join(' vs ')}</span>`;
+                    winnerName.innerHTML = `<span class="inline-flex items-center gap-1.5 flex-wrap justify-center text-amber-300 font-black">${tbCandidates.map(l => `<span class="inline-flex items-center gap-1">${getPlayerAvatarHtml(l, 'xs')} ${formatPlayerNameHtml(l)}</span>`).join(' vs ')}</span>`;
                 }
                 if (winnerVotes) {
                     winnerVotes.innerText = `W rundzie zasadniczej remis po ${pluralizeVotes(maxVotes)}. Głos decydujący oddają wyłącznie pozostali gracze (${tbCount} / ${tbEligible.length})!`;
