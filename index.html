@@ -10468,6 +10468,28 @@
             return records;
         }
 
+        function getPredictionWinnerTeam(pBet) {
+            if (!pBet) return null;
+            if (Array.isArray(pBet.items)) {
+                for (const it of pBet.items) {
+                    if (it.type === 'winner') return it.team || it.id;
+                    if (it.type === 'score') return it.team || (['3:0', '3:1', '3:2'].includes(it.id) ? 'dark' : 'light');
+                    if (it.label && typeof it.label === 'string') {
+                        const low = it.label.toLowerCase();
+                        if (low.includes('ciemni') && (low.includes('zwycięzca') || low.includes('wynik'))) return 'dark';
+                        if (low.includes('jaśni') && (low.includes('zwycięzca') || low.includes('wynik'))) return 'light';
+                    }
+                }
+            }
+            if (pBet.team === 'dark' || pBet.team === 'light') return pBet.team;
+            if (pBet.winner === 'dark' || pBet.winner === 'light') return pBet.winner;
+            if (pBet.sets) {
+                if (['3:0', '3:1', '3:2'].includes(pBet.sets)) return 'dark';
+                if (['0:3', '1:3', '2:3'].includes(pBet.sets)) return 'light';
+            }
+            return null;
+        }
+
         // ================= GŁÓWNA FUNKCJA RENDERUJĄCA KARTĘ TYPERA =================
         function renderTyperTab() {
             const activeContainer = document.getElementById('typerActiveBettingContainer');
@@ -10491,6 +10513,29 @@
             const isLocked = isMatchBettingLocked(currentMatch);
             const outcome = parseMatchOutcome(currentMatch.score);
             const isFinished = Boolean(outcome && outcome.winner);
+
+            // Sonda społeczności - głosy na zwycięzcę meczu
+            const predictions = currentMatch.predictions || {};
+            const predEntries = Object.entries(predictions);
+            const totalPreds = predEntries.length;
+
+            let darkVotes = 0;
+            let lightVotes = 0;
+            let totalWinnerVotes = 0;
+
+            predEntries.forEach(([pName, pBet]) => {
+                const team = getPredictionWinnerTeam(pBet);
+                if (team === 'dark') {
+                    darkVotes++;
+                    totalWinnerVotes++;
+                } else if (team === 'light') {
+                    lightVotes++;
+                    totalWinnerVotes++;
+                }
+            });
+
+            const pctDark = totalWinnerVotes > 0 ? Math.round((darkVotes / totalWinnerVotes) * 100) : 50;
+            const pctLight = totalWinnerVotes > 0 ? (100 - pctDark) : 50;
 
             // Dynamiczne kursy drużyn i MVP
             const oddsObj = (typeof getMatchOdds === 'function')
@@ -10556,6 +10601,20 @@
                             <span class="text-[10px] font-mono font-bold text-slate-400">Kurs ${lightOddsFormatted}</span>
                         </div>
                     </div>
+
+                    ${totalWinnerVotes > 0 ? `
+                        <div class="space-y-1.5 pt-2 border-t border-slate-800/60">
+                            <div class="flex items-center justify-between text-[11px] font-bold">
+                                <span class="text-slate-300">Typy: <span class="text-amber-400 font-mono font-black">${pctDark}%</span> <span class="text-[10px] text-slate-400 font-normal">(${darkVotes})</span></span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Sonda Społeczności</span>
+                                <span class="text-slate-300"><span class="text-[10px] text-slate-400 font-normal">(${lightVotes})</span> <span class="text-sky-400 font-mono font-black">${pctLight}%</span> :Typy</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden flex gap-0.5 border border-slate-800 shadow-inner">
+                                <div class="h-full bg-gradient-to-r from-slate-600 to-indigo-600 rounded-l-full transition-all duration-500" style="width: ${pctDark}%"></div>
+                                <div class="h-full bg-gradient-to-r from-sky-500 to-cyan-400 rounded-r-full transition-all duration-500" style="width: ${pctLight}%"></div>
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
 
@@ -10746,7 +10805,10 @@
                                 </div>
 
                                 <div class="space-y-1.5">
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">Opcja A: Zwycięzca Meczu</div>
+                                    <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+                                        <span>Opcja A: Zwycięzca Meczu</span>
+                                        ${totalWinnerVotes > 0 ? `<span class="text-amber-400 font-mono lowercase font-bold">społeczność: ${pctDark}% vs ${pctLight}%</span>` : ''}
+                                    </div>
                                     <div class="grid grid-cols-2 gap-2">
                                         <button type="button" onclick="selectTyperWinner('dark', ${darkOddsFormatted})" id="btn-win-dark" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
                                             <span class="text-xs font-bold truncate pr-1">Ciemni</span>
@@ -10946,10 +11008,6 @@
             activeContainer.innerHTML = activeHtml;
 
             // ================= 2. SONDA SPOŁECZNOŚCI & POSTAWIONE KUPONY =================
-            const predictions = currentMatch.predictions || {};
-            const predEntries = Object.entries(predictions);
-            const totalPreds = predEntries.length;
-
             if (isFinished) {
                 let cardsHtml = '';
                 if (totalPreds === 0) {
@@ -11078,9 +11136,48 @@
                     `;
                 }
 
+                let communityWinnerBarHtml = '';
+                if (totalWinnerVotes === 0) {
+                    communityWinnerBarHtml = `
+                        <div class="bg-slate-950/50 border border-slate-800/60 rounded-2xl p-3 text-center text-xs text-slate-400 italic">
+                            Brak jeszcze typów na zwycięzcę meczu – postaw pierwszy kupon! 🏐
+                        </div>
+                    `;
+                } else {
+                    communityWinnerBarHtml = `
+                        <div class="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3 sm:p-3.5 space-y-2.5 shadow-inner">
+                            <div class="flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-1.5 font-bold">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-600 border border-slate-400"></span>
+                                    <span class="text-white">Ciemni</span>
+                                    <span class="font-mono text-sm font-black text-amber-400">${pctDark}%</span>
+                                    <span class="text-[10px] text-slate-400 font-normal">(${darkVotes} ${darkVotes === 1 ? 'głos' : (darkVotes <= 4 && darkVotes > 0 ? 'głosy' : 'głosów')})</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 font-bold text-right">
+                                    <span class="text-[10px] text-slate-400 font-normal">(${lightVotes} ${lightVotes === 1 ? 'głos' : (lightVotes <= 4 && lightVotes > 0 ? 'głosy' : 'głosów')})</span>
+                                    <span class="font-mono text-sm font-black text-sky-400">${pctLight}%</span>
+                                    <span class="text-white">Jaśni</span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-sm shadow-sky-400/50"></span>
+                                </div>
+                            </div>
+
+                            <!-- Pasek rozkładu -->
+                            <div class="h-3 w-full bg-slate-900 rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-slate-800 shadow-inner">
+                                <div class="h-full bg-gradient-to-r from-slate-700 via-slate-600 to-indigo-600 rounded-l-full transition-all duration-500" style="width: ${pctDark}%"></div>
+                                <div class="h-full bg-gradient-to-r from-sky-500 via-cyan-400 to-teal-300 rounded-r-full transition-all duration-500" style="width: ${pctLight}%"></div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-[10px] text-slate-400 font-semibold px-0.5">
+                                <span>Rozkład typów społeczności (Faworyt meczu)</span>
+                                <span class="font-mono">${totalWinnerVotes} ${totalWinnerVotes === 1 ? 'kupon ze zwycięzcą' : (totalWinnerVotes <= 4 ? 'kupony ze zwycięzcą' : 'kuponów ze zwycięzcą')}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 pollContainer.innerHTML = `
-                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
-                        <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                    <div class="bg-slate-900/90 border border-slate-800/80 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3.5">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
                             <div class="flex items-center gap-2">
                                 <span class="text-base">🎟️</span>
                                 <span class="text-xs font-black text-white uppercase tracking-wider">Kupony w grze (${totalPreds})</span>
@@ -11089,6 +11186,8 @@
                                 Typy tajne do meczu 🔒
                             </span>
                         </div>
+
+                        ${communityWinnerBarHtml}
 
                         ${liveVotersListHtml}
 
