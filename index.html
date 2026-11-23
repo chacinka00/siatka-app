@@ -6632,6 +6632,20 @@
             if (AppState.currentMatchIndex >= matchCount) {
                 AppState.currentMatchIndex = Math.max(0, matchCount - 1);
             }
+
+            // Automatyczna korekta kursów przedmeczowych dla rozegranego meczu 2026-11-20 (jeśli omyłkowo przeliczyły się po wpisaniu wyniku)
+            const novMatches = AppState.months?.['Listopad']?.matches || [];
+            const mNov20 = novMatches.find(m => m.date === '2026-11-20');
+            if (mNov20 && mNov20.odds && mNov20.odds.darkOdds === 1.45 && mNov20.odds.lightOdds === 2.70) {
+                mNov20.odds = {
+                    darkProb: 35,
+                    lightProb: 65,
+                    darkOdds: 2.70,
+                    lightOdds: 1.45,
+                    isBalanced: false,
+                    favourite: 'light'
+                };
+            }
         }
 
         function syncState() {
@@ -8904,16 +8918,17 @@
         function getMatchOdds(match) {
             if (!match) return { darkProb: 50, lightProb: 50, darkOdds: 1.85, lightOdds: 1.85, isBalanced: true, favourite: 'even' };
             const isLocked = (typeof isMatchBettingLocked === 'function') ? isMatchBettingLocked(match) : false;
-            // Zamrożone kursy z bazy stosujemy tylko dla meczów już zablokowanych o 20:00 lub zakończonych
-            if (isLocked && match.odds && match.odds.darkOdds && match.odds.lightOdds) {
+            // Zamrożone kursy z bazy stosujemy dla meczów już zablokowanych o 20:00 lub zakończonych
+            if ((isLocked || match.score) && match.odds && match.odds.darkOdds && match.odds.lightOdds) {
                 return match.odds;
             }
             const darkPlayers = (match.teams?.dark || []).filter(Boolean);
             const lightPlayers = (match.teams?.light || []).filter(Boolean);
             if (darkPlayers.length > 0 && lightPlayers.length > 0 && typeof calculateMatchOdds === 'function') {
-                const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats() : null;
+                // Wyliczamy statystyki historyczne z wyłączeniem obecnego meczu, by jego wynik nie wpływał wstecznie na kursy przedmeczowe!
+                const advStats = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats(AppState, match) : null;
                 const fresh = calculateMatchOdds(darkPlayers, lightPlayers, advStats);
-                if (isLocked) {
+                if (isLocked || match.score) {
                     match.odds = fresh;
                 }
                 return fresh;
@@ -9583,7 +9598,8 @@
             set1: null,      // { id: 'dark'|'light', team, label, odds }
             tiebreak: null,  // { id: 'yes'|'no', label, odds }
             deuce: null,     // { id: 'yes'|'no', label, odds }
-            mvp: null        // { id: playerName, label, odds }
+            mvp: null,       // { id: playerName, label, odds }
+            special: null    // { type: 'special', marketId, choiceId, label, odds, teamReq }
         };
 
         function setTyperSubtab(subtab) {
@@ -9760,6 +9776,11 @@
                     label: team === 'dark' ? 'Zwycięzca: Ciemni' : 'Zwycięzca: Jaśni',
                     odds: Number(odds)
                 };
+                // Anti-conflict: usunięcie sprzecznego z wygraną zakładu specjalnego
+                if (typerBetState.special && typerBetState.special.teamReq && typerBetState.special.teamReq !== team) {
+                    typerBetState.special = null;
+                    if (typeof showToast === 'function') showToast("Usunięto zakład specjalny kolidujący ze zwycięzcą.");
+                }
             }
             syncTyperBetUI();
         }
@@ -9784,7 +9805,45 @@
                 if (score === '3:0' || score === '0:3') {
                     typerBetState.set1 = null;
                 }
+                // Anti-conflict: usunięcie sprzecznego z wynikiem zakładu specjalnego
+                if (typerBetState.special && typerBetState.special.teamReq && typerBetState.special.teamReq !== winnerTeam) {
+                    typerBetState.special = null;
+                    if (typeof showToast === 'function') showToast("Usunięto zakład specjalny kolidujący z wybranym wynikiem.");
+                }
             }
+            syncTyperBetUI();
+        }
+
+        function selectTyperSpecial(marketId, choiceId, odds, label, teamReq) {
+            const monthData = AppState.months[AppState.currentMonth];
+            const currentMatch = monthData?.matches[AppState.currentMatchIndex];
+            if (isMatchBettingLocked(currentMatch)) return;
+
+            // Jeśli klikamy ten sam typ -> odznaczamy
+            if (typerBetState.special && typerBetState.special.marketId === marketId && typerBetState.special.choiceId === choiceId) {
+                typerBetState.special = null;
+                syncTyperBetUI();
+                return;
+            }
+
+            // Anti-conflict guard: jeśli zakład wymaga wygranej konkretnej drużyny
+            if (teamReq === 'dark' || teamReq === 'light') {
+                const opp = teamReq === 'dark' ? 'light' : 'dark';
+                if (typerBetState.matchPick && typerBetState.matchPick.team === opp) {
+                    typerBetState.matchPick = null;
+                    if (typeof showToast === 'function') showToast("Zaktualizowano kupon: usunięto sprzeczny typ z Rynku 1.");
+                }
+            }
+
+            typerBetState.special = {
+                type: 'special',
+                marketId: marketId,
+                choiceId: choiceId,
+                label: label,
+                odds: Number(odds),
+                teamReq: teamReq || null
+            };
+
             syncTyperBetUI();
         }
 
@@ -10032,6 +10091,14 @@
                 if (btn) btn.classList.toggle('bet-btn-active', isActive);
             });
 
+            // 6. Zdarzenia Specjalne (Hit Kolejki)
+            const allSpecialBtns = document.querySelectorAll('[id^="btn-spec-"]');
+            allSpecialBtns.forEach(btn => {
+                const btnId = btn.id;
+                const isActive = Boolean(typerBetState.special && btnId === `btn-spec-${typerBetState.special.marketId}-${typerBetState.special.choiceId}`);
+                btn.classList.toggle('bet-btn-active', isActive);
+            });
+
             renderTyperSlip();
         }
 
@@ -10041,6 +10108,7 @@
             else if (typeKey === 'tiebreak') typerBetState.tiebreak = null;
             else if (typeKey === 'deuce') typerBetState.deuce = null;
             else if (typeKey === 'mvp') clearTyperMvp();
+            else if (typeKey === 'special') typerBetState.special = null;
             syncTyperBetUI();
         }
 
@@ -10051,6 +10119,7 @@
             if (typerBetState.tiebreak) items.push({ ...typerBetState.tiebreak, key: 'tiebreak' });
             if (typerBetState.deuce) items.push({ ...typerBetState.deuce, key: 'deuce' });
             if (typerBetState.mvp) items.push({ ...typerBetState.mvp, key: 'mvp' });
+            if (typerBetState.special) items.push({ ...typerBetState.special, key: 'special' });
 
             const count = items.length;
             const ako = items.reduce((acc, it) => acc * it.odds, 1.0);
@@ -10195,7 +10264,7 @@
             const userBet = (voter && currentMatch?.predictions && currentMatch.predictions[voter]) || null;
             
             // Odtwórz stan z zapisanego kuponu
-            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null };
+            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null, special: null };
             if (userBet) {
                 typerSlipMode = userBet.mode || 'ako';
                 if (Array.isArray(userBet.items)) {
@@ -10205,6 +10274,7 @@
                         else if (it.label?.startsWith('Tie-break')) typerBetState.tiebreak = it;
                         else if (it.label?.startsWith('Przewagi')) typerBetState.deuce = it;
                         else if (it.label?.startsWith('MVP')) typerBetState.mvp = it;
+                        else if (it.type === 'special' || it.marketId || it.label?.startsWith('🥊') || it.label?.startsWith('🔥') || it.label?.startsWith('👑') || it.label?.startsWith('🔄')) typerBetState.special = it;
                     });
                 } else if (userBet.team) {
                     // Kompatybilność ze starym formatem
@@ -10227,7 +10297,7 @@
 
         function cancelTyperChange() {
             typerIsChanging = false;
-            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null };
+            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null, special: null };
             renderTyperTab();
         }
 
@@ -10257,6 +10327,7 @@
             if (typerBetState.tiebreak) items.push(typerBetState.tiebreak);
             if (typerBetState.deuce) items.push(typerBetState.deuce);
             if (typerBetState.mvp) items.push(typerBetState.mvp);
+            if (typerBetState.special) items.push(typerBetState.special);
 
             if (items.length === 0) {
                 showToast("Wybierz przynajmniej jedno zdarzenie do kuponu!");
@@ -10279,9 +10350,12 @@
                 : items.reduce((a, b) => a + b.odds, 0.0);
 
             if (!currentMatch.predictions) currentMatch.predictions = {};
+            if (!currentMatch.odds && typeof getMatchOdds === 'function') {
+                currentMatch.odds = getMatchOdds(currentMatch);
+            }
 
             // Gwarancja zgodności wstecznej (team & sets) dla widoków meczowych
-            const fallbackTeam = typerBetState.matchPick?.team || typerBetState.set1?.team || 'dark';
+            const fallbackTeam = typerBetState.matchPick?.team || typerBetState.set1?.team || typerBetState.special?.teamReq || 'dark';
             let fallbackSets = '3:1';
             if (typerBetState.matchPick?.type === 'score') {
                 fallbackSets = typerBetState.matchPick.id;
@@ -10302,7 +10376,7 @@
             };
 
             typerIsChanging = false;
-            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null };
+            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null, special: null };
             if (typerIsDrawerOpen) toggleTyperSlipDrawer();
 
             syncState();
@@ -10329,7 +10403,7 @@
 
             delete currentMatch.predictions[playerName];
             typerIsChanging = false;
-            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null };
+            typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null, special: null };
             syncState();
             renderTyperTab();
             renderMatchesTab();
@@ -10387,6 +10461,8 @@
                                     isItemHit = (it.id === (hasDeuce ? 'yes' : 'no'));
                                 } else if (it.label?.startsWith('MVP')) {
                                     isItemHit = mvpWinners.includes(it.id);
+                                } else if (it.type === 'special' || it.marketId || it.label?.startsWith('🥊') || it.label?.startsWith('🔥') || it.label?.startsWith('👑') || it.label?.startsWith('🔄')) {
+                                    isItemHit = evaluateSpecialBetHit(it, m, outcome, setsList, mvpWinners);
                                 }
 
                                 if (isItemHit) {
@@ -10560,6 +10636,249 @@
             return calculateMatchMarketsOdds(darkWinOdds, lightWinOdds).scores;
         }
 
+        // ================= SILNIK ZDARZEŃ SPECJALNYCH (HIT KOLEJKI) =================
+        function generateSpecialMatchMarkets(match, darkPlayers, lightPlayers, matchOdds) {
+            if (!match || !Array.isArray(darkPlayers) || !Array.isArray(lightPlayers) || darkPlayers.length === 0 || lightPlayers.length === 0) {
+                return [];
+            }
+            if (Array.isArray(match.specialMarkets) && match.specialMarkets.length > 0) {
+                return match.specialMarkets;
+            }
+
+            const dark = darkPlayers.filter(Boolean);
+            const light = lightPlayers.filter(Boolean);
+            const dOdds = Number(matchOdds?.darkOdds) || 1.85;
+            const lOdds = Number(matchOdds?.lightOdds) || 1.85;
+
+            const adv = (typeof calculateAdvancedMatchStats === 'function') ? calculateAdvancedMatchStats(AppState, match) : null;
+            const h2hStats = adv?.h2hStats || {};
+            const candidates = [];
+
+            const getShort = (fullName) => (fullName || '').split(' ')[0] || fullName;
+
+            // 1. KRYPTONIT / POJEDYNEK DNIA (H2H)
+            let bestH2H = null;
+            dark.forEach(pDark => {
+                light.forEach(pLight => {
+                    const stDark = h2hStats[pDark]?.[pLight];
+                    if (stDark && stDark.against >= 2) {
+                        if (stDark.losses >= 2 && stDark.losses > stDark.wins) {
+                            const diff = stDark.losses - stDark.wins;
+                            const score = diff * 15 + stDark.against;
+                            if (!bestH2H || score > bestH2H.score) {
+                                bestH2H = {
+                                    underdog: pDark,
+                                    nemesis: pLight,
+                                    underdogTeam: 'dark',
+                                    losses: stDark.losses,
+                                    against: stDark.against,
+                                    score
+                                };
+                            }
+                        }
+                    }
+                    const stLight = h2hStats[pLight]?.[pDark];
+                    if (stLight && stLight.against >= 2) {
+                        if (stLight.losses >= 2 && stLight.losses > stLight.wins) {
+                            const diff = stLight.losses - stLight.wins;
+                            const score = diff * 15 + stLight.against;
+                            if (!bestH2H || score > bestH2H.score) {
+                                bestH2H = {
+                                    underdog: pLight,
+                                    nemesis: pDark,
+                                    underdogTeam: 'light',
+                                    losses: stLight.losses,
+                                    against: stLight.against,
+                                    score
+                                };
+                            }
+                        }
+                    }
+                });
+            });
+
+            if (bestH2H) {
+                const uShort = getShort(bestH2H.underdog);
+                const nShort = getShort(bestH2H.nemesis);
+                const isUnderdogDark = bestH2H.underdogTeam === 'dark';
+                const teamReqYes = isUnderdogDark ? 'dark' : 'light';
+                const teamReqNo = isUnderdogDark ? 'light' : 'dark';
+
+                const oddYes = Number((Math.max(1.30, Math.min(3.80, (isUnderdogDark ? dOdds : lOdds) * 1.05))).toFixed(2));
+                const oddNo = Number((Math.max(1.20, Math.min(3.20, (isUnderdogDark ? lOdds : dOdds) * 1.02))).toFixed(2));
+
+                candidates.push({
+                    id: 'spec_kryptonite',
+                    category: '🥊 KRYPTONIT H2H',
+                    type: 'h2h_rivalry',
+                    title: `Pojedynek H2H: ${uShort} vs ${nShort}`,
+                    desc: `Bilans bezpośredni: ${uShort} przegrał ${bestH2H.losses} z ${bestH2H.against} pojedynków.`,
+                    relevance: 50 + bestH2H.score,
+                    options: [
+                        { id: 'yes', label: `TAK (Wygra ${uShort})`, odds: oddYes, teamReq: teamReqYes },
+                        { id: 'no', label: `NIE (Wygra ${nShort})`, odds: oddNo, teamReq: teamReqNo }
+                    ]
+                });
+            }
+
+            // 2. GORĄCA PASSA / POGROMCA PASSY (WIN STREAK)
+            let bestStreak = null;
+            const checkStreak = (player, team) => {
+                const outcomes = (typeof calculatePlayerCareerOutcomes === 'function') ? calculatePlayerCareerOutcomes(player, match)?.all || [] : [];
+                let cur = 0;
+                for (let i = outcomes.length - 1; i >= 0; i--) {
+                    if (outcomes[i] === 'W') cur++;
+                    else break;
+                }
+                if (cur >= 2) {
+                    if (!bestStreak || cur > bestStreak.streak) {
+                        bestStreak = { player, streak: cur, team };
+                    }
+                }
+            };
+            dark.forEach(p => checkStreak(p, 'dark'));
+            light.forEach(p => checkStreak(p, 'light'));
+
+            if (bestStreak) {
+                const pShort = getShort(bestStreak.player);
+                const isDark = bestStreak.team === 'dark';
+                const streakTeamOdds = isDark ? dOdds : lOdds;
+                const oppOdds = isDark ? lOdds : dOdds;
+
+                const oddStop = Number((Math.max(1.30, Math.min(3.80, oppOdds * 1.05))).toFixed(2));
+                const oddKeep = Number((Math.max(1.20, Math.min(3.20, streakTeamOdds * 1.02))).toFixed(2));
+
+                candidates.push({
+                    id: 'spec_streak',
+                    category: '🔥 POGROMCA PASSY',
+                    type: 'streak_breaker',
+                    title: `Koniec wspaniałej passy: ${pShort} (${bestStreak.streak}W)?`,
+                    desc: `${pShort} wygrał ${bestStreak.streak} ostatnich meczów z rzędu.`,
+                    relevance: 45 + bestStreak.streak * 10,
+                    options: [
+                        { id: 'stop', label: `TAK (Porażka)`, odds: oddStop, teamReq: isDark ? 'light' : 'dark' },
+                        { id: 'keep', label: `NIE (Seria trwa)`, odds: oddKeep, teamReq: isDark ? 'dark' : 'light' }
+                    ]
+                });
+            }
+
+            // 3. NOWY KRÓL (DEBIUTANCKIE MVP W SEZONIE)
+            const allPlayers = [...dark, ...light];
+            const rookies = allPlayers.filter(p => (typeof getPlayerSeasonMvpCount === 'function' ? getPlayerSeasonMvpCount(p, match) : 0) === 0);
+            const veterans = allPlayers.filter(p => (typeof getPlayerSeasonMvpCount === 'function' ? getPlayerSeasonMvpCount(p, match) : 0) > 0);
+
+            if (rookies.length >= 2 && veterans.length >= 1) {
+                const rookieRatio = rookies.length / allPlayers.length;
+                const pRookie = Math.max(0.35, Math.min(0.65, rookieRatio * 0.85));
+                const oddRookie = Number((0.92 / pRookie).toFixed(2));
+                const oddVeteran = Number((0.92 / (1 - pRookie)).toFixed(2));
+
+                candidates.push({
+                    id: 'spec_rookie_mvp',
+                    category: '👑 NOWY KRÓL',
+                    type: 'rookie_mvp',
+                    title: `Czy statuetkę MVP zdobędzie nowy gracz?`,
+                    desc: `${rookies.length} graczy w składach czeka na pierwsze MVP w sezonie.`,
+                    relevance: 40,
+                    options: [
+                        { id: 'yes', label: 'TAK (Debiut MVP)', odds: oddRookie, teamReq: null },
+                        { id: 'no', label: 'NIE (Znany Mistrz)', odds: oddVeteran, teamReq: null }
+                    ]
+                });
+            }
+
+            // 4. SŁODKI REWANŻ ZA POPRZEDNI MECZ
+            const sortedPlayed = (typeof getAllPlayedMatchesSorted === 'function') 
+                ? getAllPlayedMatchesSorted().filter(m => m !== match && m.score)
+                : [];
+            if (sortedPlayed.length > 0) {
+                const lastM = sortedPlayed[sortedPlayed.length - 1];
+                const lastOutcome = (typeof parseMatchOutcome === 'function') ? parseMatchOutcome(lastM.score) : null;
+                if (lastOutcome && lastOutcome.winner) {
+                    const lastWinners = (lastOutcome.winner === 'dark' ? lastM.teams?.dark : lastM.teams?.light) || [];
+                    const lastLosers = (lastOutcome.winner === 'dark' ? lastM.teams?.light : lastM.teams?.dark) || [];
+
+                    let revengePair = null;
+                    for (const loser of lastLosers) {
+                        for (const winner of lastWinners) {
+                            const loserInDark = dark.includes(loser);
+                            const loserInLight = light.includes(loser);
+                            const winnerInDark = dark.includes(winner);
+                            const winnerInLight = light.includes(winner);
+
+                            if ((loserInDark && winnerInLight) || (loserInLight && winnerInDark)) {
+                                revengePair = {
+                                    loser,
+                                    winner,
+                                    loserTeam: loserInDark ? 'dark' : 'light',
+                                    winnerTeam: winnerInDark ? 'dark' : 'light'
+                                };
+                                break;
+                            }
+                        }
+                        if (revengePair) break;
+                    }
+
+                    if (revengePair) {
+                        const lShort = getShort(revengePair.loser);
+                        const wShort = getShort(revengePair.winner);
+                        const isLoserDark = revengePair.loserTeam === 'dark';
+                        const oddRev = Number(((isLoserDark ? dOdds : lOdds) * 1.05).toFixed(2));
+                        const oddRepeat = Number(((isLoserDark ? lOdds : dOdds) * 1.02).toFixed(2));
+
+                        candidates.push({
+                            id: 'spec_revenge',
+                            category: '🔄 SŁODKI REWANŻ',
+                            type: 'last_week_revenge',
+                            title: `Rewanż za poprzedni tydzień: ${lShort} vs ${wShort}`,
+                            desc: `Tydzień temu wygrała drużyna: ${wShort}.`,
+                            relevance: 42,
+                            options: [
+                                { id: 'yes', label: `TAK (Rewanż: ${lShort})`, odds: Math.max(1.30, Math.min(3.80, oddRev)), teamReq: revengePair.loserTeam },
+                                { id: 'no', label: `NIE (Znowu: ${wShort})`, odds: Math.max(1.20, Math.min(3.20, oddRepeat)), teamReq: revengePair.winnerTeam }
+                            ]
+                        });
+                    }
+                }
+            }
+
+            candidates.sort((a, b) => b.relevance - a.relevance);
+
+            const selected = [];
+            const usedCategories = new Set();
+            for (const c of candidates) {
+                if (!usedCategories.has(c.category)) {
+                    selected.push(c);
+                    usedCategories.add(c.category);
+                    if (selected.length >= 2) break;
+                }
+            }
+
+            return selected;
+        }
+
+        function evaluateSpecialBetHit(item, match, outcome, setsList, mvpWinners) {
+            if (!item || !outcome || !outcome.winner) return false;
+            
+            // 1. Jeśli zakład miał określone wymaganie drużynowe (np. wygrana drużyny A)
+            if (item.teamReq === 'dark' || item.teamReq === 'light') {
+                return (outcome.winner === item.teamReq);
+            }
+
+            // 2. Debiutanckie MVP (spec_rookie_mvp)
+            if (item.marketId === 'spec_rookie_mvp' || item.type === 'rookie_mvp' || item.label?.includes('👑')) {
+                const mvpList = Array.isArray(mvpWinners) ? mvpWinners : [];
+                if (mvpList.length === 0) return false;
+                const anyRookieWon = mvpList.some(p => {
+                    const count = (typeof getPlayerSeasonMvpCount === 'function') ? getPlayerSeasonMvpCount(p, match) : 0;
+                    return count === 0;
+                });
+                return item.choiceId === 'yes' ? anyRookieWon : !anyRookieWon;
+            }
+
+            return false;
+        }
+
         // ================= GŁÓWNA FUNKCJA RENDERUJĄCA KARTĘ TYPERA =================
         function renderTyperTab() {
             const activeContainer = document.getElementById('typerActiveBettingContainer');
@@ -10617,7 +10936,11 @@
             const marketOdds = calculateMatchMarketsOdds(darkOddsFormatted, lightOddsFormatted);
             const scoreOdds = marketOdds.scores;
 
-            const mvpSquads = hasSquads ? calculateMvpOddsForMatch(darkPlayers, lightPlayers) : { dark: [], light: [] };
+            const mvpSquads = hasSquads ? calculateMvpOddsForMatch(darkPlayers, lightPlayers, currentMatch) : { dark: [], light: [] };
+            const specialMarkets = hasSquads ? generateSpecialMatchMarkets(currentMatch, darkPlayers, lightPlayers, oddsObj) : [];
+            if (!currentMatch.specialMarkets && specialMarkets.length > 0) {
+                currentMatch.specialMarkets = specialMarkets;
+            }
 
             // Ustalenie aktywnego typera
             const allPlayersList = (AppState.all_players || []).slice().sort((a,b) => a.localeCompare(b, 'pl'));
@@ -10628,7 +10951,7 @@
             const currentMatchKey = `${AppState.currentMonth}_${AppState.currentMatchIndex}_${voter}`;
             if (typerLastSyncedMatchKey !== currentMatchKey) {
                 typerIsChanging = false;
-                typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null };
+                typerBetState = { matchPick: null, set1: null, tiebreak: null, deuce: null, mvp: null, special: null };
                 typerLastSyncedMatchKey = currentMatchKey;
             }
 
@@ -11024,6 +11347,51 @@
                                 </div>
                             </div>
 
+                            <!-- 6. ⭐ HIT KOLEJKI (ZDARZENIA SPECJALNE) -->
+                            <div id="marketSpecialSection" class="bg-slate-900/90 border border-indigo-500/30 rounded-3xl p-3.5 sm:p-4 space-y-3 shadow-xl">
+                                <div class="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                                    <span class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                                        <span>⭐</span><span>6. Hit Kolejki (Smaczki Meczowe)</span>
+                                    </span>
+                                    <span class="text-[10px] font-mono text-indigo-400 font-bold">${hasSquads ? `${specialMarkets.length} ${specialMarkets.length === 1 ? 'smaczek' : 'smaczki'}` : 'Czeka na składy'}</span>
+                                </div>
+
+                                ${!hasSquads ? `
+                                    <div class="p-3 text-center bg-slate-950/60 rounded-2xl border border-slate-800/60 text-xs text-slate-400">
+                                        🎲 Zdarzenia specjalne (kryptonity, serie, smaczki) odblokują się po wylosowaniu składów!
+                                    </div>
+                                ` : (specialMarkets.length === 0 ? `
+                                    <div class="p-3 text-center bg-slate-950/60 rounded-2xl border border-slate-800/60 text-xs text-slate-400">
+                                        Brak aktywnych zdarzeń specjalnych dla tego meczu.
+                                    </div>
+                                ` : `
+                                    <div class="space-y-2.5">
+                                        ${specialMarkets.map(m => `
+                                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 space-y-2 shadow-inner">
+                                                <div class="flex items-center justify-between text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">
+                                                    <span>${escapeHtml(m.category)}</span>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-xs font-black text-white leading-snug">${escapeHtml(m.title)}</h4>
+                                                    <p class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(m.desc)}</p>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                                    ${m.options.map(opt => `
+                                                        <button type="button" 
+                                                            onclick="selectTyperSpecial('${m.id}', '${opt.id}', ${opt.odds}, '${escapeHtml(m.category.split(' ')[0])} ${escapeHtml(opt.label)}', '${opt.teamReq || ''}')" 
+                                                            id="btn-spec-${m.id}-${opt.id}" 
+                                                            class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
+                                                            <span class="text-xs font-bold truncate pr-1">${escapeHtml(opt.label)}</span>
+                                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-indigo-300 shrink-0">${opt.odds.toFixed(2)}</span>
+                                                        </button>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                `)}
+                            </div>
+
                             <!-- KARTA KUPONU BEZPOŚREDNIO W TREŚCI STRONY (Zjedź i zobacz całą tasiemkę) -->
                             <div id="typerLiveCouponSection" class="scroll-mt-4 bg-slate-900/95 border border-slate-800/90 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300">
                                 <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
@@ -11111,6 +11479,9 @@
                                 else if (it.label?.startsWith('Tie-break')) hit = (it.id === (hasTieBreak ? 'yes' : 'no'));
                                 else if (it.label?.startsWith('Przewagi')) hit = (it.id === (hasDeuce ? 'yes' : 'no'));
                                 else if (it.label?.startsWith('MVP')) hit = mvpWinners.includes(it.id);
+                                else if (it.type === 'special' || it.marketId || it.label?.startsWith('🥊') || it.label?.startsWith('🔥') || it.label?.startsWith('👑') || it.label?.startsWith('🔄')) {
+                                    hit = evaluateSpecialBetHit(it, currentMatch, outcome, setsList, mvpWinners);
+                                }
 
                                 if (hit) { sumHits += it.odds; } else { allHit = false; }
 
@@ -14078,7 +14449,7 @@
         }
 
         // ================= ZAAWANSOWANE STATYSTYKI MECZOWE (READ-ONLY) =================
-        function calculateAdvancedMatchStats(state = AppState) {
+        function calculateAdvancedMatchStats(state = AppState, matchToExclude = null) {
             try {
                 if (!state || !state.months) {
                     return {
@@ -14115,6 +14486,7 @@
                     const matches = months[mName]?.matches || [];
                     for (const m of matches) {
                         if (!m || m.isCancelled || !m.score || !m.teams) continue;
+                        if (matchToExclude && (m === matchToExclude || (m.date && matchToExclude.date && m.date === matchToExclude.date))) continue;
 
                         const dark = Array.isArray(m.teams.dark) ? m.teams.dark.filter(Boolean) : [];
                         const light = Array.isArray(m.teams.light) ? m.teams.light.filter(Boolean) : [];
@@ -18836,11 +19208,13 @@
                 return alert("Set nie może zakończyć się remisem. Popraw wynik przed zapisaniem.");
             }
 
-            const formatted = buildFormattedScoreString();
-            currentMatch.score = formatted;
+            // Utrwalenie kursów przedmeczowych ZANIM wynik zostanie zapisany (aby wynik nie wpłynął wstecznie na kursy)
             if (!currentMatch.odds && typeof getMatchOdds === 'function') {
                 currentMatch.odds = getMatchOdds(currentMatch);
             }
+
+            const formatted = buildFormattedScoreString();
+            currentMatch.score = formatted;
             syncState();
             renderMatchesTab();
             renderArchiveTab();
