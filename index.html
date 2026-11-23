@@ -2866,10 +2866,10 @@
 
                 <!-- Month Select & Share Action -->
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-bold text-emerald-400 rounded-xl px-2 py-1.5 sm:px-2.5 sm:py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95">
+                    <select id="monthSelect" onchange="changeMonth(this.value)" aria-label="Wybierz miesiąc" class="bg-slate-950 text-xs font-mono font-bold text-emerald-400 rounded-xl px-2 py-1.5 sm:px-2.5 sm:py-1.5 border border-slate-700 focus:outline-none focus:border-emerald-400 cursor-pointer shadow-sm active:scale-95 transition whitespace-nowrap shrink-0">
                         <!-- Populated dynamically -->
                     </select>
-                    <button type="button" id="headerShareBtn" onclick="copyQuickMatchLink()" title="Kopiuj link do zapisów na Messengera (1-klik)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0 cursor-pointer">
+                    <button type="button" id="headerShareBtn" onclick="copyQuickMatchLink()" title="Kopiuj link do zapisów na Messengera (1-klik)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs transition-all duration-150 items-center gap-1 shadow-md shadow-emerald-500/20 active:scale-95 hidden shrink-0 cursor-pointer whitespace-nowrap">
                         <span>📋</span>
                         <span class="hidden sm:inline text-[11px]">Zapisy</span>
                     </button>
@@ -2882,13 +2882,13 @@
                     <div id="headerUserGreeting" class="text-[11px] text-slate-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                         ⏰ 19:45 (gra 20:00 - 21:45)
                     </div>
-                    <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 items-center gap-0.5 shrink-0">
+                    <span id="adminModeBadge" class="hidden text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 items-center gap-0.5 shrink-0 whitespace-nowrap">
                         👑 Admin
                     </span>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium hidden sm:inline">📍 Myśliborska 25</span>
-                    <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-sky-950/60 text-sky-400 border border-sky-800/60 flex items-center gap-1 shrink-0">
+                    <span id="headerHallAddress" class="text-[10px] text-slate-400 font-medium hidden sm:inline whitespace-nowrap">📍 Myśliborska 25</span>
+                    <span id="syncStatusBadge" aria-live="polite" class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-sky-950/60 text-sky-400 border border-sky-800/60 flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> ŁĄCZENIE
                     </span>
                 </div>
@@ -2932,11 +2932,11 @@
                 
                 <!-- Live Countdown Clock Box -->
                 <div id="matchCountdownBox" class="bg-slate-950/90 border border-slate-800/80 rounded-2xl p-2.5 px-3 flex items-center justify-between gap-2 shadow-inner">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span id="countdownLabel" class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Do meczu:</span>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
+                        <span id="countdownLabel" class="text-[11px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">Do meczu:</span>
                     </div>
-                    <span id="countdownValue" class="text-xs sm:text-sm font-black font-mono text-emerald-400 tracking-wider">
+                    <span id="countdownValue" class="text-xs sm:text-sm font-black font-mono text-emerald-400 tracking-wider whitespace-nowrap shrink-0">
                         --:--:--
                     </span>
                 </div>
@@ -2948,45 +2948,45 @@
                         <div class="min-w-0 leading-tight">
                             <div class="flex items-center gap-1.5 flex-nowrap">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300 whitespace-nowrap">Liga Typerów</span>
-                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700 whitespace-nowrap">DO 20:00</span>
+                                <span id="quickTyperLockStatusBadge" class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700 whitespace-nowrap shrink-0">DO 20:00</span>
                             </div>
                             <div id="quickTyperTeaserText" class="text-[10.5px] sm:text-[11px] text-slate-300 mt-0.5 leading-snug truncate">
                                 Wytypuj zwycięzcę i wynik w setach
                             </div>
                         </div>
                     </div>
-                    <span id="quickTyperActionBtn" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-[10px] font-bold shrink-0 whitespace-nowrap shadow-sm">
+                    <span id="quickTyperActionBtn" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-[10px] font-bold shrink-0 whitespace-nowrap shadow-sm active:scale-95 transition-all duration-150">
                         Typuj ➔
                     </span>
                 </div>
 
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <span id="matchDateBadge" class="text-[11px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
+                        <span id="matchDateBadge" class="text-[11px] font-mono font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-950/80 border border-emerald-800/80 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
                             2026-08-28
                         </span>
-                        <span id="upcomingBadge" class="hidden text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full">
+                        <span id="upcomingBadge" class="hidden text-[11px] font-extrabold text-sky-400 uppercase tracking-wider bg-sky-950/80 border border-sky-800/80 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
                             ⏳ NAJBLIŻSZY
                         </span>
-                        <span id="matchStatusBadge" class="hidden text-[11px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-950/80 border border-rose-800/80 px-2.5 py-0.5 rounded-full">
+                        <span id="matchStatusBadge" class="hidden text-[11px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-950/80 border border-rose-800/80 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
                             🚫 ODWOŁANY
                         </span>
-                        <span id="matchFreeBadge" class="hidden text-[11px] font-extrabold text-amber-300 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full">
+                        <span id="matchFreeBadge" class="hidden text-[11px] font-extrabold text-amber-300 uppercase tracking-wider bg-amber-950/80 border border-amber-800/80 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
                             💸 MECZ PNH (0 ZŁ)
                         </span>
                     </div>
 
                     <!-- Match Navigator Arrows -->
                     <div class="flex items-center gap-1 shrink-0">
-                        <button type="button" id="prevMatchBtn" onclick="selectAdjacentMatch(-1)" title="Poprzedni mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition active:scale-95 flex items-center gap-1 shadow-sm">
+                        <button type="button" id="prevMatchBtn" onclick="selectAdjacentMatch(-1)" title="Poprzedni mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition-all duration-150 active:scale-95 flex items-center gap-1 shadow-sm whitespace-nowrap shrink-0">
                             <span>◀</span>
                             <span class="hidden sm:inline">Poprzedni</span>
                         </button>
-                        <button type="button" id="nextMatchBtn" onclick="selectAdjacentMatch(1)" title="Następny mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition active:scale-95 flex items-center gap-1 shadow-sm">
+                        <button type="button" id="nextMatchBtn" onclick="selectAdjacentMatch(1)" title="Następny mecz" class="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl border border-slate-800 transition-all duration-150 active:scale-95 flex items-center gap-1 shadow-sm whitespace-nowrap shrink-0">
                             <span class="hidden sm:inline">Następny</span>
                             <span>▶</span>
                         </button>
-                        <button type="button" id="adminQuickSettingsBtn" onclick="openGroupSettingsModal()" title="Ustawienia godzin i hali" class="p-1.5 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-amber-400 text-xs font-bold rounded-xl border border-slate-800 transition active:scale-95 hidden items-center justify-center shadow-sm">
+                        <button type="button" id="adminQuickSettingsBtn" onclick="openGroupSettingsModal()" title="Ustawienia godzin i hali" class="p-1.5 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-amber-400 text-xs font-bold rounded-xl border border-slate-800 transition-all duration-150 active:scale-95 hidden items-center justify-center shadow-sm shrink-0">
                             <span>⚙️</span>
                         </button>
                     </div>
@@ -2996,9 +2996,9 @@
                     <div class="flex items-center justify-between gap-2">
                         <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Piątkowy Mecz 🏐</h2>
                         <!-- Slots metric badge -->
-                        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-1 px-3 text-center shrink-0 shadow-inner flex items-center gap-1.5">
+                        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl py-1 px-3 text-center shrink-0 shadow-inner flex items-center gap-1.5 whitespace-nowrap">
                             <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skład:</span>
-                            <span id="matchPlayerCount" class="text-sm sm:text-base font-black text-sky-400 font-mono">0/12</span>
+                            <span id="matchPlayerCount" class="text-sm sm:text-base font-black text-sky-400 font-mono whitespace-nowrap shrink-0">0/12</span>
                         </div>
                     </div>
                     <!-- Quick Info Chips Row (Lightweight inline metadata bar) -->
@@ -3015,11 +3015,11 @@
                             <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Wynik meczu</span>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <button type="button" id="matchReportScoreBtn" onclick="openCurrentMatchReportModal()" title="Zobacz oficjalny raport meczowy ze składami i MVP" class="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-800/80 hover:border-indigo-700 text-indigo-300 hover:text-indigo-200 font-bold px-2.5 py-1 rounded-xl text-[11px] flex items-center gap-1 transition active:scale-95 shadow-sm">
+                            <button type="button" id="matchReportScoreBtn" onclick="openCurrentMatchReportModal()" title="Zobacz oficjalny raport meczowy ze składami i MVP" class="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-800/80 hover:border-indigo-700 text-indigo-300 hover:text-indigo-200 font-bold px-2.5 py-1 rounded-xl text-[11px] flex items-center gap-1 transition-all duration-150 active:scale-95 shadow-sm whitespace-nowrap shrink-0">
                                 <span>📑</span>
                                 <span>Raport</span>
                             </button>
-                            <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-2.5 sm:px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
+                            <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-2.5 sm:px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all duration-150 active:scale-95 shrink-0 shadow-sm hidden whitespace-nowrap">
                                 <span>✏️</span>
                                 <span id="editScoreBtnLabel">Wpisz wynik</span>
                             </button>
@@ -3039,23 +3039,23 @@
                 <div id="matchAdminBarContainer" class="pt-2 border-t border-slate-800/40 hidden">
                     <details class="group text-xs">
                         <summary class="flex items-center justify-between cursor-pointer list-none text-slate-400 hover:text-amber-300 font-bold py-1 select-none transition">
-                            <span class="flex items-center gap-1.5 text-[11px] font-bold text-amber-400/90">
+                            <span class="flex items-center gap-1.5 text-[11px] font-bold text-amber-400/90 whitespace-nowrap">
                                 <span>👑</span>
                                 <span>Zarządzanie meczem</span>
                             </span>
                             <span class="text-[10px] text-slate-500 group-open:rotate-180 transition-transform duration-200">▼</span>
                         </summary>
                         <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 pt-2 pb-0.5">
-                            <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-rose-900/50 text-slate-300 hover:text-rose-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs">
+                            <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-rose-900/50 text-slate-300 hover:text-rose-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-150 whitespace-nowrap active:scale-95 text-[11px] sm:text-xs shrink-0">
                                 🚫 Odwołaj
                             </button>
-                            <button type="button" id="matchCostToggleBtn" onclick="editMatchCostPrompt()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-900/50 text-slate-300 hover:text-emerald-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Zmień koszt hali dla tego meczu (wpisz kwotę lub 0 na PnH)">
+                            <button type="button" id="matchCostToggleBtn" onclick="editMatchCostPrompt()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-900/50 text-slate-300 hover:text-emerald-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-150 whitespace-nowrap active:scale-95 text-[11px] sm:text-xs shrink-0" title="Zmień koszt hali dla tego meczu (wpisz kwotę lub 0 na PnH)">
                                 💸 Hala: 250 zł
                             </button>
-                            <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-slate-300 hover:text-amber-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
+                            <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-slate-300 hover:text-amber-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-150 whitespace-nowrap active:scale-95 text-[11px] sm:text-xs shrink-0" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
                                 🔄 Zmiany: Wył (12)
                             </button>
-                            <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-amber-400/90 hover:text-amber-300 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Wyczyść całą listę zapisanych graczy">
+                            <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-amber-400/90 hover:text-amber-300 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-150 whitespace-nowrap active:scale-95 text-[11px] sm:text-xs shrink-0" title="Wyczyść całą listę zapisanych graczy">
                                 🧹 Wyczyść skład
                             </button>
                         </div>
@@ -3065,11 +3065,11 @@
 
             <!-- Przełącznik Segmentowy: Skład vs MVP (Koniec z długim przewijaniem na telefonie) -->
             <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold shadow-md">
-                <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
+                <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition-all duration-150 active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
                     <span>📋</span>
-                    <span>Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
+                    <span>Skład (<span id="matchSubtabSquadCount" class="font-mono">0/12</span>)</span>
                 </button>
-                <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
+                <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition-all duration-150 active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
                     <span>👑</span>
                     <span>Głosuj MVP</span>
                     <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black shrink-0">👑</span>
@@ -3086,7 +3086,7 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
                             <h3 id="mainSquadTitle" class="text-xs font-bold text-slate-200 uppercase tracking-wider whitespace-normal break-words">Skład Główny</h3>
                         </div>
-                        <span id="mainSquadBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-md shrink-0">0/12</span>
+                        <span id="mainSquadBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap">0/12</span>
                     </div>
 
                     <div id="mainSquadList" class="bg-slate-950/80 border border-slate-800/80 rounded-2xl divide-y divide-slate-800/50 overflow-hidden shadow-sm">
@@ -3103,7 +3103,7 @@
                         </div>
                         <div class="flex items-center gap-2 shrink-0 flex-wrap">
                             <div id="reservePlayingActionContainer"></div>
-                            <span id="reserveSquadBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded-md shrink-0">0</span>
+                            <span id="reserveSquadBadge" class="text-xs font-mono font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap">0</span>
                         </div>
                     </div>
 
@@ -3122,18 +3122,18 @@
             <div id="integratedMvpCard" class="bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-950 border border-amber-800/50 rounded-3xl p-4 sm:p-5 shadow-xl space-y-4">
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-2">
-                        <span class="text-2xl">🏆</span>
+                        <span class="text-2xl shrink-0">🏆</span>
                         <div>
                             <h3 class="font-black text-sm sm:text-base text-white">MVP Spotkania</h3>
-                            <p id="mvpMatchDateBadge" class="text-[11px] text-amber-400 font-semibold">Mecz: -</p>
+                            <p id="mvpMatchDateBadge" class="text-[11px] font-mono text-amber-400 font-semibold whitespace-nowrap">Mecz: -</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" onclick="copyMvpVoteDirectLink()" title="Skopiuj bezpośredni link do głosowania dla ekipy na Messengerze" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition active:scale-95 shadow-sm cursor-pointer whitespace-nowrap">
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="copyMvpVoteDirectLink()" title="Skopiuj bezpośredni link do głosowania dla ekipy na Messengerze" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all duration-150 active:scale-95 shadow-sm cursor-pointer whitespace-nowrap shrink-0">
                             <span>🔗</span>
                             <span>Kopiuj link</span>
                         </button>
-                        <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60 whitespace-nowrap">
+                        <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60 whitespace-nowrap shrink-0">
                             Głosy: 0/0
                         </span>
                     </div>
@@ -3974,34 +3974,34 @@
     <nav aria-label="Nawigacja mobilna" class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 ios-safe-bottom shadow-2xl transition-all">
         <div class="max-w-md mx-auto px-1 sm:px-2 py-1.5 flex items-center justify-between gap-0.5 sm:gap-1">
             
-            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn tab-active flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-emerald-400 font-bold transition active:scale-95">
-                <span class="tab-icon text-base sm:text-lg leading-none">📅</span>
-                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Mecz</span>
+            <button type="button" onclick="switchTab('matches')" id="tab-btn-matches" class="tab-btn tab-active flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-emerald-400 font-bold transition-all duration-150 active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">📅</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0">Mecz</span>
             </button>
 
-            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-base sm:text-lg leading-none">🔀</span>
-                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Składy</span>
+            <button type="button" onclick="switchTab('teams')" id="tab-btn-teams" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition-all duration-150 active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">🔀</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0">Składy</span>
             </button>
 
-            <button type="button" onclick="switchTab('typer')" id="tab-btn-typer" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95 relative">
-                <span class="tab-icon text-base sm:text-lg leading-none">🎯</span>
-                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Typer</span>
+            <button type="button" onclick="switchTab('typer')" id="tab-btn-typer" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition-all duration-150 active:scale-95 relative">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">🎯</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0">Typer</span>
             </button>
 
-            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-base sm:text-lg leading-none">💰</span>
-                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Składki</span>
+            <button type="button" onclick="switchTab('billing')" id="tab-btn-billing" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition-all duration-150 active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">💰</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0">Składki</span>
             </button>
 
-            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-base sm:text-lg leading-none">👑</span>
-                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center">Ranking</span>
+            <button type="button" onclick="switchTab('halloffame')" id="tab-btn-halloffame" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition-all duration-150 active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">👑</span>
+                <span class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0">Ranking</span>
             </button>
 
-            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition active:scale-95">
-                <span class="tab-icon text-base sm:text-lg leading-none">👤</span>
-                <span id="navProfileLabel" class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center truncate max-w-[58px]">Profil</span>
+            <button type="button" onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn flex-1 min-w-0 min-h-[48px] py-1 px-0.5 flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 font-bold transition-all duration-150 active:scale-95">
+                <span class="tab-icon text-base sm:text-lg leading-none shrink-0">👤</span>
+                <span id="navProfileLabel" class="tab-text text-[9.5px] sm:text-[10px] tracking-tight leading-none text-center whitespace-nowrap shrink-0 max-w-[58px]">Profil</span>
             </button>
 
         </div>
@@ -4027,10 +4027,10 @@
         </div>
 
         <div class="flex items-center gap-1.5 shrink-0">
-            <button type="button" onclick="toggleTyperSlipDrawer(true)" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 active:scale-95 transition">
+            <button type="button" onclick="toggleTyperSlipDrawer(true)" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 active:scale-95 transition-all duration-150 whitespace-nowrap shrink-0">
                 Podgląd
             </button>
-            <button type="button" onclick="submitTyperBet()" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md active:scale-95 transition flex items-center gap-1">
+            <button type="button" onclick="submitTyperBet()" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md active:scale-95 transition-all duration-150 flex items-center gap-1 whitespace-nowrap shrink-0">
                 <span>Postaw</span>
                 <span>➔</span>
             </button>
@@ -4145,16 +4145,16 @@
                 </div>
 
                 <div class="space-y-2 pt-1">
-                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 whitespace-nowrap">
                         <span>Zaloguj się</span>
                         <span>🚀</span>
                     </button>
 
-                    <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
+                    <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all duration-150 active:scale-[0.98] border border-slate-800 whitespace-nowrap">
                         Wejdź jako gość 👀
                     </button>
 
-                    <button type="button" onclick="showWelcomeRegisterView(true)" class="w-full bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-800/60 text-indigo-300 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-1">
+                    <button type="button" onclick="showWelcomeRegisterView(true)" class="w-full bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-800/60 text-indigo-300 font-bold py-2.5 rounded-xl text-xs transition-all duration-150 active:scale-[0.98] flex items-center justify-center gap-1.5 mt-1 whitespace-nowrap">
                         <span>✨</span>
                         <span>+ Stwórz nowy profil</span>
                     </button>
@@ -4175,12 +4175,12 @@
                 </div>
 
                 <div class="space-y-2 pt-1">
-                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 whitespace-nowrap">
                         <span>Zapisz i wejdź</span>
                         <span>🚀</span>
                     </button>
 
-                    <button type="button" onclick="showWelcomeRegisterView(false)" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
+                    <button type="button" onclick="showWelcomeRegisterView(false)" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all duration-150 active:scale-[0.98] border border-slate-800 whitespace-nowrap">
                         ← Wróć do logowania
                     </button>
                 </div>
@@ -4223,10 +4223,10 @@
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button type="button" onclick="submitGuestSignup()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
+                <button type="button" onclick="submitGuestSignup()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition-all duration-150 shadow-lg shadow-emerald-500/20 whitespace-nowrap">
                     Dopisz 🏐
                 </button>
-                <button type="button" onclick="closeGuestSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-3 rounded-2xl text-xs transition">
+                <button type="button" onclick="closeGuestSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-3 rounded-2xl text-xs transition-all duration-150 active:scale-95 whitespace-nowrap">
                     Anuluj
                 </button>
             </div>
@@ -4310,10 +4310,10 @@
 
             <!-- Action Buttons -->
             <div class="flex gap-2 pt-2">
-                <button type="button" onclick="saveFormattedScore()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
+                <button type="button" onclick="saveFormattedScore()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition-all duration-150 shadow-lg shadow-emerald-500/20 whitespace-nowrap">
                     Zapisz wynik 💾
                 </button>
-                <button type="button" onclick="clearMatchScore()" class="bg-slate-800 hover:bg-slate-700 text-rose-400 font-bold px-3 py-3 rounded-2xl text-xs transition">
+                <button type="button" onclick="clearMatchScore()" class="bg-slate-800 hover:bg-slate-700 text-rose-400 font-bold px-3 py-3 rounded-2xl text-xs transition-all duration-150 active:scale-95 whitespace-nowrap">
                     Wyczyść
                 </button>
             </div>
@@ -4577,8 +4577,8 @@
                 </div>
 
                 <div class="pt-1 flex gap-2">
-                    <button type="button" onclick="closeGroupSettingsModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl transition">Anuluj</button>
-                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">Zapisz 💾</button>
+                    <button type="button" onclick="closeGroupSettingsModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl transition-all duration-150 active:scale-95 whitespace-nowrap">Anuluj</button>
+                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition-all duration-150 shadow-md shadow-emerald-500/20 active:scale-95 whitespace-nowrap">Zapisz 💾</button>
                 </div>
             </form>
         </div>
@@ -7027,14 +7027,14 @@
                             const pB = parseInt(pts[1], 10);
                             const aSetWon = pA > pB;
                             const bSetWon = pB > pA;
-                            return `<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] sm:text-[11px] font-mono shadow-sm">
-                                <span class="text-slate-500 mr-1 text-[9px] font-bold">S${idx + 1}</span>
-                                <span class="${aSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[0].trim())}</span>
-                                <span class="text-slate-600 mx-0.5">:</span>
-                                <span class="${bSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(pts[1].trim())}</span>
+                            return `<span class="inline-flex items-center px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] sm:text-[11px] font-mono shadow-sm whitespace-nowrap shrink-0">
+                                <span class="text-slate-500 mr-1 text-[9px] font-bold shrink-0">S${idx + 1}</span>
+                                <span class="${aSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'} shrink-0">${escapeHtml(pts[0].trim())}</span>
+                                <span class="text-slate-600 mx-0.5 shrink-0">:</span>
+                                <span class="${bSetWon ? 'text-emerald-400 font-bold' : 'text-slate-300'} shrink-0">${escapeHtml(pts[1].trim())}</span>
                             </span>`;
                         }
-                        return `<span class="inline-block px-1.5 py-0.5 rounded bg-slate-900 text-[10px] font-mono text-slate-300">${escapeHtml(s.trim())}</span>`;
+                        return `<span class="inline-block px-1.5 py-0.5 rounded bg-slate-900 text-[10px] font-mono text-slate-300 whitespace-nowrap shrink-0">${escapeHtml(s.trim())}</span>`;
                     }).join('');
                     setsPillsHtml = `<div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">${pills}</div>`;
                 }
@@ -7059,7 +7059,7 @@
 
                         oddsA_Html = `
                             <div class="flex items-center justify-end gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm whitespace-nowrap shrink-0">
                                     <span class="text-slate-400 text-[8.5px]">kurs</span>
                                     <span class="match-odds-value font-bold text-slate-100">${oddsA}</span>
                                     <span class="text-slate-400 text-[8.5px]">(${probA}%)</span>
@@ -7069,7 +7069,7 @@
 
                         oddsB_Html = `
                             <div class="flex items-center justify-start gap-1 mt-0.5">
-                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm">
+                                <span class="match-odds-pill inline-flex items-center gap-1 text-[9.5px] font-mono px-2 py-0.5 rounded-md shadow-sm whitespace-nowrap shrink-0">
                                     <span class="text-slate-400 text-[8.5px]">(${probB}%)</span>
                                     <span class="match-odds-value font-bold text-slate-100">${oddsB}</span>
                                     <span class="text-slate-400 text-[8.5px]">kurs</span>
@@ -7080,9 +7080,9 @@
                         const nA = parseFloat(oddsA);
                         const nB = parseFloat(oddsB);
                         if (aWon && nA > nB && (nA - nB) >= 0.20) {
-                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm">⚡ Wygrana po wyższym kursie ${oddsA}</span></div>`;
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap shrink-0">⚡ Wygrana po wyższym kursie ${oddsA}</span></div>`;
                         } else if (bWon && nB > nA && (nB - nA) >= 0.20) {
-                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm">⚡ Wygrana po wyższym kursie ${oddsB}</span></div>`;
+                            upsetBadgeHtml = `<div class="text-center pt-1"><span class="inline-flex items-center gap-1 text-[9.5px] font-medium text-slate-300 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap shrink-0">⚡ Wygrana po wyższym kursie ${oddsB}</span></div>`;
                         }
                     }
                 }
@@ -7096,7 +7096,7 @@
                                 </span>
                                 ${oddsA_Html}
                             </div>
-                            <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px]">
+                            <div class="bg-slate-900 border border-slate-700/80 px-3.5 py-1.5 rounded-2xl font-mono text-sm sm:text-base font-black tracking-wider text-amber-300 shrink-0 shadow-sm text-center min-w-[58px] whitespace-nowrap">
                                 <span class="${aWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreA}</span>
                                 <span class="text-slate-500 mx-1">:</span>
                                 <span class="${bWon ? 'text-emerald-400' : 'text-slate-300'}">${scoreB}</span>
@@ -7275,7 +7275,7 @@
                     const badgeText = isCancelledMatch ? 'Odwołany' : (isRecent && isPast && !isMvpDone) ? 'Głosuj' : (isLockedFuture ? `🔒 ${mainCount}/${pLimit}` : `${mainCount}/${pLimit}`);
 
                     return `
-                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition shrink-0 flex items-center gap-2 active:scale-95 shadow-sm ${
+                        <button type="button" onclick="selectMatch(${idx})" class="px-3 py-2 rounded-2xl border text-xs font-extrabold transition-all duration-150 shrink-0 flex items-center gap-2 active:scale-95 shadow-sm whitespace-nowrap ${
                             isSelected 
                                 ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20 ring-2 ring-emerald-400/40' 
                                 : isCancelledMatch
@@ -7288,8 +7288,8 @@
                                                 ? 'bg-slate-950 text-slate-500 border-slate-800/80 hover:border-slate-700'
                                                 : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-slate-700'
                         }">
-                            <span>${chipIcon} ${dayDisplay}</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
+                            <span class="whitespace-nowrap shrink-0">${chipIcon} ${dayDisplay}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded-full font-mono whitespace-nowrap shrink-0 ${
                                 isSelected 
                                     ? 'bg-black/30 text-white font-black shadow-inner' 
                                     : isCancelledMatch
@@ -7382,19 +7382,19 @@
             if (heroDetails) {
                 const shortHall = hallAddress.replace(/\s*\(hala\)/i, '');
                 const costBadge = (!isCancelled && Number(costPerPerson) > 0) ? `
-                    <span class="text-slate-600 select-none">•</span>
-                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-400">
+                    <span class="text-slate-600 select-none shrink-0">•</span>
+                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-400 whitespace-nowrap shrink-0 font-mono">
                         <span>💸</span>
                         <span>${costPerPerson} zł/os</span>
                     </span>
                 ` : '';
                 heroDetails.innerHTML = `
-                    <span class="inline-flex items-center gap-1 font-medium">
+                    <span class="inline-flex items-center gap-1 font-medium whitespace-nowrap shrink-0">
                         <span>⏰</span>
                         <span>Zbiórka <strong class="text-slate-200 font-mono font-bold">${escapeHtml(warmupTime)}</strong> (gra ${escapeHtml(startTime)}–${escapeHtml(gameEndTime)})</span>
                     </span>
-                    <span class="text-slate-600 select-none">•</span>
-                    <span class="inline-flex items-center gap-1 font-medium">
+                    <span class="text-slate-600 select-none shrink-0">•</span>
+                    <span class="inline-flex items-center gap-1 font-medium whitespace-nowrap shrink-0">
                         <span>📍</span>
                         <span class="text-slate-300" title="${escapeHtml(hallAddress)}">${escapeHtml(shortHall)}</span>
                     </span>
@@ -7626,18 +7626,18 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition shrink-0">
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(loggedPlayer)})" class="text-xs font-bold text-rose-400 hover:text-rose-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl transition-all duration-150 active:scale-95 shrink-0 whitespace-nowrap">
                                         Wypisz mnie ✕
                                     </button>
                                 </div>
                             ` : `
-                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-3 sm:px-4 py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 sm:gap-2.5 min-w-0">
+                                <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-3 sm:px-4 py-3.5 rounded-2xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 sm:gap-2.5 min-w-0 whitespace-nowrap">
                                     ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950 shrink-0')}
                                     <span>Zapisz mnie na mecz 🏐</span>
                                 </button>
                             `}
 
-                            <button type="button" onclick="openGuestSignupModal()" class="w-full bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold px-4 py-2.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
+                            <button type="button" onclick="openGuestSignupModal()" class="w-full bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold px-4 py-2.5 rounded-2xl text-xs transition-all duration-150 active:scale-[0.98] flex items-center justify-center gap-2 whitespace-nowrap">
                                 <span>👥</span>
                                 <span>+ Dopisz znajomego</span>
                             </button>
@@ -7658,7 +7658,7 @@
                                 <label for="matchPlayerSelect" class="block text-xs font-extrabold text-slate-300 uppercase tracking-wider">
                                     Wybierz gracza z listy:
                                 </label>
-                                <button type="button" onclick="switchTab('profile')" class="text-xs text-emerald-400 font-bold hover:underline">
+                                <button type="button" onclick="switchTab('profile')" class="text-xs text-emerald-400 font-bold hover:underline whitespace-nowrap shrink-0">
                                     🔑 Zaloguj się PIN-em
                                 </button>
                             </div>
@@ -7675,10 +7675,10 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-2 pt-1">
-                                <button type="button" onclick="addPlayerToCurrentMatchFromSelect()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-md shadow-emerald-500/20">
+                                <button type="button" onclick="addPlayerToCurrentMatchFromSelect()" class="bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3 rounded-2xl text-xs transition-all duration-150 shadow-md shadow-emerald-500/20 whitespace-nowrap">
                                     Zapisz wybranego 🏐
                                 </button>
-                                <button type="button" onclick="openGuestSignupModal()" class="bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold py-3 rounded-2xl text-xs transition">
+                                <button type="button" onclick="openGuestSignupModal()" class="bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold py-3 rounded-2xl text-xs transition-all duration-150 active:scale-[0.98] whitespace-nowrap">
                                     + Nowy gość 👥
                                 </button>
                             </div>
@@ -7706,7 +7706,7 @@
                     const canRemove = isMe || isAdmin;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
-                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pluralizeMatches(pStreak)} z rzędu">
+                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm whitespace-nowrap" title="Seria obecności: ${pluralizeMatches(pStreak)} z rzędu">
                             🔥 ${pStreak}
                         </span>
                     ` : '';
@@ -7716,17 +7716,17 @@
                                 <span class="font-mono font-bold ${isExtraPlaying ? 'text-amber-400' : 'text-slate-500'} w-4 shrink-0">${i + 1}.</span>
                                 ${getPlayerAvatarHtml(p, 'xs')}
                                 <span class="font-semibold ${isMe ? (isExtraPlaying ? 'text-amber-300' : 'text-emerald-300 font-bold') : 'text-slate-200'} group-hover:text-amber-300 transition whitespace-normal break-words leading-tight" title="${escapeHtml(p)}">${formatPlayerNameHtml(p)}</span>
-                                ${isExtraPlaying ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0 flex items-center gap-0.5 whitespace-nowrap" title="Gra na zmiany przy serwisie">🔄 Zmiana (serwis)</span>' : ''}
+                                ${isExtraPlaying ? '<span class="text-[9px] font-black bg-amber-950 text-amber-300 border border-amber-800/80 px-1.5 py-0.5 rounded-md shrink-0 flex items-center gap-0.5 whitespace-nowrap" title="Gra na zmiany przy serwisie">🔄 Zmiana</span>' : ''}
                                 ${isMe ? '<span class="text-[9px] font-black bg-emerald-950 text-emerald-300 border border-emerald-800/80 px-1.5 py-0.5 rounded-md shrink-0 whitespace-nowrap">TY</span>' : ''}
                                 ${isGuest ? '<span class="text-[9px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap" title="Zawodnik gościnny / archiwalny">Gość</span>' : ''}
                                 ${streakBadge}
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
                                 ${isExtraPlaying && isAdmin ? `
-                                    <button type="button" onclick="toggleReservePlayingWithAuth(${i - 12})" title="Przenieś z powrotem na listę rezerwową" class="text-slate-400 hover:text-amber-300 text-[10px] font-bold px-1.5 py-1 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg transition active:scale-95 whitespace-nowrap">↩ Rezerwa</button>
+                                    <button type="button" onclick="toggleReservePlayingWithAuth(${i - 12})" title="Przenieś z powrotem na listę rezerwową" class="text-slate-400 hover:text-amber-300 text-[10px] font-bold px-1.5 py-1 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">↩ Rezerwa</button>
                                 ` : ''}
                                 ${canRemove ? `
-                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition text-sm">✕</button>
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z meczu' : 'Usuń z listy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition-all duration-150 active:scale-90 text-sm shrink-0">✕</button>
                                 ` : `
                                     <div class="w-4 shrink-0"></div>
                                 `}
@@ -7737,7 +7737,7 @@
                 const freeSlots = playingLimit - mainPlayers.length;
                 if (freeSlots > 0) {
                     squadHtml += `
-                        <div class="px-3.5 py-2.5 text-center text-xs text-slate-400 bg-slate-950/40 font-medium flex items-center justify-center gap-1.5">
+                        <div class="px-3.5 py-2.5 text-center text-xs text-slate-400 bg-slate-950/40 font-medium flex items-center justify-center gap-1.5 whitespace-nowrap">
                             <span>✨</span>
                             <span>Wolne miejsca: <strong class="text-emerald-400 font-mono font-bold">${freeSlots}</strong></span>
                         </div>
@@ -7766,14 +7766,14 @@
                 if (isAdmin && (reservePlayers.length > 0 || extraCount > 0)) {
                     if (extraCount > 0) {
                         reserveActionContainer.innerHTML = `
-                            <button type="button" onclick="toggleReservePlayingWithAuth(0)" class="text-[10px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-lg transition active:scale-95 whitespace-nowrap" title="Przywróć standardowy skład 12-osobowy">
+                            <button type="button" onclick="toggleReservePlayingWithAuth(0)" class="text-[10px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0" title="Przywróć standardowy skład 12-osobowy">
                                 ↩ Wyłącz zmiany
                             </button>
                         `;
                     } else if (reservePlayers.length > 0) {
                         const canAdd = Math.min(2, reservePlayers.length);
                         reserveActionContainer.innerHTML = `
-                            <button type="button" onclick="toggleReservePlayingWithAuth()" class="text-[10px] font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-lg transition active:scale-95 whitespace-nowrap" title="Włącz rezerwowych do gry na zmiany przy serwisie (max 2 osoby)">
+                            <button type="button" onclick="toggleReservePlayingWithAuth()" class="text-[10px] font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0" title="Włącz rezerwowych do gry na zmiany przy serwisie (max 2 osoby)">
                                 🔄 Włącz grę na zmiany (+${canAdd})
                             </button>
                         `;
@@ -7795,7 +7795,7 @@
                     const canPromote = isAdmin && extraCount < 2;
                     const pStreak = (allStreaks[p]?.current) || 0;
                     const streakBadge = pStreak >= 2 ? `
-                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm" title="Seria obecności: ${pluralizeMatches(pStreak)} z rzędu">
+                        <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-black font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 select-none shadow-sm whitespace-nowrap" title="Seria obecności: ${pluralizeMatches(pStreak)} z rzędu">
                             🔥 ${pStreak}
                         </span>
                     ` : '';
@@ -7811,12 +7811,12 @@
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
                                 ${canPromote ? `
-                                    <button type="button" onclick="toggleReservePlayingWithAuth(${extraCount + 1})" title="Włącz tego gracza do meczu na zmiany" class="text-amber-300 hover:text-white bg-amber-950/80 hover:bg-amber-900 border border-amber-800/80 text-[10px] font-bold px-2 py-1 rounded-lg transition active:scale-95 whitespace-nowrap">
+                                    <button type="button" onclick="toggleReservePlayingWithAuth(${extraCount + 1})" title="Włącz tego gracza do meczu na zmiany" class="text-amber-300 hover:text-white bg-amber-950/80 hover:bg-amber-900 border border-amber-800/80 text-[10px] font-bold px-2 py-1 rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">
                                         + Dołącz do gry
                                     </button>
                                 ` : ''}
                                 ${canRemove ? `
-                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition text-sm">✕</button>
+                                    <button type="button" onclick="removePlayerFromCurrentMatch(${toInlineArgument(p)})" title="${isMe ? 'Wypisz się z rezerwy' : 'Usuń z rezerwy (Organizator)'}" class="text-slate-500 hover:text-rose-400 font-bold min-w-[32px] min-h-[32px] flex items-center justify-center transition-all duration-150 active:scale-90 text-sm shrink-0">✕</button>
                                 ` : `
                                     <div class="w-4 shrink-0"></div>
                                 `}
@@ -8629,15 +8629,15 @@
                                     </div>
                                     ${isAdmin ? `
                                     <div class="flex items-center gap-1 shrink-0">
-                                        <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition shadow-sm">
+                                        <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'dark')" title="Przypisz do Drużyny Ciemnej" class="px-2 py-1 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg text-[10px] font-extrabold active:scale-95 transition-all duration-150 shadow-sm whitespace-nowrap shrink-0">
                                             ⬛ Ciemni
                                         </button>
-                                        <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'light')" title="Przypisz do Drużyny Jasnej" class="px-2 py-1 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-800/80 rounded-lg text-[10px] font-extrabold active:scale-95 transition shadow-sm">
+                                        <button type="button" onclick="assignPlayerToTeam(${toInlineArgument(p)}, 'light')" title="Przypisz do Drużyny Jasnej" class="px-2 py-1 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-800/80 rounded-lg text-[10px] font-extrabold active:scale-95 transition-all duration-150 shadow-sm whitespace-nowrap shrink-0">
                                             ⬜ Jaśni
                                         </button>
                                     </div>
                                     ` : `
-                                    <span class="text-[10px] text-slate-400 font-semibold px-2 py-0.5 bg-slate-950 rounded-lg border border-slate-800 shrink-0">Czeka na przydział</span>
+                                    <span class="text-[10px] text-slate-400 font-semibold px-2 py-0.5 bg-slate-950 rounded-lg border border-slate-800 whitespace-nowrap shrink-0">Czeka na przydział</span>
                                     `}
                                 </div>
                             `;
@@ -8684,10 +8684,10 @@
                             </div>
                             ${isAdmin ? `
                             <div class="flex items-center gap-1 shrink-0">
-                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej (${escapeHtml(lightName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'dark')" title="Przenieś do Drużyny Jasnej (${escapeHtml(lightName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition-all duration-150 active:scale-95 flex items-center gap-1 whitespace-nowrap shrink-0">
                                     <span>⇄</span><span>Przenieś</span>
                                 </button>
-                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">
                                     ✕
                                 </button>
                             </div>
@@ -8726,10 +8726,10 @@
                             </div>
                             ${isAdmin ? `
                             <div class="flex items-center gap-1 shrink-0">
-                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej (${escapeHtml(darkName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition active:scale-95 flex items-center gap-1">
+                                <button type="button" onclick="movePlayerToOtherTeam(${toInlineArgument(p)}, 'light')" title="Przenieś do Drużyny Ciemnej (${escapeHtml(darkName)})" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-[10px] rounded-lg transition-all duration-150 active:scale-95 flex items-center gap-1 whitespace-nowrap shrink-0">
                                     <span>⇄</span><span>Przenieś</span>
                                 </button>
-                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition active:scale-95">
+                                <button type="button" onclick="unassignPlayerFromTeams(${toInlineArgument(p)})" title="Wypisz do nieprzypisanych" class="px-1.5 py-1 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border border-slate-700 font-bold text-[10px] rounded-lg transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">
                                     ✕
                                 </button>
                             </div>
@@ -8763,11 +8763,11 @@
                     : (dark.length === Math.floor(mainSquad.length / 2) && light.length === Math.ceil(mainSquad.length / 2) && totalAssigned === mainSquad.length);
 
                 if (totalAssigned === 0) {
-                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60 font-bold text-[11px] shadow-sm"><span>🏐</span><span>Do przydziału: ${mainSquad.length} graczy</span></span>`;
+                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60 font-bold text-[11px] shadow-sm whitespace-nowrap shrink-0"><span>🏐</span><span>Do przydziału: <strong class="font-mono">${mainSquad.length}</strong> graczy</span></span>`;
                 } else if (isBalanced) {
-                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-bold text-[11px] shadow-sm"><span>✓</span><span>Składy skompletowane na parkiecie (${dark.length}v${light.length})</span></span>`;
+                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-bold text-[11px] shadow-sm whitespace-nowrap shrink-0"><span>✓</span><span>Składy skompletowane (<strong class="font-mono">${dark.length}v${light.length}</strong>)</span></span>`;
                 } else {
-                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold text-[11px] shadow-sm"><span>⏳</span><span>Dobieranie składów: ${totalAssigned}/${mainSquad.length} (${dark.length} vs ${light.length})</span></span>`;
+                    balanceInd.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold text-[11px] shadow-sm whitespace-nowrap shrink-0"><span>⏳</span><span>Dobieranie: <strong class="font-mono">${totalAssigned}/${mainSquad.length}</strong> (<strong class="font-mono">${dark.length} vs ${light.length}</strong>)</span></span>`;
                 }
             }
         }
@@ -11225,43 +11225,43 @@
                                         ${totalWinnerVotes > 0 ? `<span class="text-amber-400 font-mono lowercase font-bold">społeczność: ${pctDark}% vs ${pctLight}%</span>` : ''}
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="selectTyperWinner('dark', ${darkOddsFormatted})" id="btn-win-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                            <span class="text-xs font-bold leading-tight pr-1">Ciemni</span>
-                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0">${darkOddsFormatted}</span>
+                                        <button type="button" onclick="selectTyperWinner('dark', ${darkOddsFormatted})" id="btn-win-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                            <span class="text-xs font-bold leading-tight pr-1 whitespace-nowrap">Ciemni</span>
+                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0 whitespace-nowrap">${darkOddsFormatted}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperWinner('light', ${lightOddsFormatted})" id="btn-win-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                            <span class="text-xs font-bold leading-tight pr-1">Jaśni</span>
-                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0">${lightOddsFormatted}</span>
+                                        <button type="button" onclick="selectTyperWinner('light', ${lightOddsFormatted})" id="btn-win-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                            <span class="text-xs font-bold leading-tight pr-1 whitespace-nowrap">Jaśni</span>
+                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0 whitespace-nowrap">${lightOddsFormatted}</span>
                                         </button>
                                     </div>
                                 </div>
 
                                 <div class="space-y-1.5 pt-1">
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">LUB Opcja B: Dokładny Wynik w Setach</div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1 whitespace-nowrap">LUB Opcja B: Dokładny Wynik w Setach</div>
                                     <div class="grid grid-cols-3 gap-1.5">
-                                        <button type="button" onclick="selectTyperScore('3:0', 'dark', ${scoreOdds['3:0'].toFixed(2)})" id="btn-score-3:0" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Ciemni 3:0</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['3:0'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('3:0', 'dark', ${scoreOdds['3:0'].toFixed(2)})" id="btn-score-3:0" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Ciemni 3:0</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['3:0'].toFixed(2)}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperScore('3:1', 'dark', ${scoreOdds['3:1'].toFixed(2)})" id="btn-score-3:1" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Ciemni 3:1</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['3:1'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('3:1', 'dark', ${scoreOdds['3:1'].toFixed(2)})" id="btn-score-3:1" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Ciemni 3:1</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['3:1'].toFixed(2)}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperScore('3:2', 'dark', ${scoreOdds['3:2'].toFixed(2)})" id="btn-score-3:2" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Ciemni 3:2</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['3:2'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('3:2', 'dark', ${scoreOdds['3:2'].toFixed(2)})" id="btn-score-3:2" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Ciemni 3:2</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['3:2'].toFixed(2)}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperScore('0:3', 'light', ${scoreOdds['0:3'].toFixed(2)})" id="btn-score-0:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Jaśni 0:3</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['0:3'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('0:3', 'light', ${scoreOdds['0:3'].toFixed(2)})" id="btn-score-0:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Jaśni 0:3</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['0:3'].toFixed(2)}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperScore('1:3', 'light', ${scoreOdds['1:3'].toFixed(2)})" id="btn-score-1:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Jaśni 1:3</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['1:3'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('1:3', 'light', ${scoreOdds['1:3'].toFixed(2)})" id="btn-score-1:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Jaśni 1:3</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['1:3'].toFixed(2)}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperScore('2:3', 'light', ${scoreOdds['2:3'].toFixed(2)})" id="btn-score-2:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center">
-                                            <span class="text-[10px] font-bold">Jaśni 2:3</span>
-                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1">${scoreOdds['2:3'].toFixed(2)}</span>
+                                        <button type="button" onclick="selectTyperScore('2:3', 'light', ${scoreOdds['2:3'].toFixed(2)})" id="btn-score-2:3" class="bet-btn p-2 rounded-xl border flex flex-col items-center justify-center active:scale-95 transition-all duration-150">
+                                            <span class="text-[10px] font-bold whitespace-nowrap">Jaśni 2:3</span>
+                                            <span class="odds-badge font-mono font-black text-[11px] px-1.5 py-0.5 rounded-lg border mt-1 whitespace-nowrap shrink-0">${scoreOdds['2:3'].toFixed(2)}</span>
                                         </button>
                                     </div>
                                 </div>
@@ -11274,13 +11274,13 @@
                                     <span class="text-[10px] font-mono font-bold text-emerald-400" id="set1BadgeText">100% Niezależne</span>
                                 </div>
                                 <div id="set1BtnGrid" class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperSet1('dark', ${marketOdds.set1.dark.toFixed(2)})" id="btn-set1-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">Ciemni</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.set1.dark.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperSet1('dark', ${marketOdds.set1.dark.toFixed(2)})" id="btn-set1-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">Ciemni</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border shrink-0 whitespace-nowrap">${marketOdds.set1.dark.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperSet1('light', ${marketOdds.set1.light.toFixed(2)})" id="btn-set1-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">Jaśni</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.set1.light.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperSet1('light', ${marketOdds.set1.light.toFixed(2)})" id="btn-set1-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">Jaśni</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border shrink-0 whitespace-nowrap">${marketOdds.set1.light.toFixed(2)}</span>
                                     </button>
                                 </div>
                                 <p id="set1BlockedNotice" class="hidden text-[11px] text-amber-500 dark:text-amber-400 bg-amber-500/10 p-2 rounded-xl border border-amber-500/30 text-center font-bold">
@@ -11295,13 +11295,13 @@
                                     <span class="text-[10px] font-mono font-bold" id="tbBadgeText">Niezależny</span>
                                 </div>
                                 <div id="tbBtnGrid" class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperTieBreak('yes', ${marketOdds.tiebreak.yes.toFixed(2)})" id="btn-tb-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">TAK</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400">${marketOdds.tiebreak.yes.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperTieBreak('yes', ${marketOdds.tiebreak.yes.toFixed(2)})" id="btn-tb-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">TAK</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400 shrink-0 whitespace-nowrap">${marketOdds.tiebreak.yes.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperTieBreak('no', ${marketOdds.tiebreak.no.toFixed(2)})" id="btn-tb-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">NIE</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.tiebreak.no.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperTieBreak('no', ${marketOdds.tiebreak.no.toFixed(2)})" id="btn-tb-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">NIE</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border shrink-0 whitespace-nowrap">${marketOdds.tiebreak.no.toFixed(2)}</span>
                                     </button>
                                 </div>
                                 <p id="tbBlockedNotice" class="hidden text-[11px] text-amber-500 dark:text-amber-400 bg-amber-500/10 p-2 rounded-xl border border-amber-500/30 text-center font-bold">
@@ -11316,13 +11316,13 @@
                                     <span class="text-[10px] font-mono text-sky-400 font-bold">Emocje w secie</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperDeuce('yes', ${marketOdds.deuce.yes.toFixed(2)})" id="btn-deuce-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">TAK</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400">${marketOdds.deuce.yes.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperDeuce('yes', ${marketOdds.deuce.yes.toFixed(2)})" id="btn-deuce-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">TAK</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400 shrink-0 whitespace-nowrap">${marketOdds.deuce.yes.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperDeuce('no', ${marketOdds.deuce.no.toFixed(2)})" id="btn-deuce-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold leading-tight">NIE</span>
-                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.deuce.no.toFixed(2)}</span>
+                                    <button type="button" onclick="selectTyperDeuce('no', ${marketOdds.deuce.no.toFixed(2)})" id="btn-deuce-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                        <span class="text-xs font-bold leading-tight whitespace-nowrap">NIE</span>
+                                        <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border shrink-0 whitespace-nowrap">${marketOdds.deuce.no.toFixed(2)}</span>
                                     </button>
                                 </div>
                             </div>
@@ -11400,9 +11400,9 @@
                                                         <button type="button" 
                                                             onclick="selectTyperSpecial('${m.id}', '${opt.id}', ${opt.odds}, '${escapeHtml(m.category.split(' ')[0])} ${escapeHtml(opt.slipLabel || opt.label)}', '${opt.teamReq || ''}')" 
                                                             id="btn-spec-${m.id}-${opt.id}" 
-                                                            class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                                            <span class="text-xs font-bold leading-tight pr-1">${escapeHtml(opt.label)}</span>
-                                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-indigo-300 shrink-0">${opt.odds.toFixed(2)}</span>
+                                                            class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left active:scale-95 transition-all duration-150">
+                                                            <span class="text-xs font-bold leading-tight pr-1 whitespace-nowrap truncate">${escapeHtml(opt.label)}</span>
+                                                            <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-indigo-300 shrink-0 whitespace-nowrap">${opt.odds.toFixed(2)}</span>
                                                         </button>
                                                     `).join('')}
                                                 </div>
@@ -11417,14 +11417,14 @@
                                 <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
                                     <div class="flex items-center gap-2">
                                         <span class="text-base">🎫</span>
-                                        <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-white" id="liveCouponTitle">Twój Kupon (0 typów)</span>
+                                        <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-white whitespace-nowrap" id="liveCouponTitle">Twój Kupon (0 typów)</span>
                                     </div>
                                     
                                     <div class="flex items-center gap-1 bg-slate-950 p-0.5 rounded-xl border border-slate-800 text-[10px] font-bold">
-                                        <button type="button" onclick="setTyperSlipMode('single')" id="live-btn-mode-single" class="px-2.5 py-1 rounded-lg text-slate-400 transition">
+                                        <button type="button" onclick="setTyperSlipMode('single')" id="live-btn-mode-single" class="px-2.5 py-1 rounded-lg text-slate-400 transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">
                                             Single
                                         </button>
-                                        <button type="button" onclick="setTyperSlipMode('ako')" id="live-btn-mode-ako" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black transition">
+                                        <button type="button" onclick="setTyperSlipMode('ako')" id="live-btn-mode-ako" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0">
                                             ⚡ AKO
                                         </button>
                                     </div>
@@ -11438,16 +11438,16 @@
                                 <div class="pt-2 border-t border-slate-800/80 space-y-3">
                                     <div class="flex items-center justify-between bg-slate-950/80 p-3 rounded-2xl border border-slate-800/70">
                                         <div>
-                                            <div class="text-[10px] font-black uppercase tracking-wider text-slate-400" id="liveCouponOddsLabel">KURS AKO (MNOŻNIK):</div>
-                                            <div class="text-lg sm:text-xl font-mono font-black text-amber-400 leading-tight" id="liveCouponOddsVal">1.00 pkt</div>
+                                            <div class="text-[10px] font-black uppercase tracking-wider text-slate-400 whitespace-nowrap" id="liveCouponOddsLabel">KURS AKO (MNOŻNIK):</div>
+                                            <div class="text-lg sm:text-xl font-mono font-black text-amber-400 leading-tight whitespace-nowrap shrink-0" id="liveCouponOddsVal">1.00 pkt</div>
                                         </div>
                                         <div class="text-right">
-                                            <div class="text-[10px] font-bold text-slate-400">STATUS KUPONU:</div>
-                                            <span id="liveCouponStatusBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">Wybierz typy</span>
+                                            <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">STATUS KUPONU:</div>
+                                            <span id="liveCouponStatusBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 whitespace-nowrap shrink-0">Wybierz typy</span>
                                         </div>
                                     </div>
 
-                                    <button type="button" id="btnLiveSubmitSlip" onclick="submitTyperBet()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-98 transition flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <button type="button" id="btnLiveSubmitSlip" onclick="submitTyperBet()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all duration-150 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap">
                                         <span>Postaw kupon</span>
                                         <span class="text-base leading-none">➔</span>
                                     </button>
@@ -11722,9 +11722,9 @@
                                     <span class="font-bold text-xs text-white break-words leading-tight block min-w-0">${escapeHtml(row.playerName)}</span>
                                 </div>
                             </td>
-                            <td class="py-2 px-1 text-right font-mono font-black text-xs text-amber-400 truncate">${row.totalPoints.toFixed(2)}</td>
-                            <td class="py-2 px-1 text-center font-mono text-[11px] text-slate-300 truncate">${row.wonBets}/${row.exactSets}</td>
-                            <td class="py-2 px-1.5 text-right font-mono font-bold text-[11px] text-emerald-400 truncate">${row.accuracy}%</td>
+                            <td class="py-2 px-1 text-right font-mono font-black text-xs text-amber-400 whitespace-nowrap">${row.totalPoints.toFixed(2)}</td>
+                            <td class="py-2 px-1 text-center font-mono text-[11px] text-slate-300 whitespace-nowrap">${row.wonBets}/${row.exactSets}</td>
+                            <td class="py-2 px-1.5 text-right font-mono font-bold text-[11px] text-emerald-400 whitespace-nowrap">${row.accuracy}%</td>
                         </tr>
                     `;
                 }).join('');
@@ -14059,10 +14059,10 @@
                                 <p class="text-[11px] billing-hero-desc">Zaloguj się na profilu, aby sprawdzić swoje indywidualne rozliczenie.</p>
                             </div>
                         </div>
-                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto">
-                            <span class="billing-blik-label text-[11px] font-black">📲 BLIK:</span>
-                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
-                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold">Kopiuj</span>
+                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all duration-150 flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto whitespace-nowrap">
+                            <span class="billing-blik-label text-[11px] font-black whitespace-nowrap">📲 BLIK:</span>
+                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider whitespace-nowrap" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
+                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold whitespace-nowrap">Kopiuj</span>
                         </button>
                     </div>
                 `;
@@ -14080,10 +14080,10 @@
                                 <p class="text-[11px] billing-hero-desc">Brak udziału w meczach w tym miesiącu (0.00 zł). Do zobaczenia na parkiecie!</p>
                             </div>
                         </div>
-                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto">
-                            <span class="billing-blik-label text-[11px] font-black">📲 BLIK:</span>
-                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
-                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold">Kopiuj</span>
+                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all duration-150 flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto whitespace-nowrap">
+                            <span class="billing-blik-label text-[11px] font-black whitespace-nowrap">📲 BLIK:</span>
+                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider whitespace-nowrap" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
+                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold whitespace-nowrap">Kopiuj</span>
                         </button>
                     </div>
                 `;
@@ -14128,10 +14128,10 @@
                             </div>
                         </div>
 
-                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto">
-                            <span class="billing-blik-label text-[11px] font-black">📲 BLIK:</span>
-                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
-                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold">Kopiuj</span>
+                        <button type="button" onclick="copyBlikNumber()" title="Kliknij, aby skopiować numer BLIK" class="billing-blik-btn active:scale-95 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all duration-150 flex items-center gap-2 shadow-sm group shrink-0 self-start sm:self-auto whitespace-nowrap">
+                            <span class="billing-blik-label text-[11px] font-black whitespace-nowrap">📲 BLIK:</span>
+                            <span class="billing-blik-num font-mono font-black text-xs tracking-wider whitespace-nowrap" id="blikPhoneDisplay">${escapeHtml(phoneDisplay)}</span>
+                            <span class="billing-blik-badge text-[10px] px-1.5 py-0.5 rounded-md transition font-bold whitespace-nowrap">Kopiuj</span>
                         </button>
                     </div>
                 </div>
@@ -14198,22 +14198,22 @@
             const fPaid = document.getElementById('billingFilterPaid');
 
             if (fAll) {
-                fAll.innerHTML = `Wszyscy <span class="text-[10px] opacity-80">(${allCount})</span>`;
+                fAll.innerHTML = `Wszyscy <span class="text-[10px] opacity-80 font-mono">(${allCount})</span>`;
                 fAll.className = currentBillingFilter === 'all' 
-                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition-all duration-150 active:scale-95 shadow-sm shrink-0" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-850 transition-all duration-150 active:scale-95 shrink-0";
             }
             if (fUnpaid) {
-                fUnpaid.innerHTML = `🔴 Do zapłaty <span class="text-[10px] opacity-80">(${unpaidCount})</span>`;
+                fUnpaid.innerHTML = `🔴 Do zapłaty <span class="text-[10px] opacity-80 font-mono">(${unpaidCount})</span>`;
                 fUnpaid.className = currentBillingFilter === 'unpaid' 
-                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-rose-500 text-white transition shadow-sm" 
-                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-rose-500 text-white transition-all duration-150 active:scale-95 shadow-sm shrink-0" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-rose-400 border border-rose-900/40 hover:bg-slate-850 transition-all duration-150 active:scale-95 shrink-0";
             }
             if (fPaid) {
-                fPaid.innerHTML = `🟢 Opłacone <span class="text-[10px] opacity-80">(${paidCount})</span>`;
+                fPaid.innerHTML = `🟢 Opłacone <span class="text-[10px] opacity-80 font-mono">(${paidCount})</span>`;
                 fPaid.className = currentBillingFilter === 'paid' 
-                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition shadow-sm" 
-                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition";
+                    ? "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-emerald-500 text-slate-950 transition-all duration-150 active:scale-95 shadow-sm shrink-0" 
+                    : "py-2 px-1 sm:px-2 rounded-xl font-bold text-center leading-tight whitespace-nowrap min-w-0 text-[10.5px] min-[380px]:text-[11px] sm:text-xs bg-slate-950 text-emerald-400 border border-emerald-900/40 hover:bg-slate-850 transition-all duration-150 active:scale-95 shrink-0";
             }
 
             const filtered = playerNames.filter(p => {
@@ -14284,16 +14284,16 @@
                             <!-- Bilans finansowy -->
                             <div class="grid grid-cols-3 gap-1.5 text-center pt-2 text-xs">
                                 <div class="bg-slate-950/80 border border-slate-800/70 rounded-xl p-2">
-                                    <span class="text-[9.5px] text-slate-400 block font-semibold">Należność:</span>
-                                    <strong class="font-mono text-xs text-slate-200 font-bold">${due.toFixed(2)} zł</strong>
+                                    <span class="text-[9.5px] text-slate-400 block font-semibold whitespace-nowrap">Należność:</span>
+                                    <strong class="font-mono text-xs text-slate-200 font-bold whitespace-nowrap">${due.toFixed(2)} zł</strong>
                                 </div>
                                 <div class="bg-slate-950/80 border border-slate-800/70 rounded-xl p-2">
-                                    <span class="text-[9.5px] text-slate-400 block font-semibold">Wpłacono:</span>
-                                    <strong class="font-mono text-xs ${paid >= due ? 'text-emerald-400' : 'text-slate-300'} font-bold">${paid.toFixed(2)} zł</strong>
+                                    <span class="text-[9.5px] text-slate-400 block font-semibold whitespace-nowrap">Wpłacono:</span>
+                                    <strong class="font-mono text-xs ${paid >= due ? 'text-emerald-400' : 'text-slate-300'} font-bold whitespace-nowrap">${paid.toFixed(2)} zł</strong>
                                 </div>
                                 <div class="bg-slate-950/80 border border-slate-800/70 rounded-xl p-2">
-                                    <span class="text-[9.5px] text-slate-400 block font-semibold">Saldo:</span>
-                                    <strong class="font-mono text-xs ${saldo >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">${saldo >= 0 ? `+${saldo.toFixed(2)}` : `${saldo.toFixed(2)}`} zł</strong>
+                                    <span class="text-[9.5px] text-slate-400 block font-semibold whitespace-nowrap">Saldo:</span>
+                                    <strong class="font-mono text-xs ${saldo >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold whitespace-nowrap">${saldo >= 0 ? `+${saldo.toFixed(2)}` : `${saldo.toFixed(2)}`} zł</strong>
                                 </div>
                             </div>
 
@@ -14301,31 +14301,31 @@
                             <!-- Akcje Organizatora -->
                             <div class="pt-1 border-t border-slate-800/60 flex items-center justify-between gap-2 flex-wrap">
                                 <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1 text-xs shrink-0">
-                                    <span class="text-[10px] text-slate-400 mr-1.5 font-semibold">Wpłata:</span>
+                                    <span class="text-[10px] text-slate-400 mr-1.5 font-semibold whitespace-nowrap">Wpłata:</span>
                                     <input type="number" step="0.01" value="${paid || 0}" 
                                            onchange="updatePlayerPaidAmount(${toInlineArgument(p)}, this.value)" 
                                            aria-label="Wpisz kwotę wpłaty dla gracza ${escapeHtml(p)}"
                                            class="w-14 bg-transparent text-xs font-black text-emerald-400 text-right focus:outline-none font-mono">
-                                    <span class="text-[10px] text-slate-400 ml-1">zł</span>
+                                    <span class="text-[10px] text-slate-400 ml-1 whitespace-nowrap">zł</span>
                                 </div>
                                 <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
                                     ${!isPaid && due > 0 ? `
-                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1">
+                                        <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition-all duration-150 shadow-md shadow-emerald-500/20 flex items-center gap-1 whitespace-nowrap shrink-0">
                                             <span>✅</span> Opłać
                                         </button>
                                     ` : `
-                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-2.5 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1" title="Wyzeruj wpłatę">
+                                        <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-2.5 py-1.5 rounded-xl text-xs border border-slate-700/80 transition-all duration-150 active:scale-95 flex items-center gap-1 whitespace-nowrap shrink-0" title="Wyzeruj wpłatę">
                                             <span>↩️</span> Wyzeruj
                                         </button>
                                     `}
-                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(p)})" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold px-2.5 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95" title="Zobacz profil">
+                                    <button type="button" onclick="openPlayerCardModal(${toInlineArgument(p)})" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold px-2.5 py-1.5 rounded-xl text-xs border border-slate-700/80 transition-all duration-150 active:scale-95 whitespace-nowrap shrink-0" title="Zobacz profil">
                                         👤 Profil
                                     </button>
                                 </div>
                             </div>
                             ` : `
                             <div class="pt-1 flex items-center justify-end">
-                                <button type="button" onclick="openPlayerCardModal(${toInlineArgument(p)})" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-bold transition flex items-center gap-1">
+                                <button type="button" onclick="openPlayerCardModal(${toInlineArgument(p)})" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-bold transition flex items-center gap-1 whitespace-nowrap">
                                     <span>👤 Profil gracza ➔</span>
                                 </button>
                             </div>
@@ -17029,9 +17029,9 @@
                 }
                 if (btn) {
                     if (isActive) {
-                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs";
+                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[10px] sm:text-xs whitespace-nowrap min-w-0 shrink-0";
                     } else {
-                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs";
+                        btn.className = "py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[10px] sm:text-xs whitespace-nowrap min-w-0 shrink-0";
                     }
                 }
             });
@@ -17495,9 +17495,9 @@
                 }
                 if (btn) {
                     if (isActive) {
-                        btn.className = "py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0";
                     } else {
-                        btn.className = "py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs";
+                        btn.className = "py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0";
                     }
                 }
             });
@@ -17737,39 +17737,39 @@
                     <!-- Statystyki Gracza w Kapsułach -->
                     <div class="grid grid-cols-3 gap-2 text-center text-xs">
                         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
-                            <span class="text-[10px] text-slate-400 font-semibold block">Mecze</span>
-                            <span class="text-base sm:text-lg font-black text-emerald-400 font-mono">${totalGames}</span>
+                            <span class="text-[10px] text-slate-400 font-semibold block whitespace-nowrap">Mecze</span>
+                            <span class="text-base sm:text-lg font-black text-emerald-400 font-mono whitespace-nowrap shrink-0">${totalGames}</span>
                         </div>
                         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
-                            <span class="text-[10px] text-slate-400 font-semibold block">MVP</span>
-                            <span class="text-base sm:text-lg font-black text-amber-300 font-mono">${mvpWins} 👑</span>
+                            <span class="text-[10px] text-slate-400 font-semibold block whitespace-nowrap">MVP</span>
+                            <span class="text-base sm:text-lg font-black text-amber-300 font-mono whitespace-nowrap shrink-0">${mvpWins} 👑</span>
                         </div>
                         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2.5">
-                            <span class="text-[10px] text-slate-400 font-semibold block">Frekwencja</span>
-                            <span class="text-base sm:text-lg font-black text-sky-400 font-mono">${attendancePercent}%</span>
+                            <span class="text-[10px] text-slate-400 font-semibold block whitespace-nowrap">Frekwencja</span>
+                            <span class="text-base sm:text-lg font-black text-sky-400 font-mono whitespace-nowrap shrink-0">${attendancePercent}%</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Przełącznik Segmentowy (Sub-tabs Profilu) -->
                 <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-3 gap-1 text-xs font-bold shadow-md">
-                    <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0">
                         <span>📊</span>
-                        <span>${isOrganizer ? 'Staty' : 'Statystyki'}</span>
+                        <span class="whitespace-nowrap">${isOrganizer ? 'Staty' : 'Statystyki'}</span>
                     </button>
-                    <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0">
                         <span>📜</span>
-                        <span>Kronika</span>
+                        <span class="whitespace-nowrap">Kronika</span>
                     </button>
                     ${isOrganizer ? `
-                    <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0">
                         <span>👑</span>
-                        <span>Admin</span>
+                        <span class="whitespace-nowrap">Admin</span>
                     </button>
                     ` : `
-                    <button type="button" id="profileSubtabBtn-settings" onclick="setProfileSubtab('settings')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
+                    <button type="button" id="profileSubtabBtn-settings" onclick="setProfileSubtab('settings')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition-all duration-150 active:scale-95 text-[11px] sm:text-xs whitespace-nowrap min-w-0 shrink-0">
                         <span>⚙️</span>
-                        <span>Ustawienia</span>
+                        <span class="whitespace-nowrap">Ustawienia</span>
                     </button>
                     `}
                 </div>
@@ -18080,27 +18080,27 @@
                             <p class="text-[10px] text-slate-400">Godziny gry, zbiórka, adres hali, koszt oraz numer telefonu do BLIK:</p>
                             <div class="bg-slate-900/90 border border-slate-800/90 rounded-xl p-2.5 space-y-1.5 text-xs text-slate-300">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-slate-400">⏰ Zbiórka / rozgrzewka:</span>
-                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.warmupTime || "19:45")}</strong>
+                                    <span class="text-slate-400 whitespace-nowrap">⏰ Zbiórka / rozgrzewka:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold whitespace-nowrap shrink-0">${escapeHtml(AppState.settings?.warmupTime || "19:45")}</strong>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-slate-400">🏐 Czas gry:</span>
-                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.startTime || "20:00")} - ${escapeHtml(AppState.settings?.gameEndTime || "21:45")}</strong>
+                                    <span class="text-slate-400 whitespace-nowrap">🏐 Czas gry:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold whitespace-nowrap shrink-0">${escapeHtml(AppState.settings?.startTime || "20:00")} - ${escapeHtml(AppState.settings?.gameEndTime || "21:45")}</strong>
                                 </div>
                                 <div class="flex items-center justify-between gap-2">
-                                    <span class="text-slate-400 shrink-0">📍 Adres hali:</span>
+                                    <span class="text-slate-400 shrink-0 whitespace-nowrap">📍 Adres hali:</span>
                                     <strong class="text-slate-200 text-right whitespace-normal break-words">${escapeHtml(AppState.settings?.hallAddress || "ul. Myśliborska 25 (hala)")}</strong>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-slate-400">💰 Koszt hali:</span>
-                                    <strong class="text-white font-mono font-bold">${AppState.settings?.hallCost || 250} zł</strong>
+                                    <span class="text-slate-400 whitespace-nowrap">💰 Koszt hali:</span>
+                                    <strong class="text-white font-mono font-bold whitespace-nowrap shrink-0">${AppState.settings?.hallCost || 250} zł</strong>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-slate-400">📲 Numer BLIK:</span>
-                                    <strong class="text-emerald-400 font-mono font-bold">${escapeHtml(AppState.settings?.blikPhone || "517 077 482")}</strong>
+                                    <span class="text-slate-400 whitespace-nowrap">📲 Numer BLIK:</span>
+                                    <strong class="text-emerald-400 font-mono font-bold whitespace-nowrap shrink-0">${escapeHtml(AppState.settings?.blikPhone || "517 077 482")}</strong>
                                 </div>
                             </div>
-                            <button type="button" onclick="openGroupSettingsModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+                            <button type="button" onclick="openGroupSettingsModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs transition-all duration-150 flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
                                 <span class="text-amber-400">⚙️</span> Ustawienia ekipy
                             </button>
                         </div>
@@ -18108,13 +18108,13 @@
                         <!-- GRUPA 2: 📢 Komunikacja & Messenger -->
                         <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2">
                             <div class="flex items-center justify-between">
-                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                                <h4 class="font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-1.5 whitespace-nowrap">
                                     <span>📢</span> Komunikacja & Messenger
                                 </h4>
-                                <span class="text-[9px] text-indigo-400 font-bold bg-indigo-950/80 px-2 py-0.5 rounded-full border border-indigo-800/80">1-Klik</span>
+                                <span class="text-[9px] text-indigo-400 font-bold bg-indigo-950/80 px-2 py-0.5 rounded-full border border-indigo-800/80 whitespace-nowrap shrink-0">1-Klik</span>
                             </div>
                             <p class="text-[10px] text-slate-400">Gotowy tekst z listą dłużników za dany miesiąc, kwotami i numerem BLIK do wklejenia w czat ekipy:</p>
-                            <button type="button" onclick="copyDebtorsListMessage()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                            <button type="button" onclick="copyDebtorsListMessage()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition-all duration-150 shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap">
                                 <span>📢</span> Kopiuj listę dłużników
                             </button>
                         </div>
