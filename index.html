@@ -2878,8 +2878,8 @@
 
             <!-- Row 2: User Greeting, Role Badge & Sync Status (Clean single line) -->
             <div class="flex items-center justify-between gap-2 text-xs pt-1 border-t border-slate-800/40 flex-nowrap">
-                <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
-                    <div id="headerUserGreeting" class="text-[11px] text-slate-300 font-medium truncate">
+                <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                    <div id="headerUserGreeting" class="text-[11px] text-slate-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                         ⏰ 19:45 (gra 20:00 - 21:45)
                     </div>
                     <span id="adminModeBadge" class="hidden text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 items-center gap-0.5 shrink-0">
@@ -3017,9 +3017,9 @@
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button type="button" id="matchReportScoreBtn" onclick="openCurrentMatchReportModal()" title="Zobacz oficjalny raport meczowy ze składami i MVP" class="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-800/80 hover:border-indigo-700 text-indigo-300 hover:text-indigo-200 font-bold px-2.5 py-1 rounded-xl text-[11px] flex items-center gap-1 transition active:scale-95 shadow-sm">
                                 <span>📑</span>
-                                <span>Raport meczowy</span>
+                                <span>Raport</span>
                             </button>
-                            <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
+                            <button type="button" id="editMatchScoreBtn" onclick="editMatchScorePrompt()" title="Wpisz lub edytuj wynik meczu" class="bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 border border-amber-500/30 hover:border-amber-500/50 font-bold px-2.5 sm:px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition active:scale-95 shrink-0 shadow-sm hidden">
                                 <span>✏️</span>
                                 <span id="editScoreBtnLabel">Wpisz wynik</span>
                             </button>
@@ -3041,21 +3041,21 @@
                         <summary class="flex items-center justify-between cursor-pointer list-none text-slate-400 hover:text-amber-300 font-bold py-1 select-none transition">
                             <span class="flex items-center gap-1.5 text-[11px] font-bold text-amber-400/90">
                                 <span>👑</span>
-                                <span>Zarządzaj tym meczem (koszt, zmiany, odwołanie)</span>
+                                <span>Zarządzanie meczem</span>
                             </span>
                             <span class="text-[10px] text-slate-500 group-open:rotate-180 transition-transform duration-200">▼</span>
                         </summary>
                         <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 pt-2 pb-0.5">
-                            <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-rose-900/50 text-slate-300 hover:text-rose-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs">
+                            <button type="button" id="cancelMatchBtn" onclick="toggleCancelCurrentMatchWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-rose-900/50 text-slate-300 hover:text-rose-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs">
                                 🚫 Odwołaj
                             </button>
-                            <button type="button" id="matchCostToggleBtn" onclick="editMatchCostPrompt()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-900/50 text-slate-300 hover:text-emerald-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Zmień koszt hali dla tego meczu (wpisz kwotę lub 0 na PnH)">
+                            <button type="button" id="matchCostToggleBtn" onclick="editMatchCostPrompt()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-emerald-900/50 text-slate-300 hover:text-emerald-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Zmień koszt hali dla tego meczu (wpisz kwotę lub 0 na PnH)">
                                 💸 Hala: 250 zł
                             </button>
-                            <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-slate-300 hover:text-amber-400 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
+                            <button type="button" id="matchExtraPlayingToggleBtn" onclick="toggleReservePlayingWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-slate-300 hover:text-amber-400 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Włącz lub wyłącz grę na zmiany przy serwisie (max 2 z rezerwy)">
                                 🔄 Zmiany: Wył (12)
                             </button>
-                            <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-amber-400/90 hover:text-amber-300 font-semibold px-2.5 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Wyczyść całą listę zapisanych graczy">
+                            <button type="button" onclick="clearCurrentMatchSquadWithAuth()" class="w-full sm:w-auto bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-900/50 text-amber-400/90 hover:text-amber-300 font-semibold px-2 py-1.5 rounded-xl flex items-center justify-center gap-1.5 transition whitespace-nowrap active:scale-95 text-[11px] sm:text-xs" title="Wyczyść całą listę zapisanych graczy">
                                 🧹 Wyczyść skład
                             </button>
                         </div>
@@ -3067,11 +3067,11 @@
             <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold shadow-md">
                 <button type="button" id="matchSubtabSquadBtn" onclick="setMatchSubtab('squad')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
                     <span>📋</span>
-                    <span class="truncate">Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
+                    <span>Skład (<span id="matchSubtabSquadCount">0/12</span>)</span>
                 </button>
                 <button type="button" id="matchSubtabMvpBtn" onclick="setMatchSubtab('mvp')" class="py-2 px-2 sm:py-2.5 sm:px-3 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap min-w-0 text-[11px] sm:text-xs">
                     <span>👑</span>
-                    <span class="truncate">Głosowanie MVP</span>
+                    <span>Głosuj MVP</span>
                     <span id="matchSubtabMvpBadge" class="hidden text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full font-black shrink-0">👑</span>
                 </button>
             </div>
@@ -3129,11 +3129,11 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button type="button" onclick="copyMvpVoteDirectLink()" title="Skopiuj bezpośredni link do głosowania dla ekipy na Messengerze" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition active:scale-95 shadow-sm cursor-pointer">
+                        <button type="button" onclick="copyMvpVoteDirectLink()" title="Skopiuj bezpośredni link do głosowania dla ekipy na Messengerze" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-bold transition active:scale-95 shadow-sm cursor-pointer whitespace-nowrap">
                             <span>🔗</span>
-                            <span>Kopiuj link do głosowania</span>
+                            <span>Kopiuj link</span>
                         </button>
-                        <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60">
+                        <span id="mvpVotesCountBadge" class="text-xs font-mono font-bold text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded-xl border border-amber-900/60 whitespace-nowrap">
                             Głosy: 0/0
                         </span>
                     </div>
@@ -3154,18 +3154,18 @@
                     <div id="votingFormNotice" class="hidden"></div>
                     <div id="votingFormFields" class="space-y-3">
                         <h4 class="font-bold text-xs text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>🗳️</span> Oddaj swój głos (Tylko obecni)
+                            <span>🗳️</span> Oddaj swój głos (obecni)
                         </h4>
                         
                         <div class="space-y-2">
                             <div id="voterSelectContainer">
-                                <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kim jesteś? (Wybierz siebie ze składu):</label>
+                                <label for="voterSelect" class="block text-[11px] text-slate-400 mb-1">1. Kto głosuje (Ty):</label>
                                 <select id="voterSelect" onchange="handleMvpVoterChange()" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
                                     <!-- Populated dynamically -->
                                 </select>
                             </div>
                             <div>
-                                <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP meczu 🌟:</label>
+                                <label for="nomineeSelect" class="block text-[11px] text-slate-400 mb-1">2. Twój głos na MVP 🌟:</label>
                                 <select id="nomineeSelect" class="w-full bg-slate-900 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-amber-500 cursor-pointer">
                                     <!-- Populated dynamically -->
                                 </select>
@@ -3176,7 +3176,7 @@
                                 <summary class="p-2.5 sm:p-3 flex items-center justify-between cursor-pointer list-none select-none hover:bg-slate-900/80 transition">
                                     <span class="flex items-center gap-1.5 text-xs font-bold text-amber-300">
                                         <span>✨</span>
-                                        <span>Wyróżnienia za akcje meczu</span>
+                                        <span>Wyróżnienia za akcje</span>
                                         <span class="text-[9.5px] text-slate-400 font-normal lowercase">(opcjonalne)</span>
                                     </span>
                                     <div class="flex items-center gap-1.5 text-slate-400">
@@ -3185,7 +3185,7 @@
                                     </div>
                                 </summary>
                                 <div class="p-3 pt-0 border-t border-slate-800/60 space-y-2">
-                                    <p class="text-[10px] text-slate-400 pt-1.5">Wybierz zawodników, którzy wyróżnili się konkretną akcją (lub pomiń):</p>
+                                    <p class="text-[10px] text-slate-400 pt-1.5">Wybierz wyróżniających się graczy (lub pomiń):</p>
                                     <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
                                         <div>
                                             <label for="voteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
@@ -3217,7 +3217,7 @@
                         </div>
 
                         <button type="button" onclick="submitMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs transition active:scale-95 shadow-lg shadow-amber-500/20">
-                            Zatwierdź głos na MVP 🌟
+                            Zatwierdź głos 🌟
                         </button>
                     </div>
                 </div>
@@ -3229,7 +3229,7 @@
                         <span id="mvpAdminStatusLabel" class="text-[11px] font-bold text-amber-300 whitespace-normal break-words leading-tight">Zarządzanie</span>
                     </div>
                     <button type="button" id="mvpToggleFinalizeBtn" onclick="toggleMvpFinalizeWithAuth()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-xl text-[11px] transition shrink-0 active:scale-95 whitespace-nowrap">
-                        Zakończ i odkryj wyniki
+                        Zakończ głosowanie
                     </button>
                 </div>
 
@@ -3281,7 +3281,7 @@
                 <div class="space-y-1.5">
                     <div class="grid grid-cols-2 gap-1 p-1 bg-slate-950/80 rounded-2xl border border-slate-800 text-xs">
                         <button type="button" id="viewModeListBtn" onclick="setTeamsViewMode('list')" class="py-1.5 px-2 rounded-xl font-bold bg-indigo-600 text-white transition text-[11px] flex items-center justify-center gap-1 shadow-sm">
-                            <span>📋</span> Wybór & Lista
+                            <span>📋</span> Składy
                         </button>
                         <button type="button" id="viewModeCourtBtn" onclick="setTeamsViewMode('court')" class="py-1.5 px-2 rounded-xl font-bold text-slate-400 hover:text-white transition text-[11px] flex items-center justify-center gap-1">
                             <span>👕</span> Karta meczu
@@ -3302,7 +3302,7 @@
                             </h3>
                             <span id="unassignedCount" class="font-mono text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800 shrink-0">0</span>
                         </div>
-                        <span id="unassignedHelperText" class="text-[10px] text-slate-400 block pl-6 sm:pl-0">Dotknij ⬛ lub ⬜, aby przypisać</span>
+                        <span id="unassignedHelperText" class="text-[10px] text-slate-400 block pl-6 sm:pl-0">Dotknij ⬛ lub ⬜</span>
                     </div>
                     <div id="unassignedPlayersList" class="flex flex-wrap gap-1.5">
                         <!-- Populated dynamically -->
@@ -3316,7 +3316,7 @@
                         <span class="text-[11px] font-bold text-slate-400">Podział na Ciemnych i Jasnych</span>
                         <button type="button" onclick="swapMatchTeamsColors()" class="team-swap-btn py-1 px-2.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Zamień kolory koszulek dla obu drużyn">
                             <span>🔄</span>
-                            <span>Zamień kolory drużyn</span>
+                            <span>Zamień kolory</span>
                         </button>
                     </div>
 
@@ -3418,7 +3418,7 @@
                                     <span id="matchdayDarkTitle" class="text-xs font-black tracking-wide">DRUŻYNA CIEMNA</span>
                                 </div>
                                 <span class="matchday-dark-badge text-[10.5px] font-black px-2.5 py-1 rounded-lg border shadow-sm">
-                                    👕 Ciemna koszulka
+                                    👕 Ciemna
                                 </span>
                             </div>
 
@@ -3445,7 +3445,7 @@
                                     <span id="matchdayLightTitle" class="text-xs font-black tracking-wide">DRUŻYNA JASNA</span>
                                 </div>
                                 <span class="matchday-light-badge text-[10.5px] font-black px-2.5 py-1 rounded-lg border shadow-sm">
-                                    🎽 Jasna koszulka
+                                    🎽 Jasna
                                 </span>
                             </div>
 
@@ -3492,10 +3492,10 @@
                         <!-- 6. Stopka -->
                         <div class="matchday-footer mt-2.5 pt-2 border-t matchday-divider flex items-center justify-between text-[10.5px]">
                             <span class="matchday-footer-left text-slate-300 font-bold flex items-center gap-1">
-                                <span>⏰</span><span>Zbiórka 19:45 na rozgrzewkę</span>
+                                <span>⏰</span><span>Zbiórka 19:45</span>
                             </span>
                             <span class="matchday-footer-right text-amber-300 font-extrabold flex items-center gap-1">
-                                <span>👑</span><span>Głosowanie MVP po meczu w apce</span>
+                                <span>👑</span><span>MVP po meczu</span>
                             </span>
                         </div>
                     </div>
@@ -3530,8 +3530,8 @@
                     <p class="text-[10.5px] text-slate-400 mt-0.5 leading-tight">Tasiemki AKO, zakłady na żywo i kursy MVP</p>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1 text-[11px] font-bold">
-                        <span>📋</span><span class="hidden sm:inline whitespace-nowrap">Link do typowania</span><span class="sm:hidden whitespace-nowrap">Link</span>
+                    <button type="button" onclick="copyTyperShareLink()" title="Kopiuj link do typowania" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shadow-sm flex items-center gap-1 text-[11px] font-bold">
+                        <span>📋</span><span class="whitespace-nowrap">Link</span>
                     </button>
                     <button type="button" onclick="renderTyperTab()" title="Odśwież Typera" class="p-1.5 sm:p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white active:scale-95 transition shrink-0 shadow-sm text-xs">
                         🔄
@@ -3648,8 +3648,8 @@
 
                     <!-- Organizer Tool: Copy Debtors to Messenger (Only for Organizer) -->
                     <div id="billingAdminActionsRow" class="hidden">
-                        <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-950 hover:bg-slate-850 active:scale-95 text-slate-300 hover:text-white font-bold px-3 py-1.5 rounded-xl border border-slate-700/80 transition flex items-center gap-1.5 shadow-sm text-xs">
-                            <span>📢</span> Kopiuj na Messengera
+                        <button type="button" onclick="copyDebtorsListMessage()" title="Kopiuj listę nieopłaconych składek na Messengera" class="bg-slate-950 hover:bg-slate-850 active:scale-95 text-slate-300 hover:text-white font-bold px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700/80 transition flex items-center gap-1.5 shadow-sm text-xs whitespace-nowrap">
+                            <span>📢</span> Kopiuj dłużników
                         </button>
                     </div>
                 </div>
@@ -3720,23 +3720,23 @@
             <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-5 gap-1 text-xs font-bold shadow-md">
                 <button type="button" id="hofSubtabBtn-ranking" onclick="setHallOfFameSubtab('ranking')" class="py-2 px-0.5 sm:px-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black shadow-md flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>🏆</span>
-                    <span class="hidden sm:inline truncate">Ranking</span>
+                    <span class="hidden sm:inline">Ranking</span>
                 </button>
                 <button type="button" id="hofSubtabBtn-badges" onclick="setHallOfFameSubtab('badges')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>🏅</span>
-                    <span class="hidden sm:inline truncate">Odznaki</span>
+                    <span class="hidden sm:inline">Odznaki</span>
                 </button>
                 <button type="button" id="hofSubtabBtn-records" onclick="setHallOfFameSubtab('records')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>👑</span>
-                    <span class="hidden sm:inline truncate">Rekordy</span>
+                    <span class="hidden sm:inline">Rekordy</span>
                 </button>
                 <button type="button" id="hofSubtabBtn-stats" onclick="setHallOfFameSubtab('stats')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>📊</span>
-                    <span class="hidden sm:inline truncate">Staty</span>
+                    <span class="hidden sm:inline">Staty</span>
                 </button>
                 <button type="button" id="hofSubtabBtn-archive" onclick="setHallOfFameSubtab('archive')" class="py-2 px-0.5 sm:px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[10px] sm:text-xs">
                     <span>📜</span>
-                    <span class="hidden sm:inline truncate">Archiwum</span>
+                    <span class="hidden sm:inline">Archiwum</span>
                 </button>
             </div>
 
@@ -3825,7 +3825,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <span class="text-[9.5px] text-slate-400 font-bold uppercase tracking-wider block leading-tight">Lider Frekwencji</span>
-                                        <p id="recordIronAttendance" class="font-extrabold text-emerald-400 text-xs sm:text-sm truncate mt-0.5 leading-tight">-</p>
+                                        <p id="recordIronAttendance" class="font-extrabold text-emerald-400 text-xs sm:text-sm mt-0.5 leading-tight break-words">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -3837,7 +3837,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <span class="text-[9.5px] text-slate-400 font-bold uppercase tracking-wider block leading-tight">Zacięty Mecz</span>
-                                        <p id="recordMostClashMatch" class="font-extrabold text-amber-200 text-xs sm:text-sm truncate mt-0.5 leading-tight">-</p>
+                                        <p id="recordMostClashMatch" class="font-extrabold text-amber-200 text-xs sm:text-sm mt-0.5 leading-tight break-words">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -3848,7 +3848,7 @@
                     <div class="pt-3 border-t border-slate-800/80 space-y-2.5">
                         <div class="flex items-center justify-between gap-2">
                             <span class="text-[11px] font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5 min-w-0">
-                                <span>✨</span> <span class="truncate">Władcy Parkietu</span>
+                                <span>✨</span> <span>Władcy Parkietu</span>
                             </span>
                             <span class="text-[9px] text-slate-400 font-semibold bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 shadow-sm">
                                 <span>🗳️</span>
@@ -4022,7 +4022,7 @@
                     <span class="text-xs font-black text-white" id="miniCountText">Kupon (0 typów)</span>
                     <span class="text-[10px] text-amber-400 font-bold">Rozwiń ▲</span>
                 </div>
-                <span class="text-[10.5px] font-mono text-amber-300 font-bold block truncate" id="miniOddsText">Kurs AKO: 1.00</span>
+                <span class="text-[10.5px] font-mono text-amber-300 font-bold block" id="miniOddsText">Kurs AKO: 1.00</span>
             </div>
         </div>
 
@@ -4054,7 +4054,7 @@
                             Single
                         </button>
                         <button type="button" onclick="setTyperSlipMode('ako')" id="btn-mode-ako" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black transition">
-                            ⚡ Tasiemka AKO
+                            ⚡ AKO
                         </button>
                     </div>
 
@@ -4083,7 +4083,7 @@
             </div>
 
             <button type="button" onclick="submitTyperBet()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-98 transition flex items-center justify-center gap-2">
-                <span>Zatwierdź i postaw kupon</span>
+                <span>Postaw kupon</span>
                 <span class="text-base leading-none">➔</span>
             </button>
         </div>
@@ -4124,39 +4124,39 @@
                 </div>
                 <div>
                     <h2 id="welcomeModalTitle" class="text-xl font-black text-white tracking-tight">Siatkówka Piątek 🏐</h2>
-                    <p id="welcomeModalSubtitle" class="text-xs text-slate-400 mt-1">Wybierz swój profil zawodnika, aby wejść do gry i zapamiętać sesję na telefonie:</p>
+                    <p id="welcomeModalSubtitle" class="text-xs text-slate-400 mt-1">Wybierz swój profil zawodnika:</p>
                 </div>
             </div>
 
             <!-- 1. Formularz Logowania z Listy -->
             <form id="welcomeLoginForm" onsubmit="event.preventDefault(); handleWelcomeLogin();" class="space-y-3.5 pt-1">
                 <div>
-                    <label for="welcomePlayerSelect" class="block text-xs font-bold text-slate-300 mb-1">1. Kim jesteś? (Wybierz siebie):</label>
+                    <label for="welcomePlayerSelect" class="block text-xs font-bold text-slate-300 mb-1">1. Twój profil:</label>
                     <select id="welcomePlayerSelect" onchange="checkWelcomePlayerHasPin(this.value)" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500 cursor-pointer">
-                        <option value="">-- Wybierz swoje imię i nazwisko --</option>
+                        <option value="">-- Wybierz zawodnika --</option>
                         <!-- Populated dynamically -->
                     </select>
                 </div>
 
                 <div class="space-y-1">
-                    <label for="welcomePinInput" id="welcomePinInputLabel" class="block text-xs font-bold text-slate-300">2. Twój 4-cyfrowy PIN:</label>
+                    <label for="welcomePinInput" id="welcomePinInputLabel" class="block text-xs font-bold text-slate-300">2. Twój PIN:</label>
                     <input id="welcomePinInput" type="password" maxlength="6" inputmode="numeric" placeholder="••••" required class="w-full bg-slate-950 border border-slate-700 text-center font-mono text-xl tracking-widest font-black text-emerald-400 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500">
-                    <p id="welcomePinHelpText" class="text-[10px] text-slate-400">Podaj swój PIN lub ustal nowy, jeśli wchodzisz po raz pierwszy.</p>
+                    <p id="welcomePinHelpText" class="text-[10px] text-slate-400">Podaj 4 cyfry PIN (lub ustal nowy):</p>
                 </div>
 
                 <div class="space-y-2 pt-1">
                     <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
-                        <span>Wejdź do aplikacji</span>
+                        <span>Zaloguj się</span>
                         <span>🚀</span>
                     </button>
 
                     <button type="button" onclick="continueAsGuest()" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
-                        Przeglądaj jako gość (tylko podgląd) 👀
+                        Wejdź jako gość 👀
                     </button>
 
                     <button type="button" onclick="showWelcomeRegisterView(true)" class="w-full bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-800/60 text-indigo-300 font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 mt-1">
                         <span>✨</span>
-                        <span>Nie ma Cię na liście? Stwórz nowy profil</span>
+                        <span>+ Stwórz nowy profil</span>
                     </button>
                 </div>
             </form>
@@ -4164,24 +4164,24 @@
             <!-- 2. Formularz Rejestracji Nowego Gracza (Self-onboarding) -->
             <form id="welcomeRegisterForm" onsubmit="event.preventDefault(); handleWelcomeRegister();" class="space-y-3.5 pt-1 hidden">
                 <div>
-                    <label for="regPlayerName" class="block text-xs font-bold text-slate-300 mb-1">1. Twoje Imię i Nazwisko (lub ksywka):</label>
+                    <label for="regPlayerName" class="block text-xs font-bold text-slate-300 mb-1">1. Imię i nazwisko:</label>
                     <input id="regPlayerName" type="text" placeholder="np. Jan Kowalski" required class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-white rounded-xl px-3 py-3 focus:outline-none focus:border-emerald-500">
                 </div>
 
                 <div class="space-y-1">
-                    <label for="regPlayerPin" class="block text-xs font-bold text-slate-300">2. Ustal swój 4-cyfrowy PIN:</label>
+                    <label for="regPlayerPin" class="block text-xs font-bold text-slate-300">2. Ustal PIN (4 cyfry):</label>
                     <input id="regPlayerPin" type="password" maxlength="6" inputmode="numeric" placeholder="••••" required class="w-full bg-slate-950 border border-slate-700 text-center font-mono text-xl tracking-widest font-black text-emerald-400 rounded-xl px-3 py-2.5 focus:outline-none focus:border-emerald-500">
-                    <p class="text-[10px] text-slate-400">Zapamiętaj ten PIN do logowania na swoim telefonie.</p>
+                    <p class="text-[10px] text-slate-400">Do logowania na telefonie.</p>
                 </div>
 
                 <div class="space-y-2 pt-1">
                     <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 active:scale-[0.98] text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
-                        <span>Dołącz do ekipy i wejdź</span>
-                        <span>🏐🚀</span>
+                        <span>Zapisz i wejdź</span>
+                        <span>🚀</span>
                     </button>
 
                     <button type="button" onclick="showWelcomeRegisterView(false)" class="w-full bg-slate-950/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition border border-slate-800">
-                        ← Wróć do wyboru z listy
+                        ← Wróć do logowania
                     </button>
                 </div>
             </form>
@@ -4193,13 +4193,13 @@
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl animate-fade-in my-auto max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                 <h3 id="guestModalTitle" class="font-extrabold text-white text-sm flex items-center gap-2">
-                    <span>👥</span> Dopisz Znajomego / Gościa
+                    <span>👥</span> Dopisz gościa
                 </h3>
                 <button type="button" onclick="closeGuestSignupModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400 leading-relaxed">
-                Twój znajomy nie musi zakładać konta ani podawać PIN-u. Wybierz go z bazy lub wpisz jego imię:
+                Wybierz znajomego z listy lub wpisz nowe imię:
             </p>
 
             <div class="space-y-3">
@@ -4224,7 +4224,7 @@
 
             <div class="flex gap-2 pt-2">
                 <button type="button" onclick="submitGuestSignup()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
-                    Dopisz do meczu 🏐
+                    Dopisz 🏐
                 </button>
                 <button type="button" onclick="closeGuestSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-3 rounded-2xl text-xs transition">
                     Anuluj
@@ -4267,23 +4267,23 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">📊</span>
-                    <h3 id="scoreModalTitle" class="font-black text-white text-base">Wprowadź wynik meczu</h3>
+                    <h3 id="scoreModalTitle" class="font-black text-white text-base">Wynik meczu</h3>
                 </div>
                 <button type="button" onclick="closeScoreModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
 
             <p class="text-xs text-slate-400">
-                Wybierz punkty dla poszczególnych setów. System sam wyliczy stan w setach i sformatuje wynik:
+                Wprowadź punkty w setach – wynik przeliczy się sam:
             </p>
 
             <!-- Teams Header in Modal -->
             <div class="grid grid-cols-2 gap-2 bg-slate-950 p-2.5 rounded-2xl border border-slate-800 text-center text-xs">
                 <div>
-                    <span class="text-[10px] text-slate-500 uppercase font-bold">Gospodarze (Team 1)</span>
+                    <span class="text-[10px] text-slate-500 uppercase font-bold">Gospodarze</span>
                     <p id="scoreModalTeamDarkName" class="font-extrabold text-slate-200 whitespace-normal break-words leading-tight">Drużyna Ciemna</p>
                 </div>
                 <div>
-                    <span class="text-[10px] text-slate-500 uppercase font-bold">Goście (Team 2)</span>
+                    <span class="text-[10px] text-slate-500 uppercase font-bold">Goście</span>
                     <p id="scoreModalTeamLightName" class="font-extrabold text-slate-200 whitespace-normal break-words leading-tight">Drużyna Jasna</p>
                 </div>
             </div>
@@ -4295,7 +4295,7 @@
 
             <div class="flex items-center justify-between pt-1">
                 <button type="button" onclick="addExtraSetRow()" id="addSetBtn" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
-                    + Dodaj kolejny set
+                    + Dodaj set
                 </button>
                 <button type="button" onclick="removeLastSetRow()" id="removeSetBtn" class="text-xs font-semibold text-rose-400 hover:text-rose-300">
                     - Usuń set
@@ -4311,7 +4311,7 @@
             <!-- Action Buttons -->
             <div class="flex gap-2 pt-2">
                 <button type="button" onclick="saveFormattedScore()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">
-                    Zapisz wynik dla wszystkich 💾
+                    Zapisz wynik 💾
                 </button>
                 <button type="button" onclick="clearMatchScore()" class="bg-slate-800 hover:bg-slate-700 text-rose-400 font-bold px-3 py-3 rounded-2xl text-xs transition">
                     Wyczyść
@@ -4529,10 +4529,10 @@
     <div id="groupSettingsModal" role="dialog" aria-modal="true" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center ios-safe-modal-overlay overflow-y-auto hidden">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-4 shadow-2xl animate-fade-in my-auto text-xs max-h-[82dvh] sm:max-h-[86dvh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-                <h3 class="font-black text-sm text-white flex items-center gap-2"><span>⚙️</span> Ustawienia Godzin, Hali & Zbiórki</h3>
+                <h3 class="font-black text-sm text-white flex items-center gap-2"><span>⚙️</span> Ustawienia meczowe</h3>
                 <button type="button" onclick="closeGroupSettingsModal()" aria-label="Zamknij" class="text-white hover:text-rose-400 font-black text-base w-9 h-9 rounded-2xl bg-slate-800 hover:bg-slate-700 active:scale-90 border border-slate-600/80 flex items-center justify-center transition shrink-0 shadow-lg cursor-pointer -mr-1 -my-1">✕</button>
             </div>
-            <p class="text-[11px] text-slate-400">Zmieniaj godziny meczów i rozgrzewki bez edycji kodu. Zmiany automatycznie zaktualizują się u wszystkich w bazie na żywo.</p>
+            <p class="text-[11px] text-slate-400">Godziny, adres hali i numer BLIK:</p>
             <form onsubmit="event.preventDefault(); submitGroupSettings();" class="space-y-3">
                 <!-- Bento Sekcja 1: Czas Gry -->
                 <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2.5">
@@ -4578,7 +4578,7 @@
 
                 <div class="pt-1 flex gap-2">
                     <button type="button" onclick="closeGroupSettingsModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl transition">Anuluj</button>
-                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">Zapisz ustawienia 💾</button>
+                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">Zapisz 💾</button>
                 </div>
             </form>
         </div>
@@ -6299,7 +6299,27 @@
                 switchTab(targetTab);
                 if (targetTab === 'teams' && urlParams.get('view') === 'court') {
                     setTimeout(() => { if (typeof setTeamsViewMode === 'function') setTeamsViewMode('court'); }, 150);
+                } else if (targetTab === 'typer' && targetSubtab) {
+                    setTimeout(() => { if (typeof setTyperSubtab === 'function') setTyperSubtab(targetSubtab); }, 150);
+                } else if (targetTab === 'halloffame' && targetSubtab) {
+                    setTimeout(() => { if (typeof setHallOfFameSubtab === 'function') setHallOfFameSubtab(targetSubtab); }, 150);
+                } else if (targetTab === 'profile' && targetSubtab) {
+                    setTimeout(() => { if (typeof setProfileSubtab === 'function') setProfileSubtab(targetSubtab); }, 150);
                 }
+            }
+
+            const targetModal = urlParams.get('modal');
+            if (targetModal === 'score') {
+                setTimeout(() => { if (typeof openScoreModal === 'function') openScoreModal(); }, 200);
+            } else if (targetModal === 'settings') {
+                setTimeout(() => { if (typeof openGroupSettingsModal === 'function') openGroupSettingsModal(); }, 200);
+            } else if (targetModal === 'guest') {
+                setTimeout(() => { if (typeof openGuestSignupModal === 'function') openGuestSignupModal(); }, 200);
+            } else if (targetModal === 'welcome') {
+                setTimeout(() => { if (typeof openWelcomeGateModal === 'function') openWelcomeGateModal(); }, 200);
+            }
+            if (urlParams.get('drawer') === 'typer') {
+                setTimeout(() => { if (typeof toggleTyperSlipDrawer === 'function') toggleTyperSlipDrawer(true); }, 250);
             }
         }
 
@@ -7613,13 +7633,13 @@
                             ` : `
                                 <button type="button" onclick="addSpecificPlayerToMatch(${toInlineArgument(loggedPlayer)})" class="w-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-slate-950 font-black px-3 sm:px-4 py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 sm:gap-2.5 min-w-0">
                                     ${getPlayerAvatarHtml(loggedPlayer, 'xs', 'ring-2 ring-slate-950 shrink-0')}
-                                    <span class="truncate">ZAPISZ MNIE NA MECZ (${escapeHtml(loggedPlayer)})</span>
+                                    <span>Zapisz mnie na mecz 🏐</span>
                                 </button>
                             `}
 
                             <button type="button" onclick="openGuestSignupModal()" class="w-full bg-slate-950 hover:bg-slate-850 border border-slate-800 text-slate-300 font-bold px-4 py-2.5 rounded-2xl text-xs transition flex items-center justify-center gap-2">
                                 <span>👥</span>
-                                <span>+ Dopisz znajomego / gościa do składu</span>
+                                <span>+ Dopisz znajomego</span>
                             </button>
                         </div>
                     `;
@@ -7719,7 +7739,7 @@
                     squadHtml += `
                         <div class="px-3.5 py-2.5 text-center text-xs text-slate-400 bg-slate-950/40 font-medium flex items-center justify-center gap-1.5">
                             <span>✨</span>
-                            <span>Wolne miejsca w składzie: <strong class="text-emerald-400 font-mono font-bold">${freeSlots}</strong> (zapisz się powyżej)</span>
+                            <span>Wolne miejsca: <strong class="text-emerald-400 font-mono font-bold">${freeSlots}</strong></span>
                         </div>
                     `;
                 }
@@ -10160,7 +10180,7 @@
                     liveStatusBadge.innerText = 'Wybierz typy';
                     liveStatusBadge.className = 'text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
                 } else if (typerSlipMode === 'ako') {
-                    liveStatusBadge.innerText = '⚡ Tasiemka AKO';
+                    liveStatusBadge.innerText = '⚡ AKO';
                     liveStatusBadge.className = 'text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
                 } else {
                     liveStatusBadge.innerText = 'Kupon Single';
@@ -10170,11 +10190,11 @@
             if (liveSubmitBtn) {
                 liveSubmitBtn.disabled = (count === 0);
                 if (count === 0) {
-                    liveSubmitBtn.innerHTML = `<span>Wybierz min. 1 typ z rynków powyżej</span><span class="text-base leading-none">➔</span>`;
+                    liveSubmitBtn.innerHTML = `<span>Wybierz typy z rynków</span><span class="text-base leading-none">➔</span>`;
                 } else if (typerSlipMode === 'ako') {
-                    liveSubmitBtn.innerHTML = `<span>Postaw tasiemkę AKO (${ako.toFixed(2)} pkt)</span><span class="text-base leading-none">➔</span>`;
+                    liveSubmitBtn.innerHTML = `<span>Postaw AKO (${ako.toFixed(2)} pkt)</span><span class="text-base leading-none">➔</span>`;
                 } else {
-                    liveSubmitBtn.innerHTML = `<span>Postaw kupon Single (+${sum.toFixed(2)} pkt)</span><span class="text-base leading-none">➔</span>`;
+                    liveSubmitBtn.innerHTML = `<span>Postaw Single (+${sum.toFixed(2)} pkt)</span><span class="text-base leading-none">➔</span>`;
                 }
             }
             if (liveList && count > 0) {
@@ -10182,7 +10202,7 @@
                     <div class="flex items-center justify-between themed-slip-item p-2.5 px-3 rounded-2xl border bg-slate-950/70 border-slate-800/80 transition shadow-sm">
                         <div class="flex items-center gap-2 min-w-0 pr-2">
                             <button type="button" onclick="removeTyperItem('${it.key}')" class="w-6 h-6 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 hover:text-white font-black text-xs flex items-center justify-center shrink-0 border border-rose-800/40 transition active:scale-90" title="Usuń ten typ">✕</button>
-                            <span class="font-bold text-xs text-white truncate">${escapeHtml(it.label)}</span>
+                            <span class="font-bold text-xs text-white break-words">${escapeHtml(it.label)}</span>
                         </div>
                         <span class="font-mono text-amber-400 font-black text-xs shrink-0 px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800">${it.odds.toFixed(2)}</span>
                     </div>
@@ -10225,11 +10245,11 @@
             if (drawerOddsVal) drawerOddsVal.innerText = (typerSlipMode === 'ako' ? ako : sum).toFixed(2) + ' pkt';
             if (drawerStatusBadge) {
                 if (typerSlipMode === 'ako') {
-                    drawerStatusBadge.innerText = '⚡ Tasiemka AKO';
-                    drawerStatusBadge.className = 'text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                    drawerStatusBadge.innerText = '⚡ AKO';
+                    drawerStatusBadge.className = 'text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
                 } else {
                     drawerStatusBadge.innerText = 'Kupon Single';
-                    drawerStatusBadge.className = 'text-[10px] font-black px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30';
+                    drawerStatusBadge.className = 'text-[10px] font-black px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30';
                 }
             }
 
@@ -10238,7 +10258,7 @@
                     <div class="flex items-center justify-between themed-slip-item p-2.5 px-3 rounded-2xl border bg-slate-950/70 border-slate-800/80 transition shadow-sm">
                         <div class="flex items-center gap-2 min-w-0 pr-2">
                             <button type="button" onclick="removeTyperItem('${it.key}')" class="w-6 h-6 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 hover:text-white font-black text-xs flex items-center justify-center shrink-0 border border-rose-800/40 transition active:scale-90" title="Usuń pozycję">✕</button>
-                            <span class="font-bold text-xs truncate text-white">${escapeHtml(it.label)}</span>
+                            <span class="font-bold text-xs break-words text-white">${escapeHtml(it.label)}</span>
                         </div>
                         <span class="font-mono text-amber-400 font-black text-xs shrink-0 px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800">${it.odds.toFixed(2)}</span>
                     </div>
@@ -11205,12 +11225,12 @@
                                         ${totalWinnerVotes > 0 ? `<span class="text-amber-400 font-mono lowercase font-bold">społeczność: ${pctDark}% vs ${pctLight}%</span>` : ''}
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="selectTyperWinner('dark', ${darkOddsFormatted})" id="btn-win-dark" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                            <span class="text-xs font-bold truncate pr-1">Ciemni</span>
+                                        <button type="button" onclick="selectTyperWinner('dark', ${darkOddsFormatted})" id="btn-win-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                            <span class="text-xs font-bold leading-tight pr-1">Ciemni</span>
                                             <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0">${darkOddsFormatted}</span>
                                         </button>
-                                        <button type="button" onclick="selectTyperWinner('light', ${lightOddsFormatted})" id="btn-win-light" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                            <span class="text-xs font-bold truncate pr-1">Jaśni</span>
+                                        <button type="button" onclick="selectTyperWinner('light', ${lightOddsFormatted})" id="btn-win-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                            <span class="text-xs font-bold leading-tight pr-1">Jaśni</span>
                                             <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-sky-400 shrink-0">${lightOddsFormatted}</span>
                                         </button>
                                     </div>
@@ -11254,12 +11274,12 @@
                                     <span class="text-[10px] font-mono font-bold text-emerald-400" id="set1BadgeText">100% Niezależne</span>
                                 </div>
                                 <div id="set1BtnGrid" class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperSet1('dark', ${marketOdds.set1.dark.toFixed(2)})" id="btn-set1-dark" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">1. Set: Ciemni</span>
+                                    <button type="button" onclick="selectTyperSet1('dark', ${marketOdds.set1.dark.toFixed(2)})" id="btn-set1-dark" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">Ciemni</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.set1.dark.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperSet1('light', ${marketOdds.set1.light.toFixed(2)})" id="btn-set1-light" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">1. Set: Jaśni</span>
+                                    <button type="button" onclick="selectTyperSet1('light', ${marketOdds.set1.light.toFixed(2)})" id="btn-set1-light" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">Jaśni</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.set1.light.toFixed(2)}</span>
                                     </button>
                                 </div>
@@ -11275,12 +11295,12 @@
                                     <span class="text-[10px] font-mono font-bold" id="tbBadgeText">Niezależny</span>
                                 </div>
                                 <div id="tbBtnGrid" class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperTieBreak('yes', ${marketOdds.tiebreak.yes.toFixed(2)})" id="btn-tb-yes" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">Tie-break: TAK</span>
+                                    <button type="button" onclick="selectTyperTieBreak('yes', ${marketOdds.tiebreak.yes.toFixed(2)})" id="btn-tb-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">TAK</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400">${marketOdds.tiebreak.yes.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperTieBreak('no', ${marketOdds.tiebreak.no.toFixed(2)})" id="btn-tb-no" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">Tie-break: NIE</span>
+                                    <button type="button" onclick="selectTyperTieBreak('no', ${marketOdds.tiebreak.no.toFixed(2)})" id="btn-tb-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">NIE</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.tiebreak.no.toFixed(2)}</span>
                                     </button>
                                 </div>
@@ -11296,12 +11316,12 @@
                                     <span class="text-[10px] font-mono text-sky-400 font-bold">Emocje w secie</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button type="button" onclick="selectTyperDeuce('yes', ${marketOdds.deuce.yes.toFixed(2)})" id="btn-deuce-yes" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">TAK</span>
+                                    <button type="button" onclick="selectTyperDeuce('yes', ${marketOdds.deuce.yes.toFixed(2)})" id="btn-deuce-yes" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">TAK</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-emerald-400">${marketOdds.deuce.yes.toFixed(2)}</span>
                                     </button>
-                                    <button type="button" onclick="selectTyperDeuce('no', ${marketOdds.deuce.no.toFixed(2)})" id="btn-deuce-no" class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
-                                        <span class="text-xs font-bold">NIE</span>
+                                    <button type="button" onclick="selectTyperDeuce('no', ${marketOdds.deuce.no.toFixed(2)})" id="btn-deuce-no" class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
+                                        <span class="text-xs font-bold leading-tight">NIE</span>
                                         <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border">${marketOdds.deuce.no.toFixed(2)}</span>
                                     </button>
                                 </div>
@@ -11381,7 +11401,7 @@
                                                             onclick="selectTyperSpecial('${m.id}', '${opt.id}', ${opt.odds}, '${escapeHtml(m.category.split(' ')[0])} ${escapeHtml(opt.slipLabel || opt.label)}', '${opt.teamReq || ''}')" 
                                                             id="btn-spec-${m.id}-${opt.id}" 
                                                             class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
-                                                            <span class="text-xs font-bold truncate pr-1">${escapeHtml(opt.label)}</span>
+                                                            <span class="text-xs font-bold leading-tight pr-1">${escapeHtml(opt.label)}</span>
                                                             <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-indigo-300 shrink-0">${opt.odds.toFixed(2)}</span>
                                                         </button>
                                                     `).join('')}
@@ -11405,7 +11425,7 @@
                                             Single
                                         </button>
                                         <button type="button" onclick="setTyperSlipMode('ako')" id="live-btn-mode-ako" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black transition">
-                                            ⚡ Tasiemka AKO
+                                            ⚡ AKO
                                         </button>
                                     </div>
                                 </div>
@@ -12188,9 +12208,9 @@
                         votingFormFields.innerHTML = `
                             <div class="p-4 bg-amber-950/70 border-2 border-amber-500/60 rounded-2xl text-center space-y-2 animate-fade-in">
                                 <span class="text-3xl block">👑</span>
-                                <h4 class="text-sm font-black text-amber-300 uppercase tracking-wider">Jesteś kandydatem do nagrody MVP w dogrywce!</h4>
+                                <h4 class="text-sm font-black text-amber-300 uppercase tracking-wider">Jesteś w dogrywce MVP!</h4>
                                 <p class="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
-                                    Zgodnie z zasadami, w dogrywce decydujący głos oddają pozostali uczestnicy meczu. Oczekiwanie na głosy drużyny: <strong class="text-white font-bold">${tbCount} / ${tbEligible.length}</strong>.
+                                    W dogrywce decydują pozostali gracze. Głosy: <strong class="text-white font-bold">${tbCount} / ${tbEligible.length}</strong>.
                                 </p>
                             </div>
                         `;
@@ -12198,9 +12218,9 @@
                         votingFormFields.innerHTML = `
                             <div class="p-4 bg-emerald-950/70 border-2 border-emerald-500/60 rounded-2xl text-center space-y-2 animate-fade-in">
                                 <span class="text-3xl block">✅</span>
-                                <h4 class="text-sm font-black text-emerald-300 uppercase tracking-wider">Twój decydujący głos w dogrywce został zarejestrowany!</h4>
+                                <h4 class="text-sm font-black text-emerald-300 uppercase tracking-wider">Głos w dogrywce zapisany!</h4>
                                 <p class="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
-                                    Twój decydujący głos oddany na: <strong class="text-amber-300 font-bold">${escapeHtml(tbVotes[activeUser])}</strong>. Czekamy na pozostałe osoby (${tbCount} / ${tbEligible.length}).
+                                    Głos na: <strong class="text-amber-300 font-bold">${escapeHtml(tbVotes[activeUser])}</strong> (${tbCount} / ${tbEligible.length}).
                                 </p>
                             </div>
                         `;
@@ -12209,12 +12229,12 @@
                             <div class="p-4 bg-slate-900 border-2 border-amber-500/60 rounded-2xl space-y-3 animate-fade-in">
                                 <div class="text-center space-y-1">
                                     <span class="text-[10px] uppercase font-black tracking-wider text-amber-400 bg-amber-950/90 border border-amber-600/70 px-2 py-0.5 rounded-full inline-block">⚡ DOGRYWKA MVP</span>
-                                    <h4 class="text-sm font-bold text-white">Wybierz zwycięzcę MVP spotkania:</h4>
-                                    <p class="text-xs text-slate-400">Głos decydujący oddają wyłącznie zawodnicy niebędący kandydatami.</p>
+                                    <h4 class="text-sm font-bold text-white">Wybierz MVP meczu:</h4>
+                                    <p class="text-xs text-slate-400">Decydują głosy graczy spoza dogrywki.</p>
                                 </div>
                                 ${!loggedPlayer ? `
                                     <div class="space-y-1">
-                                        <label for="runoffVoterSelect" class="block text-[11px] text-slate-400 font-semibold">Kim jesteś? (Wybierz siebie):</label>
+                                        <label for="runoffVoterSelect" class="block text-[11px] text-slate-400 font-semibold">Kto głosuje (Ty):</label>
                                         <select id="runoffVoterSelect" class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-white rounded-xl px-3 py-2.5 focus:border-amber-400 cursor-pointer">
                                             <option value="">-- Wybierz siebie ze składu --</option>
                                             ${tbEligible.filter(p => !tbVotes[p]).map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
@@ -12225,7 +12245,7 @@
                                     ${tbCandidates.map(cand => `
                                         <button type="button" onclick="submitMvpRunoffVote(${toInlineArgument(cand)})" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-slate-950 font-black py-3 px-3 rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer">
                                             ${getPlayerAvatarHtml(cand, 'xs')}
-                                            <span>👑 Wybierz: ${escapeHtml(cand)}</span>
+                                            <span>👑 ${escapeHtml(cand)}</span>
                                         </button>
                                     `).join('')}
                                 </div>
@@ -12617,7 +12637,7 @@
                             <summary class="p-2.5 sm:p-3 flex items-center justify-between cursor-pointer list-none select-none hover:bg-slate-900 transition">
                                 <span class="flex items-center gap-1.5 text-xs font-bold text-amber-300">
                                     <span>✨</span>
-                                    <span>Wyróżnienia za akcje meczu</span>
+                                    <span>Wyróżnienia za akcje</span>
                                     <span class="text-[9.5px] text-slate-400 font-normal lowercase">(opcjonalne)</span>
                                 </span>
                                 <div class="flex items-center gap-1.5 text-slate-400">
@@ -12626,7 +12646,7 @@
                                 </div>
                             </summary>
                             <div class="p-3 pt-0 border-t border-slate-800/60 space-y-2">
-                                <p class="text-[10px] text-slate-400 pt-1.5">Wybierz zawodników, którzy wyróżnili się konkretną akcją (lub pomiń):</p>
+                                <p class="text-[10px] text-slate-400 pt-1.5">Wybierz wyróżniających się graczy (lub pomiń):</p>
                                 <div class="grid grid-cols-2 gap-1.5 sm:gap-2 text-xs">
                                     <div>
                                         <label for="dedVoteAwardBlock" class="block text-[10px] font-bold text-slate-300 mb-0.5 leading-tight">🧱 Czapa (blok):</label>
@@ -12660,13 +12680,13 @@
                     <!-- Przycisk oddania głosu -->
                     <div id="dedicatedSubmitSection" class="pt-1">
                         <button type="button" onclick="submitDedicatedMvpVote()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-slate-950 font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2">
-                            <span>Zatwierdź tajny głos na MVP</span>
+                            <span>Zagłosuj na MVP</span>
                             <span>🌟</span>
                         </button>
                     </div>
 
                     <p class="text-[10px] text-slate-500 text-center leading-relaxed">
-                        🔒 Głosowanie jest tajne i anonimowe. Po oddaniu głosu wyniki pozostają ukryte do końca spotkania.
+                        🔒 Głosowanie tajne. Wyniki po zakończeniu meczu.
                     </p>
                 </div>
             `;
@@ -13954,7 +13974,7 @@
                 <!-- Przycisk Zamknij Raport na dole -->
                 <div class="pt-1 border-t border-slate-800/80">
                     <button type="button" onclick="closeArchivedMatchModal()" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-bold py-2.5 rounded-2xl text-xs transition border border-slate-700 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
-                        <span>✕</span><span>Zamknij raport</span>
+                        <span>✕</span><span>Zamknij</span>
                     </button>
                 </div>
             `;
@@ -14291,7 +14311,7 @@
                                 <div class="flex items-center gap-1.5 shrink-0 flex-wrap">
                                     ${!isPaid && due > 0 ? `
                                         <button type="button" onclick="setFullPayment(${toInlineArgument(p)}, ${due.toFixed(2)})" class="bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition shadow-md shadow-emerald-500/20 flex items-center gap-1">
-                                            <span>✅</span> Opłać całość
+                                            <span>✅</span> Opłać
                                         </button>
                                     ` : `
                                         <button type="button" onclick="updatePlayerPaidAmount(${toInlineArgument(p)}, 0)" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-400 font-bold px-2.5 py-1.5 rounded-xl text-xs border border-slate-700/80 transition active:scale-95 flex items-center gap-1" title="Wyzeruj wpłatę">
@@ -14306,7 +14326,7 @@
                             ` : `
                             <div class="pt-1 flex items-center justify-end">
                                 <button type="button" onclick="openPlayerCardModal(${toInlineArgument(p)})" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-bold transition flex items-center gap-1">
-                                    <span>👤 Zobacz profil gracza ➔</span>
+                                    <span>👤 Profil gracza ➔</span>
                                 </button>
                             </div>
                             `}
@@ -17266,12 +17286,12 @@
                             </div>
                             <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2 sm:p-2.5">
                                 <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold block leading-tight">Najrzadsze</span>
-                                <span class="text-[10px] sm:text-xs font-black text-purple-300 block mt-0.5 leading-tight truncate" title="${escapeHtml(rarestBadgeDef.name)}">${rarestBadgeDef.icon} <span class="hidden sm:inline">${escapeHtml(rarestBadgeDef.name)}</span></span>
+                                <span class="text-[10px] sm:text-xs font-black text-purple-300 block mt-0.5 leading-tight break-words" title="${escapeHtml(rarestBadgeDef.name)}">${rarestBadgeDef.icon} <span class="hidden sm:inline">${escapeHtml(rarestBadgeDef.name)}</span></span>
                                 <span class="text-[9px] text-purple-400/80 font-bold block">${badgeHoldersMap[rarestBadgeDef.id].length} ${badgeHoldersMap[rarestBadgeDef.id].length === 1 ? 'os.' : 'os.'}</span>
                             </div>
                             <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-2 sm:p-2.5">
                                 <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold block leading-tight">Lider</span>
-                                <span class="text-[10px] sm:text-xs font-black text-emerald-300 block mt-0.5 leading-tight truncate" title="${escapeHtml(topCollector.name)}">${escapeHtml(topCollector.name.split(' ')[0])}</span>
+                                <span class="text-[10px] sm:text-xs font-black text-emerald-300 block mt-0.5 leading-tight break-words" title="${escapeHtml(topCollector.name)}">${escapeHtml(topCollector.name.split(' ')[0])}</span>
                                 <span class="text-[9px] text-emerald-400 font-bold block font-mono">${topCollector.count} odznak</span>
                             </div>
                         </div>
@@ -17735,21 +17755,21 @@
                 <div class="bg-slate-900/90 border border-slate-800/80 p-1 rounded-2xl grid grid-cols-3 gap-1 text-xs font-bold shadow-md">
                     <button type="button" id="profileSubtabBtn-stats" onclick="setProfileSubtab('stats')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>📊</span>
-                        <span class="truncate">${isOrganizer ? 'Moje Staty' : 'Statystyki'}</span>
+                        <span>${isOrganizer ? 'Staty' : 'Statystyki'}</span>
                     </button>
                     <button type="button" id="profileSubtabBtn-chronicle" onclick="setProfileSubtab('chronicle')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>📜</span>
-                        <span class="truncate">Kronika</span>
+                        <span>Kronika</span>
                     </button>
                     ${isOrganizer ? `
                     <button type="button" id="profileSubtabBtn-admin" onclick="setProfileSubtab('admin')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>👑</span>
-                        <span class="truncate">Organizator</span>
+                        <span>Admin</span>
                     </button>
                     ` : `
                     <button type="button" id="profileSubtabBtn-settings" onclick="setProfileSubtab('settings')" class="py-2 px-1 rounded-xl text-slate-400 hover:text-white font-extrabold flex items-center justify-center gap-1 transition active:scale-95 text-[11px] sm:text-xs">
                         <span>⚙️</span>
-                        <span class="truncate">Ustawienia</span>
+                        <span>Ustawienia</span>
                     </button>
                     `}
                 </div>
@@ -17963,9 +17983,9 @@
                                 </div>
                                 <div class="mt-2 space-y-0.5">
                                     <strong class="text-white text-xs leading-tight flex items-center gap-1 min-w-0">
-                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay" class="truncate">${escapeHtml(activeThemeInfo.name)}</span>
+                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplay" class="break-words">${escapeHtml(activeThemeInfo.name)}</span>
                                     </strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
+                                    <span class="text-[9.5px] text-slate-500 block">Kliknij, by zmienić</span>
                                 </div>
                             </div>
 
@@ -17980,8 +18000,8 @@
                                         ${getPlayerAvatarHtml(loggedPlayer, 'xs')}
                                     </div>
                                     <div class="min-w-0">
-                                        <strong class="text-white text-xs block truncate leading-tight">Zmień zdjęcie</strong>
-                                        <span class="text-[9.5px] text-slate-500 block truncate">Widok na boisku</span>
+                                        <strong class="text-white text-xs block leading-tight">Zmień zdjęcie</strong>
+                                        <span class="text-[9.5px] text-slate-500 block">Widok na boisku</span>
                                     </div>
                                 </div>
                             </div>
@@ -17993,8 +18013,8 @@
                                     <span class="text-indigo-300 font-mono text-[9px] bg-indigo-950/60 border border-indigo-800/60 px-1.5 py-0.2 rounded-full">4-cyfry</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight">Zmień kod PIN</strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Ochrona Twojego profilu</span>
+                                    <strong class="text-white text-xs block leading-tight">Zmień kod PIN</strong>
+                                    <span class="text-[9.5px] text-slate-500 block">Ochrona profilu</span>
                                 </div>
                             </div>
 
@@ -18040,8 +18060,8 @@
                                     👑
                                 </div>
                                 <div>
-                                    <h3 class="font-black text-sm sm:text-base text-white">Centrum Zarządzania & Narzędzia Organizatora</h3>
-                                    <p class="text-[10px] text-amber-300">Wszystkie narzędzia administratorskie w jednym miejscu</p>
+                                    <h3 class="font-black text-sm sm:text-base text-white">Panel Organizatora</h3>
+                                    <p class="text-[10px] text-amber-300">Narzędzia administratorskie i finanse</p>
                                 </div>
                             </div>
                             <span class="text-[9px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full shrink-0">
@@ -18081,7 +18101,7 @@
                                 </div>
                             </div>
                             <button type="button" onclick="openGroupSettingsModal()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/50 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 active:scale-95 shadow-sm">
-                                <span class="text-amber-400">⚙️</span> Dostosuj godziny i ustawienia ekipy
+                                <span class="text-amber-400">⚙️</span> Ustawienia ekipy
                             </button>
                         </div>
 
@@ -18095,7 +18115,7 @@
                             </div>
                             <p class="text-[10px] text-slate-400">Gotowy tekst z listą dłużników za dany miesiąc, kwotami i numerem BLIK do wklejenia w czat ekipy:</p>
                             <button type="button" onclick="copyDebtorsListMessage()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-black py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
-                                <span>📢</span> Kopiuj listę do opłacenia na Messengera
+                                <span>📢</span> Kopiuj listę dłużników
                             </button>
                         </div>
 
@@ -18229,9 +18249,9 @@
                                 </div>
                                 <div class="mt-2 space-y-0.5">
                                     <strong class="text-white text-xs leading-tight flex items-center gap-1 min-w-0">
-                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplayAdmin" class="truncate">${escapeHtml(activeThemeInfo.name)}</span>
+                                        <span class="shrink-0">${activeThemeInfo.icon}</span> <span id="profileCurrentThemeDisplayAdmin" class="break-words">${escapeHtml(activeThemeInfo.name)}</span>
                                     </strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Kliknij, by zmienić</span>
+                                    <span class="text-[9.5px] text-slate-500 block">Kliknij, by zmienić</span>
                                 </div>
                             </div>
 
@@ -18246,8 +18266,8 @@
                                         ${getPlayerAvatarHtml(loggedPlayer, 'xs')}
                                     </div>
                                     <div class="min-w-0">
-                                        <strong class="text-white text-xs block truncate leading-tight">Zmień zdjęcie</strong>
-                                        <span class="text-[9.5px] text-slate-500 block truncate">Widok na boisku</span>
+                                        <strong class="text-white text-xs block leading-tight">Zmień zdjęcie</strong>
+                                        <span class="text-[9.5px] text-slate-500 block">Widok na boisku</span>
                                     </div>
                                 </div>
                             </div>
@@ -18259,8 +18279,8 @@
                                     <span class="text-indigo-300 font-mono text-[9px] bg-indigo-950/60 border border-indigo-800/60 px-1.5 py-0.2 rounded-full">4-cyfry</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight">Zmień kod PIN</strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Bezpieczeństwo konta</span>
+                                    <strong class="text-white text-xs block leading-tight">Zmień kod PIN</strong>
+                                    <span class="text-[9.5px] text-slate-500 block">Bezpieczeństwo konta</span>
                                 </div>
                             </div>
 
@@ -18271,8 +18291,8 @@
                                     <span class="text-rose-400 group-hover:underline text-[9.5px]">Wyloguj ➔</span>
                                 </div>
                                 <div class="mt-2 space-y-0.5">
-                                    <strong class="text-white text-xs block truncate leading-tight">Wyloguj konto</strong>
-                                    <span class="text-[9.5px] text-slate-500 block truncate">Pamięć na telefonie</span>
+                                    <strong class="text-white text-xs block leading-tight">Wyloguj konto</strong>
+                                    <span class="text-[9.5px] text-slate-500 block">Pamięć na telefonie</span>
                                 </div>
                             </div>
 
