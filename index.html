@@ -10715,8 +10715,8 @@
                     desc: `Bilans bezpośredni: ${uShort} przegrał ${bestH2H.losses} z ${bestH2H.against} pojedynków.`,
                     relevance: 50 + bestH2H.score,
                     options: [
-                        { id: 'yes', label: `TAK (Wygra ${uShort})`, odds: oddYes, teamReq: teamReqYes },
-                        { id: 'no', label: `NIE (Wygra ${nShort})`, odds: oddNo, teamReq: teamReqNo }
+                        { id: 'yes', label: uShort, slipLabel: `Wygra ${uShort}`, odds: oddYes, teamReq: teamReqYes },
+                        { id: 'no', label: nShort, slipLabel: `Wygra ${nShort}`, odds: oddNo, teamReq: teamReqNo }
                     ]
                 });
             }
@@ -10752,12 +10752,12 @@
                     id: 'spec_streak',
                     category: '🔥 POGROMCA PASSY',
                     type: 'streak_breaker',
-                    title: `Koniec wspaniałej passy: ${pShort} (${bestStreak.streak}W)?`,
+                    title: `Passa zwycięstw: ${pShort} (${bestStreak.streak}W)`,
                     desc: `${pShort} wygrał ${bestStreak.streak} ostatnich meczów z rzędu.`,
                     relevance: 45 + bestStreak.streak * 10,
                     options: [
-                        { id: 'stop', label: `TAK (Porażka)`, odds: oddStop, teamReq: isDark ? 'light' : 'dark' },
-                        { id: 'keep', label: `NIE (Seria trwa)`, odds: oddKeep, teamReq: isDark ? 'dark' : 'light' }
+                        { id: 'stop', label: 'Przegra', slipLabel: `${pShort}: Przegra`, odds: oddStop, teamReq: isDark ? 'light' : 'dark' },
+                        { id: 'keep', label: 'Wygra', slipLabel: `${pShort}: Wygra`, odds: oddKeep, teamReq: isDark ? 'dark' : 'light' }
                     ]
                 });
             }
@@ -10777,12 +10777,12 @@
                     id: 'spec_rookie_mvp',
                     category: '👑 NOWY KRÓL',
                     type: 'rookie_mvp',
-                    title: `Czy statuetkę MVP zdobędzie nowy gracz?`,
+                    title: `Statuetka MVP: Czy wygra nowy gracz?`,
                     desc: `${rookies.length} graczy w składach czeka na pierwsze MVP w sezonie.`,
                     relevance: 40,
                     options: [
-                        { id: 'yes', label: 'TAK (Debiut MVP)', odds: oddRookie, teamReq: null },
-                        { id: 'no', label: 'NIE (Znany Mistrz)', odds: oddVeteran, teamReq: null }
+                        { id: 'yes', label: 'Nowy MVP', slipLabel: 'Nowy MVP w sezonie', odds: oddRookie, teamReq: null },
+                        { id: 'no', label: 'Były MVP', slipLabel: 'Dotychczasowy MVP', odds: oddVeteran, teamReq: null }
                     ]
                 });
             }
@@ -10834,8 +10834,8 @@
                             desc: `Tydzień temu wygrała drużyna: ${wShort}.`,
                             relevance: 42,
                             options: [
-                                { id: 'yes', label: `TAK (Rewanż: ${lShort})`, odds: Math.max(1.30, Math.min(3.80, oddRev)), teamReq: revengePair.loserTeam },
-                                { id: 'no', label: `NIE (Znowu: ${wShort})`, odds: Math.max(1.20, Math.min(3.20, oddRepeat)), teamReq: revengePair.winnerTeam }
+                                { id: 'yes', label: lShort, slipLabel: `Rewanż: ${lShort}`, odds: Math.max(1.30, Math.min(3.80, oddRev)), teamReq: revengePair.loserTeam },
+                                { id: 'no', label: wShort, slipLabel: `Znowu ${wShort}`, odds: Math.max(1.20, Math.min(3.20, oddRepeat)), teamReq: revengePair.winnerTeam }
                             ]
                         });
                     }
@@ -11378,9 +11378,9 @@
                                                 <div class="grid grid-cols-2 gap-2 pt-0.5">
                                                     ${m.options.map(opt => `
                                                         <button type="button" 
-                                                            onclick="selectTyperSpecial('${m.id}', '${opt.id}', ${opt.odds}, '${escapeHtml(m.category.split(' ')[0])} ${escapeHtml(opt.label)}', '${opt.teamReq || ''}')" 
+                                                            onclick="selectTyperSpecial('${m.id}', '${opt.id}', ${opt.odds}, '${escapeHtml(m.category.split(' ')[0])} ${escapeHtml(opt.slipLabel || opt.label)}', '${opt.teamReq || ''}')" 
                                                             id="btn-spec-${m.id}-${opt.id}" 
-                                                            class="bet-btn p-2.5 rounded-2xl border flex items-center justify-between text-left">
+                                                            class="bet-btn p-2 sm:p-2.5 px-2.5 sm:px-3 rounded-2xl border flex items-center justify-between text-left">
                                                             <span class="text-xs font-bold truncate pr-1">${escapeHtml(opt.label)}</span>
                                                             <span class="odds-badge font-mono font-black text-xs px-2 py-0.5 rounded-xl border text-indigo-300 shrink-0">${opt.odds.toFixed(2)}</span>
                                                         </button>
