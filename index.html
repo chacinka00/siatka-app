@@ -5671,7 +5671,7 @@
             base_games: {},
             settings: { hallCost: 250, blikPhone: "517 077 482" },
             player_skills: {},
-            currentMonth: 'Sierpień',
+            currentMonth: (typeof POLISH_MONTHS !== 'undefined' ? POLISH_MONTHS[new Date().getMonth()] : 'Listopad') || 'Listopad',
             currentMatchIndex: 0
         };
         try {
@@ -6234,7 +6234,6 @@
                 AppState.currentMonth = latest.monthName;
             }
             selectMatch(latest.matchIndex, 'mvp');
-            syncState();
             renderCurrentView();
             setTimeout(() => {
                 const target = document.getElementById('matchMvpSubtabContainer') || document.getElementById('integratedMvpCard');
@@ -6366,6 +6365,18 @@
                         AppState.currentMatchIndex = idx;
                         hasInitiallySelectedMonth = true;
                         if (isMvpLink) currentMatchSubtab = 'mvp';
+                        // Jeśli link dotyczy minionego meczu sprzed ponad 3 dni, czyścimy parametr z paska adresu,
+                        // aby użytkownik nie był permanentnie uwięziony w starym miesiącu przy kolejnych wizytach
+                        if (getDaysSinceDate(targetMatchDate) > 3) {
+                            try {
+                                const cleanUrl = new URL(window.location.href);
+                                cleanUrl.searchParams.delete('match');
+                                cleanUrl.searchParams.delete('mvp');
+                                cleanUrl.searchParams.delete('vote');
+                                cleanUrl.searchParams.delete('glosuj');
+                                window.history.replaceState({}, document.title, cleanUrl.toString());
+                            } catch(e) {}
+                        }
                         return;
                     }
                 }
@@ -6409,7 +6420,17 @@
                 }
             }
 
-            // 4. Fallback na ostatni miesiąc i jego ostatni mecz
+            // 4. Priorytet aktualnego miesiąca kalendarzowego (np. Listopad)
+            const curCalMonth = (typeof POLISH_MONTHS !== 'undefined') ? POLISH_MONTHS[new Date().getMonth()] : null;
+            if (curCalMonth && AppState.months && AppState.months[curCalMonth]) {
+                AppState.currentMonth = curCalMonth;
+                const matches = AppState.months[curCalMonth].matches || [];
+                AppState.currentMatchIndex = Math.max(0, matches.length - 1);
+                hasInitiallySelectedMonth = true;
+                return;
+            }
+
+            // 5. Fallback na ostatni miesiąc i jego ostatni mecz
             const targetMonth = sortedMonths[sortedMonths.length - 1] || AppState.currentMonth;
             if (targetMonth && AppState.months[targetMonth]) {
                 AppState.currentMonth = targetMonth;
@@ -6645,8 +6666,9 @@
             }
 
             const sortedMonths = getSortedMonths();
+            const curCalMonth = (typeof POLISH_MONTHS !== 'undefined') ? POLISH_MONTHS[new Date().getMonth()] : null;
             if (!AppState.months[AppState.currentMonth]) {
-                AppState.currentMonth = sortedMonths[0] || 'Sierpień';
+                AppState.currentMonth = (curCalMonth && AppState.months[curCalMonth]) ? curCalMonth : (sortedMonths[sortedMonths.length - 1] || 'Listopad');
             }
             const matchCount = AppState.months[AppState.currentMonth]?.matches?.length || 0;
             if (AppState.currentMatchIndex >= matchCount) {
@@ -6979,6 +7001,18 @@
             if (!AppState.months[mName]) return;
             AppState.currentMonth = mName;
             
+            try {
+                localStorage.setItem('siatka_user_selected_month', mName);
+                const url = new URL(window.location.href);
+                if (url.searchParams.has('match') || url.searchParams.has('mvp') || url.searchParams.has('vote') || url.searchParams.has('glosuj')) {
+                    url.searchParams.delete('match');
+                    url.searchParams.delete('mvp');
+                    url.searchParams.delete('vote');
+                    url.searchParams.delete('glosuj');
+                    window.history.replaceState({}, document.title, url.toString());
+                }
+            } catch(e) {}
+
             const matches = AppState.months[mName].matches || [];
             const todayStr = getLocalDateKey();
             const latestPlayed = getLatestPlayedMatchInfo();
@@ -11807,6 +11841,17 @@
             const toggleFinalizeBtn = document.getElementById('mvpToggleFinalizeBtn');
             const adminStatusLabel = document.getElementById('mvpAdminStatusLabel');
 
+            // Resetuj zawsze sekcję wyróżnień i stan klikalności MVP przed jakimkolwiek wczesnym wyjściem
+            const specialAwardsContainer = document.getElementById('mvpSpecialAwardsContainer');
+            if (specialAwardsContainer) {
+                specialAwardsContainer.innerHTML = '';
+            }
+            const mvpWinnerContainer = document.getElementById('mvpWinnerContainer');
+            if (mvpWinnerContainer) {
+                mvpWinnerContainer.onclick = null;
+                mvpWinnerContainer.className = "bg-slate-950/90 border border-amber-800/60 rounded-2xl p-3.5 text-center space-y-1 relative overflow-hidden";
+            }
+
             if (!currentMatch) {
                 if (dateBadge) dateBadge.innerText = "Brak meczu";
                 if (votesBadge) votesBadge.innerText = "0/0";
@@ -11910,6 +11955,7 @@
 
             // 1. Sprawdzenie czy mecz jeszcze się nie odbył (brak wpisanego wyniku lub przed końcem gry)
             if (!isMatchFinished(currentMatch)) {
+                activeMvpCategory = 'mvp';
                 const endTimeStr = AppState.settings?.gameEndTime || "21:45";
                 const isToday = (currentMatch.date === todayStr);
                 const timeInfo = isToday ? `dzisiaj po godz. ${endTimeStr}` : `po rozegraniu meczu`;
@@ -12054,7 +12100,6 @@
                 }
             });
 
-            const specialAwardsContainer = document.getElementById('mvpSpecialAwardsContainer');
             if (specialAwardsContainer) {
                 specialAwardsContainer.innerHTML = isFinished ? renderMatchSpecialAwardsSectionHtml(currentMatch, false, activeMvpCategory, false) : '';
             }
@@ -12117,7 +12162,6 @@
                 const isMvpActive = (activeMvpCategory === 'mvp');
                 const mvpBadgeHtml = '';
 
-                const mvpWinnerContainer = document.getElementById('mvpWinnerContainer');
                 if (mvpWinnerContainer) {
                     mvpWinnerContainer.onclick = () => setMvpActiveCategory('mvp');
                     mvpWinnerContainer.className = isMvpActive 
@@ -19641,6 +19685,18 @@
 
             return streaks;
         }
+
+        // Odświeżenie widoku i auto-przełączenie na aktualny mecz przy powrocie do uśpionej karty w telefonie
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                const curMatch = AppState.months?.[AppState.currentMonth]?.matches?.[AppState.currentMatchIndex];
+                if (!curMatch || (curMatch.date && getDaysSinceDate(curMatch.date) > 3)) {
+                    hasInitiallySelectedMonth = false;
+                    autoSelectUpcomingMatchOnLoad();
+                    renderCurrentView();
+                }
+            }
+        });
 
         // ================= APPLICATION BOOTSTRAP =================
         initApp();
